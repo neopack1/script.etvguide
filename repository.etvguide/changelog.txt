@@ -1,0 +1,5 @@
+[B]wersja 1.0.2[/B] - 2014-12-15
+- Uzycie skompresowanej wersji wtyczki
+
+[B]wersja 1.0.1[/B] - 2014-11-11
+- Initial version

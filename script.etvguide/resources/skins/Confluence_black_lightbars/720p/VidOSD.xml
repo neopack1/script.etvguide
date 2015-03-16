@@ -1,0 +1,169 @@
+<window>
+	<defaultcontrol always="true">101</defaultcontrol>
+	<include>dialogeffect</include>
+	<coordinates>
+		<system>1</system><posx>0</posx><posy>0</posy>
+	</coordinates>
+	<controls>
+
+		<control type="button" id="1000">
+			<description>Close Window button</description>
+			<posx>84r</posx>
+			<posy>0</posy>
+			<width>64</width>
+			<height>32</height>
+			<label>-</label>
+			<font>-</font>
+			<onclick>Dialog.Close(VideoOSD,true)</onclick>
+			<onclick>FullScreen</onclick>
+			<texturefocus>DialogCloseButton-focus.png</texturefocus>
+			<texturenofocus>DialogCloseButton.png</texturenofocus>
+			<onleft>1000</onleft>
+			<onright>1000</onright>
+			<onup>101</onup>
+			<ondown>101</ondown>
+			<animation effect="fade" time="200">VisibleChange</animation>
+			<visible>true</visible>
+		</control>
+
+		<!-- !LiveTV -->
+		<control type="group" id="100">
+			<posx>0</posx>
+			<posy>0</posy>
+			<defaultcontrol always="true">101</defaultcontrol>
+			<animation effect="fade" time="200">VisibleChange</animation>
+			<visible>true</visible>
+
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>470</posy>
+				<width>1280</width>
+				<height>250</height>
+				<texture>videosd-bg.png</texture>
+			</control>
+			<control type="label" id="4920">
+				<description>Program title</description>
+				<posx>370</posx>
+				<posy>527</posy>
+				<width>568</width>
+				<height>50</height>
+				<textcolor>ffffffff</textcolor>
+				<font>font13</font>
+				<aligny>center</aligny>
+			</control>
+			<control type="image" id="4924">
+				<description>Channel logo</description>
+				<posx>77</posx>
+				<posy>459</posy>
+				<width>200</width>
+				<height>200</height>
+				<aspectratio>keep</aspectratio>
+				<fadetime>500</fadetime>
+				<visible>true</visible>
+			</control>
+			<control type="progress" id="4999">
+				<posx>55</posx>
+				<posy>610</posy>
+				<width>230</width>
+				<height>10</height>
+			</control>
+			<control type="label" id="4921">
+				<description>Program time</description>
+				<posx>1235</posx>
+				<posy>527</posy>
+				<width>340</width>
+				<height>50</height>
+				<textcolor>ffffffff</textcolor>
+				<font>font13</font>
+				<align>right</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="textbox" id="4922">
+				<description>Program description</description>
+				<posx>370</posx>
+				<posy>580</posy>
+				<width>864</width>
+				<height>106</height>
+				<textcolor>ffffffff</textcolor>
+				<font>font12</font>
+				<align>justify</align>
+				<wrapmultiline>true</wrapmultiline>
+				<autoscroll time="3500" delay="4500" repeat="10000">true</autoscroll>
+			</control>
+			<control type="image" id="4923">
+				<description>Program logo / Source logo</description>
+				<posx>940</posx>
+				<posy>520</posy>
+				<width>320</width>
+				<height>180</height>
+				<aspectratio>keep</aspectratio>
+				<fadetime>500</fadetime>
+				<texture>tvguide-logo-epg.png</texture>
+				<visible>!Player.Playing</visible>\
+			</control>
+			<control type="label">
+				<description>time label</description>
+				<posx>1145</posx>
+				<posy>595</posy>
+				<width>200</width>
+				<height>30</height>
+				<align>right</align>
+				<aligny>center</aligny>
+				<font>font45caps_title</font>
+				<textcolor>white</textcolor>
+				<shadowcolor>black</shadowcolor>
+				<label>$INFO[System.Time]</label>
+				<visible>False</visible>
+			</control>
+			<control type="button" id="101">
+				<posx>56</posx>
+				<posy>640</posy>
+				<width>55</width>
+				<height>55</height>
+				<texturefocus>../../Default/media/stopfo.png</texturefocus>
+				<texturenofocus>../../Default/media/stopbd.png</texturenofocus>
+				<onleft>104</onleft>
+				<onright>102</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+			<control type="button" id="102">
+				<posx>111</posx>
+				<posy>640</posy>
+				<width>55</width>
+				<height>55</height>
+				<texturefocus>../../Default/media/infofo.png</texturefocus>
+				<texturenofocus>../../Default/media/infobd.png</texturenofocus>
+				<onleft>101</onleft>
+				<onright>103</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+			<control type="button" id="103">
+				<posx>166</posx>
+				<posy>640</posy>
+				<width>55</width>
+				<height>55</height>
+				<texturefocus>../../Default/media/minusfo.png</texturefocus>
+				<texturenofocus>../../Default/media/minusbd.png</texturenofocus>
+				<onleft>102</onleft>
+				<onright>104</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+			<control type="button" id="104">
+				<posx>221</posx>
+				<posy>640</posy>
+				<width>55</width>
+				<height>55</height>
+				<texturefocus>../../Default/media/plusfo.png</texturefocus>
+				<texturenofocus>../../Default/media/plusbd.png</texturenofocus>
+				<onleft>103</onleft>
+				<onright>101</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+		</control>
+	</controls>
+</window>
