@@ -1,4 +1,7 @@
 ﻿
+[B]wersja 1.1.18[/B] - 2015-3-16
+- poprawki
+
 [B]wersja 1.1.17[/B] - 2015-2-23
 - Naprawiono zzipowane EPG. Szybszy czas sciagania
 - Wlaczono zip epg by default
