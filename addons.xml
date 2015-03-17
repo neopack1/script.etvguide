@@ -2,9 +2,9 @@
 <addons>
 <addon id="repository.etvguide" name="e-TVGuide Add-ons" version="1.0.3" provider-name="thebedi">
 	<extension point="xbmc.addon.repository" name="e-TVGuide Add-on Repository">
-		<info compressed="false">https://script-etvguide.googlecode.com/svn/trunk/addons.xml</info>
-		<checksum>https://script-etvguide.googlecode.com/svn/trunk/addons.xml.md5</checksum>
-		<datadir zip="false">https://script-etvguide.googlecode.com/svn/trunk/</datadir>
+		<info compressed="false">https://raw.githubusercontent.com/en0x/script.etvguide/master/addons.xml</info>
+		<checksum>https://raw.githubusercontent.com/en0x/script.etvguide/master/addons.xml.md5</checksum>
+		<datadir zip="false">https://raw.githubusercontent.com/en0x/script.etvguide/master/repo</datadir>
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary>e-TVGuide Addon Repository</summary>
@@ -25,12 +25,12 @@
 
 	<extension point="xbmc.addon.metadata">
 		<summary>e-TVGuide with support for WEEB.TV</summary>
-		<description>The TV guide gives you an overview on whats on TV right now, so you don't have to change the channel away from XBMC![CR][CR]Navigate using the arrow keys and change page using channel + / -.</description>
+		<description>The TV guide gives you an overview on whats on TV right now, so you don't have to change the channel away from KODI![CR][CR]Navigate using the arrow keys and change page using channel + / -.</description>
 		<platform>all</platform>
 		<license>GPLv3</license>
-        	<website>https://script-etvguide.googlecode.com</website>
+        	<website>https://github.com/en0x/script.etvguide</website>
         	<email>pawelkilian@gmail.com</email>
-        	<source>https://script-etvguide.googlecode.com/svn/trunk</source>
+        	<source>https://github.com/en0x/script.etvguide</source>
 	</extension>
 </addon>
 </addons>

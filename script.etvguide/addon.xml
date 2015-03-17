@@ -13,8 +13,8 @@
 		<description>The TV guide gives you an overview on whats on TV right now, so you don't have to change the channel away from KODI![CR][CR]Navigate using the arrow keys and change page using channel + / -.</description>
 		<platform>all</platform>
 		<license>GPLv3</license>
-        	<website>https://script-etvguide.googlecode.com</website>
+        	<website>https://github.com/en0x/script.etvguide</website>
         	<email>pawelkilian@gmail.com</email>
-        	<source>https://script-etvguide.googlecode.com/svn/trunk</source>
+        	<source>https://github.com/en0x/script.etvguide</source>
 	</extension>
 </addon>

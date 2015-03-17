@@ -1,3 +1,6 @@
+[B]wersja 1.0.3[/B] - 2015-03-17
+- Migracja na githuba
+
 [B]wersja 1.0.2[/B] - 2014-12-15
 - Uzycie skompresowanej wersji wtyczki
 

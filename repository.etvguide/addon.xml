@@ -1,8 +1,8 @@
 <addon id="repository.etvguide" name="e-TVGuide Add-ons" version="1.0.3" provider-name="thebedi">
 	<extension point="xbmc.addon.repository" name="e-TVGuide Add-on Repository">
-		<info compressed="false">https://script-etvguide.googlecode.com/svn/trunk/addons.xml</info>
-		<checksum>https://script-etvguide.googlecode.com/svn/trunk/addons.xml.md5</checksum>
-		<datadir zip="false">https://script-etvguide.googlecode.com/svn/trunk/</datadir>
+		<info compressed="false">https://raw.githubusercontent.com/en0x/script.etvguide/master/addons.xml</info>
+		<checksum>https://raw.githubusercontent.com/en0x/script.etvguide/master/addons.xml.md5</checksum>
+		<datadir zip="false">https://raw.githubusercontent.com/en0x/script.etvguide/master/repo</datadir>
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary>e-TVGuide Addon Repository</summary>
