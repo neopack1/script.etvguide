@@ -1,6 +1,10 @@
 # script.etvguide
 Modified version of script.tvguide for xbmc. This version is mainly focused for weeb.tv polish online television.
 
+
+check out my github site [HERE](http://en0x.github.io/script.etvguide/)
+
+
 Download the repository [HERE](https://github.com/en0x/script.etvguide/blob/master/zip/repository.etvguide/repository.etvguide-1.0.5.zip?raw=true)
 
 TO install e-TVGuide:
