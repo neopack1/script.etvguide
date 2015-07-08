@@ -9,7 +9,7 @@
 	<category label="30101">
 		<setting id="source" label="30701" type="labelenum" default="e-TVGuide" values="XMLTV|e-TVGuide"/>
 	<!--	<setting id="AutoUpdateCid" label="30703" type="bool" default="false" visible="eq(-1,1)"/> -->
-		<setting id="epgzip" label="30704" type="bool" default="true" visible="eq(-1,1)"/> 
+		<setting id="epgzip" label="30704" type="bool" default="false" visible="eq(-1,1)"/> 
 	<!--	<setting id="xmltv.file" label="30103" type="file" visible="eq(-1,0)"/> -->
 	<!--	<setting id="xmltv.logo.folder" label="30116" type="folder" visible="eq(-2,0)"/> -->
 		<setting id="e-TVGuide" label="30117" type="labelenum" visible="eq(-2,1)" default="Default" values="Default|Alternative"/>

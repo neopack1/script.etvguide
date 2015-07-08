@@ -1,4 +1,10 @@
-﻿
+﻿[B]wersja 1.1.23[/B] - 2015-7-8
+- usuniecie wersji zip ze wzgledu ze niedlugo bedzie wylaczony serwer
+
+
+[B]wersja 1.1.22[/B] - 2015-4-29
+- dodanie paramount channel
+
 [B]wersja 1.1.21[/B] - 2015-4-24
 - Naprawienie Discovery Science
 - Naprawienie Eska TV
