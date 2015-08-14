@@ -1,4 +1,8 @@
-﻿[B]wersja 1.1.23[/B] - 2015-7-8
+﻿[B]wersja 1.1.24[/B] - 2015-8-14
+- Zmniejszenie jakosci disco polo party
+
+
+[B]wersja 1.1.23[/B] - 2015-7-8
 - usuniecie wersji zip ze wzgledu ze niedlugo bedzie wylaczony serwer
 
 
