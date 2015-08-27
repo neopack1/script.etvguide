@@ -1,4 +1,7 @@
-﻿[B]wersja 1.1.24[/B] - 2015-8-14
+﻿[B]wersja 1.1.26[/B]- 2015-8-27
+- Dodanie kanalow eleven
+
+[B]wersja 1.1.24[/B] - 2015-8-14
 - Zmniejszenie jakosci disco polo party
 
 
