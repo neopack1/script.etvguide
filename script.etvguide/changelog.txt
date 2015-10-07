@@ -1,4 +1,7 @@
-﻿[B]wersja 1.1.27[/B]- 2015-9-23
+﻿[B]wersja 1.1.28[/B]- 2015-10-07
+- Dodanie canal plus sport 2
+
+[B]wersja 1.1.27[/B]- 2015-9-23
 - Naprawienie strumieni kanalow Eleven
 
 [B]wersja 1.1.26[/B]- 2015-8-27
