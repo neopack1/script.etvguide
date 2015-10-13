@@ -879,12 +879,12 @@ class MTVGUIDESource(Source):
         if self.MTVGUIDEUrl == "Default":
             self.MTVGUIDEUrl = "https://www.dropbox.com/sh/77ypgoym2o8zoay/AACWgyV2Yd-btsWvc8j3o1Hba/epg.xml?dl=1"
         elif self.MTVGUIDEUrl == "Alternative":
-            self.MTVGUIDEUrl = "https://www.dropbox.com/sh/77ypgoym2o8zoay/AACWgyV2Yd-btsWvc8j3o1Hba/epg.xml?dl=1"
+            self.MTVGUIDEUrl = "http://xbsd.pl/~p/epg.xml"
         else:
             self.MTVGUIDEUrl = "https://www.dropbox.com/sh/77ypgoym2o8zoay/AACWgyV2Yd-btsWvc8j3o1Hba/epg.xml?dl=1"
 
         if ADDON.getSetting('epgzip').lower() == "true":
-            self.MTVGUIDEUrl = "https://www.dropbox.com/sh/77ypgoym2o8zoay/AACWgyV2Yd-btsWvc8j3o1Hba/epg.xml?dl=1"
+            self.MTVGUIDEUrl = "http://xbsd.pl/~p/epg.xml.zip"
 
     def getDataFromExternal(self, date, progress_callback = None):
         try:

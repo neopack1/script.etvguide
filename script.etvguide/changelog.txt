@@ -1,4 +1,7 @@
-﻿[B]wersja 1.1.29[/B]- 2015-10-09
+﻿[B]wersja 1.1.30[/B]- 2015-10-13
+- Dodano alternatywona lokalizacje i plik zip
+
+[B]wersja 1.1.29[/B]- 2015-10-09
 - naprawienie kanalu tv4. usun stream i odpal odnowa kanal
 
 [B]wersja 1.1.28[/B]- 2015-10-07
