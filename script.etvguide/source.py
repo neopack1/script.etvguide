@@ -826,8 +826,10 @@ class Source(object):
         try:
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
-            u = urllib2.urlopen(url, timeout=30)
-            content = u.read()
+            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0' })
+            response = urllib2.urlopen(u,timeout=30)
+            content = response.read()
+            #content = u.read()
             if url.lower().endswith('.zip'):
                 tnow = datetime.datetime.now()
                 deb("[EPG] Unpacking epg: %s [%s sek.]" % (url, str((tnow-start).seconds)))
@@ -836,7 +838,7 @@ class Source(object):
                 content = unziped.read(unziped.namelist()[0])
                 unziped.close()
                 memfile.close()
-            u.close()
+            response.close()
             tnow = datetime.datetime.now()
             deb("[EPG] Downloading done [%s sek.]" % str((tnow-start).seconds))
             return content
