@@ -1,4 +1,7 @@
-﻿[B]wersja 1.1.31[/B]- 2015-10-13
+﻿[B]wersja 1.1.32[/B] - 2015-11-1
+- dodanie polsat sport news
+
+[B]wersja 1.1.31[/B]- 2015-10-13
 - naprawienie sciagania epg z alternatywnej lokalizacji
 
 [B]wersja 1.1.30[/B]- 2015-10-13
