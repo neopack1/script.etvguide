@@ -1,4 +1,7 @@
-﻿[B]wersja 1.1.32[/B] - 2015-11-1
+﻿[B]wersja 1.1.33[/B] - 2015-11-7
+- Zmiana epg dropbox sie zepsul :/
+
+[B]wersja 1.1.32[/B] - 2015-11-1
 - dodanie polsat sport news
 
 [B]wersja 1.1.31[/B]- 2015-10-13
