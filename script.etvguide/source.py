@@ -879,14 +879,14 @@ class MTVGUIDESource(Source):
     def __init__(self, addon):
         self.MTVGUIDEUrl = addon.getSetting('e-TVGuide')
         if self.MTVGUIDEUrl == "Default":
-            self.MTVGUIDEUrl = "http://xbsd.pl/~p/epg.xml"
+            self.MTVGUIDEUrl = "http://epg.feenk.net/epg.xml"
         elif self.MTVGUIDEUrl == "Alternative":
-            self.MTVGUIDEUrl = "http://xbsd.pl/~p/epg.xml"
+            self.MTVGUIDEUrl = "http://www.insomniac.pl/~en0x/epg.xml"
         else:
-            self.MTVGUIDEUrl = "http://xbsd.pl/~p/epg.xml"
+            self.MTVGUIDEUrl = "http://epg.feenk.net/epg.xml"
 
         if ADDON.getSetting('epgzip').lower() == "true":
-            self.MTVGUIDEUrl = "http://xbsd.pl/~p/epg.xml.zip"
+            self.MTVGUIDEUrl = "http://epg.feenk.net/epg.xml.zip"
 
     def getDataFromExternal(self, date, progress_callback = None):
         try:
