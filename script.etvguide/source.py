@@ -826,7 +826,7 @@ class Source(object):
         try:
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
-            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0' })
+            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (script.etvguide)' })
             response = urllib2.urlopen(u,timeout=30)
             content = response.read()
             #content = u.read()
