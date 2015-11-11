@@ -41,6 +41,8 @@ import io, zipfile
 
 SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', 'Time.Zone']
 
+USER_AGENT = ADDON.getSetting('username')
+
 class Channel(object):
     def __init__(self, id, title, logo = None, streamUrl = None, visible = True, weight = -1):
         self.id = id
@@ -826,7 +828,7 @@ class Source(object):
         try:
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
-            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (script.etvguide)' })
+            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 ( ' + USER_AGENT + ' )' })
             response = urllib2.urlopen(u,timeout=30)
             content = response.read()
             #content = u.read()
