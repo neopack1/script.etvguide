@@ -884,7 +884,7 @@ class MTVGUIDESource(Source):
         if self.MTVGUIDEUrl == "Default":
             self.MTVGUIDEUrl = "http://epg.feenk.net/epg.xml"
         elif self.MTVGUIDEUrl == "Alternative":
-            self.MTVGUIDEUrl = "http://www.insomniac.pl/~en0x/epg.xml"
+            self.MTVGUIDEUrl = "http://epg2.feenk.net/epg.xml"
         else:
             self.MTVGUIDEUrl = "http://epg.feenk.net/epg.xml"
 

@@ -1,22 +1,25 @@
-﻿[B]wersja 1.1.38[/B] - 2015-11-11
+﻿[B]wersja 1.1.39[/B]- 2015-11-12
+- Naprawiono malego chochlika
+
+[B]wersja 1.1.38[/B]- 2015-11-11
 - Bug fix
 
-[B]wersja 1.1.37[/B] - 2015-11-11
+[B]wersja 1.1.37[/B]- 2015-11-11
 - Bug fix
 
-[B]wersja 1.1.36[/B] - 2015-11-11
+[B]wersja 1.1.36[/B]- 2015-11-11
 - Bug fix
 
-[B]wersja 1.1.35[/B] - 2015-11-10
+[B]wersja 1.1.35[/B]- 2015-11-10
 - Zmiana serwerow epg na bardziej stabilniejsze
 
-[B]wersja 1.1.34[/B] - 2015-11-9
+[B]wersja 1.1.34[/B]- 2015-11-9
 - Zmiana informacji jak nie moze zaladowac epg
 
-[B]wersja 1.1.33[/B] - 2015-11-7
+[B]wersja 1.1.33[/B]- 2015-11-7
 - Zmiana epg dropbox sie zepsul :/
 
-[B]wersja 1.1.32[/B] - 2015-11-1
+[B]wersja 1.1.32[/B]- 2015-11-1
 - dodanie polsat sport news
 
 [B]wersja 1.1.31[/B]- 2015-10-13
