@@ -1,4 +1,7 @@
-﻿[B]wersja 1.1.39[/B]- 2015-11-12
+﻿[B]wersja 1.1.40[/B]- 2015-11-12
+- Dodanie Teledyski24 z weeb.tv
+
+[B]wersja 1.1.39[/B]- 2015-11-12
 - Naprawiono malego chochlika
 
 [B]wersja 1.1.38[/B]- 2015-11-11
