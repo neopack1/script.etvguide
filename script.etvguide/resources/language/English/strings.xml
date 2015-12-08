@@ -69,7 +69,7 @@
 	<string id="30700">Multiple addons provide this channels.[CR]Choose one to watch the stream.</string>
 	<string id="30701">Source: </string>
 	<string id="30702">Skin</string>
-	<string id="30703">Automaticly set actual streams from weeb.tv</string>
+	<string id="30703">Update EPG in background every 3 hours</string>
 	<string id="30704">Use zipped epg</string>
 
 <!-- weeb.tv mod -->

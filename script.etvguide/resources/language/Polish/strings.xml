@@ -69,7 +69,7 @@
 	<string id="30700">Ten kanał jest udostępniany przez wiele wtyczek.[CR]Wybierz jedną, aby oglądać.</string>
 	<string id="30701">Żródło: </string>
 	<string id="30702">Skórka</string>
-	<string id="30703">Automatycznie przypisz aktualne streamy nadawane przez weeb.tv</string>
+	<string id="30703">Aktualizuj EPG w tle co 3 godziny.</string>
 	<string id="30704">Użyj skompresowanego epg</string>
 
 <!-- weeb.tv mod -->
