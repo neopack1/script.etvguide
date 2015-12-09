@@ -1,4 +1,8 @@
-﻿[B]wersja 1.1.41[/B]- 2015-12-08
+﻿
+[B]wersja 1.1.43[/B]- 2015-12-09
+- tweaks
+
+[B]wersja 1.1.41[/B]- 2015-12-08
 - Zmiany nazw kanalow. Wyszyczenie bazy jest potrzebne
 
 [B]wersja 1.1.40[/B]- 2015-11-12
