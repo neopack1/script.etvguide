@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
+<addon id="plugin.video.polishtv.live"
+ 		name="Telewizja Polska [COLOR gray](kanały, VOD, filmy, seriale)[/COLOR]"
+ 		version="0.22.0"
+ 		provider-name="SD-XBMC Team">
+	<requires>
+		<import addon="xbmc.python" version="2.1.0"/>
+		<import addon="script.module.sd-xbmc" version="0.5"/>
+		<import addon="script.common.plugin.cache" version="2.5.5"/>
+	</requires>
+	<extension point="xbmc.python.pluginsource" library="default.py">
+		<provides>video</provides>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary>Telewizja Polska: Oglądaj telewizje na żywo, VOD, seriale z najpopularniejszych polskich serwisów wideo</summary>
+		<description>[COLOR yellow]www.sd-xbmc.org[/COLOR][CR][CR]Wtyczka umożliwiająca łatwy dostęp do najpopularniejszych polskich serwisów wideo. W jednym miejscu znajdziesz telewizje na żywo, VOD i seriale. Wtyczka pozwala rownież na nagrywanie jak i łatwą integrację z programem telewizyjnym.</description>
+		<disclaimer>[COLOR gray][I]Wtyczka rozwijana w spadku po Robercie Pliszko "Plesken" i dedykowana jego pamięci.[/I][/COLOR]</disclaimer>
+		<platform>all</platform>
+		<language>pl en</language>
+		<license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+		<website>http://sd-xbmc.org</website>
+		<forum>http://sd-xbmc.org/pl/forum</forum>
+		<source>http://svn.sd-xbmc.org/listing.php?repname=sd-xbmc</source>
+		<email>support@sd-xbmc.org</email>
+	</extension>
+</addon>
+
 <addon id="repository.etvguide" name="e-TVGuide Add-ons" version="1.0.5" provider-name="thebedi">
 	<extension point="xbmc.addon.repository" name="e-TVGuide Add-on Repository">
 		<info compressed="false">https://raw.githubusercontent.com/en0x/script.etvguide/master/addons.xml</info>

@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<strings>
+<!--Kategorie-->
+	<string id="30000">Ustawienia</string>
+	<string id="30001">Ogólne</string>
+	<string id="30002">Wygląd</string>
+<!--Logowanie-->
+	<string id="30010">Logowanie</string>
+	<string id="30011">Użytkownik:</string>
+	<string id="30012">E-mail:</string>
+	<string id="30013">Hasło:</string>
+	<string id="30014">Kod Aktywacyjny:</string>
+<!--Opcje rozne-->
+	<string id="30020">Jakość wideo</string>
+	<string id="30021">Format wideo</string>
+	<string id="30022">Wysoka jakość (jeżeli dostępna)</string>
+	<string id="30023">Ręczny wybór jakości</string>
+	<string id="30024">Wyłącz pytanie o wersję wideo</string>
+	<string id="30025">Ściąganie</string>
+	<string id="30026">Nagrywanie</string>
+	<string id="30027">Katalog dla ściągniętych plików i nagrań</string>
+	<string id="30028">Włącz pytanie o nagrywanie</string>
+	<string id="30029">Wyświetlaj powiadomienia</string>
+	<string id="30030">Używaj proxy SD-XBMC</string>
+	<string id="30031">Sortuj według</string>
+	<string id="30032">Kolejność</string>
+	<string id="30033">Platforma</string>
+	<string id="30034">Pokaż wyłącznie kanały polskojęzyczne</string>
+	<string id="30035">Pokaż materiały tylko dla dorosłych</string>
+	<string id="30036">Ilość plików wideo na stronie</string>
+	<string id="30037">Kanały</string>
+<!--Opcje ogolne-->
+	<string id="30100">Darowizna</string>
+	<string id="30110">EPG</string>
+	<string id="30111">Katalog dla plików STRM</string>
+	<string id="30121">Ścieżka do RTMP</string>
+	<string id="30122">Przesunięcie czasowe (w godzinach)</string>
+	<string id="30123">Przesunięcie czasowe (w minutach)</string>
+	<string id="30130">Opcje dla programistów</string>
+	<string id="30131">Włącz debugowanie wtyczki</string>
+	<string id="30132">Ścieżka XML do Custom Update</string>
+	<string id="30133">Uruchom Custom Update</string>
+<!--Opcje wyglądu-->
+	<string id="30141">Używaj wersji LITE</string>
+	<string id="30142">Serwis 1</string>
+	<string id="30143">Serwis 2</string>
+	<string id="30144">Serwis 3</string>
+	<string id="30145">Serwis 4</string>
+	<string id="30146">Serwis 5</string>
+	<string id="30147">Serwis 6</string>
+	<string id="30148">Serwis 7</string>
+	<string id="30149">Serwis 8</string>
+	<string id="30150">Serwis 9</string>
+	<string id="30151">Serwis 10</string>
+	<string id="30152">Serwis 11</string>
+	<string id="30153">Serwis 12</string>
+<!--Lista serwisow-->
+	<string id="30500">-----</string>
+	<string id="30502">Anime Shinden</string>
+	<string id="30504">AnyFiles (różne filmy)</string>
+	<string id="30506">Ekino TV (filmy, seriale)</string>
+	<string id="30510">eskaGO</string>
+	<string id="30512">Estadios</string>
+	<string id="30514">Film.in</string>
+	<string id="30516">FilmBox</string>
+	<string id="30518">GoldVOD</string>
+	<string id="30522">IPLA</string>
+	<string id="30524">IPLEX</string>
+	<string id="30526">Kabarety</string>
+	<string id="30528">Kino Pecetowiec (filmy)</string>
+	<string id="30530">Kinoman</string>
+	<string id="30532">Kreskóweczki</string>
+	<string id="30534">Ninateka</string>
+	<string id="30536">Player</string>
+	<string id="30538">Popler TV</string>
+	<string id="30540">Popularne kanały YouTube</string>
+	<string id="30542">SCS</string>
+	<string id="30544">SerialeOnline</string>
+	<string id="30546">SerialNet (seriale)</string>
+	<string id="30548">Stacje TV (strumienie)</string>
+	<string id="30550">SuperFilm</string>
+	<string id="30552">Teledyski</string>
+	<string id="30554">Telpol JoyTV</string>
+	<string id="30556">To się wytnie</string>
+	<string id="30558">TV Silesia</string>
+	<string id="30560">TVN24</string>
+	<string id="30562">TVP (info)</string>
+	<string id="30564">TVP VOD</string>
+	<string id="30566">VoD Onet</string>
+	<string id="30568">Weeb TV</string>
+	<string id="30570">WP TV</string>
+	<string id="30572">Wrzuta</string>
+	<string id="30574">YouTube (kanały filmowe)</string>
+	<string id="30576">YouTube Kabarety</string>
+	<string id="30578">YouTube Klipy</string>
+	<string id="30580">Zalukaj.tv (filmy, seriale)</string>
+<!--Opcje serwisow-->
+	<!-- WeebTV -->
+	<string id="30301">Wymagane logowanie</string>
+	<string id="30302">Wejdź na stronę weeb.tv, aby się zarejestrować,</string>
+	<string id="30303">a później ustaw użytkownika i hasło w ustawieniach.</string>
+<!--Inne-->
+	<string id="30200">Następna strona</string>
+	<string id="30201">Poprzednia strona</string>
+	<string id="30999">Nieznana opcja</string>
+<!--GUI-->
+	<string id="31000">Widok LITE - nie wszystkie serwisy widoczne</string>
+	<string id="31001">Historia wyczyszczona</string>
+</strings>
