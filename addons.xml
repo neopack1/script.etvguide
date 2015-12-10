@@ -40,11 +40,12 @@
 	</extension>
 </addon>
 
-<addon id="script.etvguide" name="e-TVGuide" version="1.1.43" provider-name="thebedi">
+<addon id="script.etvguide" name="e-TVGuide" version="1.2.0" provider-name="thebedi">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.simplejson" version="2.0.10"/>
 		<import addon="script.module.elementtree" version="1.2.7"/>
+		<import addon="plugin.video.polishtv.live" version="0.30.0"/>
 	</requires>
 	<extension point="xbmc.python.script" library="addon.py"/>
 	<extension point="xbmc.service" library="service.py" start="login"/>
@@ -57,6 +58,29 @@
         	<website>https://github.com/en0x/script.etvguide</website>
         	<email>pawelkilian@gmail.com</email>
         	<source>https://github.com/en0x/script.etvguide</source>
+	</extension>
+</addon>
+
+<addon id="script.module.sd-xbmc" name="sd-xbmc" provider-name="SD-XBMC Team" version="0.7.4">
+	<requires>
+		<import addon="xbmc.python" version="2.1.0"/>
+		<import addon="script.module.simplejson" version="2.0.10"/>
+		<import addon="script.module.simple.downloader" version="0.9.3"/>
+		<import addon="script.common.plugin.cache" version="0.9.1"/>
+	</requires>
+	<extension library="lib" point="xbmc.python.module"></extension>
+
+	<extension point="xbmc.addon.metadata">
+		<summary lang="en"></summary>
+		<description lang="en"></description>
+		<disclaimer lang="en"></disclaimer>
+		<language>pl en</language>
+		<platform>all</platform>
+		<license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+		<website>http://sd-xbmc.org</website>
+		<forum>http://sd-xbmc.org/pl/forum</forum>
+		<source>http://svn.sd-xbmc.org/listing.php?repname=sd-xbmc</source>
+		<email>support@sd-xbmc.org</email>
 	</extension>
 </addon>
 </addons>
