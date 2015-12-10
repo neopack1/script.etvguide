@@ -1,4 +1,6 @@
-﻿
+﻿[B]wersja 1.2.0[/B] - 2015-12-10
+- zaczecie prac nad goldvod.tv
+
 [B]wersja 1.1.43[/B]- 2015-12-09
 - tweaks
 

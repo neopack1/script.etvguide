@@ -1,0 +1,26 @@
+[COLOR orange][B]version 0.7.4[/B][/COLOR]
+- dorobna poprawka przy czytaniu ciasteczek
+
+[COLOR orange][B]version 0.7.3[/B][/COLOR]
+- poprawka przy tworzeniu plikow STRM
+
+[COLOR orange][B]version 0.7.2[/B][/COLOR]
+- dodanie obslugi "watched"
+
+[COLOR orange][B]version 0.7.1[/B][/COLOR]
+- poprawka do debugowania getURLRequestData()
+
+[COLOR orange][B]version 0.7[/B][/COLOR]
+- optymalizacja, walidacja błędów getURLRequestData()
+
+[COLOR orange][B]version 0.6.1[/B][/COLOR]
+- dodanie nowych metod, uproszczenie getURLRequestData()
+
+[COLOR orange][B]version 0.6.0[/B][/COLOR]
+- dodanie scrappera serialii
+
+[COLOR orange][B]version 0.5.1[/B][/COLOR]
+- changed filenames
+
+[COLOR orange][B]version 0.5[/B][/COLOR]
+- Initial release
