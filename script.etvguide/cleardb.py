@@ -30,8 +30,9 @@ if __name__ == '__main__':
     database = src.Database()
 
     def onDBCleared():
-        d = xbmcgui.Dialog()
-        d.ok('e-TVGuide', 'Baza danych zostala usunieta.', 'Zostanie utworzona po uruchomieniu eTVGuide.')
+	d = xbmcgui.Dialog()
+	d.ok('e-TVGuide', 'Baza danych zostala usunieta.', 'Zostanie utworzona po uruchomieniu eTVGuide.')
+
         #xbmcgui.Dialog().ok(strings(CLEAR_DB), strings(DONE_DB))
 
     def onInitialized(success):

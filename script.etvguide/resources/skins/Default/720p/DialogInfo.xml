@@ -94,7 +94,7 @@
 				<textcolor>ffffffff</textcolor>
 				<font>font13</font>
 				<align>right</align>
-				<aligny>center</aligny>
+				<aligny>center</aligny>	
 			</control>
 			<control type="textbox" id="4922">
 				<description>Program description</description>

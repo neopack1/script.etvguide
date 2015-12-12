@@ -6,6 +6,7 @@ import urllib, urllib2, httplib
 import re, sys, os, cgi
 import xbmcplugin, xbmcgui, xbmcaddon, xbmc, gui
 import threading
+import time
 import simplejson as json
 from strings import *
 
@@ -37,10 +38,18 @@ class ShowList:
             headers = { 'User-Agent' : HOST, 'ContentType' : 'application/x-www-form-urlencoded' }
             post = { 'username': login, 'userpassword': password }
             data = urllib.urlencode(post)
-            reqUrl = urllib2.Request(url, data, headers)
-            raw_json = urllib2.urlopen(reqUrl)
-            content_json = raw_json.read()
-            result_json = json.loads(content_json)
+            failedCounter = 0
+            while failedCounter < 5:
+                try:
+                    reqUrl = urllib2.Request(url, data, headers)
+                    raw_json = urllib2.urlopen(reqUrl)
+                    content_json = raw_json.read()
+                    result_json = json.loads(content_json)
+                    break
+                except httplib.IncompleteRead:
+                    failedCounter = failedCounter + 1
+                    deb('getJsonFromAPI IncompleteRead exception - retrying')
+                    time.sleep(.300)
         except urllib2.URLError, urlerr:
             msg = Messages()
             result_json = { "0": "Error" }
@@ -141,10 +150,17 @@ class RTMP:
             headers = { 'User-Agent' : HOST }
             data = urllib.urlencode(values)
             reqUrl = urllib2.Request(playerUrl, data, headers)
-            response = urllib2.urlopen(reqUrl)
+            failedCounter = 0
+            while failedCounter < 5:
+                try:
+                    response = urllib2.urlopen(reqUrl)
+                    break
+                except urllib2.URLError:
+                    failedCounter = failedCounter + 1
+                    deb('ConnectionParams URLError exception - retrying opening url')
+                    time.sleep(.300)
             resLink = response.read()
             params = parser.getParams2(resLink)
-
             status = parser.getParam(params, "0")
             premium = parser.getIntParam(params, "5")
             rtmpLink = parser.getParam(params, "10")

@@ -69,8 +69,9 @@
 	<string id="30700">Multiple addons provide this channels.[CR]Choose one to watch the stream.</string>
 	<string id="30701">Source: </string>
 	<string id="30702">Skin</string>
-	<string id="30703">Update EPG in background every 3 hours</string>
+	<string id="30703">Automaticly set actual streams</string>
 	<string id="30704">Use zipped epg</string>
+	<string id="30705">Show only programs with stream assigned</string>
 
 <!-- weeb.tv mod -->
 	<string id="30802">TV Guide is configured to stream using Weeb.Tv</string>
@@ -81,9 +82,11 @@
 	<string id="30910">Show mouse control panel</string>
 	<string id="30911">Time Zone UTC (+01:00 Poland)</string>
 	<string id="30912">Weeb.tv settings</string>
+	<string id="59902">GoldVOD settings</string>
+	<string id="59904">Enabled</string>
 	<string id="30913">Settings</string>
 	<string id="30914">Skin</string>
-	<string id="30915">Enable XBMC e-TVGuide autostart</string>
+	<string id="30915">Enable XBMC m-TVGuide autostart</string>
 	<string id="30930">Colours</string>
 	<string id="30931">Category colours</string>
 	<string id="30932">Movies</string>
@@ -117,7 +120,11 @@
 	<string id="55002">Username:</string>
 	<string id="55003">Password:</string>
 	<string id="55005">The highest quality (as available)</string>
-
+	<string id="89001">Sleep timer enabled</string>
+	<string id="89002">Timeout action</string>
+	<string id="89003">Timeout value (min)</string>
+	<string id="59901">GoldVOD</string>
+	
 <!-- errors & messages -->
 	<string id="57001">API error</string>
 	<string id="57002">Could not connect to website.</string>

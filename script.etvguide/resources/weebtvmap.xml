@@ -2,8 +2,8 @@
 <map id="weebtv" version="1.0" strm="service=weebtv&amp;cid=%s">
 	<channel id="TVP 1" 									title="(?=.*TVP)(?=.*1)" strm=""/>
 	<channel id="TVP 2"										title="(?=.*TVP)(?=.*2)" strm=""/>
-	<channel id="TVP HD" 									title="(TVP HD)|(TVPHD)" strm=""/>
-	<channel id="TVN" 										title="(^TVN\W*HD$)|(^TVN$)" strm=""/>
+	<channel id="TVP HD" 									title="(?=.*TVP)(?=.*HD)(?!.*1)(?!.*2)(?!.*Info)(?!.*Seriale)(?!.*Polonia)" strm=""/>
+	<channel id="TVN" 										title="(?=.*TVN)(?!.*24)(?!.*7)" strm=""/>
 	<channel id="TVN Style" 								title="(?=.*TVN)(?=.*Style)" strm=""/>
 	<channel id="Polsat" 									title="(^Polsat$)|(^Polsat\W*HD$)" strm=""/>
 	<channel id="TVN 7" 									title="(?=.*TVN)(?=.*7)" strm=""/>
@@ -13,7 +13,7 @@
 	<channel id="TVP Rozrywka" 								title="(?=.*TVP)(?=.*Rozrywka)" strm=""/>
 	<channel id="TVP Historia" 								title="(?=.*TVP)(?=.*Historia)" strm=""/>
 	<channel id="TV Puls" 									title="(?=.*Puls)(?!.*2)" strm=""/>
-	<channel id="PULS 2" 									title="(?=.*PULS)(?=.*2)" strm=""/>
+	<channel id="Puls 2" 									title="(?=.*PULS)(?=.*2)" strm=""/>
 	<channel id="TTV" 										title="(?=.*TTV)" strm=""/>
 	<channel id="TV 4" 										title="(TV\W*4)" strm=""/>
 	<channel id="TV 6" 										title="(?=.*TV)(?=.*6)" strm=""/>
@@ -21,29 +21,31 @@
 	<channel id="Polsat 2" 									title="(?=.*Polsat)(?=.*2)" strm=""/>
 	<channel id="Superstacja" 								title="(?=.*Superstacja)" strm=""/>
 	<channel id="TVN 24" 									title="(?=.*TVN)(?=.*24)" strm=""/>
-	<channel id="Polsat News" 								title="(?=.*Polsat)(?=.*News)" strm=""/>
+	<channel id="Polsat News" 								title="(?=.*Polsat)(?=.*News)(?!.*Sport)" strm=""/>
 	<channel id="TVP Info" 									title="(?=.*TVP)(?=.*Info)" strm=""/>
 	<channel id="Domo+" 									title="(?=.*Domo\+)(?=.*HD)" strm=""/>
 	<channel id="Kuchnia+" 									title="(?=.*Kuchnia\+)" strm=""/>
 	<channel id="BBC" 										title="(^BBC$)|(^BBC\W*HD$)" strm=""/>
-	<channel id="BBC Knowledge" 							title="(?=.*BBC)(?=.*Knowledge)" strm=""/>
-	<channel id="BBC Entertainment" 						title="(?=.*BBC)(?=.*Entertainment)" strm=""/>
+<!--<channel id="BBC Knowledge" 							title="(?=.*BBC)(?=.*Knowledge)" strm=""/> -->
+<!--<channel id="BBC Entertainment" 						title="(?=.*BBC)(?=.*Entertainment)" strm=""/> -->
 	<channel id="BBC Lifestyle" 							title="(?=.*BBC)(?=.*Lifestyle)" strm=""/>
-	<channel id="Fox" 										title="(^FOX$)|(^FOX\W*HD$)" strm=""/>
+	<channel id="BBC Brit" 							        title="(?=.*BBC)(?=.*Brit)" strm=""/>
+	<channel id="BBC Earth" 							    title="(?=.*BBC)(?=.*Earth)" strm=""/>
 	<channel id="FOX" 										title="(^FOX$)|(^FOX\W*HD$)" strm=""/>
-	<channel id="Fox Life" 									title="(?=.*FOX)(?=.*Life)" strm=""/>
+	<channel id="FOX Life" 									title="(?=.*FOX)(?=.*Life)" strm=""/>
 	<channel id="TLC" 										title="(?=.*TLC)" strm=""/>
 	<channel id="13 Ulica" 									title="(?=.*13)(?=.*Ulica)" strm=""/>
 	<channel id="Canal+" 									title="(^Canal\+$)|(^Canal.?\W*HD$)" strm=""/>
+<!--<channel id="Canal+ 1" 									title="(^Canal\+$)|(^Canal.?\W*HD$) (?=.*1)" strm=""/> -->
 	<channel id="Canal+ Film" 								title="(?=.*Canal)(?=.*Film)(?!.*2)" strm=""/>
-	<channel id="Canal+ Film 2" 							title="(?=.*Canal)(?=.*Film)(?=.*2)" strm=""/>
+<!--<channel id="Canal+ Film 2" 							title="(?=.*Canal)(?=.*Film)(?=.*2)" strm=""/> -->
 	<channel id="Canal+ Family" 							title="(?=.*Canal)(?=.*Family)(?!.*2)" strm=""/>
-	<channel id="Canal+ Family 2" 							title="(?=.*Canal)(?=.*Family)(?=.*2)" strm=""/>
+<!--<channel id="Canal+ Family 2" 							title="(?=.*Canal)(?=.*Family)(?=.*2)" strm=""/> -->
+    <channel id="Canal+ Seriale" 							title="(?=.*Canal)(?=.*Seriale)" strm=""/>
 	<channel id="HBO" 										title="(^HBO$)|(^HBO\W*HD$)" strm=""/>
 	<channel id="HBO2" 										title="(?=.*HBO)(?=.*2)" strm=""/>
-	<channel id="HBO 2" 									title="(?=.*HBO)(?=.*2)" strm=""/>
 	<channel id="HBO Comedy" 								title="(?=.*HBO)(?=.*Comedy)" strm=""/>
-	<channel id="Filmbox" 									title="^Filmbox$" strm=""/>
+	<channel id="Filmbox" 								    title="(?=.*Filmbox)" strm=""/>
 	<channel id="Filmbox Extra" 							title="(?=.*Filmbox)(?=.*Extra)" strm=""/>
 	<channel id="Cinemax" 									title="(?=.*Cinemax)" strm=""/>
 	<channel id="Cinemax 2" 								title="(?=.*Cinemax)(?=.*2)" strm=""/>
@@ -53,17 +55,19 @@
 	<channel id="AXN White" 								title="(?=.*AXN)(?=.*White)" strm=""/>
 	<channel id="AXN Black" 								title="(?=.*AXN)(?=.*Black)" strm=""/>
 	<channel id="AXN Spin" 									title="(?=.*AXN)(?=.*Spin)" strm=""/>
-	<channel id="Scifi Universal" 							title="(?=.*Scifi)(?=.*Universal)" strm=""/>
-	<channel id="MGM" 										title="MGM" strm=""/>
+	<channel id="SciFi" 									title="(?=.*Scifi)(?=.*Universal)" strm=""/>
+	<channel id="MGM" 										title="(?=.*MGM)" strm=""/>
 	<channel id="Comedy Central" 							title="(?=.*Comedy)(?=.*Central)" strm=""/>
 	<channel id="Comedy Central Family" 					title="(?=.*Comedy)(?=.*Central)(?=.*Family)" strm=""/>
+	<channel id="FOX Comedy" 								title="(?=.*FOX)(?=.*Comedy)" strm=""/>
 	<channel id="Universal Channel" 						title="(?=.*Universal)(?=.*Channel)" strm=""/>
-	<channel id="Ale kino+" 								title="(?=.*ale)(?=.*kino)" strm=""/>
+	<channel id="Paramount Channel" 						title="(?=.*Paramount)(?=.*Channel)" strm=""/>
+	<channel id="Ale Kino+" 								title="(?=.*ale)(?=.*kino)" strm=""/>
 	<channel id="Animal Planet" 							title="(?=.*Animal)(?=.*Planet)" strm=""/>
 	<channel id="National Geographic Channel" 				title="(?=(.*National)|(.*Nat))(?=(.*Geographic)|(.*Geo))(?=(.*Channel)|(.*Ch))" strm=""/>
 	<channel id="Nat Geo Wild" 								title="(?=.*Nat)(?=.*Geo)(?=.*Wild)" strm=""/>
 	<channel id="Discovery Channel" 						title="(^Discovery$)|(^Discovery\W*Channel)" strm=""/>
-<!-- <channel id="Discovery World"	 						title="(^Discovery$)|(^Discovery\W*World)" strm=""/> -->
+	<channel id="Canal+ Discovery" 							title="(?=.*Canal)(?=.*Discovery)" strm=""/>
 	<channel id="Discovery Science" 						title="(?=.*Discovery)(?=.*Science)" strm=""/>
 	<channel id="Discovery Turbo Xtra" 						title="(?=.*Discovery)(?=.*Turbo)(?=.*Xtra)" strm=""/>
 	<channel id="Discovery Historia" 						title="(?=.*Discovery)(?=.*Historia)" strm=""/>
@@ -71,14 +75,15 @@
 	<channel id="Crime &amp; Investigation Network Polsat" 	title="(?=.*Crime)(?=.*Investigation)(?=.*Polsat)" strm=""/>
 	<channel id="Planete+" 									title="(?=.*Planete)(?=.*\+)" strm=""/>
 	<channel id="History" 									title="(?=.*HISTORY)(?!.*Polsat)" strm=""/>
-	<channel id="HISTORY" 									title="(?=.*HISTORY)(?!.*Polsat)" strm=""/>
 	<channel id="TVN Turbo" 								title="(?=.*TVN)(?=.*Turbo)" strm=""/>
 	<channel id="Polsat Play" 								title="(?=.*Polsat)(?=.*Play)" strm=""/>
-	<channel id="POLSAT Viasat Explorer" 					title="(?=.*POLSAT)(?=.*Explorer)" strm=""/>
-	<channel id="POLSAT Viasat History" 					title="(?=.*POLSAT)(?=.*History)" strm=""/>
-	<channel id="POLSAT Viasat Nature" 						title="(?=.*POLSAT)(?=.*Nature)" strm=""/>
-	<channel id="Canal+ Sport" 								title="(?=.*Canal)(?=.*Sport)(?=.*\+)" strm=""/>
-	<channel id="Polsat Sport" 								title="(?=.*POLSAT)(?=.*Sport)" strm=""/>
+	<channel id="Polsat Viasat Explorer" 					title="(?=.*POLSAT)(?=.*Explorer)" strm=""/>
+	<channel id="Polsat Viasat History" 					title="(?=.*POLSAT)(?=.*History)" strm=""/>
+	<channel id="Polsat Viasat Nature" 						title="(?=.*POLSAT)(?=.*Nature)" strm=""/>
+	<channel id="Canal+ Sport" 								title="(?=.*Canal)(?=.*Sport)(?=.*\+)(?!.*2)" strm=""/>
+	<channel id="Canal+ Sport 2" 							title="(?=.*Canal)(?=.*Sport)(?=.*\+)(?=.*2)" strm=""/>
+	<channel id="Polsat Sport" 								title="(?=.*POLSAT)(?=.*Sport)(?!.*News)" strm=""/>
+	<channel id="Polsat Sport News" 					    title="(?=.*POLSAT)(?=.*Sport)(?=.*News)" strm=""/>
 	<channel id="Polsat Sport Extra" 						title="(?=.*POLSAT)(?=.*Sport)(?=.*Extra)" strm=""/>
 	<channel id="nSport" 									title="(?=.*nSport)" strm=""/>
 	<channel id="TVP Sport" 								title="(?=.*TVP)(?=.*Sport)" strm=""/>
@@ -86,6 +91,8 @@
 	<channel id="Eurosport" 								title="(^Eurosport$)|(^Eurosport\W*HD$)" strm=""/>
 	<channel id="Eurosport 2" 								title="(?=.*Eurosport)(?=.*2)" strm=""/>
 	<channel id="FightBox" 									title="(?=.*FightBox)" strm=""/>
+	<channel id="Eleven" 									title="(?=.*Eleven)" strm=""/>
+	<channel id="Eleven Sport" 				                title="(?=.*Eleven)(?=.*Sports)(?=.*Sport)" strm=""/>
 	<channel id="Extreme" 									title="(?=.*Extreme)" strm=""/>
 	<channel id="Baby TV" 									title="(?=.*Baby)(?=.*TV)" strm=""/>
 	<channel id="Disney Channel" 							title="(?=.*Disney)(?=.*Channel)" strm=""/>
@@ -93,23 +100,110 @@
 	<channel id="Disney Junior" 							title="(?=.*Disney)(?=.*Junior)" strm=""/>
 	<channel id="Cartoon Network" 							title="(?=.*Cartoon)(?=.*Network)" strm=""/>
 	<channel id="JimJam Polsat" 							title="(?=.*JimJam)(?=.*Polsat)" strm=""/>
-	<channel id="Duck TV" 									title="(?=.*Duck)(?=.*TV)" strm=""/>
+	<channel id="Duck" 										title="(?=.*Duck)(?=.*TV)" strm=""/>
 	<channel id="Nickelodeon" 								title="(?=.*Nickelodeon)" strm=""/>
 	<channel id="Nick Jr." 									title="(?=.*Nick)(?=.*Jr)" strm=""/>
-	<channel id="Minimini+" 								title="(?=.*Minimini)(?=.*\+)" strm=""/>
+	<channel id="MiniMini+" 								title="(?=.*Minimini)(?=.*\+)" strm=""/>
 	<channel id="Boomerang" 								title="(?=.*Boomerang)" strm=""/>
-	<channel id="TELETOON" 									title="(?=.*tele)(?=.*TOON)(?=.*HYPER)(?=.*\+)" strm=""/>
-	<channel id="tele TOON+/HYPER+" 						title="(?=.*tele)(?=.*TOON)(?=.*HYPER)(?=.*\+)" strm=""/>
+	<channel id="Teletoon" 									title="(?=.*tele)(?=.*TOON)(?=.*HYPER)(?=.*\+)" strm=""/>
 	<channel id="BBC CBeebies" 								title="(?=.*BBC)(?=.*CBeebies)" strm=""/>
 	<channel id="Da Vinci Learning" 						title="(?=.*Da)(?=.*Vinci)(?=.*Learning)" strm=""/>
-	<channel id="MTV Polska" 								title="(^MTV$)|(^MTV\W*Polska)" strm=""/>
+	<channel id="MTV Polska" 								title="(^MTV$)" strm=""/>
 	<channel id="MTV Live HD" 								title="(?=.*MTV)(?=.*Live)" strm=""/>
 	<channel id="Kino Polska Muzyka" 						title="(?=.*Kino)(?=.*Polska)(?=.*Muzyka)" strm=""/>
 	<channel id="Eska TV" 									title="(?=.*Eska)(?=.*)" strm="" rem="moze dziwne ale user jest worlddiscovery"/>
 	<channel id="VIVA Polska" 								title="(?=.*VIVA)(?=.*Polska)" strm=""/>
-	<channel id="4fun TV" 									title="(?=.*4fun)" strm=""/>
-	<channel id="RBL.TV" 									title="(?=.*RBL)" strm=""/>
-	<channel id="Polo TV" 									title="(Polo TV)|(PoloTV)" strm=""/>
+	<channel id="4 fun" 									title="(?=.*4fun)" strm=""/>
+<!--<channel id="RBL" 										title="(?=.*RBL)" strm=""/>-->
+	<channel id="Polo TV" 									title="(?=.*Polo)(?=.*TV)(?=.*Disco)" strm=""/>
+	<channel id="Simpsonowie" 							    title="(?=.*The)(?=.*Simpsons)(?=.*Simpsons/Simpsonowie)" strm=""/>
+	<channel id="SpongeBob Kanciastoporty"					title="(?=.*SpongeBob)(?=.*Kanciastoporty)" strm=""/>
+	<channel id="Klub Przyjaciol Myszki Miki"				title="(?=.*Klub)(?=.*Myszki)(?=.*Miki)" strm=""/>
+	<channel id="South Park vs Family Guy"					title="(?=.*South)(?=.*Park)(?=.*Family)(?=.*Guy)" strm=""/>
+	<channel id="Scooby-Doo"								title="(?=.*Scooby-Doo)" strm=""/>
+	<channel id="Bajki - Sasiedzi"							title="(?=.*Bajki)(?=.*S*siedzi)" strm=""/>
+	<channel id="Flinstonowie"								title="(?=.*Flinstonowie)" strm=""/>
+	<channel id="Dragon Ball Z - 16 Sezonow"				title="(?=.*Dragon)(?=.*Ball)(?=.*Z)" strm=""/>
+	<channel id="Atomowki - 24/7"							title="" strm="service=weebtv&amp;cid=3457"/>nie dziala
+	<channel id="Bylo sobie...(zycie,czlowiek...)"			title="" strm="service=weebtv&amp;cid=1432"/>nie dziala
+	<channel id="FofaTV"									title="(?=.*FofaTV)" strm=""/>
+	<channel id="Pingwiny z Madagaskaru HD"					title="(?=.*Pingwiny)(?=.*z)(?=.*Madagaskaru)" strm=""/>
+	<channel id="Kung Fu Panda: Leg. o niezwyk."			title="(?=.*Kung)(?=.*Fu)(?=.*Panda)" strm=""/>
+	<channel id="Wlatcy Moch (wszystkie sezony)"			title="(?=.*W*atcy)(?=.*M*ch)(?=.*wszystkie)(?=.*sezony)" strm=""/>
+	<channel id="Swiat wedlug Kiepskich"					title="" strm="service=weebtv&amp;cid=1947"/>nie dziala
+	<channel id="Rodzinka.pl"								title="(?=.*Rodzinka.pl)" strm=""/>
+	<channel id="Teoria wielkiego podrywu"					title="(?=.*Teoria)(?=.*wielkiego)(?=.*podrywu)" strm=""/>
+	<channel id="DR HOUSE - TERAZ W HD!"					title="(?=.*DR)(?=.*HOUSE)" strm=""/>
+	<channel id="Ranczo (sezon 1-9)"						title="(?=.*Ranczo)" strm=""/>
+	<channel id="Gotowe na Wszystko"						title="(?=.*Gotowe)(?=.*na)(?=.*wszystko)" strm=""/>
+	<channel id="Ojciec Mateusz (sezon 1-14)"				title="(?=.*ojciec)(?=.*mateusz)" strm=""/>
+	<channel id="Przyjaciele"								title="(?=.*przyjaciele)" strm=""/>
+	<channel id="Dwoch i pol (Tylko z Charlie)"				title="" strm="service=weebtv&amp;cid=2524"/>nie dziala
+	<channel id="Gwiezdne Wrota (SG1,ATL)"					title="(?=.*gwiezdne)(?=.*wrota)" strm=""/>
+	<channel id="NCIS"										title="(?=.*NCIS)" strm=""/>
+	<channel id="Jas Fasola - serial"						title="(?=.*Ja*)(?=.*Fasola)(?=.*serial)" strm=""/>
+	<channel id="Przyjaciele HD (1-10 Sezonow)"				title="" strm="service=weebtv&amp;cid=4523"/>nie dziala
+	<channel id="CSI: Kryminalne zagadki Miami"				title="(?=.*CSI)(?=.*Kryminalne)(?=.*zagadki)(?=.*Miami)" strm=""/>
+	<channel id="Miodowe Lata"								title="(?=.*Miodowe)(?=.*Lata)" strm=""/>
+	<channel id="Kosci - Bones"								title="(?=.*Bones)" strm=""/>
+	<channel id="DALEKO OD NOSZY"							title="(?=.*daleko)(?=.*od)(?=.*noszy)" strm=""/>
+	<channel id="Detektyw Monk"								title="(?=.*Detektyw)(?=.*Monk)" strm=""/>
+	<channel id="Gra o Tron"								title="(?=.*Gra)(?=.*o)(?=.*Tron)" strm=""/>
+	<channel id="Pitbull - Wszystkie sezony"				title="(?=.*Pitbull)" strm=""/>
+	<channel id="Skazany na Smierc! - Wsyzstkie s"			title="(?=.*Skazany)(?=.*na)" strm=""/>
+	<channel id="13 posterunek HQ (HD)"						title="(?=.*13)(?=.*posterunek)" strm=""/>
+	<channel id="Diabli nadali"								title="(?=.*Diabli)(?=.*nadali)" strm=""/>
+	<channel id="The Walking Dead"							title="(?=.*The)(?=.*Walking)(?=.*Dead)" strm=""/>
+	<channel id="Mentalista - WSZYSTKIE SEZONY"				title="(?=.*Mentalista)" strm=""/>
+	<channel id="On, ona i dzieciaki"						title="(?=.*On)(?=.*Ona)(?=.*dzieciaki)" strm=""/>
+	<channel id="Alternatywy 4 - Wszystkie odcink"			title="(?=.*Alternatywy)(?=.*4)" strm=""/>
+	<channel id="Breaking Bad"								title="(?=.*Breaking)(?=.*Bad)" strm=""/>
+	<channel id="Nie z tego swiata"							title="" strm="service=weebtv&amp;cid=1429"/>nie dziala
+	<channel id="Swiat Wedlug Kiepskich MIX ODC."			title="" strm="service=weebtv&amp;cid=1203"/>nie dziala
+	<channel id="Swiat wedlug Bundych"						title="" strm="service=weebtv&amp;cid=1452"/>nie dziala
+	<channel id="Archiwum X"								title="(?=.*Archiwum)(?=.*X)" strm=""/>
+	<channel id="Lekarze (Serial 24/7)"						title="(?=.*Lekarze)" strm=""/>
+	<channel id="Grimm (wszystkie sezony)"					title="(?=.*Grimm)" strm=""/>
+	<channel id="Doktor Who (PL)"							title="(?=.*Doktor)(?=.*Who)" strm=""/>
+	<channel id="ER - Ostry Dyzur 24/7"						title="" strm="service=weebtv&amp;cid=3491"/>nie dziala
+	<channel id="Czas Honoru - Serial"						title="(?=.*Czas)(?=.*Honoru)" strm=""/>
+	<channel id="Kuchenne Rewolucje"						title="(?=.*Kuchenne)(?=.*Rewolucje)" strm=""/>
+	<channel id="Kuba Wojewodzki"							title="" strm="service=weebtv&amp;cid=1392"/>nie dziala
+	<channel id="Trudne sprawy vs Dlaczego Ja?"			    title="(?=.*Trudne)(?=.*Sprawy)(?=.*vs)(?=.*Dlaczego)(?=.*Ja?)" strm=""/>
+    <channel id="Galileo"									title="(?=.*Galileo)" strm=""/>
+	<channel id="TopGear (Sezon 12 - 22) [HQ]"				title="(?=.*TopGear)" strm=""/>
+	<channel id="Boso przez swiat"							title="(?=.*Boso)(?=.*przez)" strm=""/>
+	<channel id="Malanowski i partnerzy"					title="(?=.*Malanowski)(?=.*i)(?=.*partnerzy)" strm=""/>
+	<channel id="Usterka"									title="(?=.*Usterka)" strm=""/>
+	<channel id="Ukryta Prawda"								title="(?=.*Ukryta)(?=.*Prawda)" strm=""/>
+	<channel id="Ugotowani 1-3 Sezon"						title="(?=.*Ugotowani)" strm=""/>
+	<channel id="Fani czterech kolek"						title="(?=.*Fani)(?=.*czterech)" strm=""/>nie dziala
+	<channel id="Rozmowy w toku"							title="(?=.*Rozmowy)(?=.*w)(?=.*toku)" strm=""/>
+	<channel id="Kuchnia+ 15 minut Jamiego"					title="(?=.*Kuchnia+)(?=.*15)(?=.*minut)(?=.*Jamiego)" strm=""/>
+	<channel id="Zdrady"									title="(?=.*Zdrady)" strm=""/>
+	<channel id="Warsaw Shore: Ekipa z Warszawy!"			title="(?=.*Warsaw)(?=.*Shore)(?=.*Ekipa)(?=.*z)(?=.*Warszawy)" strm=""/>
+	<channel id="TheVoiceOfPoland[NeV]"						title="(?=.*TheVoiceOfPoland)" strm=""/>
+	<channel id="CHLOPAKI DO WZIECIA"						title="" strm="service=weebtv&amp;cid=5462"/>nie dziala
+	<channel id="Co za tydzien - magazyn TVN"				title="(?=.*Co)(?=.*za)(?=.*magazyn)(?=.*TVN)" strm=""/>
+	<channel id="topmodel1"									title="" strm="service=weebtv&amp;cid=5269"/>nie dziala
+	<channel id="Jason Statham Movie Pack"					title="(?=.*Jason)(?=.*Statham)(?=.*Movie)(?=.*Pack)" strm=""/>
+	<channel id="Louis De Funes - PL PACK"					title="(?=.*Louis)(?=.*De)(?=.*Funes)(?=.*Pack)" strm=""/>
+	<channel id="Dlugometrazowe bajki w HD"					title="(?=.*bajki)(?=.*w)(?=.*HD)" strm=""/>
+	<channel id="Polskie kultowe komedie"					title="(?=.*Polskie)(?=.*kultowe)(?=.*komedie)" strm=""/>
+	<channel id="Polskie komedie 1"							title="(?=.*Polskie)(?=.*komedie)(?=.*1)" strm=""/>
+	<channel id="Polskie komedie 2"							title="(?=.*Polskie)(?=.*komedie)(?=.*2)" strm=""/>
+	<channel id="Polskie komedie 3"							title="(?=.*Polskie)(?=.*komedie)(?=.*3)" strm=""/>
+	<channel id="James Bond 007 - PACK PL"					title="(?=.*James)(?=.*Bond)(?=.*007)" strm=""/>
+	<channel id="WLADCA PIERSCIENI Extended Ed."			title="" strm="service=weebtv&amp;cid=4636"/>nie dziala
+	<channel id="KABARETY 2015 LatajacyKlub2 cz.1"			title="(?=.*KABARETY)(?=.*2015)(?=.*cz.1)" strm=""/>
+	<channel id="KABARETY 2015 LatajacyKlub2 cz.2"			title="(?=.*KABARETY)(?=.*2015)(?=.*cz.2)" strm=""/>
+	<channel id="BBC World News"						    title="(?=.*BBC)(?=.*world)(?=.*news)(?=.*ANG)" strm=""/>
+	<channel id="France 24"								    title="(?=.*FRANCE)(?=.*24)(?=.*ANG)" strm=""/>
+	<channel id="KSW"								        title="(?=.*KSW)" strm=""/>
+	
+	
+	
+	
 </map>
 
 <!--

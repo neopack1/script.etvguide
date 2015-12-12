@@ -47,7 +47,8 @@ class Service(object):
 try:
     global ADDON_AUTOSTART
     ADDON = xbmcaddon.Addon(id = ADDON_ID)
-    if ADDON.getSetting('cache.data.on.xbmc.startup') == 'true':
+    if ADDON.getSetting('cache.data.on.xbmc.startup') == 'true' and ADDON.getSetting('autostart_mtvguide') == 'false':
+        #Make sure to start service only when autostart is disabled to prevent from database lock issues
         Service()
     if ADDON_AUTOSTART == False:
         ADDON_AUTOSTART = True

@@ -146,12 +146,14 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
         if self.gu.program.imageSmall is not None and self.ctrlProgramImg:
             self.ctrlProgramImg.setImage(self.gu.program.imageSmall.encode('utf-8'))
         else:
-            self.ctrlProgramImg.setImage('tvguide-logo-epg.png')
+            if self.ctrlProgramImg is not None:
+                self.ctrlProgramImg.setImage('tvguide-logo-epg.png')
 
         if self.gu.program.imageLarge == 'live' and self.ctrlMainLive:
             self.ctrlMainLive.setImage('live.png')
         else:
-            self.ctrlMainLive.setImage('')
+            if self.ctrlMainLive is not None:
+                self.ctrlMainLive.setImage('')
 
         if self.ctrlProgramProgress:
             self.stdat = time.mktime(self.gu.program.startDate.timetuple())

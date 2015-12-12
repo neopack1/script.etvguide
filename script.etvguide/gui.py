@@ -142,6 +142,7 @@ class VideoPlayerStateChange(xbmc.Player):
     def __init__(self, *args, **kwargs):
         deb ( "################ Starting control VideoPlayer events" )
         self.playerStateChanged = Event()
+        self.sleepSupervisor = SleepSupervisor()
         #threading.Timer(0.3, self.fixstop).start()
 
     def stopplaying(self):
@@ -161,6 +162,7 @@ class VideoPlayerStateChange(xbmc.Player):
 
     def onPlayBackStarted(self):
         deb ( "################ Playback Started" )
+        self.sleepSupervisor.Start()
         self.onStateChange("Started")
 
     def onPlayBackEnded(self):
@@ -169,6 +171,7 @@ class VideoPlayerStateChange(xbmc.Player):
 
     def onPlayBackStopped(self):
         deb( "################# Playback Stopped")
+        self.sleepSupervisor.Stop()
         self.onStateChange("Stopped")
 
 class mTVGuide(xbmcgui.WindowXML):
@@ -1876,3 +1879,32 @@ class Pla(xbmcgui.WindowXMLDialog):
             xbmc.executebuiltin('XBMC.RunScript(%s,%s,0)' % (ADDON_ID, url))
         else:
             xbmc.Player().play(url)
+
+class SleepSupervisor(object):
+    def __init__(self):
+        self.sleepEnabled = ADDON.getSetting('sleep_enabled')
+        self.sleepAction = ADDON.getSetting('sleep_action')
+        self.sleepTimer = ADDON.getSetting('sleep_timer')
+        self.actions = {
+                        'Zatrzymaj odtw.': 'PlayerControl(Stop)',
+                        'Wylacz Xbmc': 'Quit',
+                        'Wylacz komputer': 'Powerdown',
+                        'Uspij komputer': 'Suspend'
+        }
+        deb('Supervisor timer init: sleepEnabled %s, sleepAction: %s, sleepTimer: %s' % (self.sleepEnabled, self.sleepAction, self.sleepTimer))
+            
+    def Start(self):
+        if self.sleepEnabled == 'Tak':
+            self.Stop()
+            try:
+                action = self.actions[self.sleepAction]
+            except KeyError:
+                action = self.sleepAction
+            
+            deb('Supervisor timer Start, action = %s' % action)
+            xbmc.executebuiltin('AlarmClock(Stopper,%s,%s,True)' % (action, self.sleepTimer))
+        
+    def Stop(self):
+        if self.sleepEnabled == 'Tak':
+            deb('Supervisor timer Stop')
+            xbmc.executebuiltin('CancelAlarm(Stopper,True)')

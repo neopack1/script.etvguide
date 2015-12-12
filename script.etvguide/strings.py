@@ -1,6 +1,7 @@
 #
 #      Copyright (C) 2014 Krzysztof Cebulski
 #      Copyright (C) 2013 Szakalit
+#
 #      Copyright (C) 2012 Tommy Winther
 #      http://tommy.winther.nu
 #
@@ -26,7 +27,7 @@ ADDON               = xbmcaddon.Addon(id = ADDON_ID)
 ADDON_PATH          = ADDON.getAddonInfo('path')
 ADDON_CIDUPDATED    = False    #zabezpieczenie przed ponownym updatem cidow
 ADDON_AUTOSTART     = False    #zabezpieczenie przed ponownym uruchomieniem wtyczki
-FORCE_ADD_LOG_DEBUG = False     #True - Logowanie nawet jezeli wylaczone debugowanie w XBMC
+FORCE_ADD_LOG_DEBUG = True     #True - Logowanie nawet jezeli wylaczone debugowanie w XBMC
 
 NO_DESCRIPTION = 30000
 CALCULATING_REMAINING_TIME = 30002
@@ -92,7 +93,6 @@ def strings(id, replacements = None):
 
 def getStateLabel(control, label_idx, default=0):
     """Pobiera z <label2>1234|5678</label2> na podstawie label_idx odpowiednia wartosc
-
        Jezeli chcesz uzyc tylko jednej wartosci wpisz tak:  1234|
        Jezeli nie wpiszesz znaku | to label2 zostanie uznane za puste - nie moga byc same cyfry
     """
@@ -105,6 +105,6 @@ def getStateLabel(control, label_idx, default=0):
 
 def deb(s):
     if FORCE_ADD_LOG_DEBUG:
-        xbmc.log("ETVGUIDE @ " + str(s))
+        xbmc.log("MTVGUIDE @ " + str(s))
     else:
-        xbmc.log("ETVGUIDE @ " + str(s), xbmc.LOGDEBUG)
+        xbmc.log("MTVGUIDE @ " + str(s), xbmc.LOGDEBUG)

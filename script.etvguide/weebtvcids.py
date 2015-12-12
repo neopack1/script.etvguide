@@ -4,18 +4,20 @@ import urllib, urllib2, httplib, sys, StringIO, re
 from xml.etree import ElementTree
 import simplejson as json #import json
 import xbmc
+import time
 import os, xbmcaddon
 from strings import *
 import ConfigParser
 
 url        = 'http://weeb.tv'
 jsonUrl    = url + '/api/getChannelList'
+goldUrlSD = 'http://goldvod.tv/api/getTvChannelsSD.php'
+goldUrlHD = 'http://goldvod.tv/api/getTvChannelsHD.php'
+
 HOST       = 'XBMC'
-login      = ADDON.getSetting('username')
-password   = ADDON.getSetting('userpassword')
 rstrm      = '%s'  #pobierany przepis z xml-a np.: 'service=weebtv&cid=%s'
-pathMap    = os.path.join(ADDON.getAddonInfo('path'), 'resources', 'weebtvmap.xml')
 pathAddons = os.path.join(ADDON.getAddonInfo('path'), 'resources', 'addons.ini')
+pathMapBase = os.path.join(ADDON.getAddonInfo('path'), 'resources')
 #pathJson   = os.path.join(ADDON.getAddonInfo('path'), 'resources', 'weebtv.json')
 #updaddon   = ADDON.getSetting('AutoUpdateCidAddons').lower() == 'true'
 
@@ -37,7 +39,11 @@ class ShowList:
             strTab = []
         outTab.sort(key=lambda x: x[0])
         return outTab
-
+    
+    def setLoginData(self, login, password):
+        self.login = login
+        self.password = password
+    
     def getJsonFromFile(self, url):
         result_json = { '0': 'Null' }
         try:
@@ -48,20 +54,18 @@ class ShowList:
             print 'Error %s' % str(ex)
         return result_json
 
-    def getJsonFromAPI(self, url):
+    def getJsonFromAPI(self, url, passphrase):
         result_json = { '0': 'Null' }
         try:
             headers = { 'User-Agent': HOST, 'ContentType': 'application/x-www-form-urlencoded' }
-            post = { 'username': login, 'userpassword': password }
+            post = { 'username': self.login, passphrase: self.password }
             data = urllib.urlencode(post)
             reqUrl = urllib2.Request(url, data, headers)
             raw_json = urllib2.urlopen(reqUrl)
+            
             content_json = raw_json.read()
-
-            #with open("Output.txt", "w") as text_file:
-            #     text_file.write(content_json)
-
             result_json = json.loads(content_json)
+
         except urllib2.URLError, urlerr:
             result_json = { '0': 'Error' }
             print urlerr
@@ -76,16 +80,28 @@ class ShowList:
             print statuserr
         return result_json
 
-    def loadChannels(self, uri, uritype):
+    def loadChannels(self, uri, uritype, passphrase):
         deb('[UPD] Pobieram listę dostępnych kanałów Weeb.tv z %s' % uri)
         deb('[UPD] -------------------------------------------------------------------------------------')
         deb('[UPD] %-7s %-35s %-30s' % ('-CID-', '-NAME-', '-TITLE-'))
         result = list()
-        if (uritype == 'file'):
-            channelsArray = self.JsonToSortedTab(self.getJsonFromFile(uri))
-        else:
-            channelsArray = self.JsonToSortedTab(self.getJsonFromAPI(uri))
-
+        channelsArray = None
+        failedCounter = 0
+        while failedCounter < 10:
+            try:
+                if (uritype == 'file'):
+                    channelsArray = self.JsonToSortedTab(self.getJsonFromFile(uri))
+                else:
+                    channelsArray = self.JsonToSortedTab(self.getJsonFromAPI(uri, passphrase))
+                break
+            except httplib.IncompleteRead:
+                failedCounter = failedCounter + 1
+                deb('loadChannels IncompleteRead exception - retrying failedCounter = %s' % failedCounter)
+                time.sleep(.200)
+        if channelsArray is None:
+            deb('Error while loading Json from Url: %s - aborting' % uri)
+            return result
+        
         if len(channelsArray) > 0:
             try:
                 if channelsArray[0][1] == 'Null':
@@ -115,13 +131,50 @@ class ShowList:
             print keyerr
         return result
 
+
+    def loadChannelsGoldVod(self, uri, uritype, passphrase):
+        deb('\n\n[UPD] Pobieram listę dostępnych kanałów goldvod.tv z %s' % uri)
+        deb('[UPD] -------------------------------------------------------------------------------------')
+        deb('[UPD] %-35s %-30s %-30s' % ('-NAME-', '-TITLE-', '-RTMP-'))
+        result = list()
+        channelsArray = None
+        failedCounter = 0
+        while failedCounter < 10:
+            try:
+                channelsArray = self.getJsonFromAPI(uri, passphrase)
+                break
+            except httplib.IncompleteRead:
+                failedCounter = failedCounter + 1
+                deb('loadChannels IncompleteRead exception - failedCounter = %s' % failedCounter)
+                time.sleep(.300)
+                
+        if channelsArray is None:
+            deb('Error while loading Json from Url: %s - aborting' % uri)
+            return result
+        
+        if len(channelsArray) > 0:
+            try:
+                for s in range(len(channelsArray)):
+                    url = self.decode(channelsArray[s]['rtmp']).replace("\"", '')
+                    name = self.decode(channelsArray[s]['name']).replace("\"", '')
+                    ico = 'http://goldvod.tv/api/images/' + self.decode(channelsArray[s]['image']).replace("\"", '')
+                    deb('[UPD] %-35s %-30s %-35s' % (name, name, url))
+                    result.append(WeebTvCid(0, name, name, '2', url))
+            except KeyError, keyerr:
+                print 'Mleczan exception while looping channelsArray, error: %s' % str(keyerr)
+        else:
+            print 'Mleczan empty channel array!!!!!!!!!!!!!!!!'
+        return result
+
+
+
 class WeebTvCid:
-    def __init__(self, cid, name, title, online):
+    def __init__(self, cid, name, title, online, strm = None):
         self.cid = cid
         self.name = name
         self.title = title
         self.online = online
-        self.strm = None
+        self.strm = strm
         self.src = ""
 
 class MapString:
@@ -156,11 +209,82 @@ class MapString:
 
     @staticmethod
     def loadFile(path):
-        deb('\n[UPD] Wczytywanie mapy weebtv => mtvguide: %s' % path)
+        deb('\n[UPD] Wczytywanie mapy => mtvguide: %s' % path)
         with open(path, 'r') as content_file:
             content = content_file.read()
         return content #.replace("\t", "")
 
+class GoldVodTvStrmUpdater:
+    def __init__(self):
+        try:
+            sl = ShowList()
+            sl.setLoginData(ADDON.getSetting('usernameGoldVOD'), ADDON.getSetting('userpasswordGoldVOD'))
+            pathMap = os.path.join(pathMapBase, 'goldvodmap.xml')
+            
+            self.channels = sl.loadChannelsGoldVod(goldUrlSD, 'url', 'password')
+            
+            if ADDON.getSetting('video_qualityGoldVOD') == 'true':
+                tmpChannels = sl.loadChannelsGoldVod(goldUrlHD, 'url', 'password')
+                #deb('GoldVOD before replacing channels SD: %s, HD %s' % (len(self.channels), len(tmpChannels)) )
+                
+                #for sdChann in self.channels:
+                    #p = re.compile(sdChann.name.replace("+", '').strip(), re.IGNORECASE)
+                    #for hdChann in tmpChannels:
+                        #b=p.match(hdChann.title.replace("+", '').strip())
+                        #if (b):
+                        #if (sdChann.name.strip() + ' HD').strip().upper() == hdChann.name.strip().upper():
+                            #deb('GoldVOD found HD channels to replace SD: %s, HD: %s' % (sdChann.name, hdChann.name))
+                            #self.channels.remove(sdChann)
+                            #break
+                            
+                #deb('GoldVOD after replacing channels SD: %s, HD %s' % (len(self.channels), len(tmpChannels)) )
+                self.channels.extend(tmpChannels)
+                deb('GoldVOD after merge: %s channels' % len(self.channels) )
+            
+            mapfile = MapString.loadFile(pathMap)
+            self.automap = MapString.Parse(mapfile)
+            
+            deb('\n[UPD] Wyszykiwanie STRM')
+            deb('-------------------------------------------------------------------------------------')
+            deb('[UPD] %-30s %-30s %-15s %-35s' % ('-ID mTvGuide-', '-    Orig Name    -', '-    SRC   -', '-    STRM   -'))
+            for x in self.automap:                                     #mapa id naszego kanalu + wyr regularne
+                if x.strm != '':
+                    x.src = 'CONST'                             #informacja o tym że STRM pochodzi z pliku mapy
+                    deb('[UPD] %-30s %-15s %-35s' % (x.channelid, x.src, x.strm))
+                    continue
+                try:
+                    error=""
+                    p = re.compile(x.titleRegex, re.IGNORECASE)
+                    for y in self.channels:                        #cidy weeb.tv
+                        b=p.match(y.title)
+                        if (b):
+                            x.strm = y.strm
+                            x.src  = 'goldvod.tv'
+                            y.strm = x.strm
+                            y.src = x.src
+                            deb('[UPD] %-30s %-30s %-15s %-35s ' % (x.channelid, y.name, x.src, x.strm))
+                            #break
+
+                except Exception, ex:
+                    print '%s Error %s %s' % (x.channelid, x.titleRegex, str(ex))
+
+            deb ('\n[UPD] Nie znaleziono/wykorzystano odpowiedników w goldvod.tv dla:')
+            deb('-------------------------------------------------------------------------------------')
+            for x in self.automap:
+                if x.src!='goldvod.tv':
+                    deb('[UPD] CH=%-30s SRC=%-15s STRM=%-35s' % (x.channelid, x.src, x.strm))
+
+            deb ('\n[UPD] Nie wykorzystano STRM nadawanych przez goldvod.tv programów:')
+            deb('-------------------------------------------------------------------------------------')
+            for y in self.channels:
+                if y.src == '' or y.src != 'goldvod.tv':
+                    deb ('[UPD] ID=%-30s TITLE=%-40s SRC=%-15s STRM=%-25s' % (y.name, y.title, y.src, str(y.strm)))
+
+            deb("[UPD] Zakończono analizę...")
+            
+        except Exception, ex:
+            print 'Error %s' % str(ex)
+            raise
 
 class WebbTvStrmUpdater:
 
@@ -168,8 +292,11 @@ class WebbTvStrmUpdater:
 
         try:
             sl = ShowList()
-            #self.weebTvChannels  = sl.loadChannels(pathJson, 'file')
-            self.weebTvChannels = sl.loadChannels(jsonUrl, 'url')
+            sl.setLoginData(ADDON.getSetting('username'), ADDON.getSetting('userpassword'))
+            pathMap = os.path.join(pathMapBase, 'weebtvmap.xml')
+            
+            
+            self.channels = sl.loadChannels(jsonUrl, 'url', 'userpassword')
 
             mapfile = MapString.loadFile(pathMap)
             self.automap = MapString.Parse(mapfile)
@@ -188,7 +315,7 @@ class WebbTvStrmUpdater:
                 try:
                     error=""
                     p = re.compile(x.titleRegex, re.IGNORECASE)
-                    for y in self.weebTvChannels:                        #cidy weeb.tv
+                    for y in self.channels:                        #cidy weeb.tv
                         b=p.match(y.title)
                         if (b):
                             x.strm = rstrm % y.cid
@@ -222,7 +349,7 @@ class WebbTvStrmUpdater:
 
             deb ('\n[UPD] Nie wykorzystano CID nadawanych przez weeb.tv programów:')
             deb('-------------------------------------------------------------------------------------')
-            for y in self.weebTvChannels:
+            for y in self.channels:
                 if y.src == '' or y.src != 'weeb.tv':
                     deb ('[UPD] ID=%-30s TITLE=%-40s STRM=%-25s SRC=%s' % (y.name, y.title, str(y.strm), y.src))
 
@@ -231,4 +358,4 @@ class WebbTvStrmUpdater:
         except Exception, ex:
             print 'Error %s' % str(ex)
             raise
-
+        
