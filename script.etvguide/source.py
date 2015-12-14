@@ -884,7 +884,14 @@ class XMLTVSource(Source):
 class ETVGUIDESource(Source):
     KEY = 'e-TVGuide'
     def __init__(self, addon):
-        self.ETVGUIDEUrl = 'http://epg.feenk.net/epg.xml'
+        self.ETVGUIDEUrl = addon.getSetting('e-TVGuide')
+        if self.ETVGUIDEUrl == "Default":
+            self.ETVGUIDEUrl = 'http://epg.feenk.net/epg.xml'
+        elif self.ETVGUIDEUrl == "Alternative":
+            self.ETVGUIDEUrl = 'http://epg2.feenk.net/epg.xml'
+        else:
+            self.ETVGUIDEUrl = 'http://epg.feenk.net/epg.xml'
+            
         self.EPGULastModifiedDate = None
         self.logoFolder = None
 
