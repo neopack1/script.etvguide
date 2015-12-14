@@ -23,7 +23,7 @@
 	<channel id="TVN 24" 									title="(?=TVN\s*24(\s*HD)?$)" strm=""/>
 	<channel id="Polsat News" 								title="(?=Polsat\s*News(\s*HD)?$)" strm=""/>
 	<channel id="TVP Info" 									title="(?=TVP\s*Info(\s*HD)?$)" strm=""/>
-	<channel id="Domo+" 									title="(?=.*Domo\+)(?=.*HD)" strm=""/>
+	<channel id="Domo+" 									title="(?=DOMO\+(\s*HD)?\s*$)" strm=""/>
 	<channel id="Kuchnia+" 									title="(?=.*Kuchnia\+)" strm=""/>
 	<channel id="BBC" 										title="(^BBC$)|(^BBC\W*HD$)" strm=""/>
 	<channel id="BBC Lifestyle" 							title="(?=.*BBC)(?=.*Lifestyle)" strm=""/>
@@ -37,7 +37,13 @@
 	<channel id="Canal+ Film" 								title="(?=Canal\+\s*Film(\s*HD)?$)" strm=""/>
 	<channel id="Canal+ Family" 							title="(?=Canal\+\s*Family(\s*HD)?$)" strm=""/>
     <channel id="Canal+ Seriale" 							title="(?=Canal\+\s*Seriale(\s*HD)?$)" strm=""/>
-	<channel id="HBO" 										title="(?=HBO(\s*HD)?$)" strm=""/>
+	
+<!-- 
+Kanał HBO tymczasowo ustawiony na jakość SD ponieważ HD nie nadaje - oryginalny HD wpis zapisany w komentarzu:
+<channel id="HBO" 										title="(?=HBO(\s*HD)?$)" strm=""/>
+-->
+	<channel id="HBO" 										title="(?=HBO\s*$)" strm=""/>
+	
 	<channel id="HBO2" 										title="(?=HBO\s*2(\s*HD)?$)" strm=""/>
 	<channel id="HBO Comedy" 								title="(?=HBO\s*Comedy(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox" 								    title="(?=Filmbox(\s*HD)?$)" strm=""/>
@@ -61,7 +67,16 @@
 	<channel id="Animal Planet" 							title="(?=Animal\s*Planet(\s*HD)?$)" strm=""/>
 	<channel id="National Geographic Channel" 				title="(?=National\s*Geographic(\s*HD)?$)" strm=""/>
 	<channel id="Nat Geo Wild" 								title="(?=Nat\s*Geo\s*Wild(\s*HD)?$)" strm=""/>
-	<channel id="Discovery Channel" 						title="(?=Discovery\s*Channel(\s*HD)?$)" strm=""/>
+	
+<!-- 
+Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN style, oryg kopia zapisana:
+<channel id="Discovery Channel" 						title="(?=Discovery\s*Channel(\s*HD)?$)" strm=""/>
+-->
+	
+	<channel id="Discovery Channel" 						title="(?=Discovery\s*Channel\s*$)" strm=""/>
+	
+	
+	
 	<channel id="Canal+ Discovery" 							title="(?=.*Canal)(?=.*Discovery)" strm=""/>
 	<channel id="Discovery Science" 						title="(?=.*Discovery)(?=.*Science)" strm=""/>
 	<channel id="Discovery Turbo Xtra" 						title="(?=Discovery\s*Turbo\s*Xtra(\s*HD)?$)" strm=""/>
@@ -90,7 +105,7 @@
 	<channel id="Eleven Sport" 				                title="(?=ELEVEN\s*SPORTS(\s*HD)?$)" strm=""/>
 	<channel id="Extreme" 									title="(?=.*Extreme)" strm=""/>
 	<channel id="Baby TV" 									title="(?=.*Baby)(?=.*TV)" strm=""/>
-	<channel id="Disney Channel" 							title="(?=DISNEY\s*CHANNEL(\s*HD)?$)" strm=""/>
+	<channel id="Disney Channel" 							title="(?=DISNEY\s*CHANNEL(\s*HD)?\s*$)" strm=""/>
 	<channel id="Disney XD" 								title="(?=DISNEY\s*XD(\s*HD)?$)" strm=""/>
 	<channel id="Disney Junior" 							title="(?=.*Disney)(?=.*Junior)" strm=""/>
 	<channel id="Cartoon Network" 							title="(?=.*Cartoon)(?=.*Network)" strm=""/>
@@ -98,7 +113,7 @@
 	<channel id="Duck" 										title="(?=.*Duck)(?=.*TV)" strm=""/>
 	<channel id="Nickelodeon" 								title="(?=Nickoledeon(\s*HD)?$)" strm=""/>
 	<channel id="Nick Jr." 									title="(?=Nick\s*Jr(\s*HD)?$)" strm=""/>
-	<channel id="MiniMini+" 								title="(?=MiniMini(\s*HD)?$)" strm=""/>
+	<channel id="Minimini+" 								title="(?=MiniMini(\s*HD)?$)" strm=""/>
 	<channel id="Boomerang" 								title="(?=.*Boomerang)" strm=""/>
 	<channel id="Teletoon" 									title="(?=.*tele)(?=.*TOON)(?=.*HYPER)(?=.*\+)" strm=""/>
 	<channel id="BBC CBeebies" 								title="(?=.*BBC)(?=.*CBeebies)" strm=""/>
@@ -109,12 +124,27 @@
 	<channel id="Eska TV" 									title="(?=Eska\s*TV(\s*HD)?$)" strm=""/>
 	<channel id="VIVA Polska" 								title="(?=.*VIVA)(?=.*Polska)" strm=""/>
 	<channel id="4fun TV" 									title="(?=4FUN\s*TV(\s*HD)?$)" strm=""/>
-	<channel id="Polo TV" 									title="(?=.*Polo)(?=.*TV)(?=.*Disco)" strm=""/>
+	<channel id="Polo TV" 									title="(?=POLO\s*TV(\s*HD)?$)" strm=""/>
 	<channel id="BBC World News"						    title="(?=.*BBC)(?=.*world)(?=.*news)(?=.*ANG)" strm=""/>
 	<channel id="Stopklatka TV"						    	title="(?=STOPKLATKA\s*TV(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox Family"						    title="(?=FILMBOX\s*FAMILY(\s*HD)?$)" strm=""/>
 	<channel id="Fokus TV"						    		title="(?=Focus\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="Travel Channel"						    title="(?=TRAVEL\s*CHANNEL(\s*HD)?\s*$)" strm=""/>
+	
+	<channel id="ESKA BEST MUSIC"						    title="(?=ESKA\s*BEST\s*MUSIC(\s*HD)?\s*$)" strm=""/>
+	<channel id="ESKA GO"						    		title="(?=ESKA\s*GO(\s*HD)?\s*$)" strm=""/>
+	<channel id="ESKA ROCK"						    		title="(?=ESKA\s*ROCK(\s*HD)?\s*$)" strm=""/>
+	<channel id="MUSIC VOX TV 2"						    title="(?=MUSIC\s*VOX\s*TV\s*2(\s*HD)?\s*$)" strm=""/>
+	<channel id="POLO PARTY TV"						    	title="(?=POLO\s*PARTY\s*TV(\s*HD)?\s*$)" strm=""/>
+	<channel id="SPORT KLUB"						    	title="(?=SPORT\s*KLUB(\s*HD)?\s*$)" strm=""/>
+	<channel id="TUBA TV"						    		title="(?=TUBA\s*TV(\s*HD)?\s*$)" strm=""/>
+	<channel id="TV KUJAWY"						    		title="(?=TV\s*KUJAWY(\s*HD)?\s*$)" strm=""/>
+	<channel id="TVN 24 BiS"						    	title="(?=TVN\s*24\s*BiS(\s*HD)?\s*$)" strm=""/>
+	<channel id="TVN METEO ACTIVE"						    title="(?=TVN\s*METEO\s*ACTIVE(\s*HD)?\s*$)" strm=""/>
+	<channel id="VOX MUSIC TV"						    	title="(?=VOX\s*MUSIC\s*TV(\s*HD)?\s*$)" strm=""/>
+	<channel id="WAWA TV"						    		title="(?=WAWA\s*TV(\s*HD)?\s*$)" strm=""/>
+	<channel id="CZWORKA POLSKIE RADIO"						title="(?=CZW.*RKA\s*POLSKIE\s*RADIO(\s*HD)?\s*$)" strm=""/>
+
 </map>
 
 <!--
