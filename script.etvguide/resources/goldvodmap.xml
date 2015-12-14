@@ -12,6 +12,7 @@
 	<channel id="TVP Polonia" 								title="(?=TVP\s*Polonia(\s*HD)?$)" strm=""/>
 	<channel id="TVP Rozrywka" 								title="(?=.*TVP)(?=.*Rozrywka)" strm=""/>
 	<channel id="TVP Historia" 								title="(?=.*TVP)(?=.*Historia)" strm=""/>
+	<channel id="TV Trwam"									title="" strm="mms://195.94.205.211/Trwam"/>
 	<channel id="TV Puls" 									title="(?=.*Puls)(?!.*2)" strm=""/>
 	<channel id="Puls 2" 									title="(?=.*PULS)(?=.*2)" strm=""/>
 	<channel id="TTV" 										title="(?=.*TTV)" strm=""/>
