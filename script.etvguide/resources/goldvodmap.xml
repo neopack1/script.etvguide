@@ -142,7 +142,7 @@ Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN st
 	<channel id="TV KUJAWY"						    		title="(?=TV\s*KUJAWY(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVN 24 BiS"						    	title="(?=TVN\s*24\s*BiS(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVN METEO ACTIVE"						    title="(?=TVN\s*METEO\s*ACTIVE(\s*HD)?\s*$)" strm=""/>
-	<channel id="VOX MUSIC TV"						    	title="(?=VOX\s*MUSIC\s*TV(\s*HD)?\s*$)" strm=""/>
+	<channel id="VOX MUSIC TV"						    	title="" strm="rtmp://stream.smcloud.net/live/vox2/stream1"/>
 	<channel id="WAWA TV"						    		title="(?=WAWA\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="CZWORKA POLSKIE RADIO"						title="(?=CZW.*RKA\s*POLSKIE\s*RADIO(\s*HD)?\s*$)" strm=""/>
 
