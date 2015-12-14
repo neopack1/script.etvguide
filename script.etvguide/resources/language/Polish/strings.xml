@@ -22,7 +22,7 @@
 	<string id="30117">[COLOR red]Wpisz swój link premium z [CR]http://mods-kodi.pl dla EPG[/COLOR]</string>
 	<string id="30150">Ładowanie nie powiodło się!</string>
 	<string id="30151">Twoje ustawienia lub podany adres są błędne![CR]</string>
-	<string id="30152">Sprawdź swóje konto Premium Member w http://mods-kodi.pl</string>
+	<string id="30152">Sprawdź ustawienia albo sproboj ponownie pozniej</string>
 	<string id="30153">ponieważ ustawienia są błędne!</string>
 	<string id="30154">Wygląda na to, że skórka której używasz</string>
 	<string id="30155">nie jest komatybilna z obecną wersją TV Guide.</string>
@@ -86,7 +86,7 @@
 	<string id="59904">Aktywny</string>
 	<string id="30913">Ustawienia</string>
 	<string id="30914">Skórka</string>
-	<string id="30915">Uruchom m-TVGuide po starcie XBMC</string>
+	<string id="30915">Uruchom e-TVGuide po starcie XBMC</string>
 	<string id="30930">Kolory</string>
 	<string id="30931">Kolory kategorii</string>
 	<string id="30932">Filmy</string>
