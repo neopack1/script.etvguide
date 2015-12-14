@@ -42,6 +42,8 @@ import io, zipfile
 
 TIMEZONE = ADDON.getSetting('Time.Zone')
 CHECK_NAME = ADDON.getSetting('username')
+ADDON_VERSION =  ADDON.getAddonInfo('version')
+
 
 if CHECK_NAME:
     USER_AGENT = ADDON.getSetting('username')
@@ -841,7 +843,7 @@ class Source(object):
         try:
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
-            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (' + USER_AGENT + TIMEZONE + ')' })
+            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (' + USER_AGENT + TIMEZONE + ' version: ' + ADDON_VERSION + ')' })
             response = urllib2.urlopen(u,timeout=30)
             content = response.read()
             #u = urllib2.urlopen(url, timeout=30)
