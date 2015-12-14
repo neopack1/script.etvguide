@@ -8,6 +8,7 @@ import xbmcplugin, xbmcgui, xbmcaddon, xbmc, gui
 import threading
 import time
 import simplejson as json
+import weebtvcids
 from strings import *
 
 
@@ -21,6 +22,8 @@ iconUrl = 'http://static2.weeb.tv/static2/ci/'
 HOST = 'XBMC'
 login = ADDON.getSetting('username')
 password = ADDON.getSetting('userpassword')
+goldVODLogin = ADDON.getSetting('usernameGoldVOD')
+goldVODPassword = ADDON.getSetting('userpasswordGoldVOD')
 multi = ADDON.getSetting('video_quality')
 
 
@@ -258,45 +261,65 @@ class InitPlayer:
             print typerr
         return dataInfo
 
-    def LoadVideoLink(self, channel):
+    def LoadVideoLink(self, channel, service):
         res = True
-        rtmp = RTMP()
-        val = self.getChannelInfoFromJSON(channel)
-        videoLink =  rtmp.GetLinkParameters(channel, val['bitrate'])
-        if videoLink['status'] == '1':
-            if videoLink['rtmp'].startswith('rtmp'):
-                liz = xbmcgui.ListItem(val['title'], iconImage = val['image'], thumbnailImage = val['image'])
-                liz.setInfo( type="Video", infoLabels={ "Title": val['title'], } )
-                try:
-                    player = VideoPlayer()
-                    player.setPremium(int(videoLink['premium']))
-                    if videoLink['premium'] == 0:
+        if service == "weebtv":
+            rtmp = RTMP()
+            val = self.getChannelInfoFromJSON(channel)
+            videoLink =  rtmp.GetLinkParameters(channel, val['bitrate'])
+            if videoLink['status'] == '1':
+                if videoLink['rtmp'].startswith('rtmp'):
+                    liz = xbmcgui.ListItem(val['title'], iconImage = val['image'], thumbnailImage = val['image'])
+                    liz.setInfo( type="Video", infoLabels={ "Title": val['title'], } )
+                    try:
+                        player = VideoPlayer()
+                        player.setPremium(int(videoLink['premium']))
+                        if videoLink['premium'] == 0:
+                            msg = Messages()
+                            msg.Warning(t(57034).encode('utf-8'), t(57036).encode('utf-8'), t(57037).encode('utf-8'), t(57038).encode('utf-8'))
+                        player.play(videoLink['rtmp'], liz, windowed=True)
+                    except:
                         msg = Messages()
-                        msg.Warning(t(57034).encode('utf-8'), t(57036).encode('utf-8'), t(57037).encode('utf-8'), t(57038).encode('utf-8'))
-                    player.play(videoLink['rtmp'], liz, windowed=True)
-                    #while player.is_active:
-                        #player.sleep(100)
-                except:
+                        msg.Error(t(57018).encode('utf-8'), t(57021).encode('utf-8'), t(57028).encode('utf-8'))
+                else:
                     msg = Messages()
-                    msg.Error(t(57018).encode('utf-8'), t(57021).encode('utf-8'), t(57028).encode('utf-8'))
+                    msg.Error(t(57018).encode('utf-8'), t(57022).encode('utf-8'))
+            elif videoLink['status'] == '-1':
+                msg = Messages()
+                msg.Warning(t(57018).encode('utf-8'), t(57043).encode('utf-8'))
+            elif videoLink['status'] == '-2':
+                msg = Messages()
+                msg.Warning(t(57018).encode('utf-8'), t(57044).encode('utf-8'))
+            elif videoLink['status'] == '-3':
+                msg = Messages()
+                msg.Warning(t(57018).encode('utf-8'), t(57045).encode('utf-8'))
+            elif videoLink['status'] == '-4':
+                msg = Messages()
+                msg.Warning(t(57018).encode('utf-8'), t(57046).encode('utf-8'), t(57047).encode('utf-8'))
             else:
                 msg = Messages()
-                msg.Error(t(57018).encode('utf-8'), t(57022).encode('utf-8'))
-        elif videoLink['status'] == '-1':
-            msg = Messages()
-            msg.Warning(t(57018).encode('utf-8'), t(57043).encode('utf-8'))
-        elif videoLink['status'] == '-2':
-            msg = Messages()
-            msg.Warning(t(57018).encode('utf-8'), t(57044).encode('utf-8'))
-        elif videoLink['status'] == '-3':
-            msg = Messages()
-            msg.Warning(t(57018).encode('utf-8'), t(57045).encode('utf-8'))
-        elif videoLink['status'] == '-4':
-            msg = Messages()
-            msg.Warning(t(57018).encode('utf-8'), t(57046).encode('utf-8'), t(57047).encode('utf-8'))
-        else:
-            msg = Messages()
-            msg.Warning(t(57018).encode('utf-8'), t(57042).encode('utf-8'))
+                msg.Warning(t(57018).encode('utf-8'), t(57042).encode('utf-8'))
+        elif service == "goldvod":
+            deb('LoadVideoLink goldvod service')
+            channelInfo = None
+            sl = weebtvcids.ShowList()
+            sl.setLoginData(goldVODLogin, goldVODPassword)
+            channels = sl.loadChannelsGoldVod('http://goldvod.tv/api/getTvChannels.php', 'url', 'password', True)
+            for chann in channels:
+                if channel == chann.cid:
+                    deb('LoadVideoLink: found matching channel: cid %s, name %s, rtmp %s' % (chann.cid, chann.name, chann.strm))
+                    channelInfo = chann
+                    break
+            if channelInfo is not None:
+                liz = xbmcgui.ListItem(channelInfo.name, iconImage = channelInfo.img, thumbnailImage = channelInfo.img)
+                liz.setInfo( type="Video", infoLabels={ "Title": channelInfo.name, } )
+                try:
+                    player = VideoPlayer()
+                    player.setPremium(1)
+                    player.play(channelInfo.strm, liz, windowed=True)
+                except Exception, ex:
+                    msg = Messages()
+                    msg.Error(t(57018).encode('utf-8'), t(57021).encode('utf-8'), t(57028).encode('utf-8'), str(ex))
         return res
 
 class ThreadPlayerControl(threading.Thread):

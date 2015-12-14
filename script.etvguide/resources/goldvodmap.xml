@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<map id="weebtv" version="1.0" strm="service=weebtv&amp;cid=%s">
+<map id="goldvod" version="1.0" strm="service=goldvod&amp;cid=%s">
 	<channel id="TVP 1" 									title="(?=TVP\s*1(\s*HD)?$)" strm=""/>
 	<channel id="TVP 2"										title="(?=TVP\s*2(\s*HD)?$)" strm=""/>
 	<channel id="TVP HD" 									title="(?=TVP(\s*HD)?(\s*HD)?$)" strm=""/>

@@ -174,7 +174,7 @@ class VideoPlayerStateChange(xbmc.Player):
         self.sleepSupervisor.Stop()
         self.onStateChange("Stopped")
 
-class mTVGuide(xbmcgui.WindowXML):
+class eTVGuide(xbmcgui.WindowXML):
     C_MAIN_DATE = 4000
 
     C_MAIN_TIMEBAR = 4100
@@ -202,11 +202,11 @@ class mTVGuide(xbmcgui.WindowXML):
     C_MAIN_LIVE = 4944
 
     def __new__(cls):
-        return super(mTVGuide, cls).__new__(cls, 'script-tvguide-main.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), "720p")
+        return super(eTVGuide, cls).__new__(cls, 'script-tvguide-main.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), "720p")
 
     def __init__(self):
-        deb('mTVGuide __init__')
-        super(mTVGuide, self).__init__()
+        deb('eTVGuide __init__')
+        super(eTVGuide, self).__init__()
         self.initialized = False
         self.notification = None
         self.redrawingEPG = False
@@ -252,7 +252,7 @@ class mTVGuide(xbmcgui.WindowXML):
     def getControl(self, controlId):
         #deb('getControl')
         try:
-            return super(mTVGuide, self).getControl(controlId)
+            return super(eTVGuide, self).getControl(controlId)
         except:
             if controlId in self.ignoreMissingControlIds:
                 return None
@@ -267,9 +267,9 @@ class mTVGuide(xbmcgui.WindowXML):
             if self.player.isPlaying():
                 self.player.stop()
             if self.database:
-                self.database.close(super(mTVGuide, self).close)
+                self.database.close(super(eTVGuide, self).close)
             else:
-                super(mTVGuide, self).close()
+                super(eTVGuide, self).close()
 
     def onInit(self):
         deb('onInit')
@@ -593,7 +593,7 @@ class mTVGuide(xbmcgui.WindowXML):
             self.focusPoint.y = top + (control.getHeight() / 2)
             deb('New focus at %s' % self.focusPoint)
 
-        super(mTVGuide, self).setFocus(control)
+        super(eTVGuide, self).setFocus(control)
 
 
     def onFocus(self, controlId):
@@ -1099,12 +1099,15 @@ class mTVGuide(xbmcgui.WindowXML):
 
         return None
 
-
     def _getProgramFromControl(self, control):
         deb('_getProgramFromControl')
-        for elem in self.controlAndProgramList:
-            if elem.control == control:
-                return elem.program
+        try:
+            for elem in self.controlAndProgramList:
+                if elem.control == control:
+                    return elem.program
+        except Exception, ex:
+            deb('_getProgramFromControl Error: %s' % str(ex))
+            raise
         return None
 
     def _hideControl(self, *controlIds):

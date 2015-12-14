@@ -40,6 +40,14 @@ from weebtvcids import WebbTvStrmUpdater, GoldVodTvStrmUpdater
 
 import io, zipfile
 
+TIMEZONE = ADDON.getSetting('Time.Zone')
+CHECK_NAME = ADDON.getSetting('username')
+
+if CHECK_NAME:
+    USER_AGENT = ADDON.getSetting('username')
+else:
+    USER_AGENT = ADDON.getSetting('usernameGoldVOD')
+    
 SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', 'Time.Zone']
 
 class Channel(object):
@@ -383,8 +391,10 @@ class Database(object):
         
         if ADDON.getSetting('GoldVOD_enabled') == 'true':
             streamSource = 'goldvod.tv'
-            serviceStreamRegex = "rtmp://%"
+            serviceStreamRegex = "service=goldvod&cid=%"
             self.storeCustomStreams(GoldVodTvStrmUpdater(), streamSource, serviceStreamRegex)
+            
+        self.printStreamsWithoutChannelEPG()
 
         ADDON_CIDUPDATED = True
         deb ('[UPD] Aktualizacja zakonczona')
@@ -406,6 +416,24 @@ class Database(object):
             c.close()
         except Exception, ex:
             deb('[UPD] Error updating strms: %s' % str(ex))
+            
+    def printStreamsWithoutChannelEPG(self):
+        try:
+            c = self.conn.cursor()
+            c.execute("SELECT custom.channel, custom.stream_url FROM custom_stream_url as custom LEFT JOIN channels as chann ON (UPPER(custom.channel)) = (UPPER(chann.id)) WHERE chann.id IS NULL")
+            if c.rowcount:
+                deb('\n\n')
+                deb('----------------------------------------------------------------------------------------------')
+                deb('List of streams having stream URL assigned but no EPG is available - fix it!\n')
+                deb('%-25s %-35s' % ('-    NAME    -', '-    STREAM    -'))
+                for row in c:
+                    deb('%-25s %-35s' % (row['channel'], row['stream_url']))
+                deb('End of streams without EPG!')
+                deb('----------------------------------------------------------------------------------------------')
+                deb('\n\n')
+            c.close()
+        except Exception, ex:
+            deb('printStreamsWithoutChannelEPG Error: %s' % str(ex))
 
     def getEPGView(self, channelStart, date = datetime.datetime.now(), progress_callback = None, clearExistingProgramList = True):
         result = self._invokeAndBlockForResult(self._getEPGView, channelStart, date, progress_callback, clearExistingProgramList)
@@ -813,8 +841,11 @@ class Source(object):
         try:
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
-            u = urllib2.urlopen(url, timeout=30)
-            content = u.read()
+            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (' + USER_AGENT + TIMEZONE + ')' })
+            response = urllib2.urlopen(u,timeout=30)
+            content = response.read()
+            #u = urllib2.urlopen(url, timeout=30)
+            #content = u.read()
             if url.lower().endswith('.zip'):
                 tnow = datetime.datetime.now()
                 deb("[EPG] Unpacking epg: %s [%s sek.]" % (url, str((tnow-start).seconds)))
@@ -823,7 +854,7 @@ class Source(object):
                 content = unziped.read(unziped.namelist()[0])
                 unziped.close()
                 memfile.close()
-            u.close()
+            response.close()
             tnow = datetime.datetime.now()
             deb("[EPG] Downloading done [%s sek.]" % str((tnow-start).seconds))
             return content
@@ -850,21 +881,21 @@ class XMLTVSource(Source):
         fileUpdated = datetime.datetime.fromtimestamp(stat.st_mtime())
         return fileUpdated > channelsLastUpdated
 
-class MTVGUIDESource(Source):
+class ETVGUIDESource(Source):
     KEY = 'e-TVGuide'
     def __init__(self, addon):
-        self.MTVGUIDEUrl = 'http://epg.feenk.net/epg.xml'
+        self.ETVGUIDEUrl = 'http://epg.feenk.net/epg.xml'
         self.EPGULastModifiedDate = None
         self.logoFolder = None
 
     def getDataFromExternal(self, date, progress_callback = None):
         try:
-            xml = self._downloadUrl(self.MTVGUIDEUrl)
+            xml = self._downloadUrl(self.ETVGUIDEUrl)
             io = StringIO.StringIO(xml)
             context = ElementTree.iterparse(io)
             return parseXMLTV(context, io, len(xml), self.logoFolder, progress_callback)
         except Exception, ex:
-            deb("Błąd pobierania epg: %s\n\nSzczegóły:\n%s" % (self.MTVGUIDEUrl, str(ex)))
+            deb("Błąd pobierania epg: %s\n\nSzczegóły:\n%s" % (self.ETVGUIDEUrl, str(ex)))
             raise ex
         
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
@@ -881,7 +912,7 @@ class MTVGUIDESource(Source):
         failedCounter = 0
         while failedCounter < 5:
             try:
-                u = urllib2.urlopen(self.MTVGUIDEUrl, timeout=5)
+                u = urllib2.urlopen(self.ETVGUIDEUrl, timeout=5)
                 headers = u.info()
                 timeStr = headers.getheader("Last-Modified")
                 strippedTime = strptime(timeStr, "%a, %d %b %Y %H:%M:%S GMT")
@@ -1003,7 +1034,7 @@ class FileWrapper(object):
 def instantiateSource():
     SOURCES = {
     'XMLTV': XMLTVSource,
-    'e-TVGuide': MTVGUIDESource,
+    'e-TVGuide': ETVGUIDESource,
 #	'E-Screen.tv': ESCREENTVSource
     }
 

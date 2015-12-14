@@ -29,9 +29,9 @@ class Start:
     def __init__(self):
         self.Run()
 
-    def Play(self, cid):
+    def Play(self, cid, service):
         run = main.InitPlayer()
-        run.LoadVideoLink(cid)
+        run.LoadVideoLink(cid, service)
 
 
     def Run(self):
@@ -41,14 +41,14 @@ class Start:
         cid = parser.getParam(params, "cid")
         if service == None or service == '':
             try:
-                w = gui.mTVGuide()
+                w = gui.eTVGuide()
                 w.doModal()
                 w.close()
                 del w
             except Exception:
                 pass
-        elif service == "weebtv":
-            self.Play(cid)
+        elif service == "weebtv" or service == "goldvod":
+            self.Play(cid, service)
 
 
 

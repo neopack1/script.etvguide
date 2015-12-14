@@ -132,10 +132,11 @@ class ShowList:
         return result
 
 
-    def loadChannelsGoldVod(self, uri, uritype, passphrase):
-        deb('\n\n[UPD] Pobieram listę dostępnych kanałów goldvod.tv z %s' % uri)
-        deb('[UPD] -------------------------------------------------------------------------------------')
-        deb('[UPD] %-35s %-30s %-30s' % ('-NAME-', '-TITLE-', '-RTMP-'))
+    def loadChannelsGoldVod(self, uri, uritype, passphrase, silent = False):
+        if silent is not True: 
+            deb('\n\n[UPD] Pobieram listę dostępnych kanałów goldvod.tv z %s' % uri)
+            deb('[UPD] -------------------------------------------------------------------------------------')
+            deb('[UPD] %-10s %-35s %-35s' % ( '-CID-', '-NAME-', '-RTMP-'))
         result = list()
         channelsArray = None
         failedCounter = 0
@@ -155,27 +156,30 @@ class ShowList:
         if len(channelsArray) > 0:
             try:
                 for s in range(len(channelsArray)):
+                    cid = self.decode(channelsArray[s]['id']).replace("\"", '')
                     url = self.decode(channelsArray[s]['rtmp']).replace("\"", '')
                     name = self.decode(channelsArray[s]['name']).replace("\"", '')
                     ico = 'http://goldvod.tv/api/images/' + self.decode(channelsArray[s]['image']).replace("\"", '')
-                    deb('[UPD] %-35s %-30s %-35s' % (name, name, url))
-                    result.append(WeebTvCid(0, name, name, '2', url))
+                    if silent is not True:
+                        deb('[UPD] %-10s %-35s %-35s' % (cid, name, url))
+                    result.append(WeebTvCid(cid, name, name, '2', url, ico))
             except KeyError, keyerr:
-                print 'Mleczan exception while looping channelsArray, error: %s' % str(keyerr)
+                print 'loadChannelsGoldVod exception while looping channelsArray, error: %s' % str(keyerr)
         else:
-            print 'Mleczan empty channel array!!!!!!!!!!!!!!!!'
+            print 'loadChannelsGoldVod empty channel array!!!!!!!!!!!!!!!!'
         return result
 
 
 
 class WeebTvCid:
-    def __init__(self, cid, name, title, online, strm = None):
+    def __init__(self, cid, name, title, online, strm = "", img = ""):
         self.cid = cid
         self.name = name
         self.title = title
         self.online = online
         self.strm = strm
         self.src = ""
+        self.img = img
 
 class MapString:
     def __init__(self, channelid, titleRegex, strm, src):
@@ -209,7 +213,7 @@ class MapString:
 
     @staticmethod
     def loadFile(path):
-        deb('\n[UPD] Wczytywanie mapy => mtvguide: %s' % path)
+        deb('\n[UPD] Wczytywanie mapy => etvguide: %s' % path)
         with open(path, 'r') as content_file:
             content = content_file.read()
         return content #.replace("\t", "")
@@ -225,19 +229,6 @@ class GoldVodTvStrmUpdater:
             
             if ADDON.getSetting('video_qualityGoldVOD') == 'true':
                 tmpChannels = sl.loadChannelsGoldVod(goldUrlHD, 'url', 'password')
-                #deb('GoldVOD before replacing channels SD: %s, HD %s' % (len(self.channels), len(tmpChannels)) )
-                
-                #for sdChann in self.channels:
-                    #p = re.compile(sdChann.name.replace("+", '').strip(), re.IGNORECASE)
-                    #for hdChann in tmpChannels:
-                        #b=p.match(hdChann.title.replace("+", '').strip())
-                        #if (b):
-                        #if (sdChann.name.strip() + ' HD').strip().upper() == hdChann.name.strip().upper():
-                            #deb('GoldVOD found HD channels to replace SD: %s, HD: %s' % (sdChann.name, hdChann.name))
-                            #self.channels.remove(sdChann)
-                            #break
-                            
-                #deb('GoldVOD after replacing channels SD: %s, HD %s' % (len(self.channels), len(tmpChannels)) )
                 self.channels.extend(tmpChannels)
                 deb('GoldVOD after merge: %s channels' % len(self.channels) )
             
@@ -246,7 +237,7 @@ class GoldVodTvStrmUpdater:
             
             deb('\n[UPD] Wyszykiwanie STRM')
             deb('-------------------------------------------------------------------------------------')
-            deb('[UPD] %-30s %-30s %-15s %-35s' % ('-ID mTvGuide-', '-    Orig Name    -', '-    SRC   -', '-    STRM   -'))
+            deb('[UPD] %-30s %-30s %-15s %-35s' % ('-ID eTvGuide-', '-    Orig Name    -', '-    SRC   -', '-    STRM   -'))
             for x in self.automap:                                     #mapa id naszego kanalu + wyr regularne
                 if x.strm != '':
                     x.src = 'CONST'                             #informacja o tym że STRM pochodzi z pliku mapy
@@ -258,7 +249,8 @@ class GoldVodTvStrmUpdater:
                     for y in self.channels:                        #cidy weeb.tv
                         b=p.match(y.title)
                         if (b):
-                            x.strm = y.strm
+                            #x.strm = y.strm
+                            x.strm = rstrm % y.cid
                             x.src  = 'goldvod.tv'
                             y.strm = x.strm
                             y.src = x.src
