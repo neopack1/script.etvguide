@@ -1,3 +1,6 @@
+[B]wersja 1.2.9[/B] - 2015-12-21
+- aktualizacja mapy weebtv
+
 [B]wersja 1.2.6[/B] - 2015-12-14
 - Drobne poprawki
 

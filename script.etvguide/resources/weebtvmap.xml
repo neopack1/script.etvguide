@@ -3,7 +3,7 @@
 	<channel id="TVP 1" 									title="(?=.*TVP)(?=.*1)" strm=""/>
 	<channel id="TVP 2"										title="(?=.*TVP)(?=.*2)" strm=""/>
 	<channel id="TVP HD" 									title="(?=.*TVP)(?=.*HD)(?!.*1)(?!.*2)(?!.*Info)(?!.*Seriale)(?!.*Polonia)" strm=""/>
-	<channel id="TVN" 										title="(?=.*TVN)(?!.*24)(?!.*7)" strm=""/>
+	<channel id="TVN" 										title="(?=.*TVN)(?!.*24)(?!.*7)(?!.*Turbo)" strm=""/>
 	<channel id="TVN Style" 								title="(?=.*TVN)(?=.*Style)" strm=""/>
 	<channel id="Polsat" 									title="(^Polsat$)|(^Polsat\W*HD$)" strm=""/>
 	<channel id="TVN 7" 									title="(?=.*TVN)(?=.*7)" strm=""/>
@@ -15,6 +15,7 @@
 	<channel id="TV Puls" 									title="(?=.*Puls)(?!.*2)" strm=""/>
 	<channel id="Puls 2" 									title="(?=.*PULS)(?=.*2)" strm=""/>
 	<channel id="TTV" 										title="(?=.*TTV)" strm=""/>
+	<channel id="TV Trwam" 								    title="(?=.*TV)(?=.*Trwam)" strm=""/>
 	<channel id="TV 4" 										title="(TV\W*4)" strm=""/>
 	<channel id="TV 6" 										title="(?=.*TV)(?=.*6)" strm=""/>
 	<channel id="Tele 5" 									title="(?=.*Tele)(?=.*5)" strm=""/>
@@ -24,7 +25,7 @@
 	<channel id="Polsat News" 								title="(?=.*Polsat)(?=.*News)(?!.*Sport)" strm=""/>
 	<channel id="TVP Info" 									title="(?=.*TVP)(?=.*Info)" strm=""/>
 	<channel id="Domo+" 									title="(?=.*Domo\+)(?=.*HD)" strm=""/>
-	<channel id="Kuchnia+" 									title="(?=.*Kuchnia\+)" strm=""/>
+	<channel id="Kuchnia+" 									title="(?=.*Kuchnia\+)(?!.*15)(?!.*minut)(?!.*Jamiego)" strm=""/>
 	<channel id="BBC" 										title="(^BBC$)|(^BBC\W*HD$)" strm=""/>
 <!--<channel id="BBC Knowledge" 							title="(?=.*BBC)(?=.*Knowledge)" strm=""/> -->
 <!--<channel id="BBC Entertainment" 						title="(?=.*BBC)(?=.*Entertainment)" strm=""/> -->
@@ -122,6 +123,8 @@
 	<channel id="South Park vs Family Guy"					title="(?=.*South)(?=.*Park)(?=.*Family)(?=.*Guy)" strm=""/>
 	<channel id="Scooby-Doo"								title="(?=.*Scooby-Doo)" strm=""/>
 	<channel id="Bajki - Sasiedzi"							title="(?=.*Bajki)(?=.*S*siedzi)" strm=""/>
+	<channel id="Bajki - Pszczolka Maja"					title="" strm="service=weebtv&amp;cid=6002"/>nie dziala
+	<channel id="Bajki - Smerfy"					        title="(?=.*Bajki)(?=.*Smerfy)(?=.*serial)" strm=""/>
 	<channel id="Flinstonowie"								title="(?=.*Flinstonowie)" strm=""/>
 	<channel id="Dragon Ball Z - 16 Sezonow"				title="(?=.*Dragon)(?=.*Ball)(?=.*Z)" strm=""/>
 	<channel id="Atomowki - 24/7"							title="" strm="service=weebtv&amp;cid=3457"/>nie dziala
@@ -130,9 +133,14 @@
 	<channel id="Pingwiny z Madagaskaru HD"					title="(?=.*Pingwiny)(?=.*z)(?=.*Madagaskaru)" strm=""/>
 	<channel id="Kung Fu Panda: Leg. o niezwyk."			title="(?=.*Kung)(?=.*Fu)(?=.*Panda)" strm=""/>
 	<channel id="Wlatcy Moch (wszystkie sezony)"			title="(?=.*W*atcy)(?=.*M*ch)(?=.*wszystkie)(?=.*sezony)" strm=""/>
+	<channel id="Dlugometrazowe bajki w HD"					title="(?=.*bajki)(?=.*w)(?=.*HD)" strm=""/>
+	<channel id="Epoka Lodowcowa"					        title="(?=.*EPOKA)(?=.*LODOWCOWA)" strm=""/>
 	<channel id="Swiat wedlug Kiepskich"					title="" strm="service=weebtv&amp;cid=1947"/>nie dziala
 	<channel id="Rodzinka.pl"								title="(?=.*Rodzinka.pl)" strm=""/>
-	<channel id="Teoria wielkiego podrywu"					title="(?=.*Teoria)(?=.*wielkiego)(?=.*podrywu)" strm=""/>
+	<channel id="Teoria wielkiego podrywu"					title="(?=.*Teoria)(?=.*wielkiego)(?=.*podrywu)(?!.*NEW)" strm=""/>
+	<channel id="Teoria wielkiego podrywu NEW"				title="(?=.*Teoria)(?=.*wielkiego)(?=.*podrywu)(?=.*NEW)" strm=""/>
+	<channel id="Sex w wielkim miescie"				        title="" strm="service=weebtv&amp;cid=3613"/>nie dziala
+	<channel id="Az po sufit"				                title="(?=.*A*)(?=.*po)(?=.*sufit)" strm=""/>
 	<channel id="DR HOUSE - TERAZ W HD!"					title="(?=.*DR)(?=.*HOUSE)" strm=""/>
 	<channel id="Ranczo (sezon 1-9)"						title="(?=.*Ranczo)" strm=""/>
 	<channel id="Gotowe na Wszystko"						title="(?=.*Gotowe)(?=.*na)(?=.*wszystko)" strm=""/>
@@ -167,8 +175,16 @@
 	<channel id="Doktor Who (PL)"							title="(?=.*Doktor)(?=.*Who)" strm=""/>
 	<channel id="ER - Ostry Dyzur 24/7"						title="" strm="service=weebtv&amp;cid=3491"/>nie dziala
 	<channel id="Czas Honoru - Serial"						title="(?=.*Czas)(?=.*Honoru)" strm=""/>
+	<channel id="Ja to mam szczescie"					    title="(?=.*ja)(?=.*to)(?=.*mam)" strm=""/>
+	<channel id="Janosik"							        title="(?=.*Janosik)(?=.*serial)(?=.*HD)" strm=""/>
+	<channel id="Kasia i Tomek"				                title="(?=.*Kasia)(?=.*i)(?=.*Tomek)" strm=""/>
+	<channel id="Kryminalni"				                title="(?=.*Kryminalni)" strm=""/>
+	<channel id="O mnie sie nie martw"				        title="(?=.*O)(?=.*mnie)(?=.*nie)(?=.*martw)" strm=""/>
+	<channel id="Strazacy"				                    title="" strm="service=weebtv&amp;cid=6393"/>nie dziala
+	<channel id="Maklowicz w podrozy"				        title="" strm="service=weebtv&amp;cid=6396"/>nie dziala
 	<channel id="Kuchenne Rewolucje"						title="(?=.*Kuchenne)(?=.*Rewolucje)" strm=""/>
 	<channel id="Kuba Wojewodzki"							title="" strm="service=weebtv&amp;cid=1392"/>nie dziala
+	<channel id="Szymon Majewski Show"				        title="(?=.*Szymon)(?=.*Majewski)(?=.*Show)" strm=""/>
 	<channel id="Trudne sprawy vs Dlaczego Ja?"			    title="(?=.*Trudne)(?=.*Sprawy)(?=.*vs)(?=.*Dlaczego)(?=.*Ja?)" strm=""/>
     <channel id="Galileo"									title="(?=.*Galileo)" strm=""/>
 	<channel id="TopGear (Sezon 12 - 22) [HQ]"				title="(?=.*TopGear)" strm=""/>
@@ -177,7 +193,7 @@
 	<channel id="Usterka"									title="(?=.*Usterka)" strm=""/>
 	<channel id="Ukryta Prawda"								title="(?=.*Ukryta)(?=.*Prawda)" strm=""/>
 	<channel id="Ugotowani 1-3 Sezon"						title="(?=.*Ugotowani)" strm=""/>
-	<channel id="Fani czterech kolek"						title="(?=.*Fani)(?=.*czterech)" strm=""/>nie dziala
+	<channel id="Fani czterech kolek"						title="(?=.*Fani)(?=.*czterech)" strm=""/>
 	<channel id="Rozmowy w toku"							title="(?=.*Rozmowy)(?=.*w)(?=.*toku)" strm=""/>
 	<channel id="Kuchnia+ 15 minut Jamiego"					title="(?=.*Kuchnia+)(?=.*15)(?=.*minut)(?=.*Jamiego)" strm=""/>
 	<channel id="Zdrady"									title="(?=.*Zdrady)" strm=""/>
@@ -188,15 +204,22 @@
 	<channel id="topmodel1"									title="" strm="service=weebtv&amp;cid=5269"/>nie dziala
 	<channel id="Jason Statham Movie Pack"					title="(?=.*Jason)(?=.*Statham)(?=.*Movie)(?=.*Pack)" strm=""/>
 	<channel id="Louis De Funes - PL PACK"					title="(?=.*Louis)(?=.*De)(?=.*Funes)(?=.*Pack)" strm=""/>
-	<channel id="Dlugometrazowe bajki w HD"					title="(?=.*bajki)(?=.*w)(?=.*HD)" strm=""/>
 	<channel id="Polskie kultowe komedie"					title="(?=.*Polskie)(?=.*kultowe)(?=.*komedie)" strm=""/>
 	<channel id="Polskie komedie 1"							title="(?=.*Polskie)(?=.*komedie)(?=.*1)" strm=""/>
 	<channel id="Polskie komedie 2"							title="(?=.*Polskie)(?=.*komedie)(?=.*2)" strm=""/>
 	<channel id="Polskie komedie 3"							title="(?=.*Polskie)(?=.*komedie)(?=.*3)" strm=""/>
+	<channel id="Komedie"							        title="" strm="service=weebtv&amp;cid=6573"/>nie dziala
+	<channel id="Super komedie"							    title="" strm="service=weebtv&amp;cid=s571"/>nie dziala
+	<channel id="Sami Swoi"							        title="(?=.*Polskie)(?=.*komedie)(?=.*SAMI)(?=.*SWOI)" strm=""/>
+	<channel id="Polskie komedie romantyczne"				title="(?=.*Polskie)(?=.*komedie)(?=.*romantyczne)" strm=""/>
 	<channel id="James Bond 007 - PACK PL"					title="(?=.*James)(?=.*Bond)(?=.*007)" strm=""/>
 	<channel id="WLADCA PIERSCIENI Extended Ed."			title="" strm="service=weebtv&amp;cid=4636"/>nie dziala
 	<channel id="KABARETY 2015 LatajacyKlub2 cz.1"			title="(?=.*KABARETY)(?=.*2015)(?=.*cz.1)" strm=""/>
 	<channel id="KABARETY 2015 LatajacyKlub2 cz.2"			title="(?=.*KABARETY)(?=.*2015)(?=.*cz.2)" strm=""/>
+	<channel id="Kabaretowy szal"							title="(?=.*kabaretowy)(?=.*sza*)" strm=""/>
+	<channel id="Kabaret Ani Mru Mru 2015"				    title="(?=.*Kabaret)(?=.*Ani)(?=.*Mru)(?=.*Mru)" strm=""/>
+	<channel id="Kabaret Moralnego Niepokoju 2015"		    title="(?=.*Kabaret)(?=.*Moralnego)(?=.*Niepokoju)" strm=""/>
+	<channel id="Kabaret Paranienormalni Tonight"			title="(?=.*Kabaret)(?=.*Paranienormalni)(?=.*tonight)" strm=""/>
 	<channel id="BBC World News"						    title="(?=.*BBC)(?=.*world)(?=.*news)(?=.*ANG)" strm=""/>
 	<channel id="France 24"								    title="(?=.*FRANCE)(?=.*24)(?=.*ANG)" strm=""/>
 	<channel id="KSW"								        title="(?=.*KSW)" strm=""/>
