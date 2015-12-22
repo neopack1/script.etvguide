@@ -41,9 +41,10 @@
 	
 <!-- 
 Kanał HBO tymczasowo ustawiony na jakość SD ponieważ HD nie nadaje - oryginalny HD wpis zapisany w komentarzu:
-<channel id="HBO" 										title="(?=HBO(\s*HD)?$)" strm=""/>
--->
 	<channel id="HBO" 										title="(?=HBO\s*$)" strm=""/>
+<channel id="HBO" 										title="(?=HBO(\s*720p)?$)" strm=""/>
+-->
+	<channel id="HBO" 										title="(?=HBO(\s*720p)?$)" strm=""/>
 	
 	<channel id="HBO2" 										title="(?=HBO\s*2(\s*HD)?$)" strm=""/>
 	<channel id="HBO Comedy" 								title="(?=HBO\s*Comedy(\s*HD)?$)" strm=""/>
