@@ -137,15 +137,15 @@ Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN st
 	<channel id="ESKA GO"						    		title="(?=ESKA\s*GO(\s*HD)?\s*$)" strm=""/>
 	<channel id="ESKA ROCK"						    		title="(?=ESKA\s*ROCK(\s*HD)?\s*$)" strm=""/>
 	<channel id="MUSIC VOX TV 2"						    title="(?=MUSIC\s*VOX\s*TV\s*2(\s*HD)?\s*$)" strm=""/>
-	<channel id="POLO PARTY TV"						    	title="(?=POLO\s*PARTY\s*TV(\s*HD)?\s*$)" strm=""/>
+	<channel id="POLO PARTY TV"						    	title="" strm="http://stream.smcloud.net/live2/polo_party/polo_party_480p/playlist.m3u8"/>
 	<channel id="SPORT KLUB"						    	title="(?=SPORT\s*KLUB(\s*HD)?\s*$)" strm=""/>
 	<channel id="TUBA TV"						    		title="(?=TUBA\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="TV KUJAWY"						    		title="(?=TV\s*KUJAWY(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVN 24 BiS"						    	title="(?=TVN\s*24\s*BiS(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVN METEO ACTIVE"						    title="(?=TVN\s*METEO\s*ACTIVE(\s*HD)?\s*$)" strm=""/>
 	<channel id="VOX MUSIC TV"						    	title="" strm="rtmp://stream.smcloud.net/live/vox2/stream1"/>
-	<channel id="WAWA TV"						    		title="(?=WAWA\s*TV(\s*HD)?\s*$)" strm=""/>
-	<channel id="CZWORKA POLSKIE RADIO"						title="(?=CZW.*RKA\s*POLSKIE\s*RADIO(\s*HD)?\s*$)" strm=""/>
+	<channel id="WAWA TV"						    		title="" strm="http://stream.smcloud.net/live2/wawa/wawa_480p/playlist.m3u8"/>
+	<channel id="CZWORKA POLSKIE RADIO"						title="" strm="rtmp://stream85.polskieradio.pl/video/czworka.sdp"/>
 
 </map>
 
