@@ -42,6 +42,8 @@ from itertools import chain
 
 import io, zipfile
 
+SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', 'Time.Zone']
+
 TIMEZONE = ADDON.getSetting('Time.Zone')
 CHECK_NAME = ADDON.getSetting('username')
 ADDON_VERSION =  ADDON.getAddonInfo('version')
@@ -51,8 +53,7 @@ if CHECK_NAME:
     USER_AGENT = ADDON.getSetting('username')
 else:
     USER_AGENT = ADDON.getSetting('usernameGoldVOD')
-
-SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', 'Time.Zone']
+    
 
 class Channel(object):
     def __init__(self, id, title, logo = None, streamUrl = None, visible = True, weight = -1):
@@ -406,7 +407,7 @@ class Database(object):
             serviceStreamRegex = "service=goldvod&cid=%"
             self.storeCustomStreams(GoldVodTvStrmUpdater(), streamSource, serviceStreamRegex)
             
-        if True:
+        if ADDON.getSetting('Telewizjada_enabled') == 'true':
             streamSource = 'telewizjada.net'
             serviceStreamRegex = "service=telewizjada&cid=%"
             telewizja = telewizjadacids.TelewizjaDaUpdater()
@@ -863,11 +864,8 @@ class Source(object):
         try:
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
-            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (' + USER_AGENT + TIMEZONE + ' version: ' + ADDON_VERSION + ')' })
-            response = urllib2.urlopen(u,timeout=30)
-            content = response.read()
-            #u = urllib2.urlopen(url, timeout=30)
-            #content = u.read()
+            u = urllib2.urlopen(url, timeout=30)
+            content = u.read()
             if url.lower().endswith('.zip'):
                 tnow = datetime.datetime.now()
                 deb("[EPG] Unpacking epg: %s [%s sek.]" % (url, str((tnow-start).seconds)))
@@ -876,7 +874,7 @@ class Source(object):
                 content = unziped.read(unziped.namelist()[0])
                 unziped.close()
                 memfile.close()
-            response.close()
+            u.close()
             tnow = datetime.datetime.now()
             deb("[EPG] Downloading done [%s sek.]" % str((tnow-start).seconds))
             return content
@@ -939,7 +937,7 @@ class ETVGUIDESource(Source):
         
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
         if self.epgBasedOnLastModDate == 'false':
-            return super(MTVGUIDESource, self).isUpdated(channelsLastUpdated, programLastUpdate)
+            return super(ETVGUIDESource, self).isUpdated(channelsLastUpdated, programLastUpdate)
         lastEpgUpdateDate = self.getNewUpdateTime()
         if channelsLastUpdated is None or channelsLastUpdated != lastEpgUpdateDate:
             return True

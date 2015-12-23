@@ -20,6 +20,7 @@
 	<string id="30110">Update program information on XBMC startup</string>
 	<string id="30116">Search for channel logos in</string>
 	<string id="30117">Select EPG</string>
+	<string id="30118">Additional EPG</string>
 	<string id="30150">Oops, sorry about that!</string>
 	<string id="30151">It was not possible to load program data,</string>
 	<string id="30152">check settings or try again later...</string>
@@ -72,6 +73,7 @@
 	<string id="30703">Automaticly set actual streams</string>
 	<string id="30704">Use zipped epg</string>
 	<string id="30705">Show only programs with stream assigned</string>
+	<string id="30706">Automatycally detect EPG updates (Testing)</string>
 
 <!-- weeb.tv mod -->
 	<string id="30802">TV Guide is configured to stream using Weeb.Tv</string>
@@ -83,7 +85,9 @@
 	<string id="30911">Time Zone UTC (+01:00 Poland)</string>
 	<string id="30912">Weeb.tv settings</string>
 	<string id="59902">GoldVOD settings</string>
+	<string id="59912">Telewizjada.net settings</string>
 	<string id="59904">Enabled</string>
+	<string id="59914">Enabled</string>
 	<string id="30913">Settings</string>
 	<string id="30914">Skin</string>
 	<string id="30915">Enable XBMC e-TVGuide autostart</string>
@@ -124,6 +128,7 @@
 	<string id="89002">Timeout action</string>
 	<string id="89003">Timeout value (min)</string>
 	<string id="59901">GoldVOD</string>
+	<string id="59911">Telewizjada.net</string>
 	
 <!-- errors & messages -->
 	<string id="57001">API error</string>

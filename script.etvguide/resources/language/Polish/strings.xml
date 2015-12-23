@@ -19,7 +19,8 @@
 	<string id="30108">Wyczyść wszystkie przypomnienia...</string>
 	<string id="30110">Aktualizuj informacje o programie podczas startu XBMC</string>
 	<string id="30116">Wyszukaj obrazki kanałów w</string>
-	<string id="30117">[COLOR red]Wpisz swój link premium z [CR]http://mods-kodi.pl dla EPG[/COLOR]</string>
+	<string id="30117">Wybierz EPG</string>
+	<string id="30118">Dodatkowe EPG</string>
 	<string id="30150">Ładowanie nie powiodło się!</string>
 	<string id="30151">Twoje ustawienia lub podany adres są błędne![CR]</string>
 	<string id="30152">Sprawdź ustawienia albo sproboj ponownie pozniej</string>
@@ -72,6 +73,7 @@
 	<string id="30703">Automatycznie przypisz aktualnie nadawane streamy</string>
 	<string id="30704">Użyj skompresowanego epg</string>
 	<string id="30705">Wyświetlaj tylko programy z przypisanym stream'em</string>
+	<string id="30706">Automatycznie wykrywaj aktualizacje EPG (Testowe)</string>
 
 <!-- weeb.tv mod -->
 	<string id="30802">TV Guide jest skonfigurowany, aby używać dodatku Weeb.Tv</string>
@@ -83,7 +85,9 @@
 	<string id="30911">Strefa Czasowa UTC (+01:00 Polska)</string>
 	<string id="30912">Ustawienia Weeb.tv</string>
 	<string id="59902">Ustawienia GoldVOD</string>
+	<string id="59912">Ustwienia Telewizjada.net</string>
 	<string id="59904">Aktywny</string>
+	<string id="59914">Aktywny</string>
 	<string id="30913">Ustawienia</string>
 	<string id="30914">Skórka</string>
 	<string id="30915">Uruchom e-TVGuide po starcie XBMC</string>
@@ -125,6 +129,7 @@
 	<string id="89002">Akcja wykonana po upływie czasu nieaktywności</string>
 	<string id="89003">Czas braku aktywności (min)</string>
 	<string id="59901">GoldVOD</string>
+	<string id="59911">Telewizjada.net</string>
 
 <!-- errors & messages -->
 	<string id="57001">Błąd API</string>

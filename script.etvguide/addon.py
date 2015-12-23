@@ -45,10 +45,12 @@ class Start:
                 w.doModal()
                 w.close()
                 del w
-            except Exception:
-                pass
+                del xbmc.Player
+            except Exception, ex:
+                deb('addon.py exception: %s' % str(ex))
         elif service == "weebtv" or service == "goldvod":
-            self.Play(cid, service)
+            #self.Play(cid, service)
+            pass
 
 
 

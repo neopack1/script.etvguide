@@ -27,7 +27,7 @@ ADDON               = xbmcaddon.Addon(id = ADDON_ID)
 ADDON_PATH          = ADDON.getAddonInfo('path')
 ADDON_CIDUPDATED    = False    #zabezpieczenie przed ponownym updatem cidow
 ADDON_AUTOSTART     = False    #zabezpieczenie przed ponownym uruchomieniem wtyczki
-FORCE_ADD_LOG_DEBUG = False     #True - Logowanie nawet jezeli wylaczone debugowanie w XBMC
+FORCE_ADD_LOG_DEBUG = True     #True - Logowanie nawet jezeli wylaczone debugowanie w XBMC
 
 NO_DESCRIPTION = 30000
 CALCULATING_REMAINING_TIME = 30002

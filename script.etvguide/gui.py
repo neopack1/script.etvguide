@@ -36,6 +36,7 @@ from strings import *
 import re, sys, os
 import streaming
 import vosd
+import main
 from vosd import VideoOSD
 
 MODE_EPG = 'EPG'
@@ -270,6 +271,7 @@ class eTVGuide(xbmcgui.WindowXML):
                 self.database.close(super(eTVGuide, self).close)
             else:
                 super(eTVGuide, self).close()
+            self._clearEpg()
 
     def onInit(self):
         deb('onInit')
@@ -750,7 +752,8 @@ class eTVGuide(xbmcgui.WindowXML):
             if url[0:9] == 'plugin://':
                 xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
             elif url[0:7] == 'service':
-                xbmc.executebuiltin('XBMC.RunScript(%s,%s,0)' % (ADDON_ID, url))
+                playService(url)
+                #xbmc.executebuiltin('XBMC.RunScript(%s,%s,0)' % (ADDON_ID, url))
             else:
                 self.player.play(item = url)
 
@@ -1735,7 +1738,8 @@ class Pla(xbmcgui.WindowXMLDialog):
         if url[0:9] == 'plugin://':
             xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
         elif url[0:7] == 'service':
-            xbmc.executebuiltin('XBMC.RunScript(%s,%s,0)' % (ADDON_ID, url))
+            playService(url)
+            #xbmc.executebuiltin('XBMC.RunScript(%s,%s,0)' % (ADDON_ID, url))
         else:
             xbmc.Player().play(url)
 
@@ -1879,9 +1883,17 @@ class Pla(xbmcgui.WindowXMLDialog):
         if url[0:9] == 'plugin://':
             xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
         elif url[0:7] == 'service':
-            xbmc.executebuiltin('XBMC.RunScript(%s,%s,0)' % (ADDON_ID, url))
+            playService(url)
+            #xbmc.executebuiltin('XBMC.RunScript(%s,%s,0)' % (ADDON_ID, url))
         else:
             xbmc.Player().play(url)
+            
+def playService(url):
+    params = url[8:].split('&')
+    service = params[0]
+    cid = params[1].split('=')[1]
+    deb('playService playing cid %s, service %s' % (cid, service))
+    run = main.InitPlayer().LoadVideoLink(cid, service)
 
 class SleepSupervisor(object):
     def __init__(self):
@@ -1911,3 +1923,4 @@ class SleepSupervisor(object):
         if self.sleepEnabled == 'Tak':
             deb('Supervisor timer Stop')
             xbmc.executebuiltin('CancelAlarm(Stopper,True)')
+
