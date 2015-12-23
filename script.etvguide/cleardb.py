@@ -54,7 +54,7 @@ if __name__ == '__main__':
     
     d = xbmcgui.Dialog()
     if deleteDB():
-        d.ok('EPG successfully reset.', 'It will be re-created next time', 'you start the guide')    
+        d.ok('EPG successfully reset.', 'It will be re-created next time you start the guide')    
     
     else:
         d.ok('Failed to reset EPG.', 'Database may be locked,', 'please restart Kodi and try again')
