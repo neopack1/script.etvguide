@@ -37,6 +37,8 @@ import xbmcgui
 import xbmcvfs
 import sqlite3
 from weebtvcids import WebbTvStrmUpdater, GoldVodTvStrmUpdater
+import telewizjadacids
+from itertools import chain
 
 import io, zipfile
 
@@ -49,7 +51,7 @@ if CHECK_NAME:
     USER_AGENT = ADDON.getSetting('username')
 else:
     USER_AGENT = ADDON.getSetting('usernameGoldVOD')
-    
+
 SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', 'Time.Zone']
 
 class Channel(object):
@@ -132,6 +134,7 @@ class Database(object):
             os.makedirs(profilePath)
         self.databasePath = os.path.join(profilePath, Database.SOURCE_DB)
         self.ChannelsWithStream = ADDON.getSetting('OnlyChannelsWithStream')
+        self.epgBasedOnLastModDate = ADDON.getSetting('UpdateEPGOnModifiedDate')
 
         threading.Thread(name='Database Event Loop', target = self.eventLoop).start()
 
@@ -229,6 +232,7 @@ class Database(object):
     def close(self, callback=None):
         self.eventQueue.append([self._close, callback])
         self.event.set()
+        self.source.close()
 
     def _close(self):
         try:
@@ -284,7 +288,13 @@ class Database(object):
 
         # check if program data is up-to-date in database
         c = self.conn.cursor()
-        c.execute('SELECT programs_updated FROM updates WHERE source=?', [self.source.KEY])
+
+        if self.epgBasedOnLastModDate == 'false':
+            dateStr = date.strftime('%Y-%m-%d')
+            c.execute('SELECT programs_updated FROM updates WHERE source=? AND date=?', [self.source.KEY, dateStr])
+        else:
+            c.execute('SELECT programs_updated FROM updates WHERE source=?', [self.source.KEY])
+            
         row = c.fetchone()
         if row:
             programsLastUpdated = row['programs_updated']
@@ -309,7 +319,7 @@ class Database(object):
             deb('_isCacheExpired')
             self.updateInProgress = True
             self.updateFailed = False
-            self.source.resetEPGULastModifiedDate()
+            #self.source.resetEPGULastModifiedDate()
             dateStr = date.strftime('%Y-%m-%d')
             c = self.conn.cursor()
 
@@ -396,6 +406,13 @@ class Database(object):
             serviceStreamRegex = "service=goldvod&cid=%"
             self.storeCustomStreams(GoldVodTvStrmUpdater(), streamSource, serviceStreamRegex)
             
+        if True:
+            streamSource = 'telewizjada.net'
+            serviceStreamRegex = "service=telewizjada&cid=%"
+            telewizja = telewizjadacids.TelewizjaDaUpdater()
+            telewizja.loadChannelList()
+            self.storeCustomStreams(telewizja, streamSource, serviceStreamRegex)
+
         self.printStreamsWithoutChannelEPG()
 
         ADDON_CIDUPDATED = True
@@ -838,6 +855,9 @@ class Source(object):
     
     def resetEPGULastModifiedDate(self):
         self.EPGULastModifiedDate = None
+        
+    def close(self):
+        pass
 
     def _downloadUrl(self, url):
         try:
@@ -893,21 +913,33 @@ class ETVGUIDESource(Source):
             self.ETVGUIDEUrl = 'http://epg2.feenk.net/epg.xml'
         else:
             self.ETVGUIDEUrl = 'http://epg.feenk.net/epg.xml'
-            
+
+        self.ETVGUIDEUrl2 = addon.getSetting('e-TVGuide2')        
         self.EPGULastModifiedDate = None
         self.logoFolder = None
+        self.epgBasedOnLastModDate = ADDON.getSetting('UpdateEPGOnModifiedDate')
+        self.timer = threading.Timer(1800, self.resetEPGULastModifiedDate)
 
     def getDataFromExternal(self, date, progress_callback = None):
+        parsedData1 = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl)
+        if self.ETVGUIDEUrl2 != "":
+            parsedData2 = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl2)
+            return chain(parsedData1, parsedData2)
+        return parsedData1
+        
+    def _getDataFromExternal(self, date, progress_callback, url):
         try:
-            xml = self._downloadUrl(self.ETVGUIDEUrl)
+            xml = self._downloadUrl(url)
             io = StringIO.StringIO(xml)
             context = ElementTree.iterparse(io)
             return parseXMLTV(context, io, len(xml), self.logoFolder, progress_callback)
         except Exception, ex:
-            deb("Błąd pobierania epg: %s\n\nSzczegóły:\n%s" % (self.ETVGUIDEUrl, str(ex)))
+            deb("Błąd pobierania epg: %s\n\nSzczegóły:\n%s" % (url, str(ex)))
             raise ex
         
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
+        if self.epgBasedOnLastModDate == 'false':
+            return super(MTVGUIDESource, self).isUpdated(channelsLastUpdated, programLastUpdate)
         lastEpgUpdateDate = self.getNewUpdateTime()
         if channelsLastUpdated is None or channelsLastUpdated != lastEpgUpdateDate:
             return True
@@ -916,6 +948,8 @@ class ETVGUIDESource(Source):
         return False
     
     def getNewUpdateTime(self):
+        if self.epgBasedOnLastModDate == 'false':
+            return super(ETVGUIDESource, self).getNewUpdateTime()
         if self.EPGULastModifiedDate is not None:
             return self.EPGULastModifiedDate
         failedCounter = 0
@@ -927,13 +961,15 @@ class ETVGUIDESource(Source):
                 strippedTime = strptime(timeStr, "%a, %d %b %Y %H:%M:%S GMT")
                 self.EPGULastModifiedDate = datetime.datetime(strippedTime.tm_year, strippedTime.tm_mon, strippedTime.tm_mday, strippedTime.tm_hour, strippedTime.tm_min, strippedTime.tm_sec)
                 #This will force checking for updates every 30 min
-                threading.Timer(1800, self.resetEPGULastModifiedDate).start()
+                self.timer.start()
                 return self.EPGULastModifiedDate
             except Exception, ex:
                 deb('getNewUpdateTime exception %s failedCounter %s' % (str(ex), failedCounter))
                 failedCounter = failedCounter + 1
         return datetime.datetime.now()
-            
+    
+    def close(self):
+        self.timer.cancel()
 
 def parseXMLTVDate(dateString):
     if dateString is not None:

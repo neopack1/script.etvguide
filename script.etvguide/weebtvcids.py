@@ -1,6 +1,6 @@
 ﻿#      Copyright (C) 2014 Krzysztof Cebulski
 
-import urllib, urllib2, httplib, sys, StringIO, re
+import urllib, urllib2, httplib, sys, StringIO, cookielib, re
 from xml.etree import ElementTree
 import simplejson as json #import json
 import xbmc
@@ -12,9 +12,9 @@ import ConfigParser
 url        = 'http://weeb.tv'
 jsonUrl    = url + '/api/getChannelList'
 goldUrlSD = 'http://goldvod.tv/api/getTvChannelsSD.php'
-goldUrlHD = 'http://goldvod.tv/api/getTvChannelsHD.php'
+goldUrlHD = 'http://goldvod.tv/api/getTvChannels.php'
 
-HOST       = 'XBMC'
+HOST       = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:19.0) Gecko/20121213 Firefox/19.0'
 rstrm      = '%s'  #pobierany przepis z xml-a np.: 'service=weebtv&cid=%s'
 pathAddons = os.path.join(ADDON.getAddonInfo('path'), 'resources', 'addons.ini')
 pathMapBase = os.path.join(ADDON.getAddonInfo('path'), 'resources')
@@ -170,6 +170,59 @@ class ShowList:
         return result
 
 
+    def getJsonFromExtendedAPI(self, url, post_data = None, save_cookie = False, load_cookie = False, cookieFile = None):
+        
+        result_json = { '0': 'Null' }
+        customOpeners = []
+        cj = cookielib.LWPCookieJar()
+
+        def urlOpen(req, customOpeners):
+            if len(customOpeners) > 0:
+                opener = urllib2.build_opener( *customOpeners )
+                response = opener.open(req)
+            else:
+                response = urllib2.urlopen(req)
+            return response
+        
+        try:
+            if cookieFile is not None:
+                customOpeners.append( urllib2.HTTPCookieProcessor(cj) )
+                if load_cookie == True:
+                    cj.load(cookieFile, ignore_discard = True)
+                
+            headers = { 'User-Agent' : HOST }
+            data = urllib.urlencode(post_data)
+            reqUrl = urllib2.Request(url, data, headers)
+            raw_json = urlOpen(reqUrl, customOpeners)
+            result_json = raw_json.read()
+            
+            if cookieFile is not None and save_cookie == True:
+                cj.save(cookieFile, ignore_discard = True)
+                
+        except urllib2.URLError, urlerr:
+            result_json = { '0': 'Error' }
+            print urlerr
+        except NameError, namerr:
+            result_json = { '0': 'Error' }
+            print namerr
+        except ValueError, valerr:
+            result_json = { '0': 'Error' }
+            print valerr
+        except httplib.BadStatusLine, statuserr:
+            result_json = { '0': 'Error' }
+            print statuserr
+            
+        return result_json
+    
+    def getCookieItem(self, cookiefile, item):
+        ret = ''
+        if os.path.isfile(cookiefile):
+            cj = cookielib.LWPCookieJar()
+            cj.load(cookiefile, ignore_discard = True)
+            for cookie in cj:
+                if cookie.name == item: 
+                    ret = cookie.value
+        return ret
 
 class WeebTvCid:
     def __init__(self, cid, name, title, online, strm = "", img = ""):
@@ -213,7 +266,7 @@ class MapString:
 
     @staticmethod
     def loadFile(path):
-        deb('\n[UPD] Wczytywanie mapy => etvguide: %s' % path)
+        deb('\n[UPD] Wczytywanie mapy => mtvguide: %s' % path)
         with open(path, 'r') as content_file:
             content = content_file.read()
         return content #.replace("\t", "")
@@ -225,19 +278,17 @@ class GoldVodTvStrmUpdater:
             sl.setLoginData(ADDON.getSetting('usernameGoldVOD'), ADDON.getSetting('userpasswordGoldVOD'))
             pathMap = os.path.join(pathMapBase, 'goldvodmap.xml')
             
-            self.channels = sl.loadChannelsGoldVod(goldUrlSD, 'url', 'password')
-            
             if ADDON.getSetting('video_qualityGoldVOD') == 'true':
-                tmpChannels = sl.loadChannelsGoldVod(goldUrlHD, 'url', 'password')
-                self.channels.extend(tmpChannels)
-                deb('GoldVOD after merge: %s channels' % len(self.channels) )
+                self.channels = sl.loadChannelsGoldVod(goldUrlHD, 'url', 'password')
+            else:
+                self.channels = sl.loadChannelsGoldVod(goldUrlSD, 'url', 'password')
             
             mapfile = MapString.loadFile(pathMap)
             self.automap = MapString.Parse(mapfile)
             
             deb('\n[UPD] Wyszykiwanie STRM')
             deb('-------------------------------------------------------------------------------------')
-            deb('[UPD] %-30s %-30s %-15s %-35s' % ('-ID eTvGuide-', '-    Orig Name    -', '-    SRC   -', '-    STRM   -'))
+            deb('[UPD] %-30s %-30s %-15s %-35s' % ('-ID mTvGuide-', '-    Orig Name    -', '-    SRC   -', '-    STRM   -'))
             for x in self.automap:                                     #mapa id naszego kanalu + wyr regularne
                 if x.strm != '':
                     x.src = 'CONST'                             #informacja o tym że STRM pochodzi z pliku mapy
@@ -270,7 +321,7 @@ class GoldVodTvStrmUpdater:
             deb('-------------------------------------------------------------------------------------')
             for y in self.channels:
                 if y.src == '' or y.src != 'goldvod.tv':
-                    deb ('[UPD] ID=%-30s TITLE=%-40s SRC=%-15s STRM=%-25s' % (y.name, y.title, y.src, str(y.strm)))
+                    deb ('[UPD] CID=%-10s NAME=%-40s STRM=%-45s' % (y.cid, y.name, str(y.strm)))
 
             deb("[UPD] Zakończono analizę...")
             
@@ -350,4 +401,4 @@ class WebbTvStrmUpdater:
         except Exception, ex:
             print 'Error %s' % str(ex)
             raise
-        
+

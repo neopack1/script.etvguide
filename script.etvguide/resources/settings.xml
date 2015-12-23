@@ -14,6 +14,10 @@
 		<setting id="userpasswordGoldVOD" type="text" option="hidden" label="55003" default=""/>
 		<setting id="video_qualityGoldVOD" type="bool" label="55005" default="true"/>
 	</category>
+	<category label="59911">
+		<setting label="59912" type="lsep"/>
+		<setting id="Telewizjada_enabled" type="bool" label="59914" default="true"/>
+	</category>
 	<category label="30101">
 		<setting id="source" label="30701" type="labelenum" default="e-TVGuide" values="XMLTV|e-TVGuide"/>
 		<setting id="AutoUpdateCid" label="30703" type="bool" default="true" visible="eq(-1,1)"/>
@@ -21,7 +25,9 @@
 		<setting id="xmltv.file" label="30103" type="file" visible="eq(-3,0)"/>
 		<setting id="xmltv.logo.folder" label="30116" type="folder" visible="eq(-4,0)"/>
 		<setting id="e-TVGuide" label="30117" type="labelenum" visible="eq(-5,1)" default="Default" values="Default|Alternative"/>
+		<setting id="e-TVGuide2" label="30118" type="text" visible="eq(-6,1)" default="" />
 		<setting id="Time.Zone" label="30911" type="labelenum" default="+01:00" values="-12:00|-11:00|-10:00|-09:30|-09:00|-08:00|-07:00|-06:00|-05:00|-04:30|-04:00|-03:30|-03:00|-02:00|-01:00|00:00|+01:00|+02:00|+03:00|+03:30|+04:00|+04:30|+05:00|+05:30|+05:45|+06:00|+06:30|+07:00|+08:00|+09:00|+09:30|+10:00|+10:30|+11:00|+11:30|+12:00|+12:45|+13:00|+14:00|"/>
+		<setting id="UpdateEPGOnModifiedDate" label="30706" type="bool" default="false" visible="eq(-8,1)"/>
 	</category>
 	<category label="30913">
 		<setting id="cache.data.on.xbmc.startup" label="30110" type="bool" default="false"/>

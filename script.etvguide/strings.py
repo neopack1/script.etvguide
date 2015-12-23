@@ -105,6 +105,6 @@ def getStateLabel(control, label_idx, default=0):
 
 def deb(s):
     if FORCE_ADD_LOG_DEBUG:
-        xbmc.log("MTVGUIDE @ " + str(s))
+        xbmc.log("eTVGUIDE @ " + str(s))
     else:
-        xbmc.log("MTVGUIDE @ " + str(s), xbmc.LOGDEBUG)
+        xbmc.log("eTVGUIDE @ " + str(s), xbmc.LOGDEBUG)

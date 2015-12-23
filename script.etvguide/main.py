@@ -9,7 +9,9 @@ import threading
 import time
 import simplejson as json
 import weebtvcids
+import datetime
 from strings import *
+import telewizjadacids
 
 
 t = ADDON.getLocalizedString
@@ -26,6 +28,8 @@ goldVODLogin = ADDON.getSetting('usernameGoldVOD')
 goldVODPassword = ADDON.getSetting('userpasswordGoldVOD')
 multi = ADDON.getSetting('video_quality')
 
+goldVODChannelList = None
+goldVODLastUpdate = None
 
 class ShowList:
     def __init__(self):
@@ -262,7 +266,10 @@ class InitPlayer:
         return dataInfo
 
     def LoadVideoLink(self, channel, service):
+        deb('LoadVideoLink %s service' % service)
         res = True
+        channels = None
+        channelInfo = None
         if service == "weebtv":
             rtmp = RTMP()
             val = self.getChannelInfoFromJSON(channel)
@@ -299,15 +306,33 @@ class InitPlayer:
             else:
                 msg = Messages()
                 msg.Warning(t(57018).encode('utf-8'), t(57042).encode('utf-8'))
-        elif service == "goldvod":
-            deb('LoadVideoLink goldvod service')
-            channelInfo = None
-            sl = weebtvcids.ShowList()
-            sl.setLoginData(goldVODLogin, goldVODPassword)
-            channels = sl.loadChannelsGoldVod('http://goldvod.tv/api/getTvChannels.php', 'url', 'password', True)
+        elif service == "goldvod":            
+            global goldVODChannelList
+            global goldVODLastUpdate
+            if goldVODLastUpdate is not None and goldVODChannelList is not None:
+                try:
+                    secSinceLastUpdate = (datetime.datetime.now() - goldVODLastUpdate).total_seconds()
+                    deb('LoadVideoLink channels were updated %s seconds ago' % secSinceLastUpdate )
+                    if secSinceLastUpdate < 600:
+                        channels = goldVODChannelList
+                except:
+                    pass
+
+            if channels is None:
+                deb('LoadVideoLink downloading channel list')
+                sl = weebtvcids.ShowList()
+                sl.setLoginData(goldVODLogin, goldVODPassword)
+                channels = sl.loadChannelsGoldVod('http://goldvod.tv/api/getTvChannels.php', 'url', 'password', True)
+
+                if len(channels) > 0:
+                    goldVODChannelList = channels
+                    goldVODLastUpdate = datetime.datetime.now()
+            else:
+                deb('LoadVideoLink using cached list')
+            
             for chann in channels:
                 if channel == chann.cid:
-                    deb('LoadVideoLink: found matching channel: cid %s, name %s, rtmp %s' % (chann.cid, chann.name, chann.strm))
+                    deb('LoadVideoLink: service %s found matching channel: cid %s, name %s, rtmp %s' % (service, chann.cid, chann.name, chann.strm))
                     channelInfo = chann
                     break
             if channelInfo is not None:
@@ -317,6 +342,26 @@ class InitPlayer:
                     player = VideoPlayer()
                     player.setPremium(1)
                     player.play(channelInfo.strm, liz, windowed=True)
+                except Exception, ex:
+                    msg = Messages()
+                    msg.Error(t(57018).encode('utf-8'), t(57021).encode('utf-8'), t(57028).encode('utf-8'), str(ex))
+        elif service == "telewizjada":
+            telewizja = telewizjadacids.TelewizjaDaUpdater()
+            channels = telewizja.getChannelList()
+            if len(channels) > 0:
+                url = telewizja.getChannelUrl(channel)
+                for chann in channels:
+                    if channel == chann.cid:
+                        deb('LoadVideoLink: service %s found matching channel: cid %s, name %s, rtmp %s ' % (service, chann.cid, chann.name, chann.strm))
+                        channelInfo = chann
+                        break
+                if channelInfo is not None:
+                    liz = xbmcgui.ListItem(channelInfo.name, iconImage = channelInfo.img, thumbnailImage = channelInfo.img)
+                    liz.setInfo( type="Video", infoLabels={ "Title": channelInfo.name, } )
+                try:
+                    player = VideoPlayer()
+                    player.setPremium(1)
+                    player.play(url, liz, windowed=True)
                 except Exception, ex:
                     msg = Messages()
                     msg.Error(t(57018).encode('utf-8'), t(57021).encode('utf-8'), t(57028).encode('utf-8'), str(ex))
