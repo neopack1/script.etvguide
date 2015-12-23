@@ -1,6 +1,5 @@
 #
-#      Copyright (C) 2013 Szakalit
-#      
+#      Copyright (C) 2014 Sean Poyser and Richard Dean (write2dixie@gmail.com)
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -13,35 +12,49 @@
 #  GNU General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public License
-#  along with this Program; see the file LICENSE.txt.  If not, write to
+#  along with XBMC; see the file COPYING.  If not, write to
 #  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #  http://www.gnu.org/copyleft/gpl.html
 #
-import datetime
-import os
-import xbmc
-import xbmcgui
-import source as src
 
+import os
+import xbmcgui
+import xbmcaddon
+import notification
+import xbmc
+import source
 from strings import *
+import ConfigParser
+
+def deleteDB():
+    try:
+        import glob
+        xbmc.log('Deleting database...')
+        profilePath = xbmc.translatePath(ADDON.getAddonInfo('profile'))
+        dbFile  = os.path.join(profilePath, 'source.db')
+        os.remove(dbFile)
+
+    
+        passed = (not os.path.exists(dbFile))
+
+        if passed: 
+            xbmc.log('Deleting database...PASSED')
+        else:
+            xbmc.log('Deleting database...FAILED')
+
+        return passed
+
+    except Exception, e:
+        xbmc.log('Deleting database...EXCEPTION %s' % str(e))
+        return False
+
 
 
 if __name__ == '__main__':
-    database = src.Database()
-
-    def onDBCleared():
-	d = xbmcgui.Dialog()
-	d.ok('e-TVGuide', 'Baza danych zostala usunieta.', 'Zostanie utworzona po uruchomieniu eTVGuide.')
-
-        #xbmcgui.Dialog().ok(strings(CLEAR_DB), strings(DONE_DB))
-
-    def onInitialized(success):
-        if success:
-            database.clearDB()
-            database.close(onDBCleared)
-        else:
-            database.close()
-
-    database.initialize(onInitialized)
-
-
+    
+    d = xbmcgui.Dialog()
+    if deleteDB():
+        d.ok('EPG successfully reset.', 'It will be re-created next time', 'you start the guide')    
+    
+    else:
+        d.ok('Failed to reset EPG.', 'Database may be locked,', 'please restart Kodi and try again')
