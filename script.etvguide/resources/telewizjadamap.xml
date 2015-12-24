@@ -122,18 +122,18 @@ Kanał HBO tymczasowo ustawiony na jakość SD ponieważ HD nie nadaje - orygina
 	<channel id="MTV Polska" 								title="(^MTV$)" strm=""/>
 	<channel id="MTV Live HD" 								title="(?=.*MTV)(?=.*Live)" strm=""/>
 	<channel id="Kino Polska Muzyka" 						title="(?=.*Kino)(?=.*Polska)(?=.*Muzyka)" strm=""/>
-	<channel id="Eska TV" 									title="(?=Eska\s*TV(\s*HD)?$)" strm=""/>
+	<channel id="Eska TV" 									title="" strm="rtmp://stream.smcloud.net/live2/eskatv/eskatv_360p"/>
 	<channel id="VIVA Polska" 								title="(?=.*VIVA)(?=.*Polska)" strm=""/>
 	<channel id="4fun TV" 									title="(?=4FUN\s*TV(\s*HD)?$)" strm=""/>
-	<channel id="Polo TV" 									title="(?=POLO\s*TV(\s*HD)?$)" strm=""/>
+	<channel id="Polo TV" 									title="" strm="http://stream.smcloud.net/live/polotv/playlist.m3u8"/>
 	<channel id="BBC World News"						    title="(?=.*BBC)(?=.*world)(?=.*news)(?=.*ANG)" strm=""/>
 	<channel id="Stopklatka TV"						    	title="(?=STOPKLATKA\s*TV(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox Family"						    title="(?=FILMBOX\s*FAMILY(\s*HD)?$)" strm=""/>
 	<channel id="Fokus TV"						    		title="(?=Focus\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="Travel Channel"						    title="(?=TRAVEL\s*CHANNEL(\s*HD)?\s*$)" strm=""/>
 	
-	<channel id="ESKA BEST MUSIC"						    title="(?=ESKA\s*BEST\s*MUSIC(\s*HD)?\s*$)" strm=""/>
-	<channel id="ESKA GO"						    		title="(?=ESKA\s*GO(\s*HD)?\s*$)" strm=""/>
+	<channel id="ESKA BEST MUSIC"						    title="" strm="http://stream.smcloud.net/live2/best/best_480p/playlist.m3u8"/>
+	<channel id="ESKA GO"						    		title="" strm="http://stream.smcloud.net/live2/eska_party/eska_party_360p/playlist.m3u8"/>
 	<channel id="ESKA ROCK"						    		title="(?=ESKA\s*ROCK(\s*HD)?\s*$)" strm=""/>
 	<channel id="MUSIC VOX TV 2"						    title="(?=MUSIC\s*VOX\s*TV\s*2(\s*HD)?\s*$)" strm=""/>
 	<channel id="POLO PARTY TV"						    	title="" strm="http://stream.smcloud.net/live2/polo_party/polo_party_480p/playlist.m3u8"/>
