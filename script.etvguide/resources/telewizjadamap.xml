@@ -49,7 +49,7 @@ Kanał HBO tymczasowo ustawiony na jakość SD ponieważ HD nie nadaje - orygina
 	<channel id="HBO Comedy" 								title="(?=HBO\s*Comedy(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox" 								    title="(?=Filmbox(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox Extra" 							title="(?=.*Filmbox)(?=.*Extra)" strm=""/>
-	<channel id="Cinemax" 									title="(?=.*Cinemax)" strm=""/>
+	<channel id="Cinemax" 									title="(?=.*Cinemax$)" strm=""/>
 	<channel id="Cinemax 2" 								title="(?=.*Cinemax)(?=.*2)" strm=""/>
 	<channel id="Polsat Film" 								title="(?=Polsat\s*Film(\s*HD)?$)" strm=""/>
 	<channel id="Kino Polska" 								title="(?=Kino\s*Polska(\s*HD)?$)" strm=""/>
