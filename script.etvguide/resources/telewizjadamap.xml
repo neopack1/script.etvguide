@@ -52,7 +52,7 @@
 	<channel id="AXN White" 								title="(?=AXN\s*White(\s*HD)?$)" strm=""/>
 	<channel id="AXN Black" 								title="(?=AXN\s*Black(\s*HD)?$)" strm=""/>
 	<channel id="AXN Spin" 									title="(?=\s*AXN\s*Spin(\s*HD)?\s*$)" strm=""/>
-	<channel id="Scifi Universal" 									title="(?=Sci\s*Fi(\s*HD)?$)" strm=""/>
+	<channel id="SciFi" 									title="(?=Sci\s*Fi(\s*HD)?$)" strm=""/>
 	<channel id="MGM" 										title="(?=\s*MGM(\s*HD)?\s*$)" strm=""/>
 	<channel id="Comedy Central" 							title="(?=Comedy\s*Central(\s*HD)?$)" strm=""/>
 	<channel id="Comedy Central Family" 					title="(?=Comedy\s*Central\s*Family(\s*HD)?$)" strm=""/>

@@ -1,3 +1,6 @@
+[B]wersja 1.4.1[/B] - 2015-12-28
+- naprawienie scifi channel
+
 [B]wersja 1.4.0[/B] - 2015-12-28
 - dodana obsługa serwisu telewizjada i możliwość jego włączania w ustawieniach
 - dodana opcja ustalania priorytetów przypisywania streamów (ich kolejność)
