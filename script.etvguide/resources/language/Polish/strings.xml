@@ -134,7 +134,7 @@
 	<string id="89002">Akcja wykonana po upływie czasu nieaktywności</string>
 	<string id="89003">Czas braku aktywności (min)</string>
 	<string id="59901">GoldVOD</string>
-	<string id="55009">Priorytet przyipisywania streamów</string>
+	<string id="55009">Priorytet przypisywania streamów</string>
 
 <!-- errors & messages -->
 	<string id="57001">Błąd API</string>
