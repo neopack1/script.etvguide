@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <map id="telewizjada" version="1.0" strm="service=telewizjada&amp;cid=%s">
+
 	<channel id="TVP 1" 									title="(?=\s*TVP\s*1(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVP 2"										title="(?=TVP\s*2(\s*HD)?$)" strm=""/>
 	<channel id="TVP HD" 									title="(?=TVP(\s*HD)?(\s*HD)?$)" strm=""/>
@@ -10,75 +11,69 @@
 	<channel id="TVP Seriale" 								title="(?=TVP\s*Seriale(\s*HD)?$)" strm=""/>
 	<channel id="TVP Kultura" 								title="(?=TVP\s*Kultura(\s*HD)?$)" strm=""/>
 	<channel id="TVP Polonia" 								title="(?=TVP\s*Polonia(\s*HD)?$)" strm=""/>
-	<channel id="TVP Rozrywka" 								title="(?=.*TVP)(?=.*Rozrywka)" strm=""/>
-	<channel id="TVP Historia" 								title="(?=.*TVP)(?=.*Historia)" strm=""/>
+	<channel id="TVP Rozrywka" 								title="(?=\s*TVP\s*Rozrywka(\s*HD)?\s*$)" strm=""/>
+	<channel id="TVP Historia" 								title="(?=\s*TVP\s*Historia(\s*HD)?\s*$)" strm=""/>
 	<channel id="TV Trwam"									title="" strm="mms://195.94.205.211/Trwam"/>
-	<channel id="TV Puls" 									title="(?=.*Puls)(?!.*2)" strm=""/>
-	<channel id="Puls 2" 									title="(?=.*PULS)(?=.*2)" strm=""/>
-	<channel id="TTV" 										title="(?=.*TTV)" strm=""/>
-	<channel id="TV 4" 										title="(TV\W*4)" strm=""/>
-	<channel id="TV 6" 										title="(?=.*TV)(?=.*6)" strm=""/>
-	<channel id="Tele 5" 									title="(?=.*Tele)(?=.*5)" strm=""/>
+	<channel id="TV Puls" 									title="(?=\s*TV\s*Puls(\s*HD)?\s*$)" strm=""/>
+	<channel id="Puls 2" 									title="(?=\s*Puls\s*2(\s*HD)?\s*$)" strm=""/>
+	<channel id="TTV" 										title="(?=\s*TTV(\s*HD)?\s*$)" strm=""/>
+	<channel id="TV 4" 										title="(?=\s*TV\s*4(\s*HD)?\s*$)" strm=""/>
+	<channel id="TV 6" 										title="(?=\s*TV\s*6(\s*HD)?\s*$)" strm=""/>
+	<channel id="Tele 5" 									title="(?=\s*Tele\s*5(\s*HD)?\s*$)" strm=""/>
 	<channel id="Polsat 2" 									title="(?=Polsat\s*2(\s*HD)?$)" strm=""/>
 	<channel id="Superstacja" 								title="(?=Super\s*Stacja(\s*HD)?$)" strm=""/>
 	<channel id="TVN 24" 									title="(?=TVN\s*24(\s*HD)?$)" strm=""/>
 	<channel id="Polsat News" 								title="(?=Polsat\s*News(\s*HD)?$)" strm=""/>
 	<channel id="TVP Info" 									title="(?=TVP\s*Info(\s*HD)?$)" strm=""/>
 	<channel id="Domo+" 									title="(?=DOMO\+(\s*HD)?\s*$)" strm=""/>
-	<channel id="Kuchnia+" 									title="(?=.*Kuchnia\+)" strm=""/>
-	<channel id="BBC" 										title="(^BBC$)|(^BBC\W*HD$)" strm=""/>
-	<channel id="BBC Lifestyle" 							title="(?=.*BBC)(?=.*Lifestyle)" strm=""/>
-	<channel id="BBC Brit" 							        title="(?=.*BBC)(?=.*Brit)" strm=""/>
+	<channel id="Kuchnia+" 									title="(?=\s*Kuchnia\+(\s*HD)?\s*$)" strm=""/>
+	<channel id="BBC" 										title="(?=\s*BBC(\s*HD)?\s*$)" strm=""/>
+	<channel id="BBC Lifestyle" 							title="(?=\s*BBC\s*Lifestyle(\s*HD)?\s*$)" strm=""/>
+	<channel id="BBC Brit" 							        title="(?=\s*BBC\s*Brit(\s*HD)?\s*$)" strm=""/>
 	<channel id="BBC Earth" 							    title="(?=BBC\s*Earth(\s*HD)?$)" strm=""/>
 	<channel id="FOX" 										title="(?=FOX(\s*HD)?$)" strm=""/>
-	<channel id="FOX Life" 									title="(?=.*FOX)(?=.*Life)" strm=""/>
+	<channel id="FOX Life" 									title="(?=\s*FOX\s*Life(\s*HD)?\s*$)" strm=""/>
 	<channel id="TLC" 										title="(?=TLC(\s*HD)?$)" strm=""/>
-	<channel id="13 Ulica" 									title="(?=.*13)(?=.*Ulica)" strm=""/>
+	<channel id="13 Ulica" 									title="(?=\s*13\s*Ulica(\s*HD)?\s*$)" strm=""/>
 	<channel id="Canal+" 									title="(?=Canal\+(\s*HD)?$)" strm=""/>
 	<channel id="Canal+ Film" 								title="(?=Canal\+\s*Film(\s*HD)?$)" strm=""/>
 	<channel id="Canal+ Family" 							title="(?=Canal\+\s*Family(\s*HD)?$)" strm=""/>
     <channel id="Canal+ Seriale" 							title="(?=Canal\+\s*Seriale(\s*HD)?$)" strm=""/>
-	
-<!-- 
-Kanał HBO tymczasowo ustawiony na jakość SD ponieważ HD nie nadaje - oryginalny HD wpis zapisany w komentarzu:
-<channel id="HBO" 										title="(?=HBO(\s*HD)?$)" strm=""/>
--->
-	<channel id="HBO" 										title="(?=HBO\s*$)" strm=""/>
-	
+	<channel id="HBO" 										title="(?=HBO(\s*HD)?$)" strm=""/>
 	<channel id="HBO2" 										title="(?=HBO\s*2(\s*HD)?$)" strm=""/>
 	<channel id="HBO Comedy" 								title="(?=HBO\s*Comedy(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox" 								    title="(?=Filmbox(\s*HD)?$)" strm=""/>
-	<channel id="Filmbox Extra" 							title="(?=.*Filmbox)(?=.*Extra)" strm=""/>
-	<channel id="Cinemax" 									title="(?=.*Cinemax$)" strm=""/>
-	<channel id="Cinemax 2" 								title="(?=.*Cinemax)(?=.*2)" strm=""/>
+	<channel id="Filmbox Extra" 							title="(?=\s*Filmbox\s*Extra(\s*HD)?\s*$)" strm=""/>
+	<channel id="Cinemax" 									title="(?=Cinemax\s*(\s*HD)?$)" strm=""/>
+	<channel id="Cinemax 2" 								title="(?=\s*Cinemax\s*2(\s*HD)?\s*$)" strm=""/>
 	<channel id="Polsat Film" 								title="(?=Polsat\s*Film(\s*HD)?$)" strm=""/>
 	<channel id="Kino Polska" 								title="(?=Kino\s*Polska(\s*HD)?$)" strm=""/>
 	<channel id="AXN" 										title="(?=AXN(\s*HD)?$)" strm=""/>
 	<channel id="AXN White" 								title="(?=AXN\s*White(\s*HD)?$)" strm=""/>
 	<channel id="AXN Black" 								title="(?=AXN\s*Black(\s*HD)?$)" strm=""/>
-	<channel id="AXN Spin" 									title="(?=.*AXN)(?=.*Spin)" strm=""/>
-	<channel id="SciFi" 									title="(?=Sci\s*Fi(\s*HD)?$)" strm=""/>
-	<channel id="MGM" 										title="(?=.*MGM)" strm=""/>
+	<channel id="AXN Spin" 									title="(?=\s*AXN\s*Spin(\s*HD)?\s*$)" strm=""/>
+	<channel id="Scifi Universal" 									title="(?=Sci\s*Fi(\s*HD)?$)" strm=""/>
+	<channel id="MGM" 										title="(?=\s*MGM(\s*HD)?\s*$)" strm=""/>
 	<channel id="Comedy Central" 							title="(?=Comedy\s*Central(\s*HD)?$)" strm=""/>
 	<channel id="Comedy Central Family" 					title="(?=Comedy\s*Central\s*Family(\s*HD)?$)" strm=""/>
-	<channel id="FOX Comedy" 								title="(?=.*FOX)(?=.*Comedy)" strm=""/>
-	<channel id="Universal Channel" 						title="(?=.*Universal)(?=.*Channel)" strm=""/>
-	<channel id="Paramount Channel" 						title="(?=.*Paramount)(?=.*Channel)" strm=""/>
-	<channel id="Ale Kino+" 								title="(?=.*ale)(?=.*kino)" strm=""/>
+	<channel id="FOX Comedy" 								title="(?=\s*FOX\s*Comedy(\s*HD)?\s*$)" strm=""/>
+	<channel id="Universal Channel" 						title="(?=\s*Universal\s*Channel(\s*HD)?\s*$)" strm=""/>
+	<channel id="Paramount Channel" 						title="(?=\s*Paramount\s*Channel(\s*HD)?\s*$)" strm=""/>
+	<channel id="Ale Kino+" 								title="(?=\s*Ale\s*Kino\+(\s*HD)?\s*$)" strm=""/>
 	<channel id="Animal Planet" 							title="(?=Animal\s*Planet(\s*HD)?$)" strm=""/>
 	<channel id="National Geographic Channel" 				title="(?=National\s*Geographic(\s*HD)?$)" strm=""/>
 	<channel id="Nat Geo Wild" 								title="(?=Nat\s*Geo\s*Wild(\s*HD)?$)" strm=""/>
-	<channel id="Discovery Channel" 						title="(?=Discovery\s*$)" strm=""/>
-	<channel id="Canal+ Discovery" 							title="(?=.*Canal)(?=.*Discovery)" strm=""/>
-	<channel id="Discovery Science" 						title="(?=.*Discovery)(?=.*Science)" strm=""/>
+	<channel id="Discovery Channel" 						title="(?=\s*Discovery(\s*HD)?\s*$)" strm=""/>
+	<channel id="Canal+ Discovery" 							title="(?=\s*Canal\+\s*Discovery(\s*HD)?\s*$)" strm=""/>
+	<channel id="Discovery Science" 						title="(?=\s*Discovery\s*Science(\s*HD)?\s*$)" strm=""/>
 	<channel id="Discovery Turbo Xtra" 						title="(?=Discovery\s*Turbo\s*Xtra(\s*HD)?$)" strm=""/>
-	<channel id="Discovery Historia" 						title="(?=.*Discovery)(?=.*Historia)" strm=""/>
+	<channel id="Discovery Historia" 						title="(?=\s*Discovery\s*Historia(\s*HD)?\s*$)" strm=""/>
 	<channel id="ID" 										title="(?=INVESTIGATION\s*DISCOVERY(\s*HD)?$)" strm=""/>
 	<channel id="Crime &amp; Investigation Network Polsat" 	title="(?=.*Crime)(?=.*Investigation)(?=.*Polsat)" strm=""/>
-	<channel id="Planete+" 									title="(?=.*Planete)(?=.*\+)" strm=""/>
-	<channel id="History" 									title="(?=.*HISTORY)(?!.*Polsat)" strm=""/>
+	<channel id="Planete+" 									title="(?=\s*Planete\s*\+(\s*HD)?\s*$)" strm=""/>
+	<channel id="History" 									title="(?=\s*History(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVN Turbo" 								title="(?=TVN\s*Turbo(\s*HD)?$)" strm=""/>
-	<channel id="Polsat Play" 								title="(?=.*Polsat)(?=.*Play)" strm=""/>
+	<channel id="Polsat Play" 								title="(?=\s*Polsat\s*Play(\s*HD)?\s*$)" strm=""/>
 	
 <!-- 
 	<channel id="POLSAT Viasat Explore" 					title="(?=Polsat\s*Viasat\s*Explore(\s*HD)?\s*$)" strm=""/>
@@ -90,7 +85,7 @@ Kanał HBO tymczasowo ustawiony na jakość SD ponieważ HD nie nadaje - orygina
 	<channel id="Polsat Viasat History" 					title="" strm="service=telewizjada&amp;cid=89"/>
 	<channel id="Polsat Viasat Nature" 						title="" strm="service=telewizjada&amp;cid=90"/>
 	
-	
+
 	<channel id="Canal+ Sport" 								title="(?=CANAL\+\s*SPORT(\s*HD)?$)" strm=""/>
 	<channel id="Canal+ Sport 2" 							title="(?=CANAL\+\s*SPORT\s*2(\s*HD)?$)" strm=""/>
 	<channel id="Polsat Sport" 								title="(?=Polsat\s*Sport(\s*HD)?$)" strm=""/>
@@ -110,23 +105,22 @@ Kanał HBO tymczasowo ustawiony na jakość SD ponieważ HD nie nadaje - orygina
 	<channel id="Disney XD" 								title="(?=DISNEY\s*XD(\s*HD)?$)" strm=""/>
 	<channel id="Disney Junior" 							title="(?=.*Disney)(?=.*Junior)" strm=""/>
 	<channel id="Cartoon Network" 							title="(?=.*Cartoon)(?=.*Network)" strm=""/>
-	<channel id="JimJam Polsat" 							title="(?=.*JimJam)(?=.*Polsat)" strm=""/>
-	<channel id="Duck" 										title="(?=.*Duck)(?=.*TV)" strm=""/>
+	<channel id="JimJam Polsat" 							title="(?=\s*JimJam\s*Polsat(\s*HD)?\s*$)" strm=""/>
+	<channel id="Duck" 										title="(?=\s*Duck\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="Nickelodeon" 								title="(?=Nickoledeon(\s*HD)?$)" strm=""/>
 	<channel id="Nick Jr." 									title="(?=Nick\s*Jr(\s*HD)?$)" strm=""/>
 	<channel id="Minimini+" 								title="(?=MiniMini\+(\s*HD)?$)" strm=""/>
-	<channel id="Boomerang" 								title="(?=.*Boomerang)" strm=""/>
-	<channel id="Teletoon" 									title="(?=.*tele)(?=.*TOON)(?=.*HYPER)(?=.*\+)" strm=""/>
-	<channel id="BBC CBeebies" 								title="(?=.*BBC)(?=.*CBeebies)" strm=""/>
+	<channel id="Boomerang" 								title="(?=\s*Boomerang(\s*HD)?\s*$)" strm=""/>
+	<channel id="BBC CBeebies" 								title="(?=\s*BBC\s*CBeebies(\s*HD)?\s*$)" strm=""/>
 	<channel id="Da Vinci Learning" 						title="(?=DA\s*VINCI\s*LEARNING(\s*HD)?$)" strm=""/>
-	<channel id="MTV Polska" 								title="(^MTV$)" strm=""/>
-	<channel id="MTV Live HD" 								title="(?=.*MTV)(?=.*Live)" strm=""/>
-	<channel id="Kino Polska Muzyka" 						title="(?=.*Kino)(?=.*Polska)(?=.*Muzyka)" strm=""/>
+	<channel id="MTV Polska" 								title="(?=\s*MTV(\s*HD)?\s*$)" strm=""/>
+	<channel id="MTV Live HD" 								title="(?=\s*MTV\s*Live(\s*HD)?\s*$)" strm=""/>
+	<channel id="Kino Polska Muzyka" 						title="(?=\s*Kino\s*Polska\s*Muzyka(\s*HD)?\s*$)" strm=""/>
 	<channel id="Eska TV" 									title="" strm="rtmp://stream.smcloud.net/live2/eskatv/eskatv_360p"/>
-	<channel id="VIVA Polska" 								title="(?=.*VIVA)(?=.*Polska)" strm=""/>
+	<channel id="VIVA Polska" 								title="(?=\s*VIVA\s*Polska(\s*HD)?\s*$)" strm=""/>
 	<channel id="4fun TV" 									title="(?=4FUN\s*TV(\s*HD)?$)" strm=""/>
 	<channel id="Polo TV" 									title="" strm="http://stream.smcloud.net/live/polotv/playlist.m3u8"/>
-	<channel id="BBC World News"						    title="(?=.*BBC)(?=.*world)(?=.*news)(?=.*ANG)" strm=""/>
+	<channel id="BBC World News"						    title="(?=\s*BBC\s*World\s*News(\s*HD)?\s*$)" strm=""/>
 	<channel id="Stopklatka TV"						    	title="(?=STOPKLATKA\s*TV(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox Family"						    title="(?=FILMBOX\s*FAMILY(\s*HD)?$)" strm=""/>
 	<channel id="Fokus TV"						    		title="(?=Focus\s*TV(\s*HD)?\s*$)" strm=""/>
@@ -140,7 +134,6 @@ Kanał HBO tymczasowo ustawiony na jakość SD ponieważ HD nie nadaje - orygina
 	<channel id="SPORT KLUB"						    	title="(?=SPORT\s*KLUB(\s*HD)?\s*$)" strm=""/>
 	<channel id="TUBA TV"						    		title="(?=TUBA\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="TV KUJAWY"						    		title="(?=TV\s*KUJAWY(\s*HD)?\s*$)" strm=""/>
-	<channel id="TVN 24 BiS"						    	title="(?=TVN\s*24\s*BiS(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVN METEO ACTIVE"						    title="(?=TVN\s*METEO\s*ACTIVE(\s*HD)?\s*$)" strm=""/>
 	<channel id="VOX MUSIC TV"						    	title="" strm="rtmp://stream.smcloud.net/live/vox2/stream1"/>
 	<channel id="WAWA TV"						    		title="" strm="http://stream.smcloud.net/live2/wawa/wawa_480p/playlist.m3u8"/>
@@ -154,9 +147,8 @@ Kanał HBO tymczasowo ustawiony na jakość SD ponieważ HD nie nadaje - orygina
 	<channel id="RedLight"						    		title="(?=Red\s*Light(\s*HD)?\s*$)" strm=""/>
 	<channel id="Private TV"						    	title="(?=Private\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="Hustler TV"						    		title="(?=Hustler(\s*HD)?\s*$)" strm=""/>
-	<channel id="TVN 24 BiS"						title="(?=TVN24\s*Biznes\s*i\s.*wiat(\s*HD)?\s*$)" strm=""/>
+	<channel id="TVN 24 BiS"								title="(?=TVN24\s*Biznes\s*i\s.*wiat(\s*HD)?\s*$)" strm=""/>
 	
-
 </map>
 
 <!--

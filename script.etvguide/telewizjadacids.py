@@ -1,20 +1,17 @@
-﻿#      Copyright (C) 2014 Krzysztof Cebulski
+﻿#      Copyright (C) 2015 Andrzej Mleczko
 
-import urllib, urllib2, httplib, sys, StringIO, cookielib, copy, re
-from xml.etree import ElementTree
-import simplejson as json #import json
+import urllib, httplib, sys, copy, re
+import simplejson as json
 import xbmc
 import time
 import os, xbmcaddon
 from strings import *
-import ConfigParser
 import weebtvcids
 
-telewizjadaMainUrl = 'http://www.telewizjada.net/'
-COOKIE_FILE = os.path.join(xbmc.translatePath(ADDON.getAddonInfo('profile')) , 'telewizjada.cookie')
+HOST                = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:19.0) Gecko/20121213 Firefox/19.0'
+telewizjadaMainUrl  = 'http://www.telewizjada.net/'
 
-HOST       = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:19.0) Gecko/20121213 Firefox/19.0'
-#rstrm      = '%s'  #pobierany przepis z xml-a np.: 'service=weebtv&cid=%s'
+COOKIE_FILE = os.path.join(xbmc.translatePath(ADDON.getAddonInfo('profile')) , 'telewizjada.cookie')
 pathMapBase = os.path.join(ADDON.getAddonInfo('path'), 'resources')
 
 telewizjadaChannelList = None
@@ -22,7 +19,6 @@ telewizjadaChannelList = None
 class TelewizjaDaUpdater: 
     def __init__(self):
         self.sl = weebtvcids.ShowList()
-        self.sl.setLoginData('', '')
         
     def loadChannelList(self):
         try:
@@ -50,6 +46,7 @@ class TelewizjaDaUpdater:
                             y.strm = x.strm
                             y.src = x.src
                             deb('[UPD] %-30s %-30s %-20s %-35s ' % (x.channelid, y.name, x.src, x.strm))
+                            break
                 except Exception, ex:
                     print '%s Error %s %s' % (x.channelid, x.titleRegex, str(ex))
             deb ('\n[UPD] Nie znaleziono/wykorzystano odpowiedników w telewizjada.net dla:')
@@ -72,6 +69,7 @@ class TelewizjaDaUpdater:
     def getChannelList(self):
         try:
             global telewizjadaChannelList
+            deb('\n\n')
             if telewizjadaChannelList is not None:
                 deb('TelewizjaDaUpdater getChannelList return cached channel list')
                 return copy.deepcopy(telewizjadaChannelList)
@@ -81,13 +79,14 @@ class TelewizjaDaUpdater:
             channelsArray = list()
             result = list()
             failedCounter = 0
-            while failedCounter < 50:
+            while failedCounter < 100:
                 try:
                     channelsArray = self.sl.getJsonFromAPI(telewizjadaMainUrl + 'get_channels.php', '')
                     break
                 except httplib.IncompleteRead:
                     failedCounter = failedCounter + 1
-                    time.sleep(.300)
+                    deb('TelewizjaDaUpdater getChannelList IncompleteRead exception - failedCounter = %s' % failedCounter)
+                    time.sleep(.150)
                 
             if len(channelsArray) > 0:
                 
@@ -127,7 +126,7 @@ class TelewizjaDaUpdater:
                 if chann.cid == cid:
                     tmp_url = ''
                     failedCounter = 0
-                    data = { 'url': chann.strm}
+                    data = { 'url': chann.strm }
                     while failedCounter < 50:
                         try:
                             self.sl.getJsonFromExtendedAPI(telewizjadaMainUrl + 'set_cookie.php', post_data = data, cookieFile = COOKIE_FILE, save_cookie = True)

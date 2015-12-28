@@ -85,10 +85,10 @@
 	<string id="30911">Strefa Czasowa UTC (+01:00 Polska)</string>
 	<string id="30912">Ustawienia Weeb.tv</string>
 	<string id="59902">Ustawienia GoldVOD</string>
-	<string id="59912">Ustwienia Telewizjada.net</string>
+	<string id="59903">Ustawienia Telewizjada</string>
 	<string id="59904">Aktywny</string>
-	<string id="59914">Aktywny</string>
 	<string id="30913">Ustawienia</string>
+	<string id="30916">Ustawienia Bazy</string>
 	<string id="30914">Skórka</string>
 	<string id="30915">Uruchom e-TVGuide po starcie XBMC</string>
 	<string id="30930">Kolory</string>
@@ -107,6 +107,10 @@
 	<string id="30943">Kolor dla przypomnienia</string>
 	<string id="30950">Wyczyść bazę</string>
 	<string id="30951">Baza wyczyszczona</string>
+	<string id="30952">Usun przypisane streamy</string>
+	<string id="30953">Utworz kopie bazy</string>
+	<string id="30954">Przywroc baze z kopii</string>
+	<string id="30955">Usun plik bazy z dysku</string>
 	<string id="58000">Informacje o programie</string>
 
 	<string id="31001">VIDEO OSD</string>
@@ -125,11 +129,12 @@
 	<string id="55003">Hasło:</string>
 	<string id="55005">Najwyższa jakość (jaka jest dostępna)</string>
 	<string id="55006">WeebTV</string>
+	<string id="55007">Serwisy</string>
 	<string id="89001">Sleep timer aktywny</string>
 	<string id="89002">Akcja wykonana po upływie czasu nieaktywności</string>
 	<string id="89003">Czas braku aktywności (min)</string>
 	<string id="59901">GoldVOD</string>
-	<string id="59911">Telewizjada.net</string>
+	<string id="55009">Priorytet przyipisywania streamów</string>
 
 <!-- errors & messages -->
 	<string id="57001">Błąd API</string>

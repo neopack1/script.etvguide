@@ -42,7 +42,7 @@ from itertools import chain
 
 import io, zipfile
 
-SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', 'Time.Zone']
+SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'm-TVGuide', 'Time.Zone']
 
 TIMEZONE = ADDON.getSetting('Time.Zone')
 CHECK_NAME = ADDON.getSetting('username')
@@ -53,7 +53,6 @@ if CHECK_NAME:
     USER_AGENT = ADDON.getSetting('username')
 else:
     USER_AGENT = ADDON.getSetting('usernameGoldVOD')
-    
 
 class Channel(object):
     def __init__(self, id, title, logo = None, streamUrl = None, visible = True, weight = -1):
@@ -397,36 +396,50 @@ class Database(object):
             return #to wychodzimy - nie robimy aktualizacji
         deb('[UPD] Rozpoczynam aktualizacje STRM')            
         
-        if ADDON.getSetting('WeebTV_enabled') == 'true':
-            streamSource = 'weeb.tv'
-            serviceStreamRegex = "service=weebtv&cid=%"
-            self.storeCustomStreams(WebbTvStrmUpdater(), streamSource, serviceStreamRegex)
-        
-        if ADDON.getSetting('GoldVOD_enabled') == 'true':
-            streamSource = 'goldvod.tv'
-            serviceStreamRegex = "service=goldvod&cid=%"
-            self.storeCustomStreams(GoldVodTvStrmUpdater(), streamSource, serviceStreamRegex)
+        for priority in range(3):
             
-        if ADDON.getSetting('Telewizjada_enabled') == 'true':
-            streamSource = 'telewizjada.net'
-            serviceStreamRegex = "service=telewizjada&cid=%"
-            telewizja = telewizjadacids.TelewizjaDaUpdater()
-            telewizja.loadChannelList()
-            self.storeCustomStreams(telewizja, streamSource, serviceStreamRegex)
+            if priority == int(ADDON.getSetting('priority_weebtv')):
+                if ADDON.getSetting('WeebTV_enabled') == 'true':
+                    self.storeCustomStreams(WebbTvStrmUpdater(), 'weeb.tv', "service=weebtv&cid=%")
+                else:
+                    self.deleteCustomStreams('weeb.tv', "service=weebtv&cid=%")
+                    
+            if priority == int(ADDON.getSetting('priority_goldvod')):
+                if ADDON.getSetting('GoldVOD_enabled') == 'true':
+                    self.storeCustomStreams(GoldVodTvStrmUpdater(), 'goldvod.tv', "service=goldvod&cid=%")
+                else:
+                    self.deleteCustomStreams('goldvod.tv', "service=goldvod&cid=%")
+                    
+            if priority == int(ADDON.getSetting('priority_telewizjada')):
+                if ADDON.getSetting('telewizjada_enabled') == 'true':
+                    telewizja = telewizjadacids.TelewizjaDaUpdater()
+                    telewizja.loadChannelList()
+                    self.storeCustomStreams(telewizja, 'telewizjada.net', "service=telewizjada&cid=%")
+                else:
+                    self.deleteCustomStreams('telewizjada.net', "service=telewizjada&cid=%")
 
         self.printStreamsWithoutChannelEPG()
 
         ADDON_CIDUPDATED = True
         deb ('[UPD] Aktualizacja zakonczona')
+        
+        
+    def deleteCustomStreams(self, streamSource, serviceStreamRegex):
+        try:
+            c = self.conn.cursor()
+            deb('Clearing list of %s stream urls like %s' % (streamSource, serviceStreamRegex))
+            c.execute("DELETE FROM custom_stream_url WHERE stream_url like ?", [serviceStreamRegex])
+            self.conn.commit()
+            c.close()
+        except Exception, ex:
+            deb('[UPD] Error deleting streams: %s' % str(ex))
             
     def storeCustomStreams(self, streams, streamSource, serviceStreamRegex):
         try:
-            c = self.conn.cursor()
             if len(streams.automap) > 0 and len(streams.channels) > 0:
-                deb('Clearing list of %s stream urls like %s' % (streamSource, serviceStreamRegex))
-                c.execute("DELETE FROM custom_stream_url WHERE stream_url like ?", [serviceStreamRegex])
-                self.conn.commit()
+                self.deleteCustomStreams(streamSource, serviceStreamRegex)
             deb('[UPD] Updating databse')
+            c = self.conn.cursor()
             for x in streams.automap:
                 if x.strm is not None and x.strm != '':
                     deb ('[UPD] Updating: CH=%-30s STRM=%-30s SRC=%s' % (x.channelid, x.strm, x.src))
@@ -831,6 +844,29 @@ class Database(object):
         c.execute('UPDATE settings SET value=0 WHERE rowid=1')
         self.conn.commit()
         c.close()
+        
+    def deleteAllStreams(self):
+        self._invokeAndBlockForResult(self._deleteAllStreams)
+        
+    def _deleteAllStreams(self):
+        c = self.conn.cursor()
+        c.execute('DELETE FROM custom_stream_url')
+        self.conn.commit()
+        c.close()
+        
+    def deleteDbFile(self):
+        self._invokeAndBlockForResult(self._deleteDbFile)
+        
+    def _deleteDbFile(self):
+        try:
+            os.remove(self.databasePath)
+        except:
+            pass
+        
+        if os.path.isfile (self.databasePath) == False: 
+            deb('_deleteDbFile successfully deleted database file')
+        else:
+            deb('_deleteDbFile failed to delete database file')
 
 class Source(object):
     def getDataFromExternal(self, date, progress_callback = None):
@@ -864,8 +900,6 @@ class Source(object):
         try:
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
-            #u = urllib2.urlopen(url, timeout=30)
-            #content = u.read()
             u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (' + USER_AGENT + TIMEZONE + ' version: ' + ADDON_VERSION + ')' })
             response = urllib2.urlopen(u,timeout=30)
             content = response.read()

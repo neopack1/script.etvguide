@@ -20,7 +20,7 @@
 	<string id="30110">Update program information on XBMC startup</string>
 	<string id="30116">Search for channel logos in</string>
 	<string id="30117">Select EPG</string>
-	<string id="30118">Additional EPG</string>
+	<string id="30118">[COLOR red]Additional EPG[/COLOR]</string>
 	<string id="30150">Oops, sorry about that!</string>
 	<string id="30151">It was not possible to load program data,</string>
 	<string id="30152">check settings or try again later...</string>
@@ -73,7 +73,7 @@
 	<string id="30703">Automaticly set actual streams</string>
 	<string id="30704">Use zipped epg</string>
 	<string id="30705">Show only programs with stream assigned</string>
-	<string id="30706">Automatycally detect EPG updates (Testing)</string>
+	<string id="30706">Auto detect EPG change (Beta)</string>
 
 <!-- weeb.tv mod -->
 	<string id="30802">TV Guide is configured to stream using Weeb.Tv</string>
@@ -85,12 +85,12 @@
 	<string id="30911">Time Zone UTC (+01:00 Poland)</string>
 	<string id="30912">Weeb.tv settings</string>
 	<string id="59902">GoldVOD settings</string>
-	<string id="59912">Telewizjada.net settings</string>
+	<string id="59903">Telewizjada settings</string>
 	<string id="59904">Enabled</string>
-	<string id="59914">Enabled</string>
 	<string id="30913">Settings</string>
 	<string id="30914">Skin</string>
 	<string id="30915">Enable XBMC e-TVGuide autostart</string>
+	<string id="30916">Database Settings</string>
 	<string id="30930">Colours</string>
 	<string id="30931">Category colours</string>
 	<string id="30932">Movies</string>
@@ -106,7 +106,11 @@
 	<string id="30942">Focus colour</string>
 	<string id="30943">Notification colour</string>
 	<string id="30950">Clear database</string>
-	<string id="30950">Database cleared</string>
+	<string id="30951">Database cleared</string>
+	<string id="30952">Delete custom streams</string>
+	<string id="30953">Backup database</string>
+	<string id="30954">Restore database</string>
+	<string id="30955">Delete database file</string>
 	<string id="58000">Program info</string>
 
 	<string id="31001">VIDEO OSD</string>
@@ -124,11 +128,12 @@
 	<string id="55002">Username:</string>
 	<string id="55003">Password:</string>
 	<string id="55005">The highest quality (as available)</string>
+	<string id="55007">Services</string>
 	<string id="89001">Sleep timer enabled</string>
 	<string id="89002">Timeout action</string>
 	<string id="89003">Timeout value (min)</string>
 	<string id="59901">GoldVOD</string>
-	<string id="59911">Telewizjada.net</string>
+	<string id="55009">Stream assign priority</string>
 	
 <!-- errors & messages -->
 	<string id="57001">API error</string>

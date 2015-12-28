@@ -2,7 +2,7 @@
 
 import urllib, urllib2, httplib, sys, StringIO, cookielib, re
 from xml.etree import ElementTree
-import simplejson as json #import json
+import simplejson as json
 import xbmc
 import time
 import os, xbmcaddon
@@ -18,11 +18,11 @@ HOST       = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:19.0) Gecko/201212
 rstrm      = '%s'  #pobierany przepis z xml-a np.: 'service=weebtv&cid=%s'
 pathAddons = os.path.join(ADDON.getAddonInfo('path'), 'resources', 'addons.ini')
 pathMapBase = os.path.join(ADDON.getAddonInfo('path'), 'resources')
-#pathJson   = os.path.join(ADDON.getAddonInfo('path'), 'resources', 'weebtv.json')
-#updaddon   = ADDON.getSetting('AutoUpdateCidAddons').lower() == 'true'
 
 class ShowList:
     def __init__(self):
+        self.login = ''
+        self.password = ''
         pass
 
     def decode(self, string):
@@ -87,7 +87,7 @@ class ShowList:
         result = list()
         channelsArray = None
         failedCounter = 0
-        while failedCounter < 10:
+        while failedCounter < 20:
             try:
                 if (uritype == 'file'):
                     channelsArray = self.JsonToSortedTab(self.getJsonFromFile(uri))
@@ -140,14 +140,14 @@ class ShowList:
         result = list()
         channelsArray = None
         failedCounter = 0
-        while failedCounter < 10:
+        while failedCounter < 50:
             try:
                 channelsArray = self.getJsonFromAPI(uri, passphrase)
                 break
             except httplib.IncompleteRead:
                 failedCounter = failedCounter + 1
                 deb('loadChannels IncompleteRead exception - failedCounter = %s' % failedCounter)
-                time.sleep(.300)
+                time.sleep(.100)
                 
         if channelsArray is None:
             deb('Error while loading Json from Url: %s - aborting' % uri)
@@ -327,7 +327,6 @@ class GoldVodTvStrmUpdater:
             
         except Exception, ex:
             print 'Error %s' % str(ex)
-            raise
 
 class WebbTvStrmUpdater:
 
@@ -400,5 +399,4 @@ class WebbTvStrmUpdater:
 
         except Exception, ex:
             print 'Error %s' % str(ex)
-            raise
 
