@@ -2,7 +2,7 @@
 <addons>
 <addon id="plugin.video.tvnplayer.pl"
        name="TVNPlayer"
-       version="1.0.2"
+       version="1.0.3"
        provider-name="thebedi">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
