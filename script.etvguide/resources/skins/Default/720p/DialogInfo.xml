@@ -1,130 +1,150 @@
 <window>
-	<defaultcontrol always="true">1000</defaultcontrol>
-	<coordinates>
-		<system>1</system><posx>185</posx><posy>105</posy>
-	</coordinates>
+	<defaultcontrol always="true">101</defaultcontrol>
 	<include>dialogeffect</include>
+	<coordinates>
+		<system>1</system><posx>0</posx><posy>0</posy>
+	</coordinates>
 	<controls>
-		<control type="group">
-			<include>VisibleFadeEffect</include>
-			<control type="image">
-				<description>background image</description>
-				<posx>0</posx>
-				<posy>0</posy>
-				<width>910</width>
-				<height>510</height>
-				<texture border="40">DialogBack.png</texture>
-			</control>
-			<control type="image">
-				<description>Dialog Header image</description>
-				<posx>40</posx>
-				<posy>16</posy>
-				<width>830</width>
-				<height>40</height>
-				<texture>dialogheader.png</texture>
-			</control>
-			<control type="label">
-				<description>header label</description>
-				<posx>40</posx>
-				<posy>20</posy>
-				<width>830</width>
-				<height>30</height>
-				<font>font13_title</font>
-				<label>$ADDON[script.etvguide 58000]</label>
-				<align>center</align>
-				<aligny>center</aligny>
-				<textcolor>selected</textcolor>
-				<shadowcolor>black</shadowcolor>
-			</control>
-
 		<control type="button" id="1000">
 			<description>Close Window button</description>
-			<posx>830</posx>
-			<posy>15</posy>
+			<posx>84r</posx>
+			<posy>0</posy>
 			<width>64</width>
 			<height>32</height>
-			<label>-</label>
-			<font>-</font>
 			<onclick>Dialog.Close(VideoOSD,true)</onclick>
 			<onclick>FullScreen</onclick>
 			<texturefocus>DialogCloseButton-focus.png</texturefocus>
 			<texturenofocus>DialogCloseButton.png</texturenofocus>
+			<onleft>1000</onleft>
+			<onright>1000</onright>
+			<onup>101</onup>
+			<ondown>101</ondown>
 			<animation effect="fade" time="200">VisibleChange</animation>
 			<visible>true</visible>
 		</control>
 
+		<control type="group" id="100">
+			<posx>0</posx>
+			<posy>0</posy>
+			<defaultcontrol always="true">101</defaultcontrol>
+			<animation effect="fade" time="1000">VisibleChange</animation>
+			<visible>true</visible>
+
+			<control type="image">
+				<description>bg2</description>
+				<posx>0</posx>
+				<posy>570</posy>
+				<width>1280</width>
+				<height>150</height>
+				<texture>tvguide-glasspane.png</texture>
+			</control>
+			<control type="image">
+				<description>bg</description>
+				<posx>0</posx>
+				<posy>570</posy>
+				<width>1280</width>
+				<height>30</height>
+				<texture>tvguide-glasspane_mouse.png</texture>
+			</control>
+
 			<control type="label" id="4920">
 				<description>Program title</description>
-				<posx>30</posx>
-				<posy>55</posy>
-				<width>705</width>
-				<height>50</height>
+				<posx>345</posx>
+				<posy>570</posy>
+				<width>700</width>
+				<height>30</height>
 				<textcolor>ffffffff</textcolor>
 				<font>font13</font>
 				<aligny>center</aligny>
-				<scroll>true</scroll>
 			</control>
-			<control type="image" id="4924">
-				<description>Channel logo</description>
-				<posx>640</posx>
-				<posy>125</posy>
-				<width>240</width>
-				<height>120</height>
-				<aspectratio>keep</aspectratio>
-				<fadetime>500</fadetime>
-			</control>
-
-			<control type="image" id="4944">
-				<description>Live</description>
-				<posx>778</posx>
-				<posy>94</posy>
-				<width>80</width>
-				<height>18</height>
-				<aspectratio>keep</aspectratio>
-				<fadetime>500</fadetime>
-				<visible>true</visible>
-			</control>
-
 			<control type="label" id="4921">
 				<description>Program time</description>
-				<posx>880</posx>
-				<posy>55</posy>
-				<width>140</width>
-				<height>50</height>
+				<posx>1255</posx>
+				<posy>570</posy>
+				<width>200</width>
+				<height>30</height>
 				<textcolor>ffffffff</textcolor>
 				<font>font13</font>
 				<align>right</align>
-				<aligny>center</aligny>	
+				<aligny>center</aligny>
 			</control>
 			<control type="textbox" id="4922">
 				<description>Program description</description>
-				<posx>30</posx>
-				<posy>100</posy>
-				<width>600</width>
-				<height>358</height>
+				<posx>345</posx>
+				<posy>605</posy>
+				<width>910</width>
+				<height>115</height>
 				<textcolor>ffffffff</textcolor>
 				<font>font12</font>
+				<align>justify</align>
 				<wrapmultiline>true</wrapmultiline>
-				<autoscroll time="3500" delay="2500" repeat="10000">true</autoscroll>
+				<autoscroll time="3500" delay="4500" repeat="10000">true</autoscroll>
 			</control>
-
-			<control type="progress" id="4999">
-				<posx>30</posx>
-				<posy>470</posy>
-				<width>580</width>
-				<height>20</height>
-			</control>
-
-			<control type="image" id="4923">
-				<description>Program logo / Source logo</description>
-				<posx>640</posx>
-				<posy>260</posy>
-				<width>240</width>
-				<height>220</height>
+			<control type="image" id="4924">
+				<description>Channel logo</description>
+				<posx>58</posx>
+				<posy>610</posy>
+				<width>210</width>
+				<height>50</height>
 				<aspectratio>keep</aspectratio>
-				<fadetime>500</fadetime>
-				<texture>tvguide-logo-epg.png</texture>
+				<visible>true</visible>
 			</control>
+			<control type="progress" id="4999">
+				<posx>20</posx>
+				<posy>578</posy>
+				<width>300</width>
+				<height>15</height>
+			</control>
+<!--
+			<control type="button" id="101">
+				<posx>36</posx>
+				<posy>670</posy>
+				<width>40</width>
+				<height>40</height>
+				<texturefocus>stopfo.png</texturefocus>
+				<texturenofocus>stopbd.png</texturenofocus>
+				<onleft>104</onleft>
+				<onright>102</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+			<control type="button" id="102">
+				<posx>106</posx>
+				<posy>670</posy>
+				<width>40</width>
+				<height>40</height>
+				<texturefocus>infofo.png</texturefocus>
+				<texturenofocus>infobd.png</texturenofocus>
+				<onleft>101</onleft>
+				<onright>103</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+			<control type="button" id="103">
+				<posx>176</posx>
+				<posy>670</posy>
+				<width>40</width>
+				<height>40</height>
+				<texturefocus>minusfo.png</texturefocus>
+				<texturenofocus>minusbd.png</texturenofocus>
+				<onleft>102</onleft>
+				<onright>104</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+			<control type="button" id="104">
+				<posx>246</posx>
+				<posy>670</posy>
+				<width>40</width>
+				<height>40</height>
+				<texturefocus>plusfo.png</texturefocus>
+				<texturenofocus>plusbd.png</texturenofocus>
+				<onleft>103</onleft>
+				<onright>101</onright>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+-->
 		</control>
 	</controls>
 </window>
