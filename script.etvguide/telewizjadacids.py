@@ -1,4 +1,4 @@
-﻿#      Copyright (C) 2015 Andrzej Mleczko
+﻿#      Copyright (C) 2016 Andrzej Mleczko
 
 import urllib, httplib, sys, copy, re
 import simplejson as json
@@ -13,18 +13,25 @@ telewizjadaMainUrl  = 'http://www.telewizjada.net/'
 
 COOKIE_FILE = os.path.join(xbmc.translatePath(ADDON.getAddonInfo('profile')) , 'telewizjada.cookie')
 pathMapBase = os.path.join(ADDON.getAddonInfo('path'), 'resources')
+onlineMapFile = 'http://epg.feenk.net/maps/telewizjadamap.xml'
 
 telewizjadaChannelList = None
 
-class TelewizjaDaUpdater: 
+class TelewizjaDaUpdater:
     def __init__(self):
         self.sl = weebtvcids.ShowList()
-        
+
     def loadChannelList(self):
         try:
+            mapfile = self.sl.downloadUrl(onlineMapFile)
+            if mapfile is None:
+                deb('TelewizjaDaUpdater loadChannelList map file download Error, using local instead!')
+                pathMap = os.path.join(pathMapBase, 'telewizjadamap.xml')
+                mapfile = weebtvcids.MapString.loadFile(pathMap)
+            else:
+                deb('TelewizjaDaUpdater loadChannelList success downloading online map file: %s' % onlineMapFile)
+
             self.channels = self.getChannelList()
-            pathMap = os.path.join(pathMapBase, 'telewizjadamap.xml')
-            mapfile = weebtvcids.MapString.loadFile(pathMap)
             self.automap = weebtvcids.MapString.Parse(mapfile)
 
             deb('\n[UPD] Wyszykiwanie STRM')
@@ -32,7 +39,7 @@ class TelewizjaDaUpdater:
             deb('[UPD] %-30s %-30s %-20s %-35s' % ('-ID mTvGuide-', '-    Orig Name    -', '-    SRC   -', '-    STRM   -'))
             for x in self.automap:
                 if x.strm != '':
-                    x.src = 'CONST'  
+                    x.src = 'CONST'
                     deb('[UPD] %-30s %-15s %-35s' % (x.channelid, x.src, x.strm))
                     continue
                 try:
@@ -54,7 +61,7 @@ class TelewizjaDaUpdater:
             for x in self.automap:
                 if x.src!='telewizjada.net':
                     deb('[UPD] CH=%-30s SRC=%-15s STRM=%-35s' % (x.channelid, x.src, x.strm))
-                    
+
             deb ('\n[UPD] Nie wykorzystano STRM nadawanych przez telewizjada.net programów:')
             deb('-------------------------------------------------------------------------------------')
             for y in self.channels:
@@ -62,10 +69,10 @@ class TelewizjaDaUpdater:
                     deb ('[UPD] CID=%-10s NAME=%-40s STRM=%-45s' % (y.cid, y.name, str(y.strm)))
 
             deb("[UPD] Zakończono analizę...")
-            
+
         except Exception, ex:
             print 'TelewizjaDaUpdater loadChannelList Error %s' % str(ex)
-            
+
     def getChannelList(self):
         try:
             global telewizjadaChannelList
@@ -73,23 +80,14 @@ class TelewizjaDaUpdater:
             if telewizjadaChannelList is not None:
                 deb('TelewizjaDaUpdater getChannelList return cached channel list')
                 return copy.deepcopy(telewizjadaChannelList)
-            
+
             deb('TelewizjaDaUpdater getChannelList downloading channel list')
-            
+
             channelsArray = list()
             result = list()
-            failedCounter = 0
-            while failedCounter < 100:
-                try:
-                    channelsArray = self.sl.getJsonFromAPI(telewizjadaMainUrl + 'get_channels.php', '')
-                    break
-                except httplib.IncompleteRead:
-                    failedCounter = failedCounter + 1
-                    deb('TelewizjaDaUpdater getChannelList IncompleteRead exception - failedCounter = %s' % failedCounter)
-                    time.sleep(.150)
-                
-            if len(channelsArray) > 0:
-                
+            channelsArray = self.sl.getJsonFromAPI(telewizjadaMainUrl + 'get_channels.php')
+
+            if channelsArray is not None and len(channelsArray) > 0:
                 for x in range(0, len(channelsArray['channels'])):
                     chann = self.sl.decode(channelsArray['channels'][x])
                     args = chann.split(",")
@@ -98,8 +96,9 @@ class TelewizjaDaUpdater:
                     img = ''
                     displayName = ''
                     description = ''
-                    
-                    for index in range(0, len(args)): 
+                    online = ''
+
+                    for index in range(0, len(args)):
                         arg = args[index].split(":")
                         if "id" in arg[0]:
                             ID = arg[1].replace('"', '').strip()
@@ -111,45 +110,49 @@ class TelewizjaDaUpdater:
                             img = telewizjadaMainUrl + arg[1].replace('"', '').strip()
                         if "description" in arg[0]:
                             description = arg[1].replace('"', '').strip()
+                        if "online" in arg[0]:
+                            online = arg[1].replace('"', '').strip()
 
-                    result.append(weebtvcids.WeebTvCid(ID, displayName, displayName, '2', url, img))                    
+                    if online == '1':
+                        result.append(weebtvcids.WeebTvCid(ID, displayName, displayName, '2', url, img))
+                    else:
+                        deb('TelewizjaDaUpdater getChannelList skipping disabled channel %s' % displayName)
                 telewizjadaChannelList = copy.deepcopy(result)
-            
+
             return result
 
         except Exception, ex:
             print 'TelewizjaDaUpdater getChannelList Error %s' % str(ex)
-            
-    def getChannelUrl(self, cid):
+
+    def getChannel(self, cid):
         try:
             for chann in telewizjadaChannelList:
                 if chann.cid == cid:
                     tmp_url = ''
-                    failedCounter = 0
+
                     data = { 'url': chann.strm }
-                    while failedCounter < 50:
-                        try:
-                            self.sl.getJsonFromExtendedAPI(telewizjadaMainUrl + 'set_cookie.php', post_data = data, cookieFile = COOKIE_FILE, save_cookie = True)
-                            break
-                        except:
-                            failedCounter = failedCounter + 1
-                            time.sleep(.100)
+                    self.sl.getJsonFromExtendedAPI(telewizjadaMainUrl + 'set_cookie.php', post_data = data, cookieFile = COOKIE_FILE, save_cookie = True)
 
                     data = { 'cid': cid }
-                    failedCounter = 0
-                    while failedCounter < 50:
-                        try:
-                            tmp_url = self.sl.getJsonFromExtendedAPI(telewizjadaMainUrl + 'get_channel_url.php', post_data = data, cookieFile = COOKIE_FILE, load_cookie = True)
-                            break
-                        except:
-                            failedCounter = failedCounter + 1
-                            time.sleep(.100)
+                    tmp_url = self.sl.getJsonFromExtendedAPI(telewizjadaMainUrl + 'get_channel_url.php', post_data = data, cookieFile = COOKIE_FILE, load_cookie = True, jsonLoadsResult = True)
+
+                    if tmp_url is None:
+                        deb('TelewizjaDaUpdater getChannel: Error - failed to fetch tmp url from API get_channel_url.php')
+                        return None
+                    else:
+                        tmp_url = tmp_url['url']
 
                     msec = self.sl.getCookieItem(COOKIE_FILE, 'msec')
                     sessid = self.sl.getCookieItem(COOKIE_FILE, 'sessid')
-                    
+
                     final_url = tmp_url + '|Cookie='+ urllib.quote_plus('msec=' + msec + '; sessid=' + sessid )
-                    return final_url
-            
+
+                    channel = copy.deepcopy(chann)
+                    channel.strm = final_url
+                    deb('TelewizjaDaUpdater getChannel: found matching channel: cid %s, name %s, rtmp %s ' % (channel.cid, channel.name, channel.strm))
+                    return channel
+
         except Exception, ex:
             print 'TelewizjaDaUpdater getChannelUrl Error %s' % str(ex)
+
+        return None

@@ -12,7 +12,7 @@
 	<channel id="TVP Polonia" 								title="(?=TVP\s*Polonia(\s*HD)?$)" strm=""/>
 	<channel id="TVP Rozrywka" 								title="(?=.*TVP)(?=.*Rozrywka)" strm=""/>
 	<channel id="TVP Historia" 								title="(?=.*TVP)(?=.*Historia)" strm=""/>
-	<channel id="TV Trwam"									title="" strm="mms://195.94.205.211/Trwam"/>
+	<channel id="TV Trwam"                                  title="" strm="mms://195.94.205.211/Trwam"/>
 	<channel id="TV Puls" 									title="(?=.*Puls)(?!.*2)" strm=""/>
 	<channel id="Puls 2" 									title="(?=.*PULS)(?=.*2)" strm=""/>
 	<channel id="TTV" 										title="(?=.*TTV)" strm=""/>
@@ -38,18 +38,12 @@
 	<channel id="Canal+ Film" 								title="(?=Canal\+\s*Film(\s*HD)?$)" strm=""/>
 	<channel id="Canal+ Family" 							title="(?=Canal\+\s*Family(\s*HD)?$)" strm=""/>
     <channel id="Canal+ Seriale" 							title="(?=Canal\+\s*Seriale(\s*HD)?$)" strm=""/>
-	
-<!-- 
-Kanał HBO tymczasowo ustawiony na jakość SD ponieważ HD nie nadaje - oryginalny HD wpis zapisany w komentarzu:
-	<channel id="HBO" 										title="(?=HBO\s*$)" strm=""/>
-<channel id="HBO" 										title="(?=HBO(\s*720p)?$)" strm=""/>
--->
-	<channel id="HBO" 										title="(?=HBO(\s*720p)?$)" strm=""/>
-	
+	<channel id="HBO" 										title="(?=HBO(\s*HD)?(\s*720p)?(\s*1080p)?$)" strm=""/>
 	<channel id="HBO2" 										title="(?=HBO\s*2(\s*HD)?$)" strm=""/>
 	<channel id="HBO Comedy" 								title="(?=HBO\s*Comedy(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox" 								    title="(?=Filmbox(\s*HD)?$)" strm=""/>
-	<channel id="Filmbox Extra" 							title="(?=.*Filmbox)(?=.*Extra)" strm=""/>
+	<channel id="Filmbox Extra" 							title="(?=\s*Filmbox\s*Extra(\s*HD)?\s*$)" strm=""/>
+	<channel id="Filmbox Extra HD" 							title="(?=\s*Filmbox\s*Extra(\s*HD)?\s*$)" strm=""/>
 	<channel id="Cinemax" 									title="(?=.*Cinemax)" strm=""/>
 	<channel id="Cinemax 2" 								title="(?=.*Cinemax)(?=.*2)" strm=""/>
 	<channel id="Polsat Film" 								title="(?=Polsat\s*Film(\s*HD)?$)" strm=""/>

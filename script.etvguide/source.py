@@ -36,13 +36,14 @@ import xbmc
 import xbmcgui
 import xbmcvfs
 import sqlite3
-from weebtvcids import WebbTvStrmUpdater, GoldVodTvStrmUpdater
+from weebtvcids import WebbTvStrmUpdater
 import telewizjadacids
+import goldvodcids
 from itertools import chain
 
 import io, zipfile
 
-SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'm-TVGuide', 'Time.Zone']
+SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', 'Time.Zone']
 
 TIMEZONE = ADDON.getSetting('Time.Zone')
 CHECK_NAME = ADDON.getSetting('username')
@@ -53,6 +54,7 @@ if CHECK_NAME:
     USER_AGENT = ADDON.getSetting('username')
 else:
     USER_AGENT = ADDON.getSetting('usernameGoldVOD')
+
 
 class Channel(object):
     def __init__(self, id, title, logo = None, streamUrl = None, visible = True, weight = -1):
@@ -118,7 +120,7 @@ class Database(object):
     config.read(os.path.join(ADDON.getAddonInfo('path'), 'resources', 'skins',ADDON.getSetting('Skin'), 'settings.ini'))
     ini_chan = config.getint("Skin", "CHANNELS_PER_PAGE")
     CHANNELS_PER_PAGE = ini_chan
-    
+
     def __init__(self):
         self.conn = None
         self.eventQueue = list()
@@ -202,6 +204,11 @@ class Database(object):
                 c = self.conn.cursor()
                 c.execute('CREATE TABLE IF NOT EXISTS database_lock_check(id TEXT PRIMARY KEY)')
                 c.execute('DROP TABLE database_lock_check')
+
+                c.execute('pragma integrity_check')
+                for row in c:
+                    deb('Database is %s' % row['integrity_check'])
+
                 c.close()
 
                 self._createTables()
@@ -294,7 +301,7 @@ class Database(object):
             c.execute('SELECT programs_updated FROM updates WHERE source=? AND date=?', [self.source.KEY, dateStr])
         else:
             c.execute('SELECT programs_updated FROM updates WHERE source=?', [self.source.KEY])
-            
+
         row = c.fetchone()
         if row:
             programsLastUpdated = row['programs_updated']
@@ -314,8 +321,9 @@ class Database(object):
 		# todo workaround service.py 'forgets' the adapter and convert set in _initialize.. wtf?!
         sqlite3.register_adapter(datetime.datetime, self.adapt_datetime)
         sqlite3.register_converter('timestamp', self.convert_datetime)
+        cacheExpired = self._isCacheExpired(date)
 
-        if self._isCacheExpired(date):
+        if cacheExpired:
             deb('_isCacheExpired')
             self.updateInProgress = True
             self.updateFailed = False
@@ -393,23 +401,27 @@ class Database(object):
         deb('AutoUpdateCid=%s : ADDON_CIDUPDATED=%s : self.updateFailed=%s' % (ADDON.getSetting('AutoUpdateCid'), ADDON_CIDUPDATED, self.updateFailed))
         #jeżeli nie udało się pobranie epg lub już aktualizowalismy CIDy lub w opcjach nie mamy zaznaczonej automatycznek altualizacji
         if self.updateFailed or ADDON_CIDUPDATED or ADDON.getSetting('AutoUpdateCid') == 'false':
-            return #to wychodzimy - nie robimy aktualizacji
-        deb('[UPD] Rozpoczynam aktualizacje STRM')            
-        
-        for priority in range(3):
-            
+            return cacheExpired #to wychodzimy - nie robimy aktualizacji
+        deb('[UPD] Rozpoczynam aktualizacje STRM')
+
+        for priority in reversed(range(3)):
+
             if priority == int(ADDON.getSetting('priority_weebtv')):
                 if ADDON.getSetting('WeebTV_enabled') == 'true':
-                    self.storeCustomStreams(WebbTvStrmUpdater(), 'weeb.tv', "service=weebtv&cid=%")
+                    weebTv = WebbTvStrmUpdater()
+                    weebTv.loadChannelList()
+                    self.storeCustomStreams(weebTv, 'weeb.tv', "service=weebtv&cid=%")
                 else:
                     self.deleteCustomStreams('weeb.tv', "service=weebtv&cid=%")
-                    
+
             if priority == int(ADDON.getSetting('priority_goldvod')):
                 if ADDON.getSetting('GoldVOD_enabled') == 'true':
-                    self.storeCustomStreams(GoldVodTvStrmUpdater(), 'goldvod.tv', "service=goldvod&cid=%")
+                    goldVodTv = goldvodcids.GoldVodUpdater()
+                    goldVodTv.loadChannelList()
+                    self.storeCustomStreams(goldVodTv, 'goldvod.tv', "service=goldvod&cid=%")
                 else:
                     self.deleteCustomStreams('goldvod.tv', "service=goldvod&cid=%")
-                    
+
             if priority == int(ADDON.getSetting('priority_telewizjada')):
                 if ADDON.getSetting('telewizjada_enabled') == 'true':
                     telewizja = telewizjadacids.TelewizjaDaUpdater()
@@ -422,8 +434,8 @@ class Database(object):
 
         ADDON_CIDUPDATED = True
         deb ('[UPD] Aktualizacja zakonczona')
-        
-        
+        return cacheExpired
+
     def deleteCustomStreams(self, streamSource, serviceStreamRegex):
         try:
             c = self.conn.cursor()
@@ -433,7 +445,7 @@ class Database(object):
             c.close()
         except Exception, ex:
             deb('[UPD] Error deleting streams: %s' % str(ex))
-            
+
     def storeCustomStreams(self, streams, streamSource, serviceStreamRegex):
         try:
             if len(streams.automap) > 0 and len(streams.channels) > 0:
@@ -443,13 +455,13 @@ class Database(object):
             for x in streams.automap:
                 if x.strm is not None and x.strm != '':
                     deb ('[UPD] Updating: CH=%-30s STRM=%-30s SRC=%s' % (x.channelid, x.strm, x.src))
-                    c.execute("DELETE FROM custom_stream_url WHERE channel like ?", [x.channelid])
+                    #c.execute("DELETE FROM custom_stream_url WHERE channel like ?", [x.channelid])
                     c.execute("INSERT INTO custom_stream_url(channel, stream_url) VALUES(?, ?)", [x.channelid, x.strm.decode('utf-8', 'ignore')])
             self.conn.commit()
             c.close()
         except Exception, ex:
             deb('[UPD] Error updating strms: %s' % str(ex))
-            
+
     def printStreamsWithoutChannelEPG(self):
         try:
             c = self.conn.cursor()
@@ -475,7 +487,7 @@ class Database(object):
         return result
 
     def _getEPGView(self, channelStart, date, progress_callback, clearExistingProgramList):
-        self._updateChannelAndProgramListCaches(date, progress_callback, clearExistingProgramList)
+        cacheExpired = self._updateChannelAndProgramListCaches(date, progress_callback, clearExistingProgramList)
         channels = self._getChannelList(onlyVisible = True)
 
         if channelStart < 0:
@@ -489,11 +501,14 @@ class Database(object):
         channelEnd = channelStart + Database.CHANNELS_PER_PAGE
         channelsOnPage = channels[channelStart : channelEnd]
         programs = self._getProgramList(channelsOnPage, date)
-        return [channelStart, channelsOnPage, programs]
+        return [channelStart, channelsOnPage, programs, cacheExpired]
 
     def getCurrentChannelIdx(self, currentChannel):
         channels = self.getChannelList()
-        idx = channels.index(currentChannel)
+        try:
+            idx = channels.index(currentChannel)
+        except:
+            return 0
         return idx
 
     def getNextChannel(self, currentChannel):
@@ -596,6 +611,19 @@ class Database(object):
         c.close()
         return previousProgram
 
+    def getProgramStartingAt(self, channel, startTime):
+        return self._invokeAndBlockForResult(self._getProgramStartingAt, channel, startTime)
+
+    def _getProgramStartingAt(self, channel, startTime):
+        program = None
+        c = self.conn.cursor()
+        c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date = ? AND end_date >= ?', [channel.id, self.source.KEY, startTime, startTime])
+        row = c.fetchone()
+        if row:
+            program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'], row['image_large'], row['image_small'], row['categoryA'], row['categoryB'])
+        c.close()
+        return program
+
     def _getProgramList(self, channels, startTime):
         """
         @param channels:
@@ -648,7 +676,7 @@ class Database(object):
     def _setCustomStreamUrl(self, channel, stream_url):
         if stream_url is not None:
             c = self.conn.cursor()
-            c.execute("DELETE FROM custom_stream_url WHERE channel=?", [channel.id])
+            c.execute("DELETE FROM custom_stream_url WHERE channel like ?", [channel.id])
             c.execute("INSERT INTO custom_stream_url(channel, stream_url) VALUES(?, ?)", [channel.id, stream_url.decode('utf-8', 'ignore')])
             self.conn.commit()
             c.close()
@@ -668,13 +696,26 @@ class Database(object):
         else:
             return None
 
+    def getCustomStreamUrlList(self, channel):
+        return self._invokeAndBlockForResult(self._getCustomStreamUrlList, channel)
+
+    def _getCustomStreamUrlList(self, channel):
+        result = list()
+        c = self.conn.cursor()
+        c.execute("SELECT stream_url FROM custom_stream_url WHERE channel like ?", [channel.id])
+        for row in c:
+            url = row['stream_url']
+            result.append(url)
+        c.close()
+        return result
+
     def deleteCustomStreamUrl(self, channel):
         self.eventQueue.append([self._deleteCustomStreamUrl, None, channel])
         self.event.set()
 
     def _deleteCustomStreamUrl(self, channel):
         c = self.conn.cursor()
-        c.execute("DELETE FROM custom_stream_url WHERE channel=?", [channel.id])
+        c.execute("DELETE FROM custom_stream_url WHERE channel like ?", [channel.id])
         self.conn.commit()
         c.close()
 
@@ -687,6 +728,17 @@ class Database(object):
             streamUrl = channel.streamUrl.encode('utf-8', 'ignore')
             return streamUrl
         return None
+
+    def getStreamUrlList(self, channel):
+        customStreamUrlList = self.getCustomStreamUrlList(channel)
+        if len(customStreamUrlList) > 0:
+            for url in customStreamUrlList:
+                url = url.encode('utf-8', 'ignore')
+                deb('getStreamUrlList channel: %-20s, stream: %-20s' % (channel.id, url))
+        elif channel.isPlayable():
+            streamUrl = channel.streamUrl.encode('utf-8', 'ignore')
+            customStreamUrlList.append(streamUrl)
+        return customStreamUrlList
 
     def adapt_datetime(self, ts):
 		# http://docs.python.org/2/library/sqlite3.html#registering-an-adapter-callable
@@ -728,6 +780,7 @@ class Database(object):
 
                 # For notifications
                 c.execute("CREATE TABLE notifications(channel TEXT, program_title TEXT, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
+                self.conn.commit()
 
             if version < [1, 3, 1]:
                 # Recreate tables with FOREIGN KEYS as DEFERRABLE INITIALLY DEFERRED
@@ -739,6 +792,7 @@ class Database(object):
                 c.execute('CREATE INDEX program_list_idx ON programs(source, channel, start_date, end_date)')
                 c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
                 c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
+                self.conn.commit()
 
             if version < [3, 0, 0]:
                 # Nowe tabele na nowa wersje :P
@@ -751,7 +805,7 @@ class Database(object):
                 c.execute('DROP TABLE notifications')
                 c.execute('DROP TABLE programs')
                 c.execute('DROP TABLE channels')
-                c.execute('CREATE TABLE IF NOT EXISTS custom_stream_url(channel TEXT COLLATE NOCASE PRIMARY KEY, stream_url TEXT)')
+                c.execute('CREATE TABLE IF NOT EXISTS custom_stream_url(channel TEXT COLLATE NOCASE, stream_url TEXT)')
                 c.execute('CREATE TABLE IF NOT EXISTS sources(id TEXT PRIMARY KEY, channels_updated TIMESTAMP)')
                 c.execute('CREATE TABLE IF NOT EXISTS updates(id INTEGER PRIMARY KEY, source TEXT, date TEXT, programs_updated TIMESTAMP)')
                 c.execute('CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY, value TEXT)')
@@ -761,6 +815,23 @@ class Database(object):
                 c.execute('CREATE INDEX program_list_idx ON programs(source, channel, start_date, end_date)')
                 c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
                 c.execute('CREATE INDEX end_date_idx ON programs(end_date)')
+                self.conn.commit()
+
+            if version < [3, 1, 0]:
+                c.execute("SELECT * FROM custom_stream_url")
+                channelList = list()
+                for row in c:
+                    channel = [row['channel'], row['stream_url']]
+                    channelList.append(channel)
+
+                c.execute('UPDATE version SET major=3, minor=1, patch=0')
+                c.execute('DROP TABLE custom_stream_url')
+                c.execute('CREATE TABLE IF NOT EXISTS custom_stream_url(channel TEXT COLLATE NOCASE, stream_url TEXT)')
+
+                for channel in channelList:
+                    c.execute("INSERT INTO custom_stream_url(channel, stream_url) VALUES(?, ?)", [channel[0], channel[1]])
+
+                self.conn.commit()
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
@@ -844,26 +915,26 @@ class Database(object):
         c.execute('UPDATE settings SET value=0 WHERE rowid=1')
         self.conn.commit()
         c.close()
-        
+
     def deleteAllStreams(self):
         self._invokeAndBlockForResult(self._deleteAllStreams)
-        
+
     def _deleteAllStreams(self):
         c = self.conn.cursor()
         c.execute('DELETE FROM custom_stream_url')
         self.conn.commit()
         c.close()
-        
+
     def deleteDbFile(self):
         self._invokeAndBlockForResult(self._deleteDbFile)
-        
+
     def _deleteDbFile(self):
         try:
             os.remove(self.databasePath)
         except:
             pass
-        
-        if os.path.isfile (self.databasePath) == False: 
+
+        if os.path.isfile (self.databasePath) == False:
             deb('_deleteDbFile successfully deleted database file')
         else:
             deb('_deleteDbFile failed to delete database file')
@@ -878,7 +949,7 @@ class Source(object):
         @return:
         """
         return None
-    
+
     def getNewUpdateTime(self):
         return datetime.datetime.now()
 
@@ -889,10 +960,10 @@ class Source(object):
         if programsLastUpdated is None or programsLastUpdated.day != today.day:
             return True
         return False
-    
+
     def resetEPGULastModifiedDate(self):
         self.EPGULastModifiedDate = None
-        
+
     def close(self):
         pass
 
@@ -900,6 +971,8 @@ class Source(object):
         try:
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
+#            u = urllib2.urlopen(url, timeout=30)
+#            content = u.read()
             u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (' + USER_AGENT + TIMEZONE + ' version: ' + ADDON_VERSION + ')' })
             response = urllib2.urlopen(u,timeout=30)
             content = response.read()
@@ -949,19 +1022,23 @@ class ETVGUIDESource(Source):
         else:
             self.ETVGUIDEUrl = 'http://epg.feenk.net/epg.xml'
 
-        self.ETVGUIDEUrl2 = addon.getSetting('e-TVGuide2')        
+        self.ETVGUIDEUrl2 = addon.getSetting('e-TVGuide2')
+        self.ETVGUIDEUrl3 = addon.getSetting('e-TVGuide3')
         self.EPGULastModifiedDate = None
         self.logoFolder = None
         self.epgBasedOnLastModDate = ADDON.getSetting('UpdateEPGOnModifiedDate')
         self.timer = threading.Timer(1800, self.resetEPGULastModifiedDate)
 
     def getDataFromExternal(self, date, progress_callback = None):
-        parsedData1 = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl)
+        data = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl)
         if self.ETVGUIDEUrl2 != "":
-            parsedData2 = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl2)
-            return chain(parsedData1, parsedData2)
-        return parsedData1
-        
+            parsedData = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl2)
+            data = chain(data, parsedData)
+        if self.ETVGUIDEUrl3 != "":
+            parsedData = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl3)
+            data = chain(data, parsedData)
+        return data
+
     def _getDataFromExternal(self, date, progress_callback, url):
         try:
             xml = self._downloadUrl(url)
@@ -971,7 +1048,7 @@ class ETVGUIDESource(Source):
         except Exception, ex:
             deb("Błąd pobierania epg: %s\n\nSzczegóły:\n%s" % (url, str(ex)))
             raise ex
-        
+
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
         if self.epgBasedOnLastModDate == 'false':
             return super(ETVGUIDESource, self).isUpdated(channelsLastUpdated, programLastUpdate)
@@ -981,7 +1058,7 @@ class ETVGUIDESource(Source):
         if programLastUpdate is None or programLastUpdate != lastEpgUpdateDate:
             return True
         return False
-    
+
     def getNewUpdateTime(self):
         if self.epgBasedOnLastModDate == 'false':
             return super(ETVGUIDESource, self).getNewUpdateTime()
@@ -1002,7 +1079,7 @@ class ETVGUIDESource(Source):
                 deb('getNewUpdateTime exception %s failedCounter %s' % (str(ex), failedCounter))
                 failedCounter = failedCounter + 1
         return datetime.datetime.now()
-    
+
     def close(self):
         self.timer.cancel()
 

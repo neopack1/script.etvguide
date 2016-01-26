@@ -19,8 +19,9 @@
 	<string id="30108">Wyczyść wszystkie przypomnienia...</string>
 	<string id="30110">Aktualizuj informacje o programie podczas startu XBMC</string>
 	<string id="30116">Wyszukaj obrazki kanałów w</string>
-	<string id="30117">Wybierz EPG</string>
-	<string id="30118">Dodatkowe EPG</string>
+	<string id="30117">[COLOR red]Wpisz swój link premium z [CR]http://mods-kodi.pl dla EPG[/COLOR]</string>
+	<string id="30118">Dodatkowe EPG1:</string>
+	<string id="30119">Dodatkowe EPG2:</string>
 	<string id="30150">Ładowanie nie powiodło się!</string>
 	<string id="30151">Twoje ustawienia lub podany adres są błędne![CR]</string>
 	<string id="30152">Sprawdź ustawienia albo sproboj ponownie pozniej</string>
@@ -29,10 +30,13 @@
 	<string id="30155">nie jest komatybilna z obecną wersją TV Guide.</string>
 	<string id="30156">Spróbuj zmienić skórkę...</string>
 	<string id="30157">Wygląda na to, że baza danych TV Guide jest błędna.</string>
-	<string id="30158">Baza danych zostanie skasowana i zapisana ponownie.</string>
+	<string id="30158">Proszę usunąć plik bazy z dysku używając opcji w ustawieniach wtyczki "Ustawienia bazy"</string>
 	<string id="30159">Konfiguracja kanałów została utracona.</string>
 	<string id="30200">na [B]%s[/B] za 5 minut...</string>
 	<string id="30201">na [B]%s[/B] rozpoczyna się...</string>
+	<string id="30202">Uruchomienie zapisanego programu</string>
+	<string id="30203">Uruchomic zapisany program</string>
+	<string id="30204">Anuluj</string>
 	<string id="30300">[B]Oglądaj %s[/B]</string>
 	<string id="30301">[B]Przypomnij[/B]</string>
 	<string id="30302">[B]Nie przypominaj[/B]</string>
@@ -91,6 +95,7 @@
 	<string id="30916">Ustawienia Bazy</string>
 	<string id="30914">Skórka</string>
 	<string id="30915">Uruchom e-TVGuide po starcie XBMC</string>
+	<string id="30917">Animacja maksymalizacji okna odtwarzania</string>
 	<string id="30930">Kolory</string>
 	<string id="30931">Kolory kategorii</string>
 	<string id="30932">Filmy</string>
@@ -108,10 +113,21 @@
 	<string id="30950">Wyczyść bazę</string>
 	<string id="30951">Baza wyczyszczona</string>
 	<string id="30952">Usun przypisane streamy</string>
-	<string id="30953">Utworz kopie bazy</string>
-	<string id="30954">Przywroc baze z kopii</string>
+	<string id="30953">Eksportuj ustawienia</string>
+	<string id="30954">Importuj ustawienia</string>
 	<string id="30955">Usun plik bazy z dysku</string>
 	<string id="58000">Informacje o programie</string>
+
+	<string id="58001">Wskaż katalog do zapisania ustawień</string>
+	<string id="58002">Eksport ustawień</string>
+	<string id="58003">Import ustawień</string>
+	<string id="58004">Niepowodzenie - brak ustawień do eksportowania!</string>
+	<string id="58005">Pomyślnie zapisano ustawienia</string>
+	<string id="58006">Niepowodzenie - proszę sprawdzić czy masz prawa zapisu do wybranego folderu</string>
+	<string id="58007">Wskaż plik kopii ustawień</string>
+	<string id="58008">Pomyślnie wczytano ustawienia</string>
+	<string id="58009">Nie udało się wczytać ustawień</string>
+	<string id="58010">Proszę sprawdzić czy wybrany plik zip jest poprawną kopią ustawień</string>
 
 	<string id="31001">VIDEO OSD</string>
 	<string id="31002">Ustaw klawisze</string>
@@ -123,6 +139,10 @@
 	<string id="31008">Klawisz STOP</string>
 	<string id="31009">Klawisz INFO</string>
 	<string id="310010"></string>
+	<string id="310011">Zatrzymaj odtwarzanie przyciskiem wstecz</string>
+	<string id="310012"></string>
+	<string id="310013"></string>
+	<string id="310014"></string>
 
 <!-- general settings -->
 	<string id="55002">Użytkownik:</string>
@@ -134,7 +154,7 @@
 	<string id="89002">Akcja wykonana po upływie czasu nieaktywności</string>
 	<string id="89003">Czas braku aktywności (min)</string>
 	<string id="59901">GoldVOD</string>
-	<string id="55009">Priorytet przypisywania streamów</string>
+	<string id="55009">Priorytet przyipisywania streamów</string>
 
 <!-- errors & messages -->
 	<string id="57001">Błąd API</string>
@@ -158,6 +178,7 @@
 	<string id="57036">Nie posiadasz konta premium. Rozpoczynanie transmisji sponsorowanej.</string>
 	<string id="57037">Aby wykupić premium już teraz wejdź na stronę:</string>
 	<string id="57038">http://weeb.tv/premium</string>
+	<string id="57039">Prawdopodobnie brak konta premium w serwisie:</string>
 	<string id="57042">Błąd połączenia z serwisem!</string>
 	<string id="57043">Wybrany kanał nie istnieje!</string>
 	<string id="57044">Nie wybrano kanału!</string>

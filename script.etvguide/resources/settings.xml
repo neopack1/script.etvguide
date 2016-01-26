@@ -7,18 +7,18 @@
 		<setting id="userpassword" type="text" option="hidden" label="55003" default="" visible="eq(-2,true)"/>
 		<setting id="video_quality" type="bool" label="55005" default="true" visible="eq(-3,true)"/>
 		<setting id="priority_weebtv" label="55009" type="enum" default="0" values="niski|sredni|wysoki" visible="eq(-4,true)"/>
-		
+
 		<setting label="59902" type="lsep"/>
 		<setting id="GoldVOD_enabled" type="bool" label="59904" default="false"/>
 		<setting id="usernameGoldVOD" type="text" label="55002" default="" visible="eq(-1,true)"/>
 		<setting id="userpasswordGoldVOD" type="text" option="hidden" label="55003" default="" visible="eq(-2,true)"/>
 		<setting id="video_qualityGoldVOD" type="bool" label="55005" default="true" visible="eq(-3,true)"/>
 		<setting id="priority_goldvod" label="55009" type="enum" default="1" values="niski|sredni|wysoki" visible="eq(-4,true)"/>
-		
+
 		<setting label="59903" type="lsep"/>
 		<setting id="telewizjada_enabled" type="bool" label="59904" default="true"/>
 		<setting id="priority_telewizjada" label="55009" type="enum" default="2" values="niski|sredni|wysoki" visible="eq(-1,true)"/>
-		
+
 	</category>
 	<category label="30101">
 		<setting id="source" label="30701" type="labelenum" default="e-TVGuide" values="XMLTV|e-TVGuide"/>
@@ -28,10 +28,12 @@
 		<setting id="xmltv.logo.folder" label="30116" type="folder" visible="eq(-4,0)"/>
 		<setting id="e-TVGuide" label="30117" type="labelenum" visible="eq(-5,1)" default="Default" values="Default|Alternative"/>
 		<setting id="e-TVGuide2" label="30118" type="text" visible="eq(-6,1)" default="" />
+		<setting id="e-TVGuide3" label="30119" type="text" visible="eq(-7,1)" default="" />
 		<setting id="Time.Zone" label="30911" type="labelenum" default="-05:00" values="-12:00|-11:00|-10:00|-09:30|-09:00|-08:00|-07:00|-06:00|-05:00|-04:30|-04:00|-03:30|-03:00|-02:00|-01:00|00:00|+01:00|+02:00|+03:00|+03:30|+04:00|+04:30|+05:00|+05:30|+05:45|+06:00|+06:30|+07:00|+08:00|+09:00|+09:30|+10:00|+10:30|+11:00|+11:30|+12:00|+12:45|+13:00|+14:00|"/>
 		<setting id="UpdateEPGOnModifiedDate" label="30706" type="bool" default="false" visible="false"/>
 	</category>
 	<category label="30913">
+		<setting id="autostart_etvguide" label="30915" type="bool" default="false"/>
 		<setting id="cache.data.on.xbmc.startup" label="30110" type="bool" default="false"/>
 		<setting id="notifications.enabled" label="30106" type="bool" default="false"/>
 		<setting id="sleep_enabled" type="labelenum" label="89001" default="Nie" values="Nie|Tak"/>
@@ -40,8 +42,9 @@
 		<setting label="30108" type="action" action="RunScript($CWD/notification.py)"/>
 		<setting id="pokazpanel" label="30910" type="bool" default="false"/>
 		<setting id="info.osd" label="31001" type="bool" default="false"/>
+		<setting id="start_video_minimalized" label="30917" type="bool" default="true"/>
+		<setting id="navi_back_stop_play" label="310011" type="bool" default="true" visible="eq(-1,true)"/>
 		<setting label="31002" type="action" action="RunScript($CWD/setkey.py)"/>
-		<setting id="autostart_etvguide" label="30915" type="bool" default="false"/>
 	</category>
 	<category label="30916">
 		<setting type="sep"/>
@@ -49,10 +52,11 @@
 		<setting type="sep"/>
 		<setting label="30952" type="action" action="RunScript($CWD/cleardb.py, clearCustom)"/>
 		<setting type="sep"/>
-		<setting label="30953" type="action" action="RunScript($CWD/cleardb.py, clearCustom)" visible="false"/>
-		<setting label="30954" type="action" action="RunScript($CWD/cleardb.py, clearCustom)" visible="false"/>
 		<setting label="30955" type="action" action="RunScript($CWD/cleardb.py, deleteDbFile)"/>
-		
+
+		<setting label="30953" type="action" action="RunScript($CWD/settingsImportExport.py, Export)"/>
+		<setting label="30954" type="action" action="RunScript($CWD/settingsImportExport.py, Import)"/>
+
 	</category>
 	<category label="30702">
 		<setting id="Skin" label="30914" type="select" source="/resources/skins/" mask="/" default="Default"/>

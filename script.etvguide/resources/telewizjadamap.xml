@@ -13,7 +13,7 @@
 	<channel id="TVP Polonia" 								title="(?=TVP\s*Polonia(\s*HD)?$)" strm=""/>
 	<channel id="TVP Rozrywka" 								title="(?=\s*TVP\s*Rozrywka(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVP Historia" 								title="(?=\s*TVP\s*Historia(\s*HD)?\s*$)" strm=""/>
-	<channel id="TV Trwam"									title="" strm="mms://195.94.205.211/Trwam"/>
+	<channel id="TV Trwam"                                  title="" strm="mms://195.94.205.211/Trwam"/>
 	<channel id="TV Puls" 									title="(?=\s*TV\s*Puls(\s*HD)?\s*$)" strm=""/>
 	<channel id="Puls 2" 									title="(?=\s*Puls\s*2(\s*HD)?\s*$)" strm=""/>
 	<channel id="TTV" 										title="(?=\s*TTV(\s*HD)?\s*$)" strm=""/>
@@ -44,6 +44,7 @@
 	<channel id="HBO Comedy" 								title="(?=HBO\s*Comedy(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox" 								    title="(?=Filmbox(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox Extra" 							title="(?=\s*Filmbox\s*Extra(\s*HD)?\s*$)" strm=""/>
+	<channel id="Filmbox Extra HD" 							title="(?=\s*Filmbox\s*Extra(\s*HD)?\s*$)" strm=""/>
 	<channel id="Cinemax" 									title="(?=Cinemax\s*(\s*HD)?$)" strm=""/>
 	<channel id="Cinemax 2" 								title="(?=\s*Cinemax\s*2(\s*HD)?\s*$)" strm=""/>
 	<channel id="Polsat Film" 								title="(?=Polsat\s*Film(\s*HD)?$)" strm=""/>
@@ -52,7 +53,7 @@
 	<channel id="AXN White" 								title="(?=AXN\s*White(\s*HD)?$)" strm=""/>
 	<channel id="AXN Black" 								title="(?=AXN\s*Black(\s*HD)?$)" strm=""/>
 	<channel id="AXN Spin" 									title="(?=\s*AXN\s*Spin(\s*HD)?\s*$)" strm=""/>
-	<channel id="SciFi" 									title="(?=Sci\s*Fi(\s*HD)?$)" strm=""/>
+	<channel id="Scifi Universal" 									title="(?=Sci\s*Fi(\s*HD)?$)" strm=""/>
 	<channel id="MGM" 										title="(?=\s*MGM(\s*HD)?\s*$)" strm=""/>
 	<channel id="Comedy Central" 							title="(?=Comedy\s*Central(\s*HD)?$)" strm=""/>
 	<channel id="Comedy Central Family" 					title="(?=Comedy\s*Central\s*Family(\s*HD)?$)" strm=""/>
@@ -74,18 +75,9 @@
 	<channel id="History" 									title="(?=\s*History(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVN Turbo" 								title="(?=TVN\s*Turbo(\s*HD)?$)" strm=""/>
 	<channel id="Polsat Play" 								title="(?=\s*Polsat\s*Play(\s*HD)?\s*$)" strm=""/>
-	
-<!-- 
-	<channel id="POLSAT Viasat Explore" 					title="(?=Polsat\s*Viasat\s*Explore(\s*HD)?\s*$)" strm=""/>
-	<channel id="Polsat Viasat History" 					title="(?=.*POLSAT)(?=.*History)" strm=""/>
-	<channel id="Polsat Viasat Nature" 						title="(?=.*POLSAT)(?=.*Nature)" strm=""/>
--->
-	
-	<channel id="POLSAT Viasat Explore" 					title="" strm="service=telewizjada&amp;cid=88"/>
-	<channel id="Polsat Viasat History" 					title="" strm="service=telewizjada&amp;cid=89"/>
-	<channel id="Polsat Viasat Nature" 						title="" strm="service=telewizjada&amp;cid=90"/>
-	
-
+	<channel id="Polsat Viasat Explore" 					title="(?=Polsat\s*Viasat\s*Explore(\s*HD)?\s*$)" strm=""/>
+	<channel id="Polsat Viasat History" 					title="(?=Polsat\s*Viasat\s*History(\s*HD)?\s*$)" strm=""/>
+	<channel id="Polsat Viasat Nature" 						title="(?=Polsat\s*Viasat\s*Nature(\s*HD)?\s*$)" strm=""/>
 	<channel id="Canal+ Sport" 								title="(?=CANAL\+\s*SPORT(\s*HD)?$)" strm=""/>
 	<channel id="Canal+ Sport 2" 							title="(?=CANAL\+\s*SPORT\s*2(\s*HD)?$)" strm=""/>
 	<channel id="Polsat Sport" 								title="(?=Polsat\s*Sport(\s*HD)?$)" strm=""/>

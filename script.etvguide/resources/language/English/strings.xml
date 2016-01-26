@@ -20,7 +20,8 @@
 	<string id="30110">Update program information on XBMC startup</string>
 	<string id="30116">Search for channel logos in</string>
 	<string id="30117">Select EPG</string>
-	<string id="30118">[COLOR red]Additional EPG[/COLOR]</string>
+	<string id="30118">Additional EPG1:</string>
+	<string id="30119">Additional EPG2:</string>
 	<string id="30150">Oops, sorry about that!</string>
 	<string id="30151">It was not possible to load program data,</string>
 	<string id="30152">check settings or try again later...</string>
@@ -29,10 +30,13 @@
 	<string id="30155">version of the TV Guide skin that is not up-to-date.</string>
 	<string id="30156">Please try with a different skin...</string>
 	<string id="30157">It looks like the TV Guide database is broken.</string>
-	<string id="30158">The database will be deleted and recreated.</string>
+	<string id="30158">Please remove database file using option in plugin settings "Database settings"</string>
 	<string id="30159">Channel configuration, etc. is unfortunately lost.</string>
 	<string id="30200">on [B]%s[/B] in 5 minutes...</string>
 	<string id="30201">on [B]%s[/B] is starting now...</string>
+	<string id="30202">Starting scheduled program</string>
+	<string id="30203">Start scheduled program</string>
+	<string id="30204">Cancel</string>
 	<string id="30300">Watch %s</string>
 	<string id="30301">Remind</string>
 	<string id="30302">Don't remind</string>
@@ -91,6 +95,7 @@
 	<string id="30914">Skin</string>
 	<string id="30915">Enable XBMC e-TVGuide autostart</string>
 	<string id="30916">Database Settings</string>
+	<string id="30917">Enable stream window resize animation</string>
 	<string id="30930">Colours</string>
 	<string id="30931">Category colours</string>
 	<string id="30932">Movies</string>
@@ -108,10 +113,21 @@
 	<string id="30950">Clear database</string>
 	<string id="30951">Database cleared</string>
 	<string id="30952">Delete custom streams</string>
-	<string id="30953">Backup database</string>
-	<string id="30954">Restore database</string>
+	<string id="30953">Export settings</string>
+	<string id="30954">Import settings</string>
 	<string id="30955">Delete database file</string>
 	<string id="58000">Program info</string>
+
+	<string id="58001">Select destination folder</string>
+	<string id="58002">Export settings</string>
+	<string id="58003">Import settings</string>
+	<string id="58004">Failure - no settings to export!</string>
+	<string id="58005">Settings exported successfully</string>
+	<string id="58006">Failure - please check if you have write permissions to that path</string>
+	<string id="58007">Select settings backup file</string>
+	<string id="58008">Settings imported successfully</string>
+	<string id="58009">Failed to import settings</string>
+	<string id="58010">Please check if chosen file is a correct settings backup</string>
 
 	<string id="31001">VIDEO OSD</string>
 	<string id="31002">Set Keys</string>
@@ -123,6 +139,10 @@
 	<string id="31008">STOP Key</string>
 	<string id="31009">INFO Key</string>
 	<string id="310010"></string>
+	<string id="310011">Stop playback using navi_back button</string>
+	<string id="310012"></string>
+	<string id="310013"></string>
+	<string id="310014"></string>
 
 <!-- general settings -->
 	<string id="55002">Username:</string>
@@ -134,7 +154,7 @@
 	<string id="89003">Timeout value (min)</string>
 	<string id="59901">GoldVOD</string>
 	<string id="55009">Stream assign priority</string>
-	
+
 <!-- errors & messages -->
 	<string id="57001">API error</string>
 	<string id="57002">Could not connect to website.</string>
@@ -157,6 +177,7 @@
 	<string id="57036">You do not have a premium account. Starting a sponsored broadcast.</string>
 	<string id="57037">To purchase a premium right now go to:</string>
 	<string id="57038">http://weeb.tv/premium</string>
+	<string id="57039">Probably no premium service:</string>
 	<string id="57042">Error connection with website!</string>
 	<string id="57043">Selected channel does not exist!</string>
 	<string id="57044">No channel selected!</string>

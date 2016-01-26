@@ -64,6 +64,7 @@ ACTION_MOUSE_MOVE = 107
 KEY_NAV_BACK = 92
 KEY_CONTEXT_MENU = 117
 KEY_HOME = 159
+KEY_CODEC_INFO = 0
 
 config = ConfigParser.RawConfigParser()
 config.read(os.path.join(ADDON.getAddonInfo('path'), 'resources', 'skins',ADDON.getSetting('Skin'), 'settings.ini'))
@@ -219,12 +220,13 @@ class eTVGuide(xbmcgui.WindowXML):
         self.epgView = EPGView()
         self.streamingService = streaming.StreamsService()
         self.player = xbmc.Player()
+        self.playService = PlayService()
         self.database = None
         self.redrawagain = False
         self.info = False
         self.oldchan = 0
         self.a = {}
-
+        self.urlList = None
 
         self.mode = MODE_EPG
         self.currentChannel = None
@@ -265,6 +267,8 @@ class eTVGuide(xbmcgui.WindowXML):
         deb('close')
         if not self.isClosing:
             self.isClosing = True
+            self.playService.close()
+            self.notification.close()
             if self.player.isPlaying():
                 self.player.stop()
             if self.database:
@@ -337,8 +341,15 @@ class eTVGuide(xbmcgui.WindowXML):
 
         elif action.getId() == ACTION_PAGE_DOWN:
             self._channelDown()
+            
+        elif action.getId() == KEY_CONTEXT_MENU:
+            if self.urlList is not None and len(self.urlList) > 1:
+                tmpUrl = self.urlList.pop(0)
+                self.urlList.append(tmpUrl)
+                self.playService.playUrlList(self.urlList)
+                time.sleep(0.3)
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
 
@@ -706,66 +717,37 @@ class eTVGuide(xbmcgui.WindowXML):
         deb('playChannel2')
         self.program = program
         self.currentChannel = program.channel
-        url = self.database.getStreamUrl(program.channel)
-        self.oldchan = self.database.getCurrentChannelIdx(program.channel)
-        if url:
-            if url[-5:] == '.strm':
-                try:
-                    f = open(url)
-                    content = f.read()
-                    f.close()
-
-                    if content[0:9] == 'plugin://':
-                        url = content.strip()
-                except:
-                    pass
-            lo = Pla(self.program, self.database, url, self)
+        self.urlList = self.database.getStreamUrlList(program.channel)
+        if len(self.urlList) > 0:
+            self.oldchan = self.database.getCurrentChannelIdx(program.channel)
+            lo = Pla(self.program, self.database, self.urlList, self)
             lo.doModal()
             lo.close()
             del lo
-            if self.oldchan != self.database.getCurrentChannelIdx(self.currentChannel):
+            currentChannelIndex = self.database.getCurrentChannelIdx(self.currentChannel)
+            if self.oldchan != currentChannelIndex:
                 if not self.player.isPlaying() and not self.isClosing:
+                    newStartIndex = (currentChannelIndex // CHANNELS_PER_PAGE) * CHANNELS_PER_PAGE
                     self.viewStartDate = datetime.datetime.today()
                     self.viewStartDate -= datetime.timedelta(minutes = self.viewStartDate.minute % 30, seconds = self.viewStartDate.second)
-                    self.onRedrawEPG(self.database.getCurrentChannelIdx(self.currentChannel), self.viewStartDate)
+                    self.onRedrawEPG(newStartIndex, self.viewStartDate)
         #self.onPlayBackStopped()
-        return url is not None
+        return len(self.urlList) > 0
 
 
     def playChannel(self, channel):
         deb('playChannel')
         self.currentChannel = channel
         wasPlaying = self.player.isPlaying()
-        url = self.database.getStreamUrl(channel)
-        if url:
-            if url[-5:] == '.strm':
-                try:
-                    f = open(url)
-                    content = f.read()
-                    f.close()
-
-                    if content[0:9] == 'plugin://':
-                        url = content.strip()
-                except:
-                    pass
-
-            if url[0:9] == 'plugin://':
-                xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
-            elif url[0:7] == 'service':
-                playService(url)
-                #xbmc.executebuiltin('XBMC.RunScript(%s,%s,0)' % (ADDON_ID, url))
-            else:
-                self.player.play(item = url)
-
-
-
+        self.urlList = self.database.getStreamUrlList(channel)
+        if len(self.urlList) > 0:
+            self.playService.playUrlList(self.urlList)
             #if not wasPlaying:
                 #self._hideEpg()
 
         #threading.Timer(1, self.waitForPlayBackStopped).start()
 
-
-        return url is not None
+        return len(self.urlList) > 0
 
     def waitForPlayBackStopped(self):
         deb('waitForPlayBackStopped')
@@ -815,10 +797,14 @@ class eTVGuide(xbmcgui.WindowXML):
         # remove existing controls
         self._clearEpg()
         try:
-            self.channelIdx, channels, programs = self.database.getEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList = True)
+            self.channelIdx, channels, programs, cacheExpired = self.database.getEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList = True)
         except src.SourceException:
             self.onEPGLoadError()
             return
+
+        if cacheExpired == True and ADDON.getSetting('notifications.enabled') == 'true':
+            #make sure notifications are scheduled for newly downloaded programs
+            self.notification.scheduleNotifications()
 
         # date and time row
         self.setControlLabel(self.C_MAIN_DATE, self.formatDate(self.viewStartDate))
@@ -979,7 +965,9 @@ class eTVGuide(xbmcgui.WindowXML):
     def onSourceInitialized(self, success):
         deb('onSourceInitialized')
         if success:
-            self.notification = Notification(self.database, ADDON.getAddonInfo('path'))
+            self.notification = Notification(self.database, ADDON.getAddonInfo('path'), self)
+            if ADDON.getSetting('notifications.enabled') == 'true':
+                self.notification.scheduleNotifications()
             self.onRedrawEPG(0, self.viewStartDate)
 
     def onSourceProgressUpdate(self, percentageComplete):
@@ -1729,41 +1717,42 @@ class InfoDialog(xbmcgui.WindowXMLDialog):
 
 class Pla(xbmcgui.WindowXMLDialog):
 
-    def __new__(cls, program, database, url, epg):
+    def __new__(cls, program, database, urlList, epg):
         return super(Pla, cls).__new__(cls, 'Vid.xml', ADDON.getAddonInfo('path'), "Default", "720p")
 
-
-
-    def play(self, url):
-        if url[0:9] == 'plugin://':
-            xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
-        elif url[0:7] == 'service':
-            playService(url)
-            #xbmc.executebuiltin('XBMC.RunScript(%s,%s,0)' % (ADDON_ID, url))
-        else:
-            xbmc.Player().play(url)
-
+    def play(self, urlList):
+        self.epg.playService.playUrlList(urlList)
         threading.Timer(1, self.waitForPlayBackStopped).start()
 
-
-    def __init__(self, program, database, url, epg):
+    def __init__(self, program, database, urlList, epg):
         super(Pla, self).__init__()
         self.epg = epg
-        self.url = url
+        self.urlList = urlList
         self.program = program
         self.currentChannel = program.channel
         self.database = database
         self.controlAndProgramList = list()
-        self.play(url)
         self.ChannelChanged = 0
         self.mouseCount = 0
+        self.play(urlList)
 
     def onAction(self, action):
-        #deb(str(action.getId()))
+        deb(str(action.getId()))
         if action.getId() == ACTION_PREVIOUS_MENU or action.getId() == ACTION_STOP or (action.getButtonCode() == KEY_STOP and KEY_STOP != 0) or (action.getId() == KEY_STOP and KEY_STOP != 0):
             xbmc.Player().stop()
             self.close()
 
+        if action.getId() == KEY_NAV_BACK:
+            if ADDON.getSetting('start_video_minimalized') == 'true' and ADDON.getSetting('navi_back_stop_play') == 'false':
+                self.close()
+                self.epg._showEPG()
+            else:
+                xbmc.Player().stop()
+                self.close()
+
+        #if action.getId() == KEY_CODEC_INFO:
+            #xbmc.executebuiltin("Action(CodecInfo)")
+            #return
 
         if action.getId() == ACTION_SHOW_INFO or (action.getButtonCode() == KEY_INFO and KEY_INFO != 0) or (action.getId() == KEY_INFO and KEY_INFO != 0):
             try:
@@ -1791,7 +1780,6 @@ class Pla(xbmcgui.WindowXMLDialog):
             except:
                 pass
             return
-#
 
         if (action.getButtonCode() == KEY_HOME2 and KEY_HOME2 != 0) or (action.getId() == KEY_HOME2 and KEY_HOME2 != 0):
             #xbmc.executebuiltin("Action(PreviousMenu)")
@@ -1806,11 +1794,22 @@ class Pla(xbmcgui.WindowXMLDialog):
                 osd.doModal()
                 del osd
 
+        if action.getId() == KEY_CONTEXT_MENU:
+            self.changeStream()
 
     def onAction2(self, action):
         if action == ACTION_STOP:
             xbmc.Player().stop()
             self.close()
+
+        if action.getId() == KEY_NAV_BACK:
+            if ADDON.getSetting('start_video_minimalized') == 'true' and ADDON.getSetting('navi_back_stop_play') == 'false':
+                self.close()
+                self.epg._showEPG()
+            else:
+                xbmc.Player().stop()
+                self.close()
+
         if action == ACTION_SHOW_INFO:
             try:
                 self.program = self.database.getCurrentProgram(self.currentChannel)
@@ -1826,33 +1825,26 @@ class Pla(xbmcgui.WindowXMLDialog):
             self.ChannelChanged = 1
             self._channelDown()
 
-
-
-#
-
     def onPlayBackStopped(self):
         xbmc.Player().stop()
         self.close()
 
-
     def waitForPlayBackStopped(self):
         self.wait = True
-        for retry in range(0, 50):
+
+        while self.epg.playService.isWorking() == True:
             time.sleep(0.1)
-            if xbmc.Player().isPlaying():
-                break
 
         while self.wait == True:
             if xbmc.Player().isPlaying() and not xbmc.abortRequested:
                 time.sleep(0.2)
             else:
                 if self.ChannelChanged == 1:
-                    for retry in range(0, 10):
+                    while self.epg.playService.isWorking() == True:
                         time.sleep(0.1)
                     self.ChannelChanged = 0
                 else:
                     self.wait = False
-
 
         self.onPlayBackStopped()
 
@@ -1868,32 +1860,107 @@ class Pla(xbmcgui.WindowXMLDialog):
     def playChannel(self, channel):
         self.currentChannel = channel
         self.epg.currentChannel = channel
-        url = self.database.getStreamUrl(channel)
-        if url:
-            if url[-5:] == '.strm':
-                try:
-                    f = open(url)
-                    content = f.read()
-                    f.close()
+        self.program = self.database.getCurrentProgram(self.currentChannel)
+        self.urlList = self.database.getStreamUrlList(channel)
+        if len(self.urlList) > 0:
+            self.epg.playService.playUrlList(self.urlList)
 
-                    if content[0:9] == 'plugin://':
-                        url = content.strip()
-                except:
-                    pass
+    def changeStream(self):
+        deb('Changing stream for channel %s' % self.currentChannel.id)
+        if len(self.urlList) > 1:
+            tmpUrl = self.urlList.pop(0)
+            self.urlList.append(tmpUrl)
+            self.ChannelChanged = 1
+            self.epg.playService.playUrlList(self.urlList)
+            time.sleep(0.3)
+
+class PlayService(xbmc.Player):
+    def __init__(self, *args, **kwargs):
+        self.servicePlayer = main.InitPlayer()
+        self.playbackStopped = False
+        self.playbackStarted = False
+        self.terminating = False
+        self.thread = None
+
+    def onPlayBackStopped(self):
+        self.playbackStopped = True
+        xbmc.Player().stop()
+
+    def onPlayBackStarted(self):
+        self.playbackStarted = True
+
+    def playService(self, url):
+        params = url[8:].split('&')
+        service = params[0]
+        cid = params[1].split('=')[1]
+        deb('playService playing cid %s, service %s' % (cid, service))
+        self.servicePlayer.LoadVideoLink(cid, service)
+
+    def playUrl(self, url):
+        self.playbackStopped = False
+        self.playbackStarted = False
+        success = True
+
+        if url[-5:] == '.strm':
+            try:
+                f = open(url)
+                content = f.read()
+                f.close()
+
+                if content[0:9] == 'plugin://':
+                    url = content.strip()
+            except:
+                pass
+
         if url[0:9] == 'plugin://':
             xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
         elif url[0:7] == 'service':
-            playService(url)
-            #xbmc.executebuiltin('XBMC.RunScript(%s,%s,0)' % (ADDON_ID, url))
+            success = self.playService(url)
         else:
             xbmc.Player().play(url)
-            
-def playService(url):
-    params = url[8:].split('&')
-    service = params[0]
-    cid = params[1].split('=')[1]
-    deb('playService playing cid %s, service %s' % (cid, service))
-    run = main.InitPlayer().LoadVideoLink(cid, service)
+        return success
+
+    def playUrlList(self, urlList):
+        if self.thread is not None:
+            if self.thread.is_alive():
+                deb('PlayService playUrlList waiting for thread to terminate')
+                self.terminating = True
+                self.thread.join(10)
+
+        self.thread = threading.Thread(name='playUrlList Loop', target = self._playUrlList, args=[urlList])
+        self.thread.start()
+
+    def _playUrlList(self, urlList):
+        self.terminating = False
+
+        for url in urlList:
+            playStarted = self.playUrl(url)
+
+            for i in range(200):
+
+                if self.terminating == True or xbmc.abortRequested == True:
+                    deb('PlayService _playUrlList abort requested - terminating')
+                    return
+
+                if self.playbackStarted == True:
+                    deb('PlayService _playUrlList detected stream start!')
+                    return
+
+                if self.playbackStopped == True or playStarted == False:
+                    deb('PlayService _playUrlList detected faulty stream!')
+                    break
+
+                time.sleep(.100)
+
+    def close(self):
+        self.terminating = True
+        if self.thread is not None:
+            self.thread.join(10)
+
+    def isWorking(self):
+        if self.thread is not None:
+            return self.thread.is_alive()
+        return False
 
 class SleepSupervisor(object):
     def __init__(self):
@@ -1907,7 +1974,7 @@ class SleepSupervisor(object):
                         'Uspij komputer': 'Suspend'
         }
         deb('Supervisor timer init: sleepEnabled %s, sleepAction: %s, sleepTimer: %s' % (self.sleepEnabled, self.sleepAction, self.sleepTimer))
-            
+
     def Start(self):
         if self.sleepEnabled == 'Tak':
             self.Stop()
@@ -1915,12 +1982,11 @@ class SleepSupervisor(object):
                 action = self.actions[self.sleepAction]
             except KeyError:
                 action = self.sleepAction
-            
+
             deb('Supervisor timer Start, action = %s' % action)
             xbmc.executebuiltin('AlarmClock(Stopper,%s,%s,True)' % (action, self.sleepTimer))
-        
+
     def Stop(self):
         if self.sleepEnabled == 'Tak':
             deb('Supervisor timer Stop')
             xbmc.executebuiltin('CancelAlarm(Stopper,True)')
-

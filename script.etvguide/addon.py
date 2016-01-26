@@ -1,4 +1,4 @@
-#
+#      Copyright (C) 2016 Andrzej Mleczko
 #      Copyright (C) 2014 Krzysztof Cebulski
 #      Copyright (C) 2013 Szakalit
 #
@@ -19,42 +19,22 @@
 #  http://www.gnu.org/copyleft/gpl.html
 #
 import gui
-import urllib, urllib2
 import re, sys, os
 import xbmcaddon, xbmcgui, xbmcplugin, xbmc
 from strings import *
-import main
 
 class Start:
     def __init__(self):
         self.Run()
 
-    def Play(self, cid, service):
-        run = main.InitPlayer()
-        run.LoadVideoLink(cid, service)
-
-
     def Run(self):
-        parser = main.UrlParser()
-        params = parser.getParams()
-        service = parser.getParam(params, "service")
-        cid = parser.getParam(params, "cid")
-        if service == None or service == '':
-            try:
-                w = gui.eTVGuide()
-                w.doModal()
-                w.close()
-                del w
-                del xbmc.Player
-            except Exception, ex:
-                deb('addon.py exception: %s' % str(ex))
-        elif service == "weebtv" or service == "goldvod":
-            #self.Play(cid, service)
-            pass
-
-
+        try:
+            w = gui.eTVGuide()
+            w.doModal()
+            w.close()
+            del w
+            del xbmc.Player
+        except Exception, ex:
+            deb('addon.py exception: %s' % str(ex))
 
 init = Start()
-
-
-

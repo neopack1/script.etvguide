@@ -1,3 +1,20 @@
+[B]wersja 2.0.0[/B] - 2016-01-26
+- dodana obsługa wielu streamów, m-TVGuide zapisze w bazie wszystkie streamy z aktywnych serwisów
+- wykrywanie uszkodzonych streamów, w takim wypadku wtyczka automatycznie uruchomi kolejny stream z listy (jeśli jest ich więcej)
+- dodana możliwość przełączania serwisów dla aktualnie oglądanego kanału przyciskiem context (default klawisz "c") zgodnie z kolejnością ustawionych priorytetów serwisów - działa z OSD/bez OSD
+- streamy przypisane ręcznie używając opcji "Wybierz plik STRM" nie znikają po restarcie m-TVGuide i zawsze mają najwyższy priorytet
+- dodana możliwość wyłączenia animacji maksymalizacji okna odtwarzania podczas uruchamiania kanału - na słabych urządzeniach z androidem rozwiązuje problem przycinającego odtwarzania
+- naprawione przypomnienia
+- dla rozpoczynających się programów z ustawionym przypomnieniem pojawi się okno z pytaniem czy uruchomić dany program - tak jak na TV, w przypadku kilku zaprogramowanych kanałów pojawi się okno wyboru
+- dodana obsługa przycisku "wstecz" przy włączonym OSD oraz nowa opcja w ustawieniach sterująca jego zachowaniem
+- dodana możliwość eksportu/importu ustawień i bazy m-TVGuide
+- poprawiony kanał Filmbox Extra w mapie weeb.tv
+- mapy serwisów są automatycznie pobierane ze strony mods-kodi podczas uruchomienia m-TVGuide - od tej wersji każdy będzie miał zawsze aktualną wersje map
+- aktualizacja obsługi serwisu telewizjada.net
+- dodana możliwość włączenia/wyłączenia animacji maksymalizacji okna wideo
+- aktualizacja obsługi serwisu telewizjada.net - niedziałające kanały nie są przypisywane
+- dodanie informacji po wykryciu nie działającej / uszkodzonej bazy
+
 [B]wersja 1.4.1[/B] - 2015-12-28
 - naprawienie scifi channel
 

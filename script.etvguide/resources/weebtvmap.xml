@@ -46,8 +46,13 @@
 	<channel id="HBO" 										title="(^HBO$)|(^HBO\W*HD$)" strm=""/>
 	<channel id="HBO2" 										title="(?=.*HBO)(?=.*2)" strm=""/>
 	<channel id="HBO Comedy" 								title="(?=.*HBO)(?=.*Comedy)" strm=""/>
-	<channel id="Filmbox" 								    title="(?=.*Filmbox)" strm=""/>
-	<channel id="Filmbox Extra" 							title="(?=.*Filmbox)(?=.*Extra)" strm=""/>
+	
+	<!--
+	<channel id="Filmbox" 								    title="(?=.*Filmbox)" strm=""/>  nie nadaje
+	<channel id="Filmbox Extra" 							title="(?=.*Filmbox)(?=.*Extra)" strm=""/>  WeebTV zle nazwal program...
+	-->
+	<channel id="Filmbox Extra HD" 							title="(?=Filmbox(\s*HD)?$)" strm=""/>
+	
 	<channel id="Cinemax" 									title="(?=.*Cinemax)" strm=""/>
 	<channel id="Cinemax 2" 								title="(?=.*Cinemax)(?=.*2)" strm=""/>
 	<channel id="Polsat Film" 								title="(?=.*Polsat)(?=.*Film)" strm=""/>
