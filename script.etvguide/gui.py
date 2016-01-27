@@ -341,15 +341,8 @@ class eTVGuide(xbmcgui.WindowXML):
 
         elif action.getId() == ACTION_PAGE_DOWN:
             self._channelDown()
-            
-        elif action.getId() == KEY_CONTEXT_MENU:
-            if self.urlList is not None and len(self.urlList) > 1:
-                tmpUrl = self.urlList.pop(0)
-                self.urlList.append(tmpUrl)
-                self.playService.playUrlList(self.urlList)
-                time.sleep(0.3)
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
 
@@ -847,49 +840,49 @@ class eTVGuide(xbmcgui.WindowXML):
 
                 if program.categoryA == "Filmy":
                     if ADDON.getSetting('kolor.Filmy') == '':
-						noFocusTexture = "default.png"
+                        noFocusTexture = "default.png"
                     else:
-						noFocusTexture = ADDON.getSetting('kolor.Filmy')+'.png'
+                        noFocusTexture = ADDON.getSetting('kolor.Filmy')+'.png'
                 elif program.categoryA == "Seriale":
                     if ADDON.getSetting('kolor.Seriale') == '':
-						noFocusTexture = 'default.png'
+                        noFocusTexture = 'default.png'
                     else:
-						noFocusTexture = ADDON.getSetting('kolor.Seriale')+'.png'
+                        noFocusTexture = ADDON.getSetting('kolor.Seriale')+'.png'
                 elif program.categoryA == "Informacja":
                     if ADDON.getSetting('kolor.Informacja') == '':
-						noFocusTexture = 'default.png'
+                        noFocusTexture = 'default.png'
                     else:
-						noFocusTexture = ADDON.getSetting('kolor.Informacja')+'.png'
+                        noFocusTexture = ADDON.getSetting('kolor.Informacja')+'.png'
                 elif program.categoryA == "Rozrywka":
                     if ADDON.getSetting('kolor.Rozrywka') == '':
-						noFocusTexture = 'default.png'
+                        noFocusTexture = 'default.png'
                     else:
-						noFocusTexture = ADDON.getSetting('kolor.Rozrywka')+'.png'
+                        noFocusTexture = ADDON.getSetting('kolor.Rozrywka')+'.png'
                 elif program.categoryA == "Dokument":
                     if ADDON.getSetting('kolor.Dokument') == '':
-						noFocusTexture = 'default.png'
+                        noFocusTexture = 'default.png'
                     else:
-						noFocusTexture = ADDON.getSetting('kolor.Dokument')+'.png'
+                        noFocusTexture = ADDON.getSetting('kolor.Dokument')+'.png'
                 elif program.categoryA == "Dla dzieci":
                     if ADDON.getSetting('kolor.Dladzieci') == '':
-						noFocusTexture = 'default.png'
+                        noFocusTexture = 'default.png'
                     else:
-						noFocusTexture = ADDON.getSetting('kolor.Dladzieci')+'.png'
+                        noFocusTexture = ADDON.getSetting('kolor.Dladzieci')+'.png'
                 elif program.categoryA == "Sport":
                     if ADDON.getSetting('kolor.Sport') == '':
-						noFocusTexture = 'default.png'
+                        noFocusTexture = 'default.png'
                     else:
-						noFocusTexture = ADDON.getSetting('kolor.Sport')+'.png'
+                        noFocusTexture = ADDON.getSetting('kolor.Sport')+'.png'
                 elif program.categoryA == "Interaktywny Program Rozrywkowy":
                     if ADDON.getSetting('kolor.InteraktywnyProgramRozrywkowy') == '':
-						noFocusTexture = 'default.png'
+                        noFocusTexture = 'default.png'
                     else:
-						noFocusTexture = ADDON.getSetting('kolor.InteraktywnyProgramRozrywkowy')+'.png'
+                        noFocusTexture = ADDON.getSetting('kolor.InteraktywnyProgramRozrywkowy')+'.png'
                 else:
                     if ADDON.getSetting('kolor.default') == '':
-						noFocusTexture = 'default.png'
+                        noFocusTexture = 'default.png'
                     else:
-						noFocusTexture = ADDON.getSetting('kolor.default')+'.png'
+                        noFocusTexture = ADDON.getSetting('kolor.default')+'.png'
 
 
                 if program.notificationScheduled:
