@@ -1,3 +1,6 @@
+[B]wersja 2.0.2[/B] - 2016-01-27
+- Naprawa buttona dla firetv
+
 [B]wersja 2.0.1[/B] - 2016-01-27
 - Poprawka w ustawieniach
 - dodanie nowej mapy do telewizjada.net
