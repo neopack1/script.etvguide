@@ -1,3 +1,7 @@
+[B]wersja 2.0.1[/B] - 2016-01-27
+- Poprawka w ustawieniach
+- dodanie nowej mapy do telewizjada.net
+
 [B]wersja 2.0.0[/B] - 2016-01-26
 - dodana obsługa wielu streamów, m-TVGuide zapisze w bazie wszystkie streamy z aktywnych serwisów
 - wykrywanie uszkodzonych streamów, w takim wypadku wtyczka automatycznie uruchomi kolejny stream z listy (jeśli jest ich więcej)

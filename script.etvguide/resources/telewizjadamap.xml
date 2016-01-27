@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <map id="telewizjada" version="1.0" strm="service=telewizjada&amp;cid=%s">
 
 	<channel id="TVP 1" 									title="(?=\s*TVP\s*1(\s*HD)?\s*$)" strm=""/>
@@ -43,12 +43,14 @@
 	<channel id="HBO2" 										title="(?=HBO\s*2(\s*HD)?$)" strm=""/>
 	<channel id="HBO Comedy" 								title="(?=HBO\s*Comedy(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox" 								    title="(?=Filmbox(\s*HD)?$)" strm=""/>
+	<channel id="Filmbox Premium" 								    title="(?=Filmbox.*Premium(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox Extra" 							title="(?=\s*Filmbox\s*Extra(\s*HD)?\s*$)" strm=""/>
 	<channel id="Filmbox Extra HD" 							title="(?=\s*Filmbox\s*Extra(\s*HD)?\s*$)" strm=""/>
 	<channel id="Cinemax" 									title="(?=Cinemax\s*(\s*HD)?$)" strm=""/>
 	<channel id="Cinemax 2" 								title="(?=\s*Cinemax\s*2(\s*HD)?\s*$)" strm=""/>
 	<channel id="Polsat Film" 								title="(?=Polsat\s*Film(\s*HD)?$)" strm=""/>
 	<channel id="Kino Polska" 								title="(?=Kino\s*Polska(\s*HD)?$)" strm=""/>
+	<channel id="ATM Rozrywka" 								title="(?=ATM Rozrywka(\s*HD)?$)" strm=""/>
 	<channel id="AXN" 										title="(?=AXN(\s*HD)?$)" strm=""/>
 	<channel id="AXN White" 								title="(?=AXN\s*White(\s*HD)?$)" strm=""/>
 	<channel id="AXN Black" 								title="(?=AXN\s*Black(\s*HD)?$)" strm=""/>
@@ -69,11 +71,13 @@
 	<channel id="Discovery Science" 						title="(?=\s*Discovery\s*Science(\s*HD)?\s*$)" strm=""/>
 	<channel id="Discovery Turbo Xtra" 						title="(?=Discovery\s*Turbo\s*Xtra(\s*HD)?$)" strm=""/>
 	<channel id="Discovery Historia" 						title="(?=\s*Discovery\s*Historia(\s*HD)?\s*$)" strm=""/>
+	<channel id="Discovery Life" 						title="" strm="http://inea.live.e238-po.insyscd.net/animalplanet.smil/chunklist_.m3u8"/>
 	<channel id="ID" 										title="(?=INVESTIGATION\s*DISCOVERY(\s*HD)?$)" strm=""/>
 	<channel id="Crime &amp; Investigation Network Polsat" 	title="(?=.*Crime)(?=.*Investigation)(?=.*Polsat)" strm=""/>
 	<channel id="Planete+" 									title="(?=\s*Planete\s*\+(\s*HD)?\s*$)" strm=""/>
 	<channel id="History" 									title="(?=\s*History(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVN Turbo" 								title="(?=TVN\s*Turbo(\s*HD)?$)" strm=""/>
+	<channel id="Motowizja" 								title="" strm="rtmp://weeb.tv.itivi.pl/live/ playpath=S1 swfUrl=http://itivi.pl/js/jwplayer-7.0.3/jwplayer.flash.swf pageUrl=http://itivi.pl/program-telewizyjny/MOTOWIZJA"/>
 	<channel id="Polsat Play" 								title="(?=\s*Polsat\s*Play(\s*HD)?\s*$)" strm=""/>
 	<channel id="Polsat Viasat Explore" 					title="(?=Polsat\s*Viasat\s*Explore(\s*HD)?\s*$)" strm=""/>
 	<channel id="Polsat Viasat History" 					title="(?=Polsat\s*Viasat\s*History(\s*HD)?\s*$)" strm=""/>
@@ -81,7 +85,7 @@
 	<channel id="Canal+ Sport" 								title="(?=CANAL\+\s*SPORT(\s*HD)?$)" strm=""/>
 	<channel id="Canal+ Sport 2" 							title="(?=CANAL\+\s*SPORT\s*2(\s*HD)?$)" strm=""/>
 	<channel id="Polsat Sport" 								title="(?=Polsat\s*Sport(\s*HD)?$)" strm=""/>
-	<channel id="Polsat Sport News" 					    title="(?=Polsat\s*Sport\s*News(\s*HD)?$)" strm=""/>
+	<channel id="Polsat Sport News" 					    title="" strm="http://n-2-4.dcs.redcdn.pl/hls/o2/ATM-Lab/borys/MotoGP/live.livx/playlist.m3u8"/>
 	<channel id="Polsat Sport Extra" 						title="(?=.*POLSAT)(?=.*Sport)(?=.*Extra)" strm=""/>
 	<channel id="nSport" 									title="(?=nSport(\s*HD)?$)" strm=""/>
 	<channel id="TVP Sport" 								title="(?=TVP\s*Sport(\s*HD)?$)" strm=""/>
@@ -98,11 +102,11 @@
 	<channel id="Disney Junior" 							title="(?=.*Disney)(?=.*Junior)" strm=""/>
 	<channel id="Cartoon Network" 							title="(?=.*Cartoon)(?=.*Network)" strm=""/>
 	<channel id="JimJam Polsat" 							title="(?=\s*JimJam\s*Polsat(\s*HD)?\s*$)" strm=""/>
-	<channel id="Duck" 										title="(?=\s*Duck\s*TV(\s*HD)?\s*$)" strm=""/>
+	<channel id="Duck TV" 										title="" strm="http://inea.live.e238-po.insyscd.net/ducktv.smil/chunklist_b2400000.m3u8"/>
 	<channel id="Nickelodeon" 								title="(?=Nickoledeon(\s*HD)?$)" strm=""/>
 	<channel id="Nick Jr." 									title="(?=Nick\s*Jr(\s*HD)?$)" strm=""/>
 	<channel id="Minimini+" 								title="(?=MiniMini\+(\s*HD)?$)" strm=""/>
-	<channel id="Boomerang" 								title="(?=\s*Boomerang(\s*HD)?\s*$)" strm=""/>
+	<channel id="Boomerang" 								title="(?=\s*Boomerang.*(\s*HD)?\s*$)" strm=""/>
 	<channel id="BBC CBeebies" 								title="(?=\s*BBC\s*CBeebies(\s*HD)?\s*$)" strm=""/>
 	<channel id="Da Vinci Learning" 						title="(?=DA\s*VINCI\s*LEARNING(\s*HD)?$)" strm=""/>
 	<channel id="MTV Polska" 								title="(?=\s*MTV(\s*HD)?\s*$)" strm=""/>
@@ -110,14 +114,18 @@
 	<channel id="Kino Polska Muzyka" 						title="(?=\s*Kino\s*Polska\s*Muzyka(\s*HD)?\s*$)" strm=""/>
 	<channel id="Eska TV" 									title="" strm="rtmp://stream.smcloud.net/live2/eskatv/eskatv_360p"/>
 	<channel id="VIVA Polska" 								title="(?=\s*VIVA\s*Polska(\s*HD)?\s*$)" strm=""/>
-	<channel id="4fun TV" 									title="(?=4FUN\s*TV(\s*HD)?$)" strm=""/>
+	<!-- <channel id="4fun TV" 									title="(?=4FUN\s*TV(\s*HD)?$)" strm=""/> -->
 	<channel id="Polo TV" 									title="" strm="http://stream.smcloud.net/live/polotv/playlist.m3u8"/>
 	<channel id="BBC World News"						    title="(?=\s*BBC\s*World\s*News(\s*HD)?\s*$)" strm=""/>
 	<channel id="Stopklatka TV"						    	title="(?=STOPKLATKA\s*TV(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox Family"						    title="(?=FILMBOX\s*FAMILY(\s*HD)?$)" strm=""/>
 	<channel id="Fokus TV"						    		title="(?=Focus\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="Travel Channel"						    title="(?=TRAVEL\s*CHANNEL(\s*HD)?\s*$)" strm=""/>
-	
+	<channel id="Sundance Channel"							title="" strm="http://inea.live.e238-po.insyscd.net/sundancechannelhd.smil/chunklist_b2400000.m3u8"/>
+
+	<channel id="4fun TV"								title="" strm="http://inea.live.e238-po.insyscd.net/4funtv.smil/chunklist_b2400000.m3u8"/>
+	<channel id="4FUN HITS"								title="" strm="http://inea.live.e238-po.insyscd.net/4funhits.smil/chunklist_b2400000.m3u8"/>
+		
 	<channel id="ESKA BEST MUSIC"						    title="" strm="http://stream.smcloud.net/live2/best/best_480p/playlist.m3u8"/>
 	<channel id="ESKA GO"						    		title="" strm="http://stream.smcloud.net/live2/eska_party/eska_party_360p/playlist.m3u8"/>
 	<channel id="ESKA ROCK"						    		title="(?=ESKA\s*ROCK(\s*HD)?\s*$)" strm=""/>
@@ -130,6 +138,7 @@
 	<channel id="VOX MUSIC TV"						    	title="" strm="rtmp://stream.smcloud.net/live/vox2/stream1"/>
 	<channel id="WAWA TV"						    		title="" strm="http://stream.smcloud.net/live2/wawa/wawa_480p/playlist.m3u8"/>
 	<channel id="CZWORKA POLSKIE RADIO"						title="" strm="rtmp://stream85.polskieradio.pl/video/czworka.sdp"/>
+	<channel id="STARS TV"								title="" strm="http://starstv.live.e55-po.insyscd.net/starstvhd.smil/chunklist_b1100000.m3u8?=key live=true"/>
 	
 	<channel id="TV Republika"						    	title="(?=TV\s*Republika(\s*HD)?\s*$)" strm=""/>
 	<channel id="FilmBox Action"						    title="(?=FilmBox\s*Action(\s*HD)?\s*$)" strm=""/>
@@ -168,3 +177,4 @@
 		(?=.*Canal)(?=.*Film)(?!.*HD)	- musi zawierać Canal, musi zawierać Film, nie może zawierać HD
 		^(?=.*Canal)(?=.*Film)(?!.*HD)	- j/w w razie jak by powyższe nie działało, to spróbować tego (niby jak HD będzie na poczatku to by tamto nie załapało), ale na moich testerach oba wyrażenia działają
 -->
+
