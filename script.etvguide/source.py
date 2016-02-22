@@ -1076,8 +1076,16 @@ class ETVGUIDESource(Source):
         else:
             self.ETVGUIDEUrl = 'http://epg.feenk.net/epg.xml'
 
-        self.ETVGUIDEUrl2 = addon.getSetting('e-TVGuide2')
-        self.ETVGUIDEUrl3 = addon.getSetting('e-TVGuide3')
+        if addon.getSetting('e-TVGuide2') == "true":
+            self.ETVGUIDEUrl2 = "http://epg.feenk.net/weeb24h.xml"
+        else:
+            self.ETVGUIDEUrl2 = ""
+
+        if addon.getSetting('e-TVGuide3') == "true":
+            self.ETVGUIDEUrl3 = "http://epg.feenk.net/telewizjada_adult.xml"
+        else:
+            self.ETVGUIDEUrl3 = ""
+
         self.EPGULastModifiedDate = None
         self.logoFolder = None
         self.epgBasedOnLastModDate = ADDON.getSetting('UpdateEPGOnModifiedDate')
