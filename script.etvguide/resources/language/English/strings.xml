@@ -17,11 +17,13 @@
 	<string id="30105">Done!</string>
 	<string id="30106">Show notification before selected programs start</string>
 	<string id="30108">Clear all reminders...</string>
+	<string id="30109">Clear all scheduled recordings...</string>
 	<string id="30110">Update program information on XBMC startup</string>
 	<string id="30116">Search for channel logos in</string>
 	<string id="30117">Select EPG</string>
-	<string id="30118">Additional EPG1:</string>
-	<string id="30119">Additional EPG2:</string>
+	<string id="30118">Main EPG:</string>
+	<string id="30120">Additional EPG 1:</string>
+	<string id="30121">Additional EPG 2:</string>
 	<string id="30150">Oops, sorry about that!</string>
 	<string id="30151">It was not possible to load program data,</string>
 	<string id="30152">check settings or try again later...</string>
@@ -91,9 +93,13 @@
 	<string id="59902">GoldVOD settings</string>
 	<string id="59903">Telewizjada settings</string>
 	<string id="59904">Enabled</string>
+	<string id="59905">Playlist</string>
+	<string id="59906">Url</string>
+	<string id="59907">Source</string>
+	<string id="59908">File</string>
 	<string id="30913">Settings</string>
 	<string id="30914">Skin</string>
-	<string id="30915">Enable XBMC e-TVGuide autostart</string>
+	<string id="30915">Enable XBMC m-TVGuide autostart</string>
 	<string id="30916">Database Settings</string>
 	<string id="30917">Enable stream window resize animation</string>
 	<string id="30930">Colours</string>
@@ -110,6 +116,7 @@
 	<string id="30941">Default color</string>
 	<string id="30942">Focus colour</string>
 	<string id="30943">Notification colour</string>
+	<string id="30944">Recording colour</string>
 	<string id="30950">Clear database</string>
 	<string id="30951">Database cleared</string>
 	<string id="30952">Delete custom streams</string>
@@ -138,11 +145,16 @@
 	<string id="31007">P+ Key</string>
 	<string id="31008">STOP Key</string>
 	<string id="31009">INFO Key</string>
+	<string id="31010">CONTEXT key/</string>
+	<string id="31011">RECORD key</string>
+	<string id="31012">Reset key settings</string>
+	<string id="31013">Reset</string>
+	<string id="31014">And change strm</string>
 	<string id="310010"></string>
 	<string id="310011">Stop playback using navi_back button</string>
-	<string id="310012"></string>
-	<string id="310013"></string>
-	<string id="310014"></string>
+	<string id="310012">Recorded program</string>
+	<string id="310013">Start recorded program</string>
+	<string id="310014">Save plugin settings!</string>
 
 <!-- general settings -->
 	<string id="55002">Username:</string>
@@ -184,4 +196,23 @@
 	<string id="57045">No active server. We are sorry.</string>
 	<string id="57046">Rules are not accepted!</string>
 	<string id="57047">Go to http://weeb.tv/rules and accept it, to use service.</string>
+
+	<string id="69000">Recording</string>
+	<string id="69001">Import RTMPDUMP</string>
+	<string id="69002">Import FFMPEG</string>
+	<string id="69003">Record destination dir</string>
+	<string id="69004">Recording:</string>
+	<string id="69005">Finished recording:</string>
+	<string id="69006">Not existing record destination dir - record canceled!</string>
+	<string id="69007">Record error!</string>
+	<string id="69008">Can't record due to not configured record application: </string>
+	<string id="69009">Record already scheduled - cancel?</string>
+	<string id="69010">Schedule program record: </string>
+	<string id="69011">Cancel ongoing recording?</string>
+	<string id="69012">Import record app</string>
+	<string id="69013">successfully imported</string>
+	<string id="69014">FFmpeg record format - use asf for OpenELEC</string>
+	<string id="69015">Exit despite of scheduled recording?</string>
+	<string id="69016">Use ffmpeg to record rtmp instead of rtmpdump</string>
+	<string id="69020">Debug log</string>
 </strings>

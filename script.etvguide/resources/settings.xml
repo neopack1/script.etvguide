@@ -6,19 +6,25 @@
 		<setting id="username" type="text" label="55002" default="" visible="eq(-1,true)"/>
 		<setting id="userpassword" type="text" option="hidden" label="55003" default="" visible="eq(-2,true)"/>
 		<setting id="video_quality" type="bool" label="55005" default="true" visible="eq(-3,true)"/>
-		<setting id="priority_weebtv" label="55009" type="enum" default="0" values="niski|sredni|wysoki" visible="eq(-4,true)"/>
+		<setting id="priority_weebtv" label="55009" type="enum" default="0" values="niski|sredni|wysoki|b.wysoki" visible="eq(-4,true)"/>
 
 		<setting label="59902" type="lsep"/>
 		<setting id="GoldVOD_enabled" type="bool" label="59904" default="false"/>
 		<setting id="usernameGoldVOD" type="text" label="55002" default="" visible="eq(-1,true)"/>
 		<setting id="userpasswordGoldVOD" type="text" option="hidden" label="55003" default="" visible="eq(-2,true)"/>
 		<setting id="video_qualityGoldVOD" type="bool" label="55005" default="true" visible="eq(-3,true)"/>
-		<setting id="priority_goldvod" label="55009" type="enum" default="1" values="niski|sredni|wysoki" visible="eq(-4,true)"/>
+		<setting id="priority_goldvod" label="55009" type="enum" default="1" values="niski|sredni|wysoki|b.wysoki" visible="eq(-4,true)"/>
 
 		<setting label="59903" type="lsep"/>
 		<setting id="telewizjada_enabled" type="bool" label="59904" default="true"/>
-		<setting id="priority_telewizjada" label="55009" type="enum" default="2" values="niski|sredni|wysoki" visible="eq(-1,true)"/>
+		<setting id="priority_telewizjada" label="55009" type="enum" default="2" values="niski|sredni|wysoki|b.wysoki" visible="eq(-1,true)"/>
 
+		<setting label="59905" type="lsep"/>
+		<setting id="playlist_enabled" type="bool" label="59904" default="false"/>
+		<setting id="playlist_source" label="59907" type="labelenum" default="Url" values="Url|File" visible="eq(-1,true)"/>
+		<setting id="playlist_url" label="59906" type="text" visible="eq(-2,true) + eq(-1,0)" default=""/>
+		<setting id="playlist_file" label="59908" type="file" visible="eq(-3,true) + eq(-2,1)" default=""/>
+		<setting id="priority_playlist" label="55009" type="enum" default="0" values="niski|sredni|wysoki|b.wysoki" visible="eq(-4,true)"/>
 	</category>
 	<category label="30101">
 		<setting id="source" label="30701" type="labelenum" default="e-TVGuide" values="XMLTV|e-TVGuide"/>
@@ -26,10 +32,12 @@
 		<setting id="OnlyChannelsWithStream" label="30705" type="bool" default="true" visible="eq(-2,1)"/>
 		<setting id="xmltv.file" label="30103" type="file" visible="eq(-3,0)"/>
 		<setting id="xmltv.logo.folder" label="30116" type="folder" visible="eq(-4,0)"/>
-		<setting id="e-TVGuide" label="30117" type="labelenum" visible="eq(-5,1)" default="Default" values="Default|Alternative"/>
-		<setting id="e-TVGuide2" label="30118" type="text" visible="eq(-6,1)" default="" />
-		<setting id="e-TVGuide3" label="30119" type="text" visible="eq(-7,1)" default="" />
-		<setting id="Time.Zone" label="30911" type="labelenum" default="-05:00" values="-12:00|-11:00|-10:00|-09:30|-09:00|-08:00|-07:00|-06:00|-05:00|-04:30|-04:00|-03:30|-03:00|-02:00|-01:00|00:00|+01:00|+02:00|+03:00|+03:30|+04:00|+04:30|+05:00|+05:30|+05:45|+06:00|+06:30|+07:00|+08:00|+09:00|+09:30|+10:00|+10:30|+11:00|+11:30|+12:00|+12:45|+13:00|+14:00|"/>
+		<setting type="sep" visible="eq(-5,1)"/>
+		<setting id="e-TVGuide" label="30118" type="labelenum" visible="eq(-6,1)" default="Default" values="Default|Alternative"/>
+		<setting id="e-TVGuide2" label="30120" type="text" visible="eq(-7,1)" default=""/>
+		<setting id="e-TVGuide3" label="30121" type="text" visible="eq(-8,1)" default=""/>
+		<setting type="sep"/>
+		<setting id="Time.Zone" label="30911" type="labelenum" default="+01:00" values="-12:00|-11:00|-10:00|-09:30|-09:00|-08:00|-07:00|-06:00|-05:00|-04:30|-04:00|-03:30|-03:00|-02:00|-01:00|00:00|+01:00|+02:00|+03:00|+03:30|+04:00|+04:30|+05:00|+05:30|+05:45|+06:00|+06:30|+07:00|+08:00|+09:00|+09:30|+10:00|+10:30|+11:00|+11:30|+12:00|+12:45|+13:00|+14:00|"/>
 		<setting id="UpdateEPGOnModifiedDate" label="30706" type="bool" default="false" visible="false"/>
 	</category>
 	<category label="30913">
@@ -39,29 +47,38 @@
 		<setting id="sleep_enabled" type="labelenum" label="89001" default="Nie" values="Nie|Tak"/>
 		<setting id="sleep_timer" type="text" label="89003" default="100" visible="eq(-1,1)"/>
 		<setting id="sleep_action" type="labelenum" label="89002" default="Zatrzymaj odtw." values="Zatrzymaj odtw.|Wylacz Xbmc|Wylacz komputer|Uspij komputer" visible="eq(-2,1)"/>
-		<setting label="30108" type="action" action="RunScript($CWD/notification.py)"/>
 		<setting id="pokazpanel" label="30910" type="bool" default="false"/>
 		<setting id="info.osd" label="31001" type="bool" default="false"/>
 		<setting id="start_video_minimalized" label="30917" type="bool" default="true"/>
 		<setting id="navi_back_stop_play" label="310011" type="bool" default="true" visible="eq(-1,true)"/>
 		<setting label="31002" type="action" action="RunScript($CWD/setkey.py)"/>
+		<setting type="sep"/>
+		<setting id="debug_log" label="69020" type="bool" default="false"/>
 	</category>
 	<category label="30916">
+		<setting label="30108" type="action" action="RunScript($CWD/notification.py)"/>
+		<setting label="30109" type="action" action="RunScript($CWD/cleardb.py, clearRecordings)"/>
 		<setting type="sep"/>
-		<setting label="30950" type="action" action="RunScript($CWD/cleardb.py, clearAll)"/>
-		<setting type="sep"/>
-		<setting label="30952" type="action" action="RunScript($CWD/cleardb.py, clearCustom)"/>
-		<setting type="sep"/>
-		<setting label="30955" type="action" action="RunScript($CWD/cleardb.py, deleteDbFile)"/>
-
 		<setting label="30953" type="action" action="RunScript($CWD/settingsImportExport.py, Export)"/>
 		<setting label="30954" type="action" action="RunScript($CWD/settingsImportExport.py, Import)"/>
-
+		<setting type="sep"/>
+		<setting label="30952" type="action" action="RunScript($CWD/cleardb.py, clearCustom)"/>
+		<setting label="30950" type="action" action="RunScript($CWD/cleardb.py, clearAll)"/>
+		<setting label="30955" type="action" action="RunScript($CWD/cleardb.py, deleteDbFile)"/>
+	</category>
+	<category label="69000">
+		<setting id="record.folder" label="69003" type="folder" value="" option="writeable"/>
+		<setting type="sep"/>
+		<setting id="use_only_ffmpeg" label="69016" type="bool" default="false"/>
+		<setting id="rtmpdumpExe" label="69001" type="action" option="close" value="" action="RunScript($CWD/settingsImportExport.py, ImportRecordApp)" visible="eq(-1,false)"/>
+		<setting id="ffmpegExe" label="69002" type="action" option="close" value="" action="RunScript($CWD/settingsImportExport.py, ImportRecordApp)"/>
+		<setting id="ffmpeg_format" label="69014" type="labelenum" default="flv" values="flv|asf"/>
 	</category>
 	<category label="30702">
 		<setting id="Skin" label="30914" type="select" source="/resources/skins/" mask="/" default="Default"/>
+<!--	<setting id="Skin" label="30914" type="select" source="../../userdata/addon_data/script.mtvguide/skins/" mask="/" default="Default"/>	-->
 	</category>
-	<category label="30930" >
+	<category label="30930">
 		<setting label="30931" type="lsep"/>
 		<setting id="kolor.Filmy" label="30932" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
 		<setting id="kolor.Seriale" label="30933" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
@@ -75,8 +92,9 @@
 		<setting id="kolor.default" label="30941" default="default" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
 		<setting id="kolor.defaultfocus" label="30942" type="labelenum" default="default-focus" values="default-focus|kolorowy|kolorowyciemny|srebrnoszary|dark|"/>
 		<setting id="kolor.notification" label="30943" type="labelenum" values="default-przypomnienie|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
+		<setting id="kolor.recording" label="30944" type="labelenum" values="pomarancz_pelny|czerwony_pelny|niebieski_pelny|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
 	</category>
-	<category label="30901" >
+	<category label="30901">
 		<setting label="30902" type="action" action="UpdateAddonRepos"/>
 	</category>
 </settings>

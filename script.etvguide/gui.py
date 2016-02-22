@@ -36,8 +36,9 @@ from strings import *
 import re, sys, os
 import streaming
 import vosd
-import main
 from vosd import VideoOSD
+from playService import PlayService
+from recordService import RecordService
 
 MODE_EPG = 'EPG'
 MODE_TV = 'TV'
@@ -64,6 +65,7 @@ ACTION_MOUSE_MOVE = 107
 KEY_NAV_BACK = 92
 KEY_CONTEXT_MENU = 117
 KEY_HOME = 159
+
 KEY_CODEC_INFO = 0
 
 config = ConfigParser.RawConfigParser()
@@ -91,6 +93,17 @@ try:
      KEY_HOME2 = int(ADDON.getSetting('home_key'))
 except:
      KEY_HOME2 = 0
+
+try:
+     KEY_CONTEXT = int(ADDON.getSetting('context_key'))
+except:
+     KEY_CONTEXT = -1
+
+try:
+     KEY_RECORD = int(ADDON.getSetting('record_key'))
+except:
+     KEY_RECORD = -1
+
 
 CHANNELS_PER_PAGE = ini_chan
 
@@ -145,9 +158,12 @@ class VideoPlayerStateChange(xbmc.Player):
         deb ( "################ Starting control VideoPlayer events" )
         self.playerStateChanged = Event()
         self.sleepSupervisor = SleepSupervisor()
-        #threading.Timer(0.3, self.fixstop).start()
+        self.updatePositionTimerData = {}
+        self.recordedFilesPositions = {}
+        self.updatePositionTimer = None
 
     def stopplaying(self):
+        self.updatePositionTimerData['stop'] = True
         self.Stop()
 
     def onStateChange(self, state):
@@ -164,17 +180,52 @@ class VideoPlayerStateChange(xbmc.Player):
 
     def onPlayBackStarted(self):
         deb ( "################ Playback Started" )
+        self.updatePositionTimerData['stop'] = True
         self.sleepSupervisor.Start()
         self.onStateChange("Started")
+        try:
+            playedFile = xbmc.Player().getPlayingFile()
+            if os.path.isfile(playedFile):
+                try:
+                    seek = int(self.recordedFilesPositions[playedFile])
+                    deb('onPlayBackStarted seeking file: %s, for %d seconds' % (playedFile, seek))
+                    time.sleep(1)
+                    xbmc.Player().seekTime(seek)
+                except:
+                    pass
+                self.updatePositionTimerData = {'filename' : playedFile, 'stop' : False}
+                self.updatePositionTimer = threading.Timer(10, self.updatePosition, [self.updatePositionTimerData])
+                self.updatePositionTimer.start()
+        except:
+            pass
 
     def onPlayBackEnded(self):
         deb ("################# Playback Ended")
+        self.updatePositionTimerData['stop'] = True
         self.onStateChange("Ended")
 
     def onPlayBackStopped(self):
         deb( "################# Playback Stopped")
+        self.updatePositionTimerData['stop'] = True
         self.sleepSupervisor.Stop()
         self.onStateChange("Stopped")
+
+    def updatePosition(self, updatePositionTimerData):
+        try:
+            fileName = updatePositionTimerData['filename']
+            while updatePositionTimerData['stop'] == False:
+                self.recordedFilesPositions[fileName] = xbmc.Player().getTime()
+                for sleepTime in range(5):
+                    if updatePositionTimerData['stop'] == True:
+                        break
+                    time.sleep(1)
+        except:
+            pass
+
+    def close(self):
+        self.updatePositionTimerData['stop'] = True
+        if self.updatePositionTimer is not None:
+            self.updatePositionTimer.cancel()
 
 class eTVGuide(xbmcgui.WindowXML):
     C_MAIN_DATE = 4000
@@ -219,15 +270,16 @@ class eTVGuide(xbmcgui.WindowXML):
         self.focusPoint = Point()
         self.epgView = EPGView()
         self.streamingService = streaming.StreamsService()
-        self.player = xbmc.Player()
+        self.player = xbmc.Player(xbmc.PLAYER_CORE_DVDPLAYER)
         self.playService = PlayService()
+        self.recordService = RecordService(self)
         self.database = None
         self.redrawagain = False
         self.info = False
+        self.infoDialog = None
         self.oldchan = 0
         self.a = {}
         self.urlList = None
-
         self.mode = MODE_EPG
         self.currentChannel = None
 
@@ -243,6 +295,7 @@ class eTVGuide(xbmcgui.WindowXML):
         vp.playerStateChanged += self.onPlayerStateChanged
         while not self.isClosing:
             xbmc.sleep(300)
+        vp.close()
         return
 
     def onPlayerStateChanged(self, pstate):
@@ -253,7 +306,7 @@ class eTVGuide(xbmcgui.WindowXML):
             self._hideEpg()
 
     def getControl(self, controlId):
-        #deb('getControl')
+        debug('getControl')
         try:
             return super(eTVGuide, self).getControl(controlId)
         except:
@@ -266,8 +319,19 @@ class eTVGuide(xbmcgui.WindowXML):
     def close(self):
         deb('close')
         if not self.isClosing:
+            if self.recordService.isRecordOngoing():
+                ret = xbmcgui.Dialog().yesno(heading=strings(69000).encode('utf-8', 'replace'), line1='%s' % strings(69011).encode('utf-8', 'replace'), autoclose=60000)
+                if ret == False:
+                    return
+            elif self.recordService.isRecordScheduled():
+                ret = xbmcgui.Dialog().yesno(heading=strings(69000).encode('utf-8', 'replace'), line1='%s' % strings(69015).encode('utf-8', 'replace'), autoclose=60000)
+                if ret == False:
+                    return
+
             self.isClosing = True
+            xbmc.abortRequested = True
             self.playService.close()
+            self.recordService.close()
             self.notification.close()
             if self.player.isPlaying():
                 self.player.stop()
@@ -320,34 +384,39 @@ class eTVGuide(xbmcgui.WindowXML):
 
     def Info(self, program):
         deb('Info')
-        info = InfoDialog(program)
-        info.setChannel(program)
-        info.doModal()
-        del info
+        self.infoDialog = InfoDialog(program)
+        self.infoDialog.setChannel(program)
+        self.infoDialog.doModal()
+        del self.infoDialog
+        self.infoDialog = None
 
     def onAction(self, action):
-        #deb('onAction')
-        #deb('Mode is: %s' % self.mode)
-
         if self.mode == MODE_TV:
             self.onActionTVMode(action)
         elif self.mode == MODE_EPG:
             self.onActionEPGMode(action)
 
     def onActionTVMode(self, action):
-        deb('onActionTVMode')
+        debug('onActionTVMode actId %d' % action.getId())
         if action.getId() == ACTION_PAGE_UP:
             self._channelUp()
 
         elif action.getId() == ACTION_PAGE_DOWN:
             self._channelDown()
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
+        elif action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
+            if self.urlList is not None and len(self.urlList) > 1:
+                tmpUrl = self.urlList.pop(0)
+                self.urlList.append(tmpUrl)
+                self.playService.playUrlList(self.urlList)
+                time.sleep(0.3)
+
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
 
     def onActionEPGMode(self, action):
-        #deb('onActionEPGMode')
+        debug('onActionEPGMode keyId %d, buttonCode %d' % (action.getId(), action.getButtonCode()))
         if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
             self.close()
             return
@@ -369,9 +438,10 @@ class eTVGuide(xbmcgui.WindowXML):
                 pass
             return
 
-        elif action.getId() == KEY_CONTEXT_MENU:
+        elif action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
             if self.player.isPlaying():
                 self._hideEpg()
+                return
 
         controlInFocus = None
         currentFocus = self.focusPoint
@@ -419,15 +489,18 @@ class eTVGuide(xbmcgui.WindowXML):
             self.viewStartDate = datetime.datetime.today()
             self.viewStartDate -= datetime.timedelta(minutes = self.viewStartDate.minute % 30, seconds = self.viewStartDate.second)
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
-        elif action.getId() in [KEY_CONTEXT_MENU] and controlInFocus is not None:
+        elif (action.getId() in [KEY_CONTEXT_MENU] or action.getButtonCode() in [KEY_CONTEXT]) and controlInFocus is not None:
             program = self._getProgramFromControl(controlInFocus)
             if program is not None:
                 self._showContextMenu(program)
-
-
+                return
+        elif action.getButtonCode() == KEY_RECORD:
+            program = self._getProgramFromControl(controlInFocus)
+            self.recordProgram(program)
+            return
 
     def onClick(self, controlId):
-        deb('onClick')
+        debug('onClick')
         channel = None
         if controlId in [self.C_MAIN_LOADING_CANCEL, self.C_MAIN_MOUSEPANEL_EXIT]:
             self.close()
@@ -470,7 +543,10 @@ class eTVGuide(xbmcgui.WindowXML):
              return
         elif controlId >= 9010 and controlId <= 9021:
             o = controlId - 9010
-            channel = self.a[o]
+            try:
+                channel = self.a[o]
+            except Exception, ex:
+                deb('RecordAppImporter Error: %s' % str(ex))
 
         if channel is not None:
             if not self.playChannel(channel):
@@ -495,7 +571,6 @@ class eTVGuide(xbmcgui.WindowXML):
 
         program = self._getProgramFromControl(self.getControl(controlId))
         if program is None:
-
             return
 
         #self.channelIdx = program.channel
@@ -583,27 +658,26 @@ class eTVGuide(xbmcgui.WindowXML):
             xbmcaddon.Addon(id=ADDON_ID).openSettings()
 
     def setFocusId(self, controlId):
-        deb('setFocusId')
+        debug('setFocusId')
         control = self.getControl(controlId)
         if control:
             self.setFocus(control)
 
     def setFocus(self, control):
-        deb('setFocus')
-        deb('setFocus %d' % control.getId())
+        debug('setFocus %d' % control.getId())
         if control in [elem.control for elem in self.controlAndProgramList]:
-            deb('Focus before %s' % self.focusPoint)
+            #deb('Focus before %s' % self.focusPoint)
             (left, top) = control.getPosition()
             if left > self.focusPoint.x or left + control.getWidth() < self.focusPoint.x:
                 self.focusPoint.x = left
             self.focusPoint.y = top + (control.getHeight() / 2)
-            deb('New focus at %s' % self.focusPoint)
+            #deb('New focus at %s' % self.focusPoint)
 
         super(eTVGuide, self).setFocus(control)
 
 
     def onFocus(self, controlId):
-        deb('onFocus controlId : %s' % controlId)
+        debug('onFocus controlId : %s' % controlId)
         try:
             controlInFocus = self.getControl(controlId)
         except Exception:
@@ -633,7 +707,7 @@ class eTVGuide(xbmcgui.WindowXML):
             self.setControlImage(C_MAIN_LIVE, '')
 
     def _left(self, currentFocus):
-        deb('_left')
+        debug('_left')
         control = self._findControlOnLeft(currentFocus)
         if control is not None:
             self.setFocus(control)
@@ -643,7 +717,7 @@ class eTVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx, self.viewStartDate, focusFunction=self._findControlOnLeft)
 
     def _right(self, currentFocus):
-        deb('_right')
+        debug('_right')
         control = self._findControlOnRight(currentFocus)
         if control is not None:
             self.setFocus(control)
@@ -653,7 +727,7 @@ class eTVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx, self.viewStartDate, focusFunction=self._findControlOnRight)
 
     def _up(self, currentFocus):
-        deb('_up')
+        debug('_up')
         currentFocus.x = self.focusPoint.x
         control = self._findControlAbove(currentFocus)
         if control is not None:
@@ -663,7 +737,7 @@ class eTVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx - CHANNELS_PER_PAGE, self.viewStartDate, focusFunction=self._findControlAbove)
 
     def _down(self, currentFocus):
-        deb('_down')
+        debug('_down')
         currentFocus.x = self.focusPoint.x
         control = self._findControlBelow(currentFocus)
         if control is not None:
@@ -683,7 +757,7 @@ class eTVGuide(xbmcgui.WindowXML):
         self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
     def _moveUp(self, count = 1, scrollEvent = False):
-        deb('_moveUp')
+        debug('_moveUp')
         if scrollEvent:
             self.onRedrawEPG(self.channelIdx - count, self.viewStartDate)
         else:
@@ -691,7 +765,7 @@ class eTVGuide(xbmcgui.WindowXML):
             self.onRedrawEPG(self.channelIdx - count, self.viewStartDate, focusFunction = self._findControlAbove)
 
     def _moveDown(self, count = 1, scrollEvent = False):
-        deb('_moveDown')
+        debug('_moveDown')
         if scrollEvent:
             self.onRedrawEPG(self.channelIdx + count, self.viewStartDate)
         else:
@@ -710,6 +784,17 @@ class eTVGuide(xbmcgui.WindowXML):
         deb('playChannel2')
         self.program = program
         self.currentChannel = program.channel
+        recordedProgram = self.recordService.isProgramRecorded(program)
+        if recordedProgram is not None:
+            ret = xbmcgui.Dialog().yesno(heading=strings(RECORDED_FILE_POPUP).encode('utf-8', 'replace'), line1='%s %s?' % (strings(RECORDED_FILE_QUESTION).encode('utf-8', 'replace'), program.title.encode('utf-8', 'replace')), autoclose=60000)
+            if ret == True:
+                deb('playChannel2 starting play of recorded program %s' % recordedProgram)
+                startWindowed = False
+                if ADDON.getSetting('start_video_minimalized') == 'true':
+                    startWindowed = True
+                self.player.play(recordedProgram, windowed=startWindowed)
+                return True
+
         self.urlList = self.database.getStreamUrlList(program.channel)
         if len(self.urlList) > 0:
             self.oldchan = self.database.getCurrentChannelIdx(program.channel)
@@ -742,16 +827,39 @@ class eTVGuide(xbmcgui.WindowXML):
 
         return len(self.urlList) > 0
 
+    def recordProgram(self, program):
+        deb('recordProgram')
+        databaseUpdated = False
+        timeToProgramEnd = program.endDate - datetime.datetime.now()
+        if ((timeToProgramEnd.days * 86400) + timeToProgramEnd.seconds) <= 0:
+            return
+
+        if self.recordService.isProgramScheduled(program):
+            ret = xbmcgui.Dialog().yesno(heading=strings(69000).encode('utf-8'), line1=strings(69009).encode('utf-8'), autoclose=60000)
+            if ret == True:
+                self.database.removeRecording(program)
+                self.recordService.cancelProgramRecord(program)
+                databaseUpdated = True
+        elif program.recordingScheduled != 1:
+            ret = xbmcgui.Dialog().yesno(heading=strings(69000).encode('utf-8'), line1='%s %s?' % (strings(69010).encode('utf-8', 'replace'), program.title.encode('utf-8', 'replace')), autoclose=60000)
+            if ret == True:
+                self.database.addRecording(program)
+                self.recordService.scheduleRecording(program)
+                databaseUpdated = True
+        else:
+            self.database.removeRecording(program)
+            databaseUpdated = True
+
+        if databaseUpdated == True:
+            self.onRedrawEPG(self.channelIdx, self.viewStartDate)
+
+
     def waitForPlayBackStopped(self):
-        deb('waitForPlayBackStopped')
-        for retry in range(0, 100):
-            time.sleep(0.1)
-            if self.player.isPlaying():
-                break
-
-        while self.player.isPlaying() and not xbmc.abortRequested and not self.isClosing:
+        debug('waitForPlayBackStopped')
+        while self.epg.playService.isWorking() == True:
+            time.sleep(0.2)
+        while (self.player.isPlaying() or self.epg.playService.isWorking() == True) and not xbmc.abortRequested and not self.isClosing:
             time.sleep(0.5)
-
         self.onPlayBackStopped()
 
     def _hideEpg(self):
@@ -779,6 +887,10 @@ class eTVGuide(xbmcgui.WindowXML):
 
         self.redrawingEPG = True
         self.mode = MODE_EPG
+
+        if self.infoDialog is not None:
+            self.infoDialog.close()
+
         self._showControl(self.C_MAIN_EPG)
         self.updateTimebar(scheduleTimer = False)
 
@@ -790,22 +902,27 @@ class eTVGuide(xbmcgui.WindowXML):
         # remove existing controls
         self._clearEpg()
         try:
+            debug('onRedrawEPG self.database.getEPGView')
             self.channelIdx, channels, programs, cacheExpired = self.database.getEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList = True)
         except src.SourceException:
+            debug('onRedrawEPG onEPGLoadError')
             self.onEPGLoadError()
             return
 
         if cacheExpired == True and ADDON.getSetting('notifications.enabled') == 'true':
             #make sure notifications are scheduled for newly downloaded programs
+            debug('onRedrawEPG scheduleNotifications')
             self.notification.scheduleNotifications()
 
         # date and time row
+        debug('onRedrawEPG setControlLabel')
         self.setControlLabel(self.C_MAIN_DATE, self.formatDate(self.viewStartDate))
         for col in range(1, 5):
             self.setControlLabel(4000 + col, self.formatTime(startTime))
             startTime += HALF_HOUR
 
         if programs is None:
+            debug('onRedrawEPG onEPGLoadError2')
             self.onEPGLoadError()
             return
 
@@ -840,53 +957,55 @@ class eTVGuide(xbmcgui.WindowXML):
 
                 if program.categoryA == "Filmy":
                     if ADDON.getSetting('kolor.Filmy') == '':
-                        noFocusTexture = "default.png"
+						noFocusTexture = "default.png"
                     else:
-                        noFocusTexture = ADDON.getSetting('kolor.Filmy')+'.png'
+						noFocusTexture = ADDON.getSetting('kolor.Filmy')+'.png'
                 elif program.categoryA == "Seriale":
                     if ADDON.getSetting('kolor.Seriale') == '':
-                        noFocusTexture = 'default.png'
+						noFocusTexture = 'default.png'
                     else:
-                        noFocusTexture = ADDON.getSetting('kolor.Seriale')+'.png'
+						noFocusTexture = ADDON.getSetting('kolor.Seriale')+'.png'
                 elif program.categoryA == "Informacja":
                     if ADDON.getSetting('kolor.Informacja') == '':
-                        noFocusTexture = 'default.png'
+						noFocusTexture = 'default.png'
                     else:
-                        noFocusTexture = ADDON.getSetting('kolor.Informacja')+'.png'
+						noFocusTexture = ADDON.getSetting('kolor.Informacja')+'.png'
                 elif program.categoryA == "Rozrywka":
                     if ADDON.getSetting('kolor.Rozrywka') == '':
-                        noFocusTexture = 'default.png'
+						noFocusTexture = 'default.png'
                     else:
-                        noFocusTexture = ADDON.getSetting('kolor.Rozrywka')+'.png'
+						noFocusTexture = ADDON.getSetting('kolor.Rozrywka')+'.png'
                 elif program.categoryA == "Dokument":
                     if ADDON.getSetting('kolor.Dokument') == '':
-                        noFocusTexture = 'default.png'
+						noFocusTexture = 'default.png'
                     else:
-                        noFocusTexture = ADDON.getSetting('kolor.Dokument')+'.png'
+						noFocusTexture = ADDON.getSetting('kolor.Dokument')+'.png'
                 elif program.categoryA == "Dla dzieci":
                     if ADDON.getSetting('kolor.Dladzieci') == '':
-                        noFocusTexture = 'default.png'
+						noFocusTexture = 'default.png'
                     else:
-                        noFocusTexture = ADDON.getSetting('kolor.Dladzieci')+'.png'
+						noFocusTexture = ADDON.getSetting('kolor.Dladzieci')+'.png'
                 elif program.categoryA == "Sport":
                     if ADDON.getSetting('kolor.Sport') == '':
-                        noFocusTexture = 'default.png'
+						noFocusTexture = 'default.png'
                     else:
-                        noFocusTexture = ADDON.getSetting('kolor.Sport')+'.png'
+						noFocusTexture = ADDON.getSetting('kolor.Sport')+'.png'
                 elif program.categoryA == "Interaktywny Program Rozrywkowy":
                     if ADDON.getSetting('kolor.InteraktywnyProgramRozrywkowy') == '':
-                        noFocusTexture = 'default.png'
+						noFocusTexture = 'default.png'
                     else:
-                        noFocusTexture = ADDON.getSetting('kolor.InteraktywnyProgramRozrywkowy')+'.png'
+						noFocusTexture = ADDON.getSetting('kolor.InteraktywnyProgramRozrywkowy')+'.png'
                 else:
                     if ADDON.getSetting('kolor.default') == '':
-                        noFocusTexture = 'default.png'
+						noFocusTexture = 'default.png'
                     else:
-                        noFocusTexture = ADDON.getSetting('kolor.default')+'.png'
-
+						noFocusTexture = ADDON.getSetting('kolor.default')+'.png'
 
                 if program.notificationScheduled:
                     noFocusTexture = ADDON.getSetting('kolor.notification')+'.png'
+
+                if program.recordingScheduled:
+                    noFocusTexture = ADDON.getSetting('kolor.recording')+'.png'
 
                 focusTexture = ADDON.getSetting('kolor.defaultfocus')+'.png'
 
@@ -913,7 +1032,7 @@ class eTVGuide(xbmcgui.WindowXML):
         controls = [elem.control for elem in self.controlAndProgramList]
         self.addControls(controls)
         if focusControl is not None:
-            deb('onRedrawEPG - setFocus %d' % focusControl.getId())
+            debug('onRedrawEPG - setFocus %d' % focusControl.getId())
             self.setFocus(focusControl)
         self.ignoreMissingControlIds.extend([elem.control.getId() for elem in self.controlAndProgramList])
         if focusControl is None and len(self.controlAndProgramList) > 0:
@@ -923,6 +1042,7 @@ class eTVGuide(xbmcgui.WindowXML):
         if self.redrawagain:
             self.redrawagain = False
             self.onRedrawEPG(channelStart, self.viewStartDate, focusFunction)
+        debug('onRedrawEPG done')
 
     def _clearEpg(self):
         deb('_clearEpg')
@@ -935,7 +1055,9 @@ class eTVGuide(xbmcgui.WindowXML):
                     self.removeControl(elem.control)
                 except RuntimeError:
                     pass # happens if we try to remove a control that doesn't exist
+        debug('_clearEpg2')
         del self.controlAndProgramList[:]
+        debug('_clearEpg end')
 
     def onEPGLoadError(self):
         deb('')
@@ -961,6 +1083,7 @@ class eTVGuide(xbmcgui.WindowXML):
             self.notification = Notification(self.database, ADDON.getAddonInfo('path'), self)
             if ADDON.getSetting('notifications.enabled') == 'true':
                 self.notification.scheduleNotifications()
+            self.recordService.scheduleAllRecordings()
             self.onRedrawEPG(0, self.viewStartDate)
 
     def onSourceProgressUpdate(self, percentageComplete):
@@ -999,7 +1122,7 @@ class eTVGuide(xbmcgui.WindowXML):
         return self.epgView.left + (seconds * self.epgView.width / 7200)
 
     def _findControlOnRight(self, point):
-        deb('_findControlOnRight')
+        debug('_findControlOnRight')
         distanceToNearest = 10000
         nearestControl = None
 
@@ -1019,7 +1142,7 @@ class eTVGuide(xbmcgui.WindowXML):
 
 
     def _findControlOnLeft(self, point):
-        deb('_findControlOnLeft')
+        debug('_findControlOnLeft')
         distanceToNearest = 10000
         nearestControl = None
 
@@ -1038,7 +1161,7 @@ class eTVGuide(xbmcgui.WindowXML):
         return nearestControl
 
     def _findControlBelow(self, point):
-        deb('_findControlBelow')
+        debug('_findControlBelow')
         nearestControl = None
 
         for elem in self.controlAndProgramList:
@@ -1055,7 +1178,7 @@ class eTVGuide(xbmcgui.WindowXML):
         return nearestControl
 
     def _findControlAbove(self, point):
-        deb('_findControlAbove')
+        debug('_findControlAbove')
         nearestControl = None
         for elem in self.controlAndProgramList:
             control = elem.control
@@ -1071,7 +1194,7 @@ class eTVGuide(xbmcgui.WindowXML):
         return nearestControl
 
     def _findControlAt(self, point):
-        deb('_findControlAt')
+        debug('_findControlAt')
         for elem in self.controlAndProgramList:
             control = elem.control
             (left, top) = control.getPosition()
@@ -1084,7 +1207,7 @@ class eTVGuide(xbmcgui.WindowXML):
         return None
 
     def _getProgramFromControl(self, control):
-        deb('_getProgramFromControl')
+        #deb('_getProgramFromControl')
         try:
             for elem in self.controlAndProgramList:
                 if elem.control == control:
@@ -1105,7 +1228,7 @@ class eTVGuide(xbmcgui.WindowXML):
                 control.setVisible(True)
 
     def _showControl(self, *controlIds):
-        deb('_showControl')
+        debug('_showControl')
         """
         Visibility is inverted in skin
         """
@@ -1115,36 +1238,36 @@ class eTVGuide(xbmcgui.WindowXML):
                 control.setVisible(False)
 
     def formatTime(self, timestamp):
-        deb('formatTime')
+        debug('formatTime')
         format = xbmc.getRegion('time').replace(':%S', '').replace('%H%H', '%H')
         return timestamp.strftime(format)
 
     def formatDate(self, timestamp):
-        deb('formatDate')
+        debug('formatDate')
         format = xbmc.getRegion('dateshort')
         return timestamp.strftime(format)
 
     def setControlImage(self, controlId, image):
-        deb('setControlImage')
+        debug('setControlImage')
         control = self.getControl(controlId)
         if control:
             control.setImage(image.encode('utf-8'))
 
     def setControlLabel(self, controlId, label):
-        deb('setControlLabel')
+        debug('setControlLabel')
         control = self.getControl(controlId)
         if control:
             control.setLabel(label)
 
     def setControlText(self, controlId, text):
-        deb('setControlText')
+        debug('setControlText')
         control = self.getControl(controlId)
         if control:
             control.setText(text)
 
 
     def updateTimebar(self, scheduleTimer = True):
-        #deb('updateTimebar')
+        debug('updateTimebar')
         try:
             # move timebar to current time
             timeDelta = datetime.datetime.today() - self.viewStartDate
@@ -1239,7 +1362,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             programTimeRangeControl.setLabel('[B]%s - %s[/B]' % (self.formatTime(self.program.startDate), self.formatTime(self.program.endDate)))
 
     def onAction(self, action):
-        if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, KEY_CONTEXT_MENU]:
+        if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, KEY_CONTEXT_MENU] or action.getButtonCode() in [KEY_CONTEXT]:
             self.close()
             return
 
@@ -1300,7 +1423,7 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
 
 
     def onAction(self, action):
-        if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, KEY_CONTEXT_MENU]:
+        if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, KEY_CONTEXT_MENU] or action.getButtonCode() in [KEY_CONTEXT]:
             self.close()
             return
 
@@ -1440,7 +1563,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         self.database = database
         self.channel = channel
 
-        self.player = xbmc.Player()
+        self.player = xbmc.Player(xbmc.PLAYER_CORE_DVDPLAYER)
         self.previousAddonId = None
         self.strmFile = None
         self.streamingService = streaming.StreamsService()
@@ -1480,7 +1603,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
 
 
     def onAction(self, action):
-        if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, KEY_CONTEXT_MENU]:
+        if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, KEY_CONTEXT_MENU] or action.getButtonCode() in [KEY_CONTEXT]:
             self.close()
             return
 
@@ -1584,10 +1707,6 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
         listControl.reset()
         listControl.addItems(items)
 
-
-
-
-
 class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
     C_SELECTION_LIST = 1000
 
@@ -1598,7 +1717,6 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
         super(ChooseStreamAddonDialog, self).__init__()
         self.addons = addons
         self.stream = None
-
 
     def onInit(self):
         items = list()
@@ -1614,7 +1732,6 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
 
         self.setFocus(listControl)
 
-
     def onAction(self, action):
         if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK]:
             self.close()
@@ -1625,7 +1742,6 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
             listControl = self.getControl(ChooseStreamAddonDialog.C_SELECTION_LIST)
             self.stream = listControl.getSelectedItem().getProperty('stream')
             self.close()
-
 
     def onFocus(self, controlId):
         pass
@@ -1730,9 +1846,9 @@ class Pla(xbmcgui.WindowXMLDialog):
         self.play(urlList)
 
     def onAction(self, action):
-        deb(str(action.getId()))
+        debug(str(action.getId()))
         if action.getId() == ACTION_PREVIOUS_MENU or action.getId() == ACTION_STOP or (action.getButtonCode() == KEY_STOP and KEY_STOP != 0) or (action.getId() == KEY_STOP and KEY_STOP != 0):
-            xbmc.Player().stop()
+            self.epg.player.stop()
             self.close()
 
         if action.getId() == KEY_NAV_BACK:
@@ -1740,12 +1856,19 @@ class Pla(xbmcgui.WindowXMLDialog):
                 self.close()
                 self.epg._showEPG()
             else:
-                xbmc.Player().stop()
+                self.epg.player.stop()
                 self.close()
 
-        #if action.getId() == KEY_CODEC_INFO:
-            #xbmc.executebuiltin("Action(CodecInfo)")
-            #return
+                #xbmc.executebuiltin('SendClick(12901, %d)' % action.getId())
+                #xbmc.executebuiltin('ActivateWindow(OSDVideoSettings)') # dziala - pokazuje ustawienia video
+                #xbmc.executebuiltin('ActivateWindow(videoosd)') #pokazuje kawales osd
+                #xbmc.executebuiltin('ActivateWindow(movieinformation)') #nie dziala
+                #xbmc.executebuiltin('PlayerControl(ShowVideoMenu)') #- nie dziala
+                #jakies menu jest pod przyciskami i, pod m
+
+
+        if action.getId() == KEY_CODEC_INFO: #przysik O
+            xbmc.executebuiltin("Action(CodecInfo)")
 
         if action.getId() == ACTION_SHOW_INFO or (action.getButtonCode() == KEY_INFO and KEY_INFO != 0) or (action.getId() == KEY_INFO and KEY_INFO != 0):
             try:
@@ -1754,13 +1877,16 @@ class Pla(xbmcgui.WindowXMLDialog):
             except:
                 pass
             return
+
         if action.getId() == ACTION_PAGE_UP or (action.getButtonCode() == KEY_PP and KEY_PP != 0) or (action.getId() == KEY_PP and KEY_PP != 0):
             self.ChannelChanged = 1
             self._channelUp()
+            return
 
         if action.getId() == ACTION_PAGE_DOWN or (action.getButtonCode() == KEY_PM and KEY_PM != 0) or (action.getId() == KEY_PM and KEY_PM != 0):
             self.ChannelChanged = 1
             self._channelDown()
+            return
 #
         if (action.getId() == 3):
             xbmc.executebuiltin("Action(VolumeUp)")
@@ -1779,7 +1905,7 @@ class Pla(xbmcgui.WindowXMLDialog):
             xbmc.executebuiltin("SendClick(VideoLibrary)")
             #self.setFocus('video')
 
-        if action.getId() == ACTION_MOUSE_MOVE and xbmc.Player().isPlaying():
+        if action.getId() == ACTION_MOUSE_MOVE and self.epg.player.isPlaying():
             self.mouseCount = self.mouseCount + 1
             if self.mouseCount > 15:
                 self.mouseCount = 0
@@ -1787,22 +1913,13 @@ class Pla(xbmcgui.WindowXMLDialog):
                 osd.doModal()
                 del osd
 
-        if action.getId() == KEY_CONTEXT_MENU:
+        if action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
             self.changeStream()
 
     def onAction2(self, action):
-        if action == ACTION_STOP:
-            xbmc.Player().stop()
+        if action == ACTION_STOP or action.getId() == KEY_NAV_BACK:
+            self.epg.player.stop()
             self.close()
-
-        if action.getId() == KEY_NAV_BACK:
-            if ADDON.getSetting('start_video_minimalized') == 'true' and ADDON.getSetting('navi_back_stop_play') == 'false':
-                self.close()
-                self.epg._showEPG()
-            else:
-                xbmc.Player().stop()
-                self.close()
-
         if action == ACTION_SHOW_INFO:
             try:
                 self.program = self.database.getCurrentProgram(self.currentChannel)
@@ -1819,7 +1936,7 @@ class Pla(xbmcgui.WindowXMLDialog):
             self._channelDown()
 
     def onPlayBackStopped(self):
-        xbmc.Player().stop()
+        self.epg.player.stop()
         self.close()
 
     def waitForPlayBackStopped(self):
@@ -1829,7 +1946,7 @@ class Pla(xbmcgui.WindowXMLDialog):
             time.sleep(0.1)
 
         while self.wait == True:
-            if xbmc.Player().isPlaying() and not xbmc.abortRequested:
+            if self.epg.player.isPlaying() and not xbmc.abortRequested:
                 time.sleep(0.2)
             else:
                 if self.ChannelChanged == 1:
@@ -1866,94 +1983,6 @@ class Pla(xbmcgui.WindowXMLDialog):
             self.ChannelChanged = 1
             self.epg.playService.playUrlList(self.urlList)
             time.sleep(0.3)
-
-class PlayService(xbmc.Player):
-    def __init__(self, *args, **kwargs):
-        self.servicePlayer = main.InitPlayer()
-        self.playbackStopped = False
-        self.playbackStarted = False
-        self.terminating = False
-        self.thread = None
-
-    def onPlayBackStopped(self):
-        self.playbackStopped = True
-        xbmc.Player().stop()
-
-    def onPlayBackStarted(self):
-        self.playbackStarted = True
-
-    def playService(self, url):
-        params = url[8:].split('&')
-        service = params[0]
-        cid = params[1].split('=')[1]
-        deb('playService playing cid %s, service %s' % (cid, service))
-        self.servicePlayer.LoadVideoLink(cid, service)
-
-    def playUrl(self, url):
-        self.playbackStopped = False
-        self.playbackStarted = False
-        success = True
-
-        if url[-5:] == '.strm':
-            try:
-                f = open(url)
-                content = f.read()
-                f.close()
-
-                if content[0:9] == 'plugin://':
-                    url = content.strip()
-            except:
-                pass
-
-        if url[0:9] == 'plugin://':
-            xbmc.executebuiltin('XBMC.RunPlugin(%s)' % url)
-        elif url[0:7] == 'service':
-            success = self.playService(url)
-        else:
-            xbmc.Player().play(url)
-        return success
-
-    def playUrlList(self, urlList):
-        if self.thread is not None:
-            if self.thread.is_alive():
-                deb('PlayService playUrlList waiting for thread to terminate')
-                self.terminating = True
-                self.thread.join(10)
-
-        self.thread = threading.Thread(name='playUrlList Loop', target = self._playUrlList, args=[urlList])
-        self.thread.start()
-
-    def _playUrlList(self, urlList):
-        self.terminating = False
-
-        for url in urlList:
-            playStarted = self.playUrl(url)
-
-            for i in range(200):
-
-                if self.terminating == True or xbmc.abortRequested == True:
-                    deb('PlayService _playUrlList abort requested - terminating')
-                    return
-
-                if self.playbackStarted == True:
-                    deb('PlayService _playUrlList detected stream start!')
-                    return
-
-                if self.playbackStopped == True or playStarted == False:
-                    deb('PlayService _playUrlList detected faulty stream!')
-                    break
-
-                time.sleep(.100)
-
-    def close(self):
-        self.terminating = True
-        if self.thread is not None:
-            self.thread.join(10)
-
-    def isWorking(self):
-        if self.thread is not None:
-            return self.thread.is_alive()
-        return False
 
 class SleepSupervisor(object):
     def __init__(self):

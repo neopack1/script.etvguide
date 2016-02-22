@@ -1,6 +1,6 @@
 #
 #      Copyright (C) 2013 Szakalit
-#      
+#
 #
 #  This Program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ import source as src
 from strings import *
 
 class clearDB:
-    
+
     def __init__(self):
         self.database = src.Database()
         self.command = sys.argv[1]
@@ -47,11 +47,12 @@ class clearDB:
                 self.database.clearDB()
             if self.command == 'clearCustom':
                 self.database.deleteAllStreams()
-                
+            if self.command == 'clearRecordings':
+                self.database.removeAllRecordings()
+
             self.database.close(self.onDBCleared)
         else:
             self.database.close()
 
-    
-cleardb = clearDB()
 
+cleardb = clearDB()

@@ -61,6 +61,9 @@ NOTIFICATION_POPUP_NAME = 30202
 NOTIFICATION_POPUP_QUESTION = 30203
 NOTIFICATION_CANCEL = 30204
 
+RECORDED_FILE_POPUP = 310012
+RECORDED_FILE_QUESTION = 310013
+
 WATCH_CHANNEL = 30300
 REMIND_PROGRAM = 30301
 DONT_REMIND_PROGRAM = 30302
@@ -92,6 +95,11 @@ C_PROGRAM_PROGRESS = 4999
 
 C_MAIN_EPG = 5000
 
+if ADDON.getSetting('debug_log') == 'true':
+    DEBUG = True
+else:
+    DEBUG = False
+
 def strings(id, replacements = None):
     string = ADDON.getLocalizedString(id)
     if replacements is not None:
@@ -112,7 +120,17 @@ def getStateLabel(control, label_idx, default=0):
     return default
 
 def deb(s):
-    if FORCE_ADD_LOG_DEBUG:
-        xbmc.log("ETVGUIDE @ " + str(s))
-    else:
-        xbmc.log("ETVGUIDE @ " + str(s), xbmc.LOGDEBUG)
+    try:
+        if FORCE_ADD_LOG_DEBUG:
+            xbmc.log("ETVGUIDE @ " + str(s))
+        else:
+            xbmc.log("ETVGUIDE @ " + str(s), xbmc.LOGDEBUG)
+    except:
+        xbmc.log("ETVGUIDE @ " + str(s.encode('ascii', 'ignore')))
+
+def debug(s):
+    if DEBUG == True:
+        try:
+            xbmc.log("Debug @ " + str(s))
+        except:
+            xbmc.log("Debug @ " + str(s.encode('ascii', 'ignore')))
