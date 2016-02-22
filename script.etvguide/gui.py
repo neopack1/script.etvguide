@@ -404,12 +404,12 @@ class eTVGuide(xbmcgui.WindowXML):
         elif action.getId() == ACTION_PAGE_DOWN:
             self._channelDown()
 
-        elif action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
-            if self.urlList is not None and len(self.urlList) > 1:
-                tmpUrl = self.urlList.pop(0)
-                self.urlList.append(tmpUrl)
-                self.playService.playUrlList(self.urlList)
-                time.sleep(0.3)
+#        elif action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
+#            if self.urlList is not None and len(self.urlList) > 1:
+#                tmpUrl = self.urlList.pop(0)
+#                self.urlList.append(tmpUrl)
+#                self.playService.playUrlList(self.urlList)
+#                time.sleep(0.3)
 
         elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
