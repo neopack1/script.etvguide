@@ -1,24 +1,24 @@
 #
-#		Copyright (C) 2014 Krzysztof Cebulski
-#		Copyright (C) 2013 Szakalit
+#       Copyright (C) 2014 Krzysztof Cebulski
+#       Copyright (C) 2013 Szakalit
 #
-#		Copyright (C) 2013 Tommy Winther
-#		http://tommy.winther.nu
+#       Copyright (C) 2013 Tommy Winther
+#       http://tommy.winther.nu
 #
-#	This Program is free software; you can redistribute it and/or modify
-#	it under the terms of the GNU General Public License as published by
-#	the Free Software Foundation; either version 2, or (at your option)
-#	any later version.
+#   This Program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2, or (at your option)
+#   any later version.
 #
-#	This Program is distributed in the hope that it will be useful,
-#	but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-#	GNU General Public License for more details.
+#   This Program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#   GNU General Public License for more details.
 #
-#	You should have received a copy of the GNU General Public License
-#	along with this Program; see the file LICENSE.txt.  If not, write to
-#	the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
-#	http://www.gnu.org/copyleft/gpl.html
+#   You should have received a copy of the GNU General Public License
+#   along with this Program; see the file LICENSE.txt.  If not, write to
+#   the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#   http://www.gnu.org/copyleft/gpl.html
 #
 import StringIO
 import os
@@ -325,7 +325,7 @@ class Database(object):
         global ADDON_CIDUPDATED
         deb('_updateChannelAndProgramListCache')
 
-		# todo workaround service.py 'forgets' the adapter and convert set in _initialize.. wtf?!
+        # todo workaround service.py 'forgets' the adapter and convert set in _initialize.. wtf?!
         sqlite3.register_adapter(datetime.datetime, self.adapt_datetime)
         sqlite3.register_converter('timestamp', self.convert_datetime)
 
@@ -751,7 +751,7 @@ class Database(object):
         return customStreamUrlList
 
     def adapt_datetime(self, ts):
-		# http://docs.python.org/2/library/sqlite3.html#registering-an-adapter-callable
+        # http://docs.python.org/2/library/sqlite3.html#registering-an-adapter-callable
         return time.mktime(ts.timetuple())
 
     def convert_datetime(self, ts):
@@ -846,6 +846,24 @@ class Database(object):
             if version < [6, 1, 0]:
                 c.execute("CREATE TABLE IF NOT EXISTS recordings(channel TEXT, program_title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
                 c.execute('UPDATE version SET major=6, minor=1, patch=0')
+                self.conn.commit()
+
+            if version < [6, 1, 1]:
+                c.execute("CREATE TABLE IF NOT EXISTS recordings(channel TEXT, program_title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
+                c.execute('UPDATE version SET major=6, minor=1, patch=0')
+                c.execute('DELETE FROM channels')
+                c.execute('DELETE FROM programs')
+                c.execute('DELETE FROM notifications')
+                c.execute('DELETE FROM recordings')
+                c.execute('DELETE FROM updates')
+                c.execute('DELETE FROM sources')
+                c.execute('DELETE FROM custom_stream_url')
+                c.execute('UPDATE settings SET value=0 WHERE rowid=1')
+                #c.execute('DROP TABLE custom_stream_url')
+                #c.execute('DELETE FROM programs')
+                #c.execute('CREATE TABLE IF NOT EXISTS custom_stream_url(channel TEXT COLLATE NOCASE, stream_url TEXT)')
+                #c.execute('CREATE TABLE IF NOT EXISTS channels(id TEXT COLLATE NOCASE, title TEXT, logo TEXT, stream_url TEXT, source TEXT, visible BOOLEAN, weight INTEGER, PRIMARY KEY (id, source), FOREIGN KEY(source) REFERENCES sources(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
+                c.execute('UPDATE version set major=6, minor=1, patch=1')
                 self.conn.commit()
 
             # make sure we have a record in sources for this Source
@@ -1066,7 +1084,7 @@ class XMLTVSource(Source):
         return parseXMLTV(context, f, f.size, self.logoFolder, progress_callback)
     def isUpdated(self, channelsLastUpdated, programLastUpdate):
         if channelsLastUpdated is None or not xbmcvfs.exists(self.xmltvFile):
-			return True
+            return True
         stat = xbmcvfs.Stat(self.xmltvFile)
         fileUpdated = datetime.datetime.fromtimestamp(stat.st_mtime())
         return fileUpdated > channelsLastUpdated
@@ -1164,18 +1182,18 @@ def parseXMLTVDate(dateString):
 
 def TimeZone(dateString):
     if dateString is not None:
-		zone = ADDON.getSetting('Time.Zone')
+        zone = ADDON.getSetting('Time.Zone')
 
-		if '-' in zone:
-			x = time.strptime(zone[1:],'%H:%M')
-			dateString = dateString - datetime.timedelta(hours=x.tm_hour) - datetime.timedelta(minutes=x.tm_min) - datetime.timedelta(hours=1)
-		elif '+' in zone:
-			x = time.strptime(zone[1:],'%H:%M')
-			dateString = dateString + datetime.timedelta(hours=x.tm_hour) + datetime.timedelta(minutes=x.tm_min) - datetime.timedelta(hours=1)
-		else:
-			dateString = dateString - datetime.timedelta(hours=1)
+        if '-' in zone:
+            x = time.strptime(zone[1:],'%H:%M')
+            dateString = dateString - datetime.timedelta(hours=x.tm_hour) - datetime.timedelta(minutes=x.tm_min) - datetime.timedelta(hours=1)
+        elif '+' in zone:
+            x = time.strptime(zone[1:],'%H:%M')
+            dateString = dateString + datetime.timedelta(hours=x.tm_hour) + datetime.timedelta(minutes=x.tm_min) - datetime.timedelta(hours=1)
+        else:
+            dateString = dateString - datetime.timedelta(hours=1)
 
-		return dateString
+        return dateString
     else:
         return None
 
@@ -1261,7 +1279,7 @@ def instantiateSource():
     SOURCES = {
     'XMLTV': XMLTVSource,
     'e-TVGuide': ETVGUIDESource,
-#	'E-Screen.tv': ESCREENTVSource
+#   'E-Screen.tv': ESCREENTVSource
     }
 
     try:
