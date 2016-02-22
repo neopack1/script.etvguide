@@ -411,7 +411,7 @@ class eTVGuide(xbmcgui.WindowXML):
 #                self.playService.playUrlList(self.urlList)
 #                time.sleep(0.3)
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate)
 
 
