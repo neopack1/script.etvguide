@@ -1851,13 +1851,13 @@ class Pla(xbmcgui.WindowXMLDialog):
             self.epg.player.stop()
             self.close()
 
-        if action.getId() == KEY_NAV_BACK:
-            if ADDON.getSetting('start_video_minimalized') == 'true' and ADDON.getSetting('navi_back_stop_play') == 'false':
-                self.close()
-                self.epg._showEPG()
-            else:
-                self.epg.player.stop()
-                self.close()
+#        if action.getId() == KEY_NAV_BACK:
+#            if ADDON.getSetting('start_video_minimalized') == 'true' and ADDON.getSetting('navi_back_stop_play') == 'false':
+#                self.close()
+#                self.epg._showEPG()
+#            else:
+#                self.epg.player.stop()
+#                self.close()
 
                 #xbmc.executebuiltin('SendClick(12901, %d)' % action.getId())
                 #xbmc.executebuiltin('ActivateWindow(OSDVideoSettings)') # dziala - pokazuje ustawienia video
@@ -1867,8 +1867,8 @@ class Pla(xbmcgui.WindowXMLDialog):
                 #jakies menu jest pod przyciskami i, pod m
 
 
-        if action.getId() == KEY_CODEC_INFO: #przysik O
-            xbmc.executebuiltin("Action(CodecInfo)")
+#        if action.getId() == KEY_CODEC_INFO: #przysik O
+#            xbmc.executebuiltin("Action(CodecInfo)")
 
         if action.getId() == ACTION_SHOW_INFO or (action.getButtonCode() == KEY_INFO and KEY_INFO != 0) or (action.getId() == KEY_INFO and KEY_INFO != 0):
             try:
@@ -1913,11 +1913,11 @@ class Pla(xbmcgui.WindowXMLDialog):
                 osd.doModal()
                 del osd
 
-        if action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
-            self.changeStream()
+#        if action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
+#            self.changeStream()
 
     def onAction2(self, action):
-        if action == ACTION_STOP or action.getId() == KEY_NAV_BACK:
+        if action == ACTION_STOP:
             self.epg.player.stop()
             self.close()
         if action == ACTION_SHOW_INFO:
