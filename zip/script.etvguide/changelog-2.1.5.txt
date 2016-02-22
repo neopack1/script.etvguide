@@ -1,0 +1,2 @@
+[B]wersja 2.1.5[/B] - 2016-02-22
+- Modifikacje headers

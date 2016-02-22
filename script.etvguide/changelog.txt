@@ -1,3 +1,6 @@
+[B]wersja 2.1.5[/B] - 2016-02-22
+- Modifikacje headers
+
 [B]wersja 2.1.3[/B] - 2016-02-22
 - Dodanie epg dla kanalow 24h na weeb.tv, mozna wlaczyc w ustawieniach
 - Dodanie epg dla kanalow dla doroslych na telewizjada.net, mozna wlaczyc w ustawieniach

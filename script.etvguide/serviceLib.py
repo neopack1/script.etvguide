@@ -8,10 +8,23 @@ import time
 import os, xbmcaddon
 from strings import *
 import threading
+import platform
 
 HOST       = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:19.0) Gecko/20121213 Firefox/19.0'
 pathAddons = os.path.join(ADDON.getAddonInfo('path'), 'resources', 'addons.ini')
 pathMapBase = os.path.join(ADDON.getAddonInfo('path'), 'resources')
+
+TIMEZONE = ADDON.getSetting('Time.Zone')
+CHECK_NAME = ADDON.getSetting('username')
+ADDON_VERSION =  ADDON.getAddonInfo('version')
+PLATFORM_INFO = platform.system()
+KODI_VERSION = xbmc.getInfoLabel( "System.BuildVersion" )
+
+
+if CHECK_NAME:
+    USER_AGENT = ADDON.getSetting('username')
+else:
+    USER_AGENT = ADDON.getSetting('usernameGoldVOD')
 
 class ShowList:
     def __init__(self, logCall=deb):
@@ -142,8 +155,11 @@ class ShowList:
     def downloadUrl(self, url):
         fileContent = None
         try:
-            urlFile = urllib2.urlopen(url, timeout=2)
-            fileContent = urlFile.read()
+            urlFile = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (AGENT:' + USER_AGENT + ' TIMEZONE:' + TIMEZONE + ' PLUGIN_VERSION:' + ADDON_VERSION + ' PLATFORM:' + PLATFORM_INFO + ' KODI_VERSION:' + KODI_VERSION + ')' })
+            response = urllib2.urlopen(urlFile,timeout=2)
+            #urlFile = urllib2.urlopen(url, timeout=2)
+            fileContent = response.read()
+            #response.close()
         except Exception, ex:
             self.logCall('File download error, exception: %s' % str(ex))
             fileContent = None

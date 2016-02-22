@@ -38,6 +38,9 @@ import sqlite3
 import playService
 from itertools import chain
 
+# for platform check
+import platform
+
 import io, zipfile
 
 SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', 'Time.Zone']
@@ -45,12 +48,15 @@ SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', '
 TIMEZONE = ADDON.getSetting('Time.Zone')
 CHECK_NAME = ADDON.getSetting('username')
 ADDON_VERSION =  ADDON.getAddonInfo('version')
+PLATFORM_INFO = platform.system()
+KODI_VERSION = xbmc.getInfoLabel( "System.BuildVersion" )
 
 
 if CHECK_NAME:
     USER_AGENT = ADDON.getSetting('username')
 else:
     USER_AGENT = ADDON.getSetting('usernameGoldVOD')
+
 
 class Channel(object):
     def __init__(self, id, title, logo = None, streamUrl = None, visible = True, weight = -1):
@@ -1027,7 +1033,7 @@ class Source(object):
         try:
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
-            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (' + USER_AGENT + TIMEZONE + ' version: ' + ADDON_VERSION + ')' })
+            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (AGENT:' + USER_AGENT + ' TIMEZONE:' + TIMEZONE + ' PLUGIN_VERSION: ' + ADDON_VERSION + ' PLATFORM:' + PLATFORM_INFO + ' KODI_VERSION:' + KODI_VERSION + ')' })
             response = urllib2.urlopen(u,timeout=30)
             content = response.read()
             if url.lower().endswith('.zip'):
