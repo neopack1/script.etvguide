@@ -48,8 +48,10 @@ class Notification(object):
         self.channels = self.database.getChannelList(True)
         for channelTitle, programTitle, startTime in self.database.getNotifications():
             self._scheduleNotification(channelTitle, programTitle, startTime)
+        debug('Scheduling notification completed!')
 
     def _scheduleNotification(self, channelTitle, programTitle, startTime):
+        debug('Notification _scheduleNotification program: %s, startTime %s' % (programTitle.encode('utf-8'), startTime))
         t = startTime - datetime.datetime.now()
         secToNotification  = (t.days * 86400) + t.seconds
         timeToNotification = secToNotification / 60
@@ -85,6 +87,7 @@ class Notification(object):
 
 
     def _unscheduleNotification(self, programTitle, startTime):
+        debug('_unscheduleNotification program %s' % programTitle)
         name = self.createAlarmClockName(programTitle, startTime)
         xbmc.executebuiltin('CancelAlarm(%s-5mins,True)' % name.encode('utf-8', 'replace'))
         xbmc.executebuiltin('CancelAlarm(%s-now,True)' % name.encode('utf-8', 'replace'))
@@ -112,6 +115,7 @@ class Notification(object):
         self._unscheduleNotification(program.title, program.startDate)
 
     def playScheduledProgram(self, startTime):
+        debug('Notification playScheduledProgram')
         programToPlay = None
         element = self.getScheduledNotificationForThisTime(startTime)
         if element is None:
@@ -145,10 +149,13 @@ class Notification(object):
     def getScheduledNotificationForThisTime(self, startDate):
         for element in self.timers:
             if element[0] == startDate:
+                debug('getScheduledNotificationForThisTime found programs starting at %s' % startDate)
                 return element
+        debug('getScheduledNotificationForThisTime no programs starting at %s' % startDate)
         return None
 
     def close(self):
+        debug('Notification close')
         for element in self.timers:
             element[1].cancel()
         self.timers = list()

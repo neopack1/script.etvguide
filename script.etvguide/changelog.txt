@@ -1,3 +1,16 @@
+[B]wersja 2.1.0[/B] - 2016-02-21
+- obsługa nagrywania serwisów goldvod weeb.tv oraz telewizjada
+- rozbudowane menu przypisywania klawiszy o przyciski context, nagrywania oraz resetowania ustawień
+- dodana opcja "Debug" do menu ustawień zwiększająca ilość generowanych logów
+- dodana obsługa Playlist m3u
+- obsługa serwisów została wrzucona w wątki które pracują równolegle, dzięki temu wtyczka powinna uruchamiać się szybciej.
+- usprawniona obsługa błędów serwisu telewizjada
+- naprawiony błąd w e-TVGuide który mógł powodować sporadyczne całkowite zwisy wtyczki
+- aktualzacja addons.ini (usunięcie zbędnych kanałów z nieaktywnej wtyczki Telewizja Polska od Novak, dodanie popularnych streamów z EskaGO i regionalnej telewizji)
+- dodanie wyświetlania aktualnego czasu w oknie informacji o nadawanym programie
+- dodanie przycisku ustawień do paska sterowania myszką dla skórek Default
+
+
 [B]wersja 2.0.2[/B] - 2016-01-27
 - Naprawa buttona dla firetv
 

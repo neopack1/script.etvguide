@@ -17,11 +17,13 @@
 	<string id="30105">Skończone!</string>
 	<string id="30106">Pokaż powiadomienie przed rozpoczęciem programu</string>
 	<string id="30108">Wyczyść wszystkie przypomnienia...</string>
+	<string id="30109">Wyczyść wszystkie zaplanowane nagrywania...</string>
 	<string id="30110">Aktualizuj informacje o programie podczas startu XBMC</string>
 	<string id="30116">Wyszukaj obrazki kanałów w</string>
 	<string id="30117">Wybierz EPG:</string>
-	<string id="30118">Dodatkowe EPG1:</string>
-	<string id="30119">Dodatkowe EPG2:</string>
+	<string id="30118">Podstawowe EPG:</string>
+	<string id="30120">Dodatkowe EPG 1:</string>
+	<string id="30121">Dodatkowe EPG 2:</string>
 	<string id="30150">Ładowanie nie powiodło się!</string>
 	<string id="30151">Twoje ustawienia lub podany adres są błędne![CR]</string>
 	<string id="30152">Sprawdź ustawienia albo sproboj ponownie pozniej</string>
@@ -80,7 +82,7 @@
 	<string id="30706">Automatycznie wykrywaj aktualizacje EPG (Testowe)</string>
 
 <!-- weeb.tv mod -->
-	<string id="30802">TV Guide jest skonfigurowany, aby używać dodatku Weeb.Tv</string>
+	<string id="30802">e-TVGuide jest skonfigurowany, aby używać dodatku Weeb.Tv</string>
 	<string id="30803">który nie jest zainstalowany.</string>
 	<string id="30804">Odtwarzanie za pomocą tego dodatku zostało wyłączone.</string>
 	<string id="30901">Aktualizacja</string>
@@ -91,6 +93,10 @@
 	<string id="59902">Ustawienia GoldVOD</string>
 	<string id="59903">Ustawienia Telewizjada</string>
 	<string id="59904">Aktywny</string>
+	<string id="59905">Playlista</string>
+	<string id="59906">Link</string>
+	<string id="59907">Źródło</string>
+	<string id="59908">Plik</string>
 	<string id="30913">Ustawienia</string>
 	<string id="30916">Ustawienia Bazy</string>
 	<string id="30914">Skórka</string>
@@ -110,12 +116,13 @@
 	<string id="30941">Podstawowy kolor</string>
 	<string id="30942">Kolor aktywnego podświetlenia</string>
 	<string id="30943">Kolor dla przypomnienia</string>
+	<string id="30944">Kolor dla nagrywania</string>
 	<string id="30950">Wyczyść bazę</string>
 	<string id="30951">Baza wyczyszczona</string>
-	<string id="30952">Usun przypisane streamy</string>
+	<string id="30952">Usuń przypisane streamy</string>
 	<string id="30953">Eksportuj ustawienia</string>
 	<string id="30954">Importuj ustawienia</string>
-	<string id="30955">Usun plik bazy z dysku</string>
+	<string id="30955">Usuń plik bazy z dysku</string>
 	<string id="58000">Informacje o programie</string>
 
 	<string id="58001">Wskaż katalog do zapisania ustawień</string>
@@ -133,16 +140,22 @@
 	<string id="31002">Ustaw klawisze</string>
 	<string id="31003">USTAW</string>
 	<string id="31004">Zamknij</string>
-	<string id="31005">Klawisz HOME</string>
-	<string id="31006">Klawisz P-</string>
-	<string id="31007">Klawisz P+</string>
-	<string id="31008">Klawisz STOP</string>
-	<string id="31009">Klawisz INFO</string>
+	<string id="31005">Klawisz [B]HOME[/B]</string>
+	<string id="31006">Klawisz [B]P-[/B]</string>
+	<string id="31007">Klawisz [B]P+[/B]</string>
+	<string id="31008">Klawisz [B]STOP[/B]</string>
+	<string id="31009">Klawisz [B]INFO[/B]</string>
+	<string id="31010">Klawisz [B]CONTEXT[/B]</string>
+	<string id="31011">Klawisz [B]NAGRYWANIE[/B]</string>
+	<string id="31012">Resetuj ustawienia klawiszy</string>
+	<string id="31013">Reset</string>
+	<string id="31014">/ zmiana strm</string>
+
 	<string id="310010"></string>
 	<string id="310011">Zatrzymaj odtwarzanie przyciskiem wstecz</string>
-	<string id="310012"></string>
-	<string id="310013"></string>
-	<string id="310014"></string>
+	<string id="310012">Nagrany program</string>
+	<string id="310013">Czy uruchomić nagrany program</string>
+	<string id="310014">Zapisz ustawienia wtyczki!</string>
 
 <!-- general settings -->
 	<string id="55002">Użytkownik:</string>
@@ -154,7 +167,7 @@
 	<string id="89002">Akcja wykonana po upływie czasu nieaktywności</string>
 	<string id="89003">Czas braku aktywności (min)</string>
 	<string id="59901">GoldVOD</string>
-	<string id="55009">Priorytet przyipisywania streamów</string>
+	<string id="55009">Priorytet przypisywania streamów</string>
 
 <!-- errors & messages -->
 	<string id="57001">Błąd API</string>
@@ -185,4 +198,23 @@
 	<string id="57045">Brak aktywnego serwera! Przepraszamy.</string>
 	<string id="57046">Regulamin nie został zaakceptowany!</string>
 	<string id="57047">Wejdź na http://weeb.tv/regulamin i zaakceptuj go, aby korzystać z usługi.</string>
+
+	<string id="69000">Nagrywanie</string>
+	<string id="69001">Import RTMPDUMP</string>
+	<string id="69002">Import FFMPEG</string>
+	<string id="69003">Folder zapisu nagrań</string>
+	<string id="69004">Nagrywanie:</string>
+	<string id="69005">Zakończono nagrywanie:</string>
+	<string id="69006">Nie istnieje katalog do zapisu nagrań - nagrywanie anulowane!</string>
+	<string id="69007">Błąd nagrywania!</string>
+	<string id="69008">Nie można nagrać ponieważ w ustawieniach nie jest wskazana aplikacja do nagrywania: </string>
+	<string id="69009">Nagrywanie już zaplanowane - anulować?</string>
+	<string id="69010">Zaplanować nagrywanie programu: </string>
+	<string id="69011">Przerwać nagrywanie programow?</string>
+	<string id="69012">Importowanie aplikacji do nagrywania</string>
+	<string id="69013">pomyślnie zaimportowany</string>
+	<string id="69014">Format nagrywania FFMPEG - asf dla OpenELEC</string>
+	<string id="69015">Wyjść pomimo zaplanowanego nagrywania?</string>
+	<string id="69016">Korzystaj z FFMPEG do nagrywania RTMP zamiast rtmpdump</string>
+	<string id="69020">Debug log</string>
 </strings>
