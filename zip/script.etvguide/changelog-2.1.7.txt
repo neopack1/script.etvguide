@@ -1,0 +1,5 @@
+[B]wersja 2.1.7[/B] - 2016-02-23
+- Przywrocenie opcji dodania wlasnych url do epg
+- Zmieniono nazewnictwo Default/Alternative w glownym epg, powinno byc jasniejsze
+  ze Default/Alternative to Serwer#1 albo Serwer#2
+

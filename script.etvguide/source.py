@@ -1093,12 +1093,12 @@ class ETVGUIDESource(Source):
     KEY = 'e-TVGuide'
     def __init__(self, addon):
         self.ETVGUIDEUrl = addon.getSetting('e-TVGuide')
-        if self.ETVGUIDEUrl == "Default":
+        if self.ETVGUIDEUrl == "0":
             self.ETVGUIDEUrl = 'http://epg.feenk.net/epg.xml'
-        elif self.ETVGUIDEUrl == "Alternative":
+        elif self.ETVGUIDEUrl == "1":
             self.ETVGUIDEUrl = 'http://epg2.feenk.net/epg.xml'
         else:
-            self.ETVGUIDEUrl = 'http://epg.feenk.net/epg.xml'
+            self.ETVGUIDEUrl = 'https://www.dropbox.com/sh/77ypgoym2o8zoay/AACWgyV2Yd-btsWvc8j3o1Hba/epg.xml?dl=1'
 
         if addon.getSetting('e-TVGuide2') == "true":
             self.ETVGUIDEUrl2 = "http://epg.feenk.net/weeb24h.xml"
@@ -1110,6 +1110,8 @@ class ETVGUIDESource(Source):
         else:
             self.ETVGUIDEUrl3 = ""
 
+        self.ETVGUIDEUrl4 = addon.getSetting('e-TVGuide4')
+        self.ETVGUIDEUrl5 = addon.getSetting('e-TVGuide5')
         self.EPGULastModifiedDate = None
         self.logoFolder = None
         self.epgBasedOnLastModDate = ADDON.getSetting('UpdateEPGOnModifiedDate')
@@ -1123,6 +1125,12 @@ class ETVGUIDESource(Source):
             data = chain(data, parsedData)
         if self.ETVGUIDEUrl3 != "":
             parsedData = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl3)
+            data = chain(data, parsedData)
+        if self.ETVGUIDEUrl4 != "":
+            parsedData = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl4)
+            data = chain(data, parsedData)
+        if self.ETVGUIDEUrl5 != "":
+            parsedData = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl5)
             data = chain(data, parsedData)
         return data
 
