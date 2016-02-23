@@ -37,6 +37,7 @@ import xbmcvfs
 import sqlite3
 import playService
 from itertools import chain
+import xbmcaddon
 
 # for platform check
 import platform
@@ -51,6 +52,8 @@ ADDON_VERSION =  ADDON.getAddonInfo('version')
 PLATFORM_INFO = platform.system()
 KODI_VERSION = xbmc.getInfoLabel( "System.BuildVersion" )
 
+addon = xbmcaddon.Addon()
+addon.setSetting('e-TVGuide1', 'true')
 
 if CHECK_NAME:
     USER_AGENT = ADDON.getSetting('username')
