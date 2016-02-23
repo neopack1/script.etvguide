@@ -7,6 +7,7 @@ import os, xbmcaddon
 from strings import *
 import ConfigParser
 from serviceLib import *
+import io
 
 url        = 'http://weeb.tv'
 jsonUrl    = url + '/api/getChannelList'
@@ -14,7 +15,11 @@ playerUrl  = url + '/api/setplayer'
 
 serviceName = 'weeb.tv'
 serviceRegex = "service=weebtv&cid=%"
-onlineMapFile = 'http://epg.feenk.net/maps/weebtvmap.xml'
+if ADDON.getSetting('e-TVGuide') == "0":
+    onlineMapFile = 'http://epg.feenk.net/maps/weebtvmap.xml'
+elif ADDON.getSetting('e-TVGuide') == "1":
+    onlineMapFile = 'https://epg2.feenk.net/maps/weebtvmap.xml'
+
 localMapFile = 'weebtvmap.xml'
 servicePriority = int(ADDON.getSetting('priority_weebtv'))
 weebtvChannelList = None

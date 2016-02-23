@@ -1093,20 +1093,31 @@ class ETVGUIDESource(Source):
     KEY = 'e-TVGuide'
     def __init__(self, addon):
         self.ETVGUIDEUrl = addon.getSetting('e-TVGuide')
-        if self.ETVGUIDEUrl == "0":
-            self.ETVGUIDEUrl = 'http://epg.feenk.net/epg.xml'
-        elif self.ETVGUIDEUrl == "1":
-            self.ETVGUIDEUrl = 'http://epg2.feenk.net/epg.xml'
+        self.SERVER_EPG_INFO = addon.getSetting('e-TVGuide')
+        if addon.getSetting('use_zipped_files') == "true":
+            self.USE_ZIPPED_FILES = ".zip"
         else:
-            self.ETVGUIDEUrl = 'https://www.dropbox.com/sh/77ypgoym2o8zoay/AACWgyV2Yd-btsWvc8j3o1Hba/epg.xml?dl=1'
+            self.USE_ZIPPED_FILES = ""
 
-        if addon.getSetting('e-TVGuide2') == "true":
-            self.ETVGUIDEUrl2 = "http://epg.feenk.net/weeb24h.xml"
+        if self.SERVER_EPG_INFO == "0":
+            self.BASE_EPG_URL = "http://epg.feenk.net/"
+        elif self.SERVER_EPG_INFO == "1":
+            self.BASE_EPG_URL = "https://epg2.feenk.net/"
+        else:
+            self.BASE_EPG_URL = ""
+
+        if addon.getSetting('e-TVGuide1') == "true":
+            self.ETVGUIDEUrl1 = self.BASE_EPG_URL + 'epg.xml' + self.USE_ZIPPED_FILES
+        else:
+            self.ETVGUIDEUrl1 = ""
+
+        if ADDON.getSetting('e-TVGuide2') == "true":
+            self.ETVGUIDEUrl2 = self.BASE_EPG_URL + "weeb24h.xml" + self.USE_ZIPPED_FILES
         else:
             self.ETVGUIDEUrl2 = ""
 
-        if addon.getSetting('e-TVGuide3') == "true":
-            self.ETVGUIDEUrl3 = "http://epg.feenk.net/telewizjada_adult.xml"
+        if ADDON.getSetting('e-TVGuide3') == "true":
+            self.ETVGUIDEUrl3 = self.BASE_EPG_URL + "telewizjada_adult.xml" + self.USE_ZIPPED_FILES
         else:
             self.ETVGUIDEUrl3 = ""
 
@@ -1119,7 +1130,8 @@ class ETVGUIDESource(Source):
 
 
     def getDataFromExternal(self, date, progress_callback = None):
-        data = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl)
+        if self.ETVGUIDEUrl1 != "":
+            data = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl1)
         if self.ETVGUIDEUrl2 != "":
             parsedData = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl2)
             data = chain(data, parsedData)
@@ -1162,7 +1174,7 @@ class ETVGUIDESource(Source):
         failedCounter = 0
         while failedCounter < 5:
             try:
-                u = urllib2.urlopen(self.ETVGUIDEUrl, timeout=5)
+                u = urllib2.urlopen(self.ETVGUIDEUrl1, timeout=5)
                 headers = u.info()
                 timeStr = headers.getheader("Last-Modified")
                 strippedTime = strptime(timeStr, "%a, %d %b %Y %H:%M:%S GMT")

@@ -21,11 +21,13 @@
 	<string id="30110">Update program information on XBMC startup</string>
 	<string id="30116">Search for channel logos in</string>
 	<string id="30117">Select EPG</string>
-	<string id="30118">Main:</string>
+	<string id="30118">Server:</string>
 	<string id="30120">Weeb.TV 24h channels:</string>
 	<string id="30121">Telewizjada.net adult channels:</string>
 	<string id="30122">Custom 1:</string>
 	<string id="30123">Custom 2:</string>
+	<string id="30124">[COLOR gray]Use zipped files (saves ~6MB of download)[/COLOR]</string>
+	<string id="30125">Main:</string>
 	<string id="30130">Server #1</string>
 	<string id="30131">Server #2</string>
 	<string id="30150">Oops, sorry about that!</string>

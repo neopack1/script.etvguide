@@ -37,11 +37,14 @@
 		<setting id="Time.Zone" label="30911" type="labelenum" visible="eq(-6,1)" default="+01:00" values="-12:00|-11:00|-10:00|-09:30|-09:00|-08:00|-07:00|-06:00|-05:00|-04:30|-04:00|-03:30|-03:00|-02:00|-01:00|00:00|+01:00|+02:00|+03:00|+03:30|+04:00|+04:30|+05:00|+05:30|+05:45|+06:00|+06:30|+07:00|+08:00|+09:00|+09:30|+10:00|+10:30|+11:00|+11:30|+12:00|+12:45|+13:00|+14:00|"/>
 		<setting type="sep" visible="eq(-7,1)"/>
 		<setting label="30117" type="lsep" visible="eq(-8,1)"/>
-		<setting id="e-TVGuide" label="30118" type="enum" visible="eq(-9,1)" default="30130" lvalues="30130|30131"/>
-		<setting id="e-TVGuide2" label="30120" type="bool" visible="eq(-10,1)" default="false"/>
-		<setting id="e-TVGuide3" label="30121" type="bool" visible="eq(-11,1)" default="false"/>
-		<setting id="e-TVGuide4" label="30122" type="text" visible="eq(-12,1)" default=""/>
-		<setting id="e-TVGuide5" label="30123" type="text" visible="eq(-13,1)" default=""/>
+		<setting id="e-TVGuide" label="30118" type="enum" visible="eq(-9,1)" default="0" lvalues="30130|30131"/>
+		<setting id="e-TVGuide1" label="30125" type="bool" visible="eq(-10,1)" default="true"/>
+		<setting id="e-TVGuide2" label="30120" type="bool" visible="eq(-11,1)" default="false"/>
+		<setting id="e-TVGuide3" label="30121" type="bool" visible="eq(-12,1)" default="false"/>
+		<setting id="use_zipped_files" label="30124" type="bool" visible="eq(-13,1)" default="true"/>
+		<setting type="sep" visible="eq(-14,1)"/>
+		<setting id="e-TVGuide4" label="30122" type="text" visible="eq(-15,1)" default=""/>
+		<setting id="e-TVGuide5" label="30123" type="text" visible="eq(-16,1)" default=""/>
 	</category>
 	<category label="30913">
 		<setting id="autostart_etvguide" label="30915" type="bool" default="false"/>

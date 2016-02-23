@@ -6,11 +6,17 @@ import datetime
 import os, xbmcaddon, xbmcgui
 from strings import *
 from serviceLib import *
+import io
 
 goldUrlSD = 'http://goldvod.tv/api/getTvChannelsSD.php'
 goldUrlHD = 'http://goldvod.tv/api/getTvChannels.php'
 goldImgBase = 'http://goldvod.tv/api/images/'
-onlineMapFile = 'http://epg.feenk.net/maps/goldvodmap.xml'
+
+if ADDON.getSetting('e-TVGuide') == "0":
+    onlineMapFile = 'http://epg.feenk.net/maps/goldvodmap.xml'
+elif ADDON.getSetting('e-TVGuide') == "1":
+    onlineMapFile = 'https://epg2.feenk.net/maps/goldvodmap.xml'
+
 localMapFile = 'goldvodmap.xml'
 serviceName = 'goldvod.tv'
 serviceRegex = "service=goldvod&cid=%"

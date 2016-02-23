@@ -6,11 +6,18 @@ import os, xbmcaddon
 from strings import *
 from serviceLib import *
 
+import io
+
 
 telewizjadaMainUrl  = 'http://www.telewizjada.net/'
 serviceName   = 'telewizjada.net'
 serviceRegex  = "service=telewizjada&cid=%"
-onlineMapFile = 'http://epg.feenk.net/maps/telewizjadamap.xml'
+
+if ADDON.getSetting('e-TVGuide') == "0":
+    onlineMapFile = 'http://epg.feenk.net/maps/telewizjadamap.xml'
+elif ADDON.getSetting('e-TVGuide') == "1":
+    onlineMapFile = 'https://epg2.feenk.net/maps/telewizjadamap.xml'
+
 localMapFile  = 'telewizjadamap.xml'
 servicePriority = int(ADDON.getSetting('priority_telewizjada'))
 COOKIE_FILE   = os.path.join(xbmc.translatePath(ADDON.getAddonInfo('profile')) , 'telewizjada.cookie')
