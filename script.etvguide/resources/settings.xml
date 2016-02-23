@@ -27,6 +27,7 @@
 		<setting id="priority_playlist" label="55009" type="enum" default="0" values="niski|sredni|wysoki|b.wysoki" visible="eq(-4,true)"/>
 	</category>
 	<category label="30101">
+		<setting id="UpdateEPGOnModifiedDate" label="30706" type="bool" default="false" visible="false"/>
 		<setting id="source" label="30701" type="labelenum" default="e-TVGuide" values="XMLTV|e-TVGuide"/>
 		<setting id="AutoUpdateCid" label="30703" type="bool" default="true" visible="eq(-1,1)"/>
 		<setting id="OnlyChannelsWithStream" label="30705" type="bool" default="true" visible="eq(-2,1)"/>
@@ -41,10 +42,6 @@
 		<setting id="e-TVGuide3" label="30121" type="bool" visible="eq(-11,1)" default="false"/>
 		<setting id="e-TVGuide4" label="30122" type="text" visible="eq(-12,1)" default=""/>
 		<setting id="e-TVGuide5" label="30123" type="text" visible="eq(-13,1)" default=""/>
-		<!--
-		<setting type="sep"/>
-		<setting id="UpdateEPGOnModifiedDate" label="30706" type="bool" default="false" visible="false"/>
-		-->
 	</category>
 	<category label="30913">
 		<setting id="autostart_etvguide" label="30915" type="bool" default="false"/>
