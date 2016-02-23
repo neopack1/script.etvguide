@@ -1,3 +1,6 @@
+[B]wersja 2.1.12[/B] - 2016-02-24
+- Glowne EPG jest zawsze wlaczone i nie da sie wylaczyc
+
 [B]wersja 2.1.10[/B] - 2016-02-24
 - Dodanie opcji "uzycia skompresowanych plikow EPG" dla tych co ja generuje
 - Standardowa opcja "Uzyj skompresowanych plikow" jest wlaczona

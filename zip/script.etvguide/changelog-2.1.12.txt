@@ -1,0 +1,2 @@
+[B]wersja 2.1.11[/B] - 2016-02-24
+- Glowne EPG jest zawsze wlaczone i nie da sie wylaczyc

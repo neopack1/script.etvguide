@@ -38,7 +38,7 @@
 		<setting type="sep" visible="eq(-7,1)"/>
 		<setting label="30117" type="lsep" visible="eq(-8,1)"/>
 		<setting id="e-TVGuide" label="30118" type="enum" visible="eq(-9,1)" default="0" lvalues="30130|30131"/>
-		<setting id="e-TVGuide1" label="30125" type="bool" visible="eq(-10,1)" default="true"/>
+		<setting id="e-TVGuide1" label="30125" type="bool" visible="hidden" default="true"/>
 		<setting id="e-TVGuide2" label="30120" type="bool" visible="eq(-11,1)" default="false"/>
 		<setting id="e-TVGuide3" label="30121" type="bool" visible="eq(-12,1)" default="false"/>
 		<setting id="use_zipped_files" label="30124" type="bool" visible="eq(-13,1)" default="true"/>
