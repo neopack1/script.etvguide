@@ -1,0 +1,6 @@
+[B]wersja 2.1.10[/B] - 2016-02-24
+- Dodanie opcji "uzycia skompresowanych plikow EPG" dla tych co ja generuje
+- Standardowa opcja "Uzyj skompresowanych plikow" jest wlaczona
+- Zmiana kodu w source.py odnosnie sciagania EPG
+- Zmieniono sciaganie plikow map. Bazuje na opcji serwera, Server1 albo Server2, wczesniej
+  sciagalo tylko z glownego serwera
