@@ -47,7 +47,7 @@
 	<extension point="xbmc.service" library="service.py" start="login"/>
 	<extension point="xbmc.addon.metadata">
 		<summary>e-TVGuide with support for WEEB.TV, GoldVOD.tv and Telewizjada.net</summary>
-		<description>The TV guide gives you an overview on whats on TV right now, so you don't have to change the channel away from KODI![CR][CR]Navigate using the arrow keys and change page using channel + / -.</description>
+		<description>Based on script.tvguide by [COLOR cyan]twinther (tommy@winther.nu)[/COLOR][CR] on latest modifications by [COLOR cyan]mods-kodi.pl[/COLOR]</description>
 		<platform>all</platform>
 		<license>GPLv3</license>
         	<website>https://github.com/en0x/script.etvguide</website>
