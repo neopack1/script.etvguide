@@ -60,8 +60,7 @@ else:
 
 print CHECK_SERVER_ID
 
-if CHECK_SERVER_ID != 1 and CHECK_SERVER_ID != 2:
-#if CHECK_SERVER_ID not in (1, 2):
+if CHECK_SERVER_ID != "1" and CHECK_SERVER_ID != "2":
     ADDON.setSetting(id='e-TVGuide',value='1')
 
 class Channel(object):
