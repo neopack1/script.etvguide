@@ -51,12 +51,18 @@ ADDON_VERSION =  ADDON.getAddonInfo('version')
 PLATFORM_INFO = platform.system()
 KODI_VERSION = xbmc.getInfoLabel( "System.BuildVersion" )
 
+CHECK_SERVER_ID = ADDON.getSetting('e-TVGuide')
 
 if CHECK_NAME:
     USER_AGENT = ADDON.getSetting('username')
 else:
     USER_AGENT = ADDON.getSetting('usernameGoldVOD')
 
+print CHECK_SERVER_ID
+
+if CHECK_SERVER_ID != 1 and CHECK_SERVER_ID != 2:
+#if CHECK_SERVER_ID not in (1, 2):
+    ADDON.setSetting(id='e-TVGuide',value='1')
 
 class Channel(object):
     def __init__(self, id, title, logo = None, streamUrl = None, visible = True, weight = -1):

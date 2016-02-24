@@ -13,10 +13,12 @@ telewizjadaMainUrl  = 'http://www.telewizjada.net/'
 serviceName   = 'telewizjada.net'
 serviceRegex  = "service=telewizjada&cid=%"
 
-if ADDON.getSetting('e-TVGuide') == "1":
+if xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "1":
     onlineMapFile = 'http://epg.feenk.net/maps/telewizjadamap.xml'
-elif ADDON.getSetting('e-TVGuide') == "2":
+elif xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "2":
     onlineMapFile = 'https://epg2.feenk.net/maps/telewizjadamap.xml'
+else:
+    onlineMapFile = 'https://www.dropbox.com/s/uckx10sqjii32ej/telewizjadamap.xml?dl=1'
 
 localMapFile  = 'telewizjadamap.xml'
 servicePriority = int(ADDON.getSetting('priority_telewizjada'))
