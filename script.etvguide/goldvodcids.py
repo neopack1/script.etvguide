@@ -12,9 +12,9 @@ goldUrlSD = 'http://goldvod.tv/api/getTvChannelsSD.php'
 goldUrlHD = 'http://goldvod.tv/api/getTvChannels.php'
 goldImgBase = 'http://goldvod.tv/api/images/'
 
-if ADDON.getSetting('e-TVGuide') == "0":
+if ADDON.getSetting('e-TVGuide') == "1":
     onlineMapFile = 'http://epg.feenk.net/maps/goldvodmap.xml'
-elif ADDON.getSetting('e-TVGuide') == "1":
+elif ADDON.getSetting('e-TVGuide') == "2":
     onlineMapFile = 'https://epg2.feenk.net/maps/goldvodmap.xml'
 
 localMapFile = 'goldvodmap.xml'

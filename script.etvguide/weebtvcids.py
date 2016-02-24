@@ -15,9 +15,9 @@ playerUrl  = url + '/api/setplayer'
 
 serviceName = 'weeb.tv'
 serviceRegex = "service=weebtv&cid=%"
-if ADDON.getSetting('e-TVGuide') == "0":
+if ADDON.getSetting('e-TVGuide') == "1":
     onlineMapFile = 'http://epg.feenk.net/maps/weebtvmap.xml'
-elif ADDON.getSetting('e-TVGuide') == "1":
+elif ADDON.getSetting('e-TVGuide') == "2":
     onlineMapFile = 'https://epg2.feenk.net/maps/weebtvmap.xml'
 
 localMapFile = 'weebtvmap.xml'

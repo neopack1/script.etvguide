@@ -1099,9 +1099,9 @@ class ETVGUIDESource(Source):
         else:
             self.USE_ZIPPED_FILES = ""
 
-        if self.SERVER_EPG_INFO == "0":
+        if self.SERVER_EPG_INFO == "1":
             self.BASE_EPG_URL = "http://epg.feenk.net/"
-        elif self.SERVER_EPG_INFO == "1":
+        elif self.SERVER_EPG_INFO == "2":
             self.BASE_EPG_URL = "https://epg2.feenk.net/"
         else:
             self.BASE_EPG_URL = ""

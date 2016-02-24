@@ -35,7 +35,7 @@
 	</extension>
 </addon>
 
-<addon id="script.etvguide" name="e-TVGuide" version="2.1.12" provider-name="thebedi">
+<addon id="script.etvguide" name="e-TVGuide" version="2.1.13" provider-name="thebedi">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.simplejson" version="2.0.10"/>
@@ -47,7 +47,7 @@
 	<extension point="xbmc.service" library="service.py" start="login"/>
 	<extension point="xbmc.addon.metadata">
 		<summary>e-TVGuide with support for WEEB.TV, GoldVOD.tv and Telewizjada.net</summary>
-		<description>Based on script.tvguide by [COLOR cyan]twinther (tommy@winther.nu)[/COLOR][CR] on latest modifications by [COLOR cyan]mods-kodi.pl[/COLOR]</description>
+		<description>Based on script.tvguide by [COLOR cyan]twinther (tommy@winther.nu)[/COLOR][CR] on latest modifications by [COLOR cyan]mods-kodi.pl[/COLOR] with extra tweaks by [COLOR cyan]en0x[/COLOR]</description>
 		<platform>all</platform>
 		<license>GPLv3</license>
         	<website>https://github.com/en0x/script.etvguide</website>

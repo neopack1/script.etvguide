@@ -13,9 +13,9 @@ telewizjadaMainUrl  = 'http://www.telewizjada.net/'
 serviceName   = 'telewizjada.net'
 serviceRegex  = "service=telewizjada&cid=%"
 
-if ADDON.getSetting('e-TVGuide') == "0":
+if ADDON.getSetting('e-TVGuide') == "1":
     onlineMapFile = 'http://epg.feenk.net/maps/telewizjadamap.xml'
-elif ADDON.getSetting('e-TVGuide') == "1":
+elif ADDON.getSetting('e-TVGuide') == "2":
     onlineMapFile = 'https://epg2.feenk.net/maps/telewizjadamap.xml'
 
 localMapFile  = 'telewizjadamap.xml'
