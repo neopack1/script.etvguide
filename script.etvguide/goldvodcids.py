@@ -12,12 +12,12 @@ goldUrlSD = 'http://goldvod.tv/api/getTvChannelsSD.php'
 goldUrlHD = 'http://goldvod.tv/api/getTvChannels.php'
 goldImgBase = 'http://goldvod.tv/api/images/'
 
-if xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "1":
-    onlineMapFile = 'http://epg.feenk.net/maps/goldvodmap.xml'
-elif xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "2":
-    onlineMapFile = 'https://epg2.feenk.net/maps/goldvodmap.xml'
-else:
-    onlineMapFile = 'https://www.dropbox.com/s/3s2rmo94c6k0qb5/goldvodmap.xml?dl=1'
+#if xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "1":
+onlineMapFile = 'http://epg.feenk.net/maps/goldvodmap.xml'
+#elif xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "2":
+#    onlineMapFile = 'https://epg2.feenk.net/maps/goldvodmap.xml'
+#else:
+#    onlineMapFile = 'https://www.dropbox.com/s/3s2rmo94c6k0qb5/goldvodmap.xml?dl=1'
 
 localMapFile = 'goldvodmap.xml'
 serviceName = 'goldvod.tv'

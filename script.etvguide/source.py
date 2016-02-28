@@ -1104,17 +1104,17 @@ class ETVGUIDESource(Source):
         else:
             self.USE_ZIPPED_FILES = ""
 
-        if self.SERVER_EPG_INFO == "1":
-            self.BASE_EPG_URL = "http://epg.feenk.net/"
-        elif self.SERVER_EPG_INFO == "2":
-            self.BASE_EPG_URL = "https://epg2.feenk.net/"
-        else:
-            self.BASE_EPG_URL = ""
+        #if self.SERVER_EPG_INFO == "1":
+        self.BASE_EPG_URL = "http://epg.feenk.net/"
+        #elif self.SERVER_EPG_INFO == "2":
+        #    self.BASE_EPG_URL = "https://epg2.feenk.net/"
+        #else:
+        #    self.BASE_EPG_URL = ""
 
-        if addon.getSetting('e-TVGuide1') == "true":
-            self.ETVGUIDEUrl1 = self.BASE_EPG_URL + 'epg.xml' + self.USE_ZIPPED_FILES
-        else:
-            self.ETVGUIDEUrl1 = ""
+        #if addon.getSetting('e-TVGuide1') == "true":
+        self.ETVGUIDEUrl1 = self.BASE_EPG_URL + 'epg.xml' + self.USE_ZIPPED_FILES
+        #else:
+        #    self.ETVGUIDEUrl1 = ""
 
         if ADDON.getSetting('e-TVGuide2') == "true":
             self.ETVGUIDEUrl2 = self.BASE_EPG_URL + "weeb24h.xml" + self.USE_ZIPPED_FILES

@@ -17,12 +17,12 @@ serviceName = 'weeb.tv'
 serviceRegex = "service=weebtv&cid=%"
 
 
-if xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "1":
-    onlineMapFile = 'http://epg.feenk.net/maps/weebtvmap.xml'
-elif xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "2":
-    onlineMapFile = 'https://epg2.feenk.net/maps/weebtvmap.xml'
-else:
-    onlineMapFile = 'https://www.dropbox.com/s/x2l236ihppw2h8a/weebtvmap.xml?dl=1'
+#if xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "1":
+onlineMapFile = 'http://epg.feenk.net/maps/weebtvmap.xml'
+#elif xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "2":
+#    onlineMapFile = 'https://epg2.feenk.net/maps/weebtvmap.xml'
+#else:
+#    onlineMapFile = 'https://www.dropbox.com/s/x2l236ihppw2h8a/weebtvmap.xml?dl=1'
 
 
 localMapFile = 'weebtvmap.xml'
