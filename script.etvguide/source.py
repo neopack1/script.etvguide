@@ -1056,7 +1056,7 @@ class Source(object):
         try:
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
-            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (AGENT:' + USER_AGENT + ' TIMEZONE:' + TIMEZONE + ' PLUGIN_VERSION: ' + ADDON_VERSION + ' PLATFORM:' + PLATFORM_INFO + ' KODI_VERSION:' + KODI_VERSION + ')' })
+            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (AGENT:' + USER_AGENT + ' TIMEZONE:' + TIMEZONE + ' PLUGIN_VERSION:' + ADDON_VERSION + ' PLATFORM:' + PLATFORM_INFO + ' KODI_VERSION:' + KODI_VERSION + ')' })
             response = urllib2.urlopen(u,timeout=30)
             content = response.read()
             if url.lower().endswith('.zip'):
