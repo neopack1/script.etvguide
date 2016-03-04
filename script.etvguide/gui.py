@@ -1,4 +1,4 @@
-gi#
+#
 #      Copyright (C) 2014 Krzysztof Cebulski
 #      Copyright (C) 2013 Szakalit
 #
