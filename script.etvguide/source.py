@@ -868,7 +868,7 @@ class Database(object):
 
             if version < [6, 1, 2]:
                 c.execute('ALTER TABLE updates ADD COLUMN epg_size INTEGER DEFAULT 0')
-                c.execute('UPDATE version SET major=6, minor=1, patch=1')
+                c.execute('UPDATE version SET major=6, minor=1, patch=2')
                 self.conn.commit()
 
             # make sure we have a record in sources for this Source
