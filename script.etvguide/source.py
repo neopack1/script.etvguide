@@ -853,8 +853,6 @@ class Database(object):
                 self.conn.commit()
 
             if version < [6, 1, 1]:
-                c.execute("CREATE TABLE IF NOT EXISTS recordings(channel TEXT, program_title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
-                c.execute('UPDATE version SET major=6, minor=1, patch=0')
                 c.execute('DELETE FROM channels')
                 c.execute('DELETE FROM programs')
                 c.execute('DELETE FROM notifications')
