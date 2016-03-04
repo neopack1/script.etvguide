@@ -1,6 +1,6 @@
 #      Copyright (C) 2016 Andrzej Mleczko
 
-import urllib, urllib2, httplib, sys, StringIO, cookielib, re, socket
+import urllib, urllib2, httplib, sys, StringIO, cookielib, re, socket, copy
 from xml.etree import ElementTree
 import simplejson as json
 import xbmc
@@ -68,17 +68,20 @@ class ShowList:
 
                 except urllib2.HTTPError as ex:
                     if ex.code == 500:
-                        failedCounter = failedCounter + 10
+                        failedCounter = failedCounter + 5
                         self.logCall('ShowList getJsonFromAPI exception: %s - retrying failedCounter = %s' % (str(ex), failedCounter))
+                    else:
+                        raise
 
                 except urllib2.URLError as ex:
                     if 'timed out' in str(ex):
-                        failedCounter = failedCounter + 10
+                        failedCounter = failedCounter + 5
                         self.logCall('ShowList getJsonFromAPI exception: %s - retrying failedCounter = %s' % (str(ex), failedCounter))
                     else:
                         raise
 
                 if xbmc.abortRequested:
+                    self.logCall('ShowList getJsonFromAPI xbmc.abortRequested - aborting!')
                     break
                 time.sleep(.050)
 
@@ -87,7 +90,7 @@ class ShowList:
             return None
         return result_json
 
-    def getJsonFromExtendedAPI(self, url, post_data = None, save_cookie = False, load_cookie = False, cookieFile = None, jsonLoadsResult = False):
+    def getJsonFromExtendedAPI(self, url, post_data = None, save_cookie = False, load_cookie = False, cookieFile = None, jsonLoadsResult = False, jsonLoadResult = False, customHeaders = None):
         result_json = None
         customOpeners = []
         cj = cookielib.LWPCookieJar()
@@ -106,7 +109,10 @@ class ShowList:
                 if load_cookie == True:
                     cj.load(cookieFile, ignore_discard = True)
 
-            headers = { 'User-Agent' : HOST }
+            if customHeaders is not None:
+                headers = customHeaders
+            else:
+                headers = { 'User-Agent' : HOST }
             data = urllib.urlencode(post_data)
             reqUrl = urllib2.Request(url, data, headers)
 
@@ -114,10 +120,14 @@ class ShowList:
             while failedCounter < 50:
                 try:
                     raw_json = urlOpen(reqUrl, customOpeners)
-                    result_json = raw_json.read()
-                    if jsonLoadsResult == True:
-                        result_json = json.loads(result_json)
-                    break
+                    if jsonLoadResult:
+                        result_json = json.load(raw_json)
+                        break
+                    else:
+                        result_json = raw_json.read()
+                        if jsonLoadsResult == True:
+                            result_json = json.loads(result_json)
+                        break
                 except (httplib.IncompleteRead, socket.timeout) as ex:
                     failedCounter = failedCounter + 1
                     self.logCall('ShowList getJsonFromExtendedAPI exception: %s - retrying failedCounter = %s' % (str(ex), failedCounter))
@@ -130,6 +140,7 @@ class ShowList:
                         raise
 
                 if xbmc.abortRequested:
+                    self.logCall('ShowList getJsonFromExtendedAPI xbmc.abortRequested - aborting!')
                     break
                 time.sleep(.050)
 
@@ -157,9 +168,7 @@ class ShowList:
         try:
             urlFile = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (AGENT:' + USER_AGENT + ' TIMEZONE:' + TIMEZONE + ' PLUGIN_VERSION:' + ADDON_VERSION + ' PLATFORM:' + PLATFORM_INFO + ' KODI_VERSION:' + KODI_VERSION + ')' })
             response = urllib2.urlopen(urlFile,timeout=2)
-            #urlFile = urllib2.urlopen(url, timeout=2)
             fileContent = response.read()
-            #response.close()
         except Exception, ex:
             self.logCall('File download error, exception: %s' % str(ex))
             fileContent = None
@@ -210,6 +219,7 @@ class MapString:
                     result.append(MapString(aid, atitle, astrm, ''))
                 if elem.tag == "map":
                     rstrm = elem.get("strm")
+        logCall('\n')
         logCall('[UPD] Stream rule = %s' % rstrm)
         return [result, rstrm]
 
@@ -240,10 +250,12 @@ class baseServiceUpdater:
         self.rstrm = ''
         self.forcePrintintingLog = False
         self.printLogTimer = None
-        self.breakAfterFirstMatchFromMap = True
         self.onlineMapFile = ''
         self.localMapFile = ''
         self.maxAllowedStreams = 1
+        self.breakAfterFirstMatchFromMap = True
+        self.addDuplicatesToList = False
+        self.addDuplicatesAtBeginningOfList = False
 
     def waitUntilDone(self):
         if self.thread is not None:
@@ -272,9 +284,6 @@ class baseServiceUpdater:
         if self.thread is not None and self.thread.is_alive():
             self.printLog()
 
-    def loadChannelList(self):
-        self.log('loadChannelList Error: this operation needs to be overloaded!')
-
     def close(self):
         if self.printLogTimer is not None:
             self.printLogTimer.cancel()
@@ -282,6 +291,13 @@ class baseServiceUpdater:
 
     def loadChannelList(self):
         try:
+            self.channels = self.getChannelList()
+            if len(self.channels) <= 0:
+                self.log('loadChannelList error loding channel list for service %s - aborting!' % self.serviceName)
+                self.automap = list()
+                return
+
+            self.log('\n')
             mapfile = self.sl.downloadUrl(self.onlineMapFile)
             if mapfile is None:
                 self.log('loadChannelList map file download Error, using local instead!')
@@ -290,44 +306,50 @@ class baseServiceUpdater:
             else:
                 self.log('loadChannelList success downloading online map file: %s' % self.onlineMapFile)
 
-            self.channels = self.getChannelList()
             self.automap, self.rstrm = MapString.Parse(mapfile, self.log)
 
             self.log('\n')
             self.log('[UPD] Wyszykiwanie STRM')
             self.log('-------------------------------------------------------------------------------------')
-            self.log('[UPD] %-30s %-30s %-20s %-35s' % ('-ID mTvGuide-', '-    Orig Name    -', '-    SRC   -', '-    STRM   -'))
+            self.log('[UPD]     %-30s %-30s %-20s %-35s' % ('-ID mTvGuide-', '-    Orig Name    -', '-    SRC   -', '-    STRM   -'))
 
-            for x in self.automap:
+            for x in self.automap[:]:
                 if x.strm != '':
                     x.src = 'CONST'
-                    self.log('[UPD] %-30s %-15s %-35s' % (x.channelid, x.src, x.strm))
+                    self.log('[UPD]     %-30s %-15s %-35s' % (x.channelid, x.src, x.strm))
                     continue
                 try:
                     p = re.compile(x.titleRegex, re.IGNORECASE)
                     for y in self.channels:
                         b=p.match(y.title)
                         if (b):
-                            if self.useCid == True:
-                                x.strm = self.rstrm % y.cid
+                            if x.strm != '' and self.addDuplicatesToList == True:
+                                newMapElement = copy.deepcopy(x)
+                                if self.useCid == True:
+                                    newMapElement.strm = self.rstrm % y.cid
+                                else:
+                                    newMapElement.strm = y.strm
+                                y.src = newMapElement.src
+                                y.strm = newMapElement.strm
+                                self.log('[UPD] [B] %-30s %-30s %-20s %-35s ' % (newMapElement.channelid, y.name, newMapElement.src, newMapElement.strm))
+                                if self.addDuplicatesAtBeginningOfList == False:
+                                    self.automap.append(newMapElement)
+                                else:
+                                    self.automap.insert(0, newMapElement)
                             else:
-                                x.strm = y.strm
-                            y.strm = x.strm
-                            x.src  = self.serviceName
-                            y.src = x.src
-                            self.log('[UPD] %-30s %-30s %-20s %-35s ' % (x.channelid, y.name, x.src, x.strm))
-                            if self.breakAfterFirstMatchFromMap:
-                                break
+                                if self.useCid == True:
+                                    x.strm = self.rstrm % y.cid
+                                else:
+                                    x.strm = y.strm
+                                y.strm = x.strm
+                                x.src  = self.serviceName
+                                y.src = x.src
+                                self.log('[UPD]     %-30s %-30s %-20s %-35s ' % (x.channelid, y.name, x.src, x.strm))
+                                if self.breakAfterFirstMatchFromMap:
+                                    break
 
                 except Exception, ex:
                     self.log('%s Error %s %s' % (x.channelid, x.titleRegex, str(ex)))
-
-            #self.log('\n')
-            #self.log('[UPD] Nie znaleziono/wykorzystano odpowiednikow w %s dla:' % self.serviceName)
-            #self.log('-------------------------------------------------------------------------------------')
-            #for x in self.automap:
-                #if x.src!=self.serviceName:
-                    #self.log('[UPD] CH=%-30s SRC=%-15s STRM=%-35s' % (x.channelid, x.src, x.strm))
 
             self.log('\n')
             self.log('[UPD] Nie wykorzystano STRM nadawanych przez %s programow:' % self.serviceName)

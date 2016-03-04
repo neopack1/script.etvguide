@@ -1,24 +1,24 @@
 #
-#       Copyright (C) 2014 Krzysztof Cebulski
-#       Copyright (C) 2013 Szakalit
+#		Copyright (C) 2014 Krzysztof Cebulski
+#		Copyright (C) 2013 Szakalit
 #
-#       Copyright (C) 2013 Tommy Winther
-#       http://tommy.winther.nu
+#		Copyright (C) 2013 Tommy Winther
+#		http://tommy.winther.nu
 #
-#   This Program is free software; you can redistribute it and/or modify
-#   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation; either version 2, or (at your option)
-#   any later version.
+#	This Program is free software; you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation; either version 2, or (at your option)
+#	any later version.
 #
-#   This Program is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-#   GNU General Public License for more details.
+#	This Program is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#	GNU General Public License for more details.
 #
-#   You should have received a copy of the GNU General Public License
-#   along with this Program; see the file LICENSE.txt.  If not, write to
-#   the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
-#   http://www.gnu.org/copyleft/gpl.html
+#	You should have received a copy of the GNU General Public License
+#	along with this Program; see the file LICENSE.txt.  If not, write to
+#	the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+#	http://www.gnu.org/copyleft/gpl.html
 #
 import StringIO
 import os
@@ -37,8 +37,6 @@ import xbmcvfs
 import sqlite3
 import playService
 from itertools import chain
-
-# for platform check
 import platform
 
 import io, zipfile
@@ -58,10 +56,6 @@ if CHECK_NAME:
 else:
     USER_AGENT = ADDON.getSetting('usernameGoldVOD')
 
-print CHECK_SERVER_ID
-
-if CHECK_SERVER_ID not in ["1", "2"]:
-    ADDON.setSetting(id='e-TVGuide',value='1')
 
 class Channel(object):
     def __init__(self, id, title, logo = None, streamUrl = None, visible = True, weight = -1):
@@ -249,9 +243,9 @@ class Database(object):
         return self.conn is not None
 
     def close(self, callback=None):
+        self.source.close()
         self.eventQueue.append([self._close, callback])
         self.event.set()
-        self.source.close()
 
     def _close(self):
         try:
@@ -319,8 +313,14 @@ class Database(object):
             programsLastUpdated = row['programs_updated']
         else:
             programsLastUpdated = datetime.datetime.fromtimestamp(0)
+
+        c.execute('SELECT epg_size FROM updates WHERE source=?', [self.source.KEY])
+        row = c.fetchone()
+        epgSize = 0
+        if row:
+            epgSize = row['epg_size']
         c.close()
-        return self.source.isUpdated(channelsLastUpdated, programsLastUpdated)
+        return self.source.isUpdated(channelsLastUpdated, programsLastUpdated, epgSize)
 
     def updateChannelAndProgramListCaches(self, callback, date = datetime.datetime.now(), progress_callback = None, clearExistingProgramList = True):
         self.eventQueue.append([self._updateChannelAndProgramListCaches, callback, date, progress_callback, clearExistingProgramList])
@@ -330,7 +330,7 @@ class Database(object):
         global ADDON_CIDUPDATED
         deb('_updateChannelAndProgramListCache')
 
-        # todo workaround service.py 'forgets' the adapter and convert set in _initialize.. wtf?!
+		# todo workaround service.py 'forgets' the adapter and convert set in _initialize.. wtf?!
         sqlite3.register_adapter(datetime.datetime, self.adapt_datetime)
         sqlite3.register_converter('timestamp', self.convert_datetime)
 
@@ -353,7 +353,6 @@ class Database(object):
             deb('_isCacheExpired')
             self.updateInProgress = True
             self.updateFailed = False
-            #self.source.resetEPGULastModifiedDate()
             dateStr = date.strftime('%Y-%m-%d')
             self._removeOldRecordings()
             c = self.conn.cursor()
@@ -375,7 +374,7 @@ class Database(object):
                     c.execute("DELETE FROM updates WHERE source=? AND date=?", [self.source.KEY, dateStr]) # cascades and deletes associated programs records
 
                 # programs updated
-                c.execute("INSERT INTO updates(source, date, programs_updated) VALUES(?, ?, ?)", [self.source.KEY, dateStr, self.source.getNewUpdateTime()])
+                c.execute("INSERT INTO updates(source, date, programs_updated, epg_size) VALUES(?, ?, ?, ?)", [self.source.KEY, dateStr, self.source.getNewUpdateTime(), self.source.getEpgSize()])
                 updatesId = c.lastrowid
                 imported = 0
                 for item in self.source.getDataFromExternal(date, progress_callback):
@@ -457,8 +456,8 @@ class Database(object):
 
     def storeCustomStreams(self, streams, streamSource, serviceStreamRegex):
         try:
-            if len(streams.automap) > 0 and len(streams.channels) > 0:
-                self.deleteCustomStreams(streamSource, serviceStreamRegex)
+            #if len(streams.automap) > 0 and len(streams.channels) > 0:
+            self.deleteCustomStreams(streamSource, serviceStreamRegex)
             deb('[UPD] Updating databse')
             c = self.conn.cursor()
             for x in streams.automap:
@@ -482,7 +481,7 @@ class Database(object):
                 #cur = self.conn.cursor()
                 for row in c:
                     deb('%-25s %-35s' % (row['channel'], row['stream_url']))
-                    #cur.execute('INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)', [row['channel'], row['channel'], '', '', 1, -1, 'e-TVGuide', -1, 'm-TVGuide'])
+                    #cur.execute('INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)', [row['channel'], row['channel'], '', '', 1, -1, 'e-TVGuide', -1, 'e-TVGuide'])
                 #self.conn.commit()
                 deb('End of streams without EPG!')
                 deb('----------------------------------------------------------------------------------------------')
@@ -756,7 +755,7 @@ class Database(object):
         return customStreamUrlList
 
     def adapt_datetime(self, ts):
-        # http://docs.python.org/2/library/sqlite3.html#registering-an-adapter-callable
+		# http://docs.python.org/2/library/sqlite3.html#registering-an-adapter-callable
         return time.mktime(ts.timetuple())
 
     def convert_datetime(self, ts):
@@ -864,11 +863,12 @@ class Database(object):
                 c.execute('DELETE FROM sources')
                 c.execute('DELETE FROM custom_stream_url')
                 c.execute('UPDATE settings SET value=0 WHERE rowid=1')
-                #c.execute('DROP TABLE custom_stream_url')
-                #c.execute('DELETE FROM programs')
-                #c.execute('CREATE TABLE IF NOT EXISTS custom_stream_url(channel TEXT COLLATE NOCASE, stream_url TEXT)')
-                #c.execute('CREATE TABLE IF NOT EXISTS channels(id TEXT COLLATE NOCASE, title TEXT, logo TEXT, stream_url TEXT, source TEXT, visible BOOLEAN, weight INTEGER, PRIMARY KEY (id, source), FOREIGN KEY(source) REFERENCES sources(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
                 c.execute('UPDATE version set major=6, minor=1, patch=1')
+                self.conn.commit()
+
+            if version < [6, 1, 2]:
+                c.execute('ALTER TABLE updates ADD COLUMN epg_size INTEGER DEFAULT 0')
+                c.execute('UPDATE version SET major=6, minor=1, patch=1')
                 self.conn.commit()
 
             # make sure we have a record in sources for this Source
@@ -1038,7 +1038,7 @@ class Source(object):
     def getNewUpdateTime(self):
         return datetime.datetime.now()
 
-    def isUpdated(self, channelsLastUpdated, programsLastUpdated):
+    def isUpdated(self, channelsLastUpdated, programsLastUpdated, epgSize):
         today = datetime.datetime.now()
         if channelsLastUpdated is None or channelsLastUpdated.day != today.day:
             return True
@@ -1046,8 +1046,8 @@ class Source(object):
             return True
         return False
 
-    def resetEPGULastModifiedDate(self):
-        self.EPGULastModifiedDate = None
+    def getEpgSize(self):
+        return 0
 
     def close(self):
         pass
@@ -1087,9 +1087,9 @@ class XMLTVSource(Source):
         f = FileWrapper(self.xmltvFile)
         context = ElementTree.iterparse(f, events=("start", "end"))
         return parseXMLTV(context, f, f.size, self.logoFolder, progress_callback)
-    def isUpdated(self, channelsLastUpdated, programLastUpdate):
+    def isUpdated(self, channelsLastUpdated, programLastUpdate, epgSize):
         if channelsLastUpdated is None or not xbmcvfs.exists(self.xmltvFile):
-            return True
+			return True
         stat = xbmcvfs.Stat(self.xmltvFile)
         fileUpdated = datetime.datetime.fromtimestamp(stat.st_mtime())
         return fileUpdated > channelsLastUpdated
@@ -1104,18 +1104,10 @@ class ETVGUIDESource(Source):
         else:
             self.USE_ZIPPED_FILES = ""
 
-        #if self.SERVER_EPG_INFO == "1":
         self.BASE_EPG_URL = "http://epg.feenk.net/"
-        #elif self.SERVER_EPG_INFO == "2":
-        #    self.BASE_EPG_URL = "https://epg2.feenk.net/"
-        #else:
-        #    self.BASE_EPG_URL = ""
-
-        #if addon.getSetting('e-TVGuide1') == "true":
+       
         self.ETVGUIDEUrl1 = self.BASE_EPG_URL + 'epg.xml' + self.USE_ZIPPED_FILES
-        #else:
-        #    self.ETVGUIDEUrl1 = ""
-
+    
         if ADDON.getSetting('e-TVGuide2') == "true":
             self.ETVGUIDEUrl2 = self.BASE_EPG_URL + "weeb24h.xml" + self.USE_ZIPPED_FILES
         else:
@@ -1128,11 +1120,10 @@ class ETVGUIDESource(Source):
 
         self.ETVGUIDEUrl4 = addon.getSetting('e-TVGuide4')
         self.ETVGUIDEUrl5 = addon.getSetting('e-TVGuide5')
-        self.EPGULastModifiedDate = None
+        self.EPGSize = None
         self.logoFolder = None
         self.epgBasedOnLastModDate = ADDON.getSetting('UpdateEPGOnModifiedDate')
-        self.timer = threading.Timer(1800, self.resetEPGULastModifiedDate)
-
+        self.timer = None
 
     def getDataFromExternal(self, date, progress_callback = None):
         if self.ETVGUIDEUrl1 != "":
@@ -1161,39 +1152,48 @@ class ETVGUIDESource(Source):
             deb("Blad pobierania epg: %s\n\nSzczegoly:\n%s" % (url, str(ex)))
             raise ex
 
-    def isUpdated(self, channelsLastUpdated, programLastUpdate):
+    def isUpdated(self, channelsLastUpdated, programLastUpdate, epgSizeInDB):
         if self.epgBasedOnLastModDate == 'false':
-            return super(ETVGUIDESource, self).isUpdated(channelsLastUpdated, programLastUpdate)
-        lastEpgUpdateDate = self.getNewUpdateTime()
-        if channelsLastUpdated is None or channelsLastUpdated != lastEpgUpdateDate:
-            return True
-        if programLastUpdate is None or programLastUpdate != lastEpgUpdateDate:
+            return super(MTVGUIDESource, self).isUpdated(channelsLastUpdated, programLastUpdate, epgSizeInDB)
+        epgSize = self.getEpgSize(epgSizeInDB)
+        if epgSize != epgSizeInDB:
+            debug('isUpdated detected new EPG! size in DB is: %d, on server: %d' % (epgSizeInDB, epgSize))
             return True
         return False
 
-    def getNewUpdateTime(self):
+    def getEpgSize(self, defaultSize = 0, forceCheck = False):
         if self.epgBasedOnLastModDate == 'false':
-            return super(ETVGUIDESource, self).getNewUpdateTime()
-        if self.EPGULastModifiedDate is not None:
-            return self.EPGULastModifiedDate
+            return 0
+        if self.EPGSize is not None and forceCheck == False:
+            return self.EPGSize
+        epgRecheckTimeout = 3600
         failedCounter = 0
-        while failedCounter < 5:
+        while failedCounter < 3:
             try:
-                u = urllib2.urlopen(self.ETVGUIDEUrl1, timeout=5)
+                u = urllib2.urlopen(self.MTVGUIDEUrl, timeout=2)
                 headers = u.info()
-                timeStr = headers.getheader("Last-Modified")
-                strippedTime = strptime(timeStr, "%a, %d %b %Y %H:%M:%S GMT")
-                self.EPGULastModifiedDate = datetime.datetime(strippedTime.tm_year, strippedTime.tm_mon, strippedTime.tm_mday, strippedTime.tm_hour, strippedTime.tm_min, strippedTime.tm_sec)
-                #This will force checking for updates every 30 min
-                self.timer.start()
-                return self.EPGULastModifiedDate
+                self.EPGSize = int(headers.getheader("Content-Length").strip())
+                break
             except Exception, ex:
-                deb('getNewUpdateTime exception %s failedCounter %s' % (str(ex), failedCounter))
+                deb('getEpgSize exception %s failedCounter %s' % (str(ex), failedCounter))
                 failedCounter = failedCounter + 1
-        return datetime.datetime.now()
+                time.sleep(0.1)
+
+        if self.EPGSize is None:
+            self.EPGSize = defaultSize
+            epgRecheckTimeout = 300 #recheck in 5 min
+        #This will force checking for updates every 1h
+        self.timer = threading.Timer(epgRecheckTimeout, self.resetEpgSize)
+        self.timer.start()
+        return self.EPGSize
+
+    def resetEpgSize(self):
+        debug('resetEpgSize')
+        self.EPGSize = self.getEpgSize(self.EPGSize, forceCheck=True)
 
     def close(self):
-        self.timer.cancel()
+        if self.timer is not None:
+            self.timer.cancel()
 
 def parseXMLTVDate(dateString):
     if dateString is not None:
@@ -1207,18 +1207,18 @@ def parseXMLTVDate(dateString):
 
 def TimeZone(dateString):
     if dateString is not None:
-        zone = ADDON.getSetting('Time.Zone')
+		zone = ADDON.getSetting('Time.Zone')
 
-        if '-' in zone:
-            x = time.strptime(zone[1:],'%H:%M')
-            dateString = dateString - datetime.timedelta(hours=x.tm_hour) - datetime.timedelta(minutes=x.tm_min) - datetime.timedelta(hours=1)
-        elif '+' in zone:
-            x = time.strptime(zone[1:],'%H:%M')
-            dateString = dateString + datetime.timedelta(hours=x.tm_hour) + datetime.timedelta(minutes=x.tm_min) - datetime.timedelta(hours=1)
-        else:
-            dateString = dateString - datetime.timedelta(hours=1)
+		if '-' in zone:
+			x = time.strptime(zone[1:],'%H:%M')
+			dateString = dateString - datetime.timedelta(hours=x.tm_hour) - datetime.timedelta(minutes=x.tm_min) - datetime.timedelta(hours=1)
+		elif '+' in zone:
+			x = time.strptime(zone[1:],'%H:%M')
+			dateString = dateString + datetime.timedelta(hours=x.tm_hour) + datetime.timedelta(minutes=x.tm_min) - datetime.timedelta(hours=1)
+		else:
+			dateString = dateString - datetime.timedelta(hours=1)
 
-        return dateString
+		return dateString
     else:
         return None
 
@@ -1303,8 +1303,8 @@ class FileWrapper(object):
 def instantiateSource():
     SOURCES = {
     'XMLTV': XMLTVSource,
-    'e-TVGuide': ETVGUIDESource,
-#   'E-Screen.tv': ESCREENTVSource
+    'e-TVGuide': MTVGUIDESource,
+#	'E-Screen.tv': ESCREENTVSource
     }
 
     try:
