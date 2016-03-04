@@ -1154,7 +1154,7 @@ class ETVGUIDESource(Source):
 
     def isUpdated(self, channelsLastUpdated, programLastUpdate, epgSizeInDB):
         if self.epgBasedOnLastModDate == 'false':
-            return super(MTVGUIDESource, self).isUpdated(channelsLastUpdated, programLastUpdate, epgSizeInDB)
+            return super(ETVGUIDESource, self).isUpdated(channelsLastUpdated, programLastUpdate, epgSizeInDB)
         epgSize = self.getEpgSize(epgSizeInDB)
         if epgSize != epgSizeInDB:
             debug('isUpdated detected new EPG! size in DB is: %d, on server: %d' % (epgSizeInDB, epgSize))
@@ -1170,7 +1170,7 @@ class ETVGUIDESource(Source):
         failedCounter = 0
         while failedCounter < 3:
             try:
-                u = urllib2.urlopen(self.MTVGUIDEUrl, timeout=2)
+                u = urllib2.urlopen(self.ETVGUIDEUrl1, timeout=2)
                 headers = u.info()
                 self.EPGSize = int(headers.getheader("Content-Length").strip())
                 break
@@ -1303,7 +1303,7 @@ class FileWrapper(object):
 def instantiateSource():
     SOURCES = {
     'XMLTV': XMLTVSource,
-    'e-TVGuide': MTVGUIDESource,
+    'e-TVGuide': ETVGUIDESource,
 #	'E-Screen.tv': ESCREENTVSource
     }
 
