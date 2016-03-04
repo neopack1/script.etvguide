@@ -169,6 +169,7 @@
 	<string id="55005">Najwyższa jakość (jaka jest dostępna)</string>
 	<string id="55006">WeebTV</string>
 	<string id="55007">Serwisy</string>
+	<string id="55008">Przypisz również streamy low-quality/zapasowe</string>
 	<string id="89001">Sleep timer aktywny</string>
 	<string id="89002">Akcja wykonana po upływie czasu nieaktywności</string>
 	<string id="89003">Czas braku aktywności (min)</string>
@@ -222,5 +223,12 @@
 	<string id="69014">Format nagrywania FFMPEG - asf dla OpenELEC</string>
 	<string id="69015">Wyjść pomimo zaplanowanego nagrywania?</string>
 	<string id="69016">Korzystaj z FFMPEG do nagrywania RTMP zamiast rtmpdump</string>
+	<string id="69017">[COLOR red]Pobierz aplikacje do nagrywania z mods-kodi[/COLOR]</string>
+	<string id="69018">m-TVGuide pobierze teraz pliki z serwera - proszę nacisnąć OK i zaczekać</string>
+	<string id="69019">Pobieranie aplikacji nie powiodło się - spróbuj ponownie lub zainstaluj ręcznie</string>
 	<string id="69020">Debug log</string>
+	<string id="69021">Nie udało się znaleźć ffmpeg ani rtmpdump na systemie - proszę zainstalować korzystając z wbudowanego packet managera rtmpdump, ffmpeg lub libav-tools oraz ponownie spróbować zaimportować automatycznie lub wybrać pliki ręcznie</string>
+	<string id="69022">Blad automatycznego importowania aplikacji - proszę zaimportować pliki ręcznie</string>
+	<string id="69023">Wybierz wersję twojego systemu operacyjnego</string>
+	<string id="69024">Maksymalna ilość prób wznowienia nagrywania</string>
 </strings>

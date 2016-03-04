@@ -6,20 +6,11 @@ import os, xbmcaddon
 from strings import *
 from serviceLib import *
 
-import io
-
 
 telewizjadaMainUrl  = 'http://www.telewizjada.net/'
 serviceName   = 'telewizjada.net'
 serviceRegex  = "service=telewizjada&cid=%"
-
-#if xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "1":
 onlineMapFile = 'http://epg.feenk.net/maps/telewizjadamap.xml'
-#elif xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "2":
-#    onlineMapFile = 'https://epg2.feenk.net/maps/telewizjadamap.xml'
-#else:
-#    onlineMapFile = 'https://www.dropbox.com/s/uckx10sqjii32ej/telewizjadamap.xml?dl=1'
-
 localMapFile  = 'telewizjadamap.xml'
 servicePriority = int(ADDON.getSetting('priority_telewizjada'))
 COOKIE_FILE   = os.path.join(xbmc.translatePath(ADDON.getAddonInfo('profile')) , 'telewizjada.cookie')
@@ -45,8 +36,6 @@ class TelewizjaDaUpdater(baseServiceUpdater):
                 return copy.deepcopy(telewizjadaChannelList)
 
             self.log('getChannelList downloading channel list')
-
-            channelsArray = list()
             result = list()
             channelsArray = self.sl.getJsonFromAPI(telewizjadaMainUrl + 'get_channels.php')
 
@@ -95,8 +84,11 @@ class TelewizjaDaUpdater(baseServiceUpdater):
                     while failedCounter < 5:
                         if xbmc.abortRequested:
                             break
-                        tmp_url = ''
-                        data = { 'url': chann.strm }
+
+                        data = { 'cid': cid }
+                        link = self.sl.getJsonFromExtendedAPI(telewizjadaMainUrl + 'get_mainchannel.php', post_data = data, jsonLoadsResult = True)
+
+                        data = { 'url': link['url'] }
                         self.sl.getJsonFromExtendedAPI(telewizjadaMainUrl + 'set_cookie.php', post_data = data, cookieFile = COOKIE_FILE, save_cookie = True)
 
                         data = { 'cid': cid }
@@ -124,7 +116,7 @@ class TelewizjaDaUpdater(baseServiceUpdater):
                         channel.ffmpegdumpLink.append("-headers")
                         channel.ffmpegdumpLink.append(('Cookie: sessid=%s; msec=%s; path=\"/\"; domain=\".telewizjada.net\"; path_spec; domain_dot; discard; version=0' % (sessid, msec)) + '\r\n' + 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:19.0) Gecko/20121213 Firefox/19.0' + '\r\n' + 'Host: www.telewizjada.net' + '\r\n' + 'Content-Type: application/x-www-form-urlencoded' + '\r\n')
                         channel.ffmpegdumpLink.append("-i")
-                        channel.ffmpegdumpLink.append("%s" % tmp_url.split("?")[0]) #tmp_url
+                        channel.ffmpegdumpLink.append("%s" % tmp_url.split("?")[0])
 
                         self.log('getChannel: found matching channel: cid: %s, name: %s, rtmp: %s' % (channel.cid, channel.name, channel.strm))
                         return channel

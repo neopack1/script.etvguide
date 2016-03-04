@@ -1,3 +1,6 @@
+[B]wersja 2.1.21[/B] - 2016-03-04
+- naprawa telwziajda.net
+
 [B]wersja 2.1.12[/B] - 2016-02-24
 - Glowne EPG jest zawsze wlaczone i nie da sie wylaczyc
 

@@ -2,12 +2,11 @@
 #      Copyright (C) 2014 Krzysztof Cebulski
 
 import urllib, sys, StringIO, copy, re
-import xbmc
+import xbmc, xbmcgui
 import os, xbmcaddon
 from strings import *
 import ConfigParser
 from serviceLib import *
-import io
 
 url        = 'http://weeb.tv'
 jsonUrl    = url + '/api/getChannelList'
@@ -15,16 +14,7 @@ playerUrl  = url + '/api/setplayer'
 
 serviceName = 'weeb.tv'
 serviceRegex = "service=weebtv&cid=%"
-
-
-#if xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "1":
 onlineMapFile = 'http://epg.feenk.net/maps/weebtvmap.xml'
-#elif xbmcaddon.Addon('script.etvguide').getSetting("e-TVGuide") == "2":
-#    onlineMapFile = 'https://epg2.feenk.net/maps/weebtvmap.xml'
-#else:
-#    onlineMapFile = 'https://www.dropbox.com/s/x2l236ihppw2h8a/weebtvmap.xml?dl=1'
-
-
 localMapFile = 'weebtvmap.xml'
 servicePriority = int(ADDON.getSetting('priority_weebtv'))
 weebtvChannelList = None
@@ -61,7 +51,7 @@ class WebbTvStrmUpdater(baseServiceUpdater):
             self.log('\n')
             self.log('[UPD] Wyszykiwanie STRM')
             self.log('-------------------------------------------------------------------------------------')
-            self.log('[UPD] %-30s %-25s %s' % ('-ID mTvGuide-', '-    STRM   ', '-    SRC   -'))
+            self.log('[UPD] %-30s %-25s %s' % ('-ID eTvGuide-', '-    STRM   ', '-    SRC   -'))
 
             for x in self.automap:
                 if x.strm != '':
@@ -129,13 +119,11 @@ class WebbTvStrmUpdater(baseServiceUpdater):
         self.log('[UPD] -------------------------------------------------------------------------------------')
         self.log('[UPD] %-7s %-35s %-30s' % ('-CID-', '-NAME-', '-TITLE-'))
         result = list()
-        channelsArray = None
-        failedCounter = 0
         post = { 'username': self.login, 'userpassword': self.password }
         tmpChannels = self.sl.getJsonFromAPI(self.url, post)
 
         if tmpChannels is None:
-            self.log('getChannelList: Error while loading Json from Url: %s - aborting' % self.url)
+            self.log('getChannelList: Error while loading getJsonFromAPI Url: %s - aborting' % self.url)
             return result
 
         channelsArray = self.sl.JsonToSortedTab(tmpChannels)

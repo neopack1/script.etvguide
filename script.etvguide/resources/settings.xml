@@ -13,6 +13,7 @@
 		<setting id="usernameGoldVOD" type="text" label="55002" default="" visible="eq(-1,true)"/>
 		<setting id="userpasswordGoldVOD" type="text" option="hidden" label="55003" default="" visible="eq(-2,true)"/>
 		<setting id="video_qualityGoldVOD" type="bool" label="55005" default="true" visible="eq(-3,true)"/>
+		<setting id="assign_all_streams_goldvod" type="bool" label="55008" default="true" visible="eq(-4,true) + eq(-1,true)"/>
 		<setting id="priority_goldvod" label="55009" type="enum" default="1" values="niski|sredni|wysoki|b.wysoki" visible="eq(-4,true)"/>
 
 		<setting label="59903" type="lsep"/>
@@ -79,6 +80,7 @@
 		<setting id="rtmpdumpExe" label="69001" type="action" option="close" value="" action="RunScript($CWD/settingsImportExport.py, ImportRecordApp)" visible="eq(-1,false)"/>
 		<setting id="ffmpegExe" label="69002" type="action" option="close" value="" action="RunScript($CWD/settingsImportExport.py, ImportRecordApp)"/>
 		<setting id="ffmpeg_format" label="69014" type="labelenum" default="flv" values="flv|asf"/>
+		<setting id="max_reattempts" label="69024" type="number" default="20"/>
 	</category>
 	<category label="30702">
 		<setting id="Skin" label="30914" type="select" source="/resources/skins/" mask="/" default="Default"/>

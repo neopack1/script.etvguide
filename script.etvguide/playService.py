@@ -110,7 +110,7 @@ class PlayService(xbmc.Player, BasePlayService):
         if self.thread is not None and self.thread.is_alive():
             deb('PlayService playUrlList waiting for thread to terminate')
             self.terminating = True
-            self.thread.join(10)
+            self.thread.join()
 
         self.thread = threading.Thread(name='playUrlList Loop', target = self._playUrlList, args=[urlList])
         self.thread.start()
@@ -135,10 +135,12 @@ class PlayService(xbmc.Player, BasePlayService):
                     return
 
                 if self.playbackStopped == True or playStarted == False:
-                    deb('PlayService _playUrlList detected faulty stream!')
                     break
 
                 time.sleep(.100)
+
+            deb('PlayService _playUrlList detected faulty stream!')
+            self.player.stop()
             self.unlockService(self.currentlyPlayedService)
             self.currentlyPlayedService = None
 

@@ -167,6 +167,7 @@
 	<string id="55003">Password:</string>
 	<string id="55005">The highest quality (as available)</string>
 	<string id="55007">Services</string>
+	<string id="55008">Assign also low-quality/backup streams</string>
 	<string id="89001">Sleep timer enabled</string>
 	<string id="89002">Timeout action</string>
 	<string id="89003">Timeout value (min)</string>
@@ -219,6 +220,13 @@
 	<string id="69013">successfully imported</string>
 	<string id="69014">FFmpeg record format - use asf for OpenELEC</string>
 	<string id="69015">Exit despite of scheduled recording?</string>
-	<string id="69016">Use ffmpeg to record rtmp instead of rtmpdump</string>
+	<string id="69016">Use FFmpeg to record rtmp instead of rtmpdump</string>
+	<string id="69017">[COLOR red]Download record apps from mods-kodi[/COLOR]</string>
+	<string id="69018">m-TVGuide will download files from mods-kodi server - press OK and wait</string>
+	<string id="69019">Download failed - try again or select files manually</string>
 	<string id="69020">Debug log</string>
+	<string id="69021">Failed to find ffmpeg or rtmpdump on your system - install then using build in packet manager or download from internet and select manually. Needed are rtmpdump, ffmpeg or libav-tools</string>
+	<string id="69022">Import failed - try selecting files manually</string>
+	<string id="69023">Select your operating system</string>
+	<string id="69024">Max nr of reattempts after record failure</string>
 </strings>

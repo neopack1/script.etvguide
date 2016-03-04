@@ -19,8 +19,7 @@ nonExistingRecordDirName = strings(69006).encode('utf-8')
 failedRecordDialogName = strings(69007).encode('utf-8')
 missingRecordBinaryString = strings(69008).encode('utf-8')
 
-maxNrOfRetriesPerService = 1
-maxNrOfAllServiceLoops = 1
+maxNrOfReattempts = int(ADDON.getSetting('max_reattempts'))
 
 class RecordService(BasePlayService):
     def __init__(self, epg):
@@ -35,8 +34,7 @@ class RecordService(BasePlayService):
         self.timers = list()
         self.cleanupTimer = None
         self.scheduleAllRecordingsTimer = None
-        self.overwriteRecordings = ADDON.getSetting('overwrite_recordings')
-        deb('Operating system: %s' % platform.system())
+        deb('RecordService __init__ System: %s, ARH: %s' % (platform.system(), platform.machine()))
 
     def scheduleAllRecordings(self):
         self.scheduleAllRecordingsTimer = threading.Timer(1, self._scheduleAllRecordings)
@@ -95,149 +93,135 @@ class RecordService(BasePlayService):
 
     def recordLoop(self, threadData):
         if self.recordDestinationPath == '' or os.path.isdir(self.recordDestinationPath) == False:
-            xbmcgui.Dialog().ok(failedRecordDialogName,"\n" + nonExistingRecordDirName)
+            xbmcgui.Dialog().ok(failedRecordDialogName,"\n" + nonExistingRecordDirName + "\n" + self.recordDestinationPath)
             return
         missingRtmpdumpBinary = False
         missingFfmpegumpBinary = False
         success = False
         notificationDisplayed = False
-        nrOfFailedServiceLoops = 0
         outputFileName = self.getOutputFilename(threadData['program'])
         destinationFile = os.path.join(self.recordDestinationPath, outputFileName)
-        try:
-            if os.path.isfile(destinationFile) and self.overwriteRecordings != 'true':
-                deb('RecordService recordLoop aborting record for program %s, starting at: %s because program is already partially recorded!' % (threadData['program'].title.encode('utf-8'), threadData['program'].startDate))
-                return
-        except:
-            pass
+        partNumber = 1
+        nrOfReattempts = 0
 
-        while success == False and nrOfFailedServiceLoops < maxNrOfAllServiceLoops and self.terminating == False and threadData['terminateThread'] == False:
+        while success == False and nrOfReattempts <= maxNrOfReattempts and self.terminating == False and threadData['terminateThread'] == False and xbmc.abortRequested == False:
             for url in threadData['urlList']:
-                if success == True or self.terminating == True or threadData['terminateThread'] == True:
+                if success == True or self.terminating == True or threadData['terminateThread'] == True or nrOfReattempts > maxNrOfReattempts or xbmc.abortRequested == True:
                     break
 
-                streamFailCounter = 0
-                while success == False and streamFailCounter < maxNrOfRetriesPerService and self.terminating == False and threadData['terminateThread'] == False:
-                    recordCommand = None
-                    timeDiff = threadData['program'].endDate - datetime.datetime.now()
-                    programDuration = ((timeDiff.days * 86400) + timeDiff.seconds) - 5
-                    if programDuration <= 0:
-                        deb('RecordService recordLoop aborting record for program %s, starting at: %s because program has already ended!' % (threadData['program'].title.encode('utf-8'), threadData['program'].startDate))
-                        return
+                recordCommand = None
+                timeDiff = threadData['program'].endDate - datetime.datetime.now()
+                programDuration = ((timeDiff.days * 86400) + timeDiff.seconds) - 5
+                if programDuration <= 0:
+                    deb('RecordService recordLoop aborting record for program %s, starting at: %s because program has already ended!' % (threadData['program'].title.encode('utf-8'), threadData['program'].startDate))
+                    return
 
-                    cid, service = self.parseUrl(url)
-                    channelInfo = self.getChannel(cid, service)
-                    if channelInfo is None:
-                        break #go to next stream - this one seems to be locked
+                cid, service = self.parseUrl(url)
+                channelInfo = self.getChannel(cid, service)
+                if channelInfo is None:
+                    nrOfReattempts = nrOfReattempts + 1
+                    deb('RecordService recordLoop - locked service %s - trying next, nrOfReattempts: %d, max: %d' % (service, nrOfReattempts, maxNrOfReattempts))
+                    continue #go to next stream - this one seems to be locked
 
-                    if self.useOnlyFFmpeg == 'true':
-                        if channelInfo is not None and 'rtmp://' in channelInfo.strm:
-                            if os.path.isfile(self.ffmpegdumpExe):
-                                recordCommand = list()
-                                recordCommand.append(self.ffmpegdumpExe)
-                                recordCommand.append("-i")
-                                recordCommand.append("%s" % channelInfo.strm)
-                                recordCommand.append("-c")
-                                recordCommand.append("copy")
-                                recordCommand.append("-f")
-                                recordCommand.append("%s" % ADDON.getSetting('ffmpeg_format'))
-                                recordCommand.append("-t")
-                                recordCommand.append("%d" % programDuration)
-                                recordCommand.append("-loglevel")
-                                recordCommand.append("info")
-                                recordCommand.append("-n") #Dont overwrite
-                                recordCommand.append("-bsf:a")
-                                recordCommand.append("aac_adtstoasc")
-                                recordCommand.append("%s%s" % (self.recordDestinationPath, outputFileName))
-                            else:
-                                missingFfmpegumpBinary = True
+                while os.path.isfile(destinationFile): #Generate output filename that is not used
+                    partNumber = partNumber + 1
+                    outputFileName = self.getOutputFilename(threadData['program'], partNumber)
+                    destinationFile = os.path.join(self.recordDestinationPath, outputFileName)
 
-                    elif channelInfo is not None and channelInfo.rtmpdumpLink is not None:
-                        if os.path.isfile(self.rtmpdumpExe):
-
-                            recordCommand = list()
-                            recordCommand.append(self.rtmpdumpExe)
-                            recordCommand.extend(channelInfo.rtmpdumpLink)
-                            recordCommand.append("--realtime")
-                            #recordCommand.append("--debug")
-                            recordCommand.append("--timeout")
-                            recordCommand.append("5")
-                            recordCommand.append("--skip")
-                            recordCommand.append("50")
-                            recordCommand.append("--hashes")
-                            recordCommand.append("--live")
-                            recordCommand.append("--resume")
-                            recordCommand.append("-B")
-                            recordCommand.append("%d" % programDuration)
-                            recordCommand.append("-o")
-                            recordCommand.append(destinationFile)
-                        else:
-                            missingRtmpdumpBinary = True
-
-                    if channelInfo is not None and channelInfo.ffmpegdumpLink is not None:
-                        if os.path.isfile(self.ffmpegdumpExe):
-                            recordCommand = list()
-                            recordCommand.append(self.ffmpegdumpExe)
-                            recordCommand.extend(channelInfo.ffmpegdumpLink)
-                            recordCommand.append("-c")
-                            recordCommand.append("copy")
-                            recordCommand.append("-f")
-                            recordCommand.append("%s" % ADDON.getSetting('ffmpeg_format'))
-                            recordCommand.append("-t")
-                            recordCommand.append("%d" % programDuration)
-                            recordCommand.append("-loglevel")
-                            recordCommand.append("info")
-                            recordCommand.append("-n") #Dont overwrite
-                            #recordCommand.append("-acodec")
-                            #recordCommand.append("aac")
-                            recordCommand.append("-bsf:a")
-                            recordCommand.append("aac_adtstoasc")
-                            recordCommand.append("%s%s" % (self.recordDestinationPath, outputFileName))
-                        else:
-                            missingFfmpegumpBinary = True
-
-                    if recordCommand is None:
-                        streamFailCounter = streamFailCounter + maxNrOfRetriesPerService #make sure we won't retry this service, can't break because lock on stream needs to be released!
+                if self.useOnlyFFmpeg == 'false' and channelInfo.rtmpdumpLink is not None:
+                    if os.path.isfile(self.rtmpdumpExe):
+                        recordCommand = list()
+                        recordCommand.append(self.rtmpdumpExe)
+                        recordCommand.extend(channelInfo.rtmpdumpLink)
+                        recordCommand.append("--realtime")
+                        recordCommand.append("--timeout")
+                        recordCommand.append("5")
+                        recordCommand.append("--hashes")
+                        recordCommand.append("--live")
+                        recordCommand.append("-B")
+                        recordCommand.append("%d" % programDuration)
+                        recordCommand.append("-o")
+                        recordCommand.append(destinationFile)
                     else:
-                        if notificationDisplayed == False:
-                            xbmc.executebuiltin('Notification(%s,%s,10000,%s)' % (recordNotificationName, self.normalizeString(threadData['program'].title), self.icon))
-                            notificationDisplayed = True #show only once
-                        recordStartTime = datetime.datetime.now()
-                        output = self.record(recordCommand, programDuration, threadData)
-                        if output.find("ERROR: Couldn't find keyframe to resume from!") >= 0:
-                            deb('RecordService recordLoop detected faulty file to resume from - should we delete file?, filesize = %d' % os.path.getsize(destinationFile))
-                        if output.find("already exists. Exiting.") >= 0:
-                            deb('RecordService recordLoop detected faulty file to resume from - should we delete file?, filesize = %d' % os.path.getsize(destinationFile))
-                        recordedSecs = (datetime.datetime.now() - recordStartTime).seconds
-                        if(programDuration - recordedSecs < 60):
-                            deb('RecordService recordLoop successfully recored program: %s, started at: %s, ended at: %s, duration %d, now: %s' % (threadData['program'].title.encode('utf-8', 'ignore'), threadData['program'].startDate, threadData['program'].endDate, programDuration, datetime.datetime.now()))
-                            success = True
-                        else:
-                            streamFailCounter = streamFailCounter + 1
-                            deb('RecordService recordLoop ERROR: too short recording, got: %d sec, should be: %d, program: %s, start at: %s, end at: %s' % (recordedSecs, programDuration, threadData['program'].title.encode('utf-8', 'ignore'), threadData['program'].startDate, threadData['program'].endDate))
-                            if os.path.isfile(destinationFile) and os.path.getsize(destinationFile) < 10485760: #Less then 5MB, remove downloaded data
-                                try:
-                                    deb('RecordService recordLoop deleting incomplete record file %s, recorded for %d s, size %d bytes' % (destinationFile, recordedSecs, os.path.getsize(destinationFile)))
-                                    os.remove(destinationFile)
-                                except:
-                                    pass
+                        missingRtmpdumpBinary = True
 
-                    self.unlockService(service)
-                    if self.terminating == True or xbmc.abortRequested == True or threadData['terminateThread'] == True:
-                        deb('RecordService recordLoop abort requested - terminating')
-                        success = True #simple hack to get out from loop
+                elif channelInfo.ffmpegdumpLink is not None:
+                    if os.path.isfile(self.ffmpegdumpExe):
+                        recordCommand = list()
+                        recordCommand.append(self.ffmpegdumpExe)
+                        recordCommand.extend(channelInfo.ffmpegdumpLink)
+                        recordCommand.append("-c")
+                        recordCommand.append("copy")
+                        recordCommand.append("-f")
+                        recordCommand.append("%s" % ADDON.getSetting('ffmpeg_format'))
+                        recordCommand.append("-t")
+                        recordCommand.append("%d" % programDuration)
+                        recordCommand.append("-loglevel")
+                        recordCommand.append("info")
+                        recordCommand.append("-n")
+                        recordCommand.append("-bsf:a")
+                        recordCommand.append("aac_adtstoasc")
+                        recordCommand.append("%s%s" % (self.recordDestinationPath, outputFileName))
+                    else:
+                        missingFfmpegumpBinary = True
+
+                else:
+                    if os.path.isfile(self.ffmpegdumpExe):
+                        recordCommand = list()
+                        recordCommand.append(self.ffmpegdumpExe)
+                        recordCommand.append("-i")
+                        recordCommand.append("%s" % channelInfo.strm)
+                        recordCommand.append("-c")
+                        recordCommand.append("copy")
+                        recordCommand.append("-f")
+                        recordCommand.append("%s" % ADDON.getSetting('ffmpeg_format'))
+                        recordCommand.append("-t")
+                        recordCommand.append("%d" % programDuration)
+                        recordCommand.append("-loglevel")
+                        recordCommand.append("info")
+                        recordCommand.append("-n")
+                        recordCommand.append("-bsf:a")
+                        recordCommand.append("aac_adtstoasc")
+                        recordCommand.append("%s%s" % (self.recordDestinationPath, outputFileName))
+                    else:
+                        missingFfmpegumpBinary = True
+
+                if recordCommand is None:
+                    nrOfReattempts = nrOfReattempts + 1
+                else:
+                    if notificationDisplayed == False:
+                        xbmc.executebuiltin('Notification(%s,%s,10000,%s)' % (recordNotificationName, self.normalizeString(threadData['program'].title), self.icon))
+                        notificationDisplayed = True #show only once
+                    recordStartTime = datetime.datetime.now()
+                    output = self.record(recordCommand, programDuration, threadData)
+                    recordedSecs = (datetime.datetime.now() - recordStartTime).seconds
+                    if(programDuration - recordedSecs < 60):
+                        deb('RecordService recordLoop successfully recored program: %s, started at: %s, ended at: %s, duration %d, now: %s' % (threadData['program'].title.encode('utf-8', 'ignore'), threadData['program'].startDate, threadData['program'].endDate, programDuration, datetime.datetime.now()))
+                        success = True
+                    else:
+                        deb('RecordService recordLoop ERROR: too short recording, got: %d sec, should be: %d, program: %s, start at: %s, end at: %s, nrOfReattempts: %d, max: %d' % (recordedSecs, programDuration, threadData['program'].title.encode('utf-8', 'ignore'), threadData['program'].startDate, threadData['program'].endDate, nrOfReattempts, maxNrOfReattempts))
+                        nrOfReattempts = nrOfReattempts + 1
+                        if os.path.isfile(destinationFile) and os.path.getsize(destinationFile) < 2097152: #Less then 2MB, remove downloaded data
+                            try:
+                                deb('RecordService recordLoop deleting incomplete record file %s, recorded for %d s, size %d KB' % (destinationFile, recordedSecs, os.path.getsize(destinationFile)/1024))
+                                os.remove(destinationFile)
+                            except:
+                                pass
+
+                self.unlockService(service)
+                if self.terminating == True or xbmc.abortRequested == True or threadData['terminateThread'] == True:
+                    deb('RecordService recordLoop abort requested - terminating')
 
             if missingRtmpdumpBinary or missingFfmpegumpBinary:
                 binaryname = 'RTMPDUMP'
                 if missingFfmpegumpBinary == True and missingRtmpdumpBinary == False:
                     binaryname = 'FFMPEG'
-                xbmcgui.Dialog().ok(failedRecordDialogName,"\n" + missingRecordBinaryString + binaryname)
+                xbmcgui.Dialog().ok(failedRecordDialogName, "\n" + missingRecordBinaryString + binaryname)
                 break
 
             if success == False:
-                nrOfFailedServiceLoops = nrOfFailedServiceLoops + 1
-                if nrOfFailedServiceLoops < maxNrOfAllServiceLoops:
-                    for sleepTime in range(10):
+                if nrOfReattempts <= maxNrOfReattempts:
+                    for sleepTime in range(5):
                         if self.terminating == True or threadData['terminateThread'] == True:
                             break
                         time.sleep(1) #Go to sleep, maybe after that any service will be free to use
@@ -251,9 +235,8 @@ class RecordService(BasePlayService):
         self.cleanupTimer.start()
 
     def record(self, recordCommand, programDuration, threadData):
-        deb('RecordService record command:')
+        deb('RecordService record command: %s' % str(recordCommand))
         output = ''
-        print recordCommand
         si = None
         if os.name == 'nt':
             si = subprocess.STARTUPINFO()
@@ -271,8 +254,7 @@ class RecordService(BasePlayService):
             returnCode = threadData['recordHandle'].returncode
             threadData['stopRecordTimer'].cancel()
             threadData['recordHandle'] = None
-            deb('RecordService record finished, \noutput: %s, \nstatus: %d, Command: ' % (output, returnCode))
-            print recordCommand
+            deb('RecordService record finished, \noutput: %s, \nstatus: %d, Command: %s' % (output, returnCode, str(recordCommand)))
         except Exception, ex:
             deb('RecordService record exception: %s' % str(ex))
         return output
@@ -317,15 +299,28 @@ class RecordService(BasePlayService):
         nkfd_form = unicodedata.normalize('NFKD', unicode(text))
         return (u"".join([c for c in nkfd_form if not unicodedata.combining(c)])).encode('ascii', 'ignore')
 
-    def getOutputFilename(self, program):
-        return self.normalizeString(program.title).replace(' ', '_').replace('?', '').replace(';', '').replace(':', '').replace('>', '').replace('<', '').replace('\\', '').replace('*', '').replace('"', ' ').replace('|', '').replace('/', '')  + "_" + str(program.startDate.strftime("%Y-%m-%d_%H-%M")) + ".flv"
+    def getOutputFilename(self, program, partNumber = 0):
+        filename = self.normalizeString(program.title).replace(' ', '_').replace('?', '').replace(';', '').replace(':', '').replace('>', '').replace('<', '').replace('\\', '').replace('*', '').replace('"', ' ').replace('|', '').replace('/', '')  + "_" + str(program.startDate.strftime("%Y-%m-%d_%H-%M"))
+        if partNumber > 1:
+            filename = filename + "_part_%d" % partNumber
+        return filename + ".flv"
 
     def isProgramRecorded(self, program):
         debug('RecordService isProgramRecorded program: %s' % program.title.encode('utf-8'))
+        playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+        playlist.clear()
         filename = self.getOutputFilename(program)
         filePath = xbmc.translatePath(os.path.join(self.recordDestinationPath, filename))
-        if os.path.isfile(filePath):
-            return filePath
+
+        partNumber = 1
+        while os.path.isfile(filePath):
+            playlist.add(url=filePath)
+            partNumber = partNumber + 1
+            filename = self.getOutputFilename(program, partNumber)
+            filePath = os.path.join(self.recordDestinationPath, filename)
+
+        if playlist.size() > 0:
+            return playlist
         debug('RecordService isProgramRecorded not existing file: %s' % filePath)
         return None
 

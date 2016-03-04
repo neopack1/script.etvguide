@@ -35,6 +35,7 @@ class PlaylistUpdater(baseServiceUpdater):
 
             data = {}
             title = None
+            nextFreeCid = 0
             self.log('\n\n')
             self.log('[UPD] Pobieram liste dostepnych kanalow %s z %s' % (self.serviceName, self.url))
             self.log('[UPD] -------------------------------------------------------------------------------------')
@@ -55,8 +56,12 @@ class PlaylistUpdater(baseServiceUpdater):
                     if len(match) > 0:
                         title = match[0].replace("tvg-id=","").replace('"','').strip()
                     elif title is not None and len(stripLine) > 0:
-                        result.append(WeebTvCid(title, title, title, '2', stripLine, ''))
-                        self.log('[UPD] %-10s %-35s %-35s' % (title, title, stripLine))
+                        if title != '':
+                            result.append(WeebTvCid(nextFreeCid, title, title, '2', stripLine, ''))
+                            self.log('[UPD] %-10s %-35s %-35s' % (nextFreeCid, title, stripLine))
+                            nextFreeCid = nextFreeCid + 1
+                        else:
+                            self.log('[UPD] %-10s %-35s %-35s' % ('-', 'No title!', stripLine))
 
                 playlistChannelList = copy.deepcopy(result)
 
@@ -72,7 +77,7 @@ class PlaylistUpdater(baseServiceUpdater):
         self.log('[UPD] %-30s %-20s %-35s' % ('-ID mTvGuide-', '-    SRC   -', '-    STRM   -'))
         for channel in self.channels:
             strm = self.rstrm % channel.cid
-            mapStr = MapString(channel.cid, channel.title, strm, self.serviceName)
+            mapStr = MapString(channel.title, channel.title, strm, self.serviceName)
             self.automap.append(mapStr)
             self.log('[UPD] %-30s %-20s %-35s ' % (mapStr.channelid, mapStr.src, mapStr.strm))
 
@@ -84,7 +89,7 @@ class PlaylistUpdater(baseServiceUpdater):
         try:
             channels = self.getChannelList()
             for channel in channels:
-                if channel.cid == cid:
+                if str(channel.cid) == str(cid):
                     self.log('getChannel: found matching channel: cid %s, name %s, stream %s' % (channel.cid, channel.name, channel.strm))
                     return channel
         except Exception, ex:
