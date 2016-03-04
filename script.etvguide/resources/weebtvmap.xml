@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <map id="weebtv" version="1.0" strm="service=weebtv&amp;cid=%s">
 	<channel id="TVP 1" 									title="(?=.*TVP)(?=.*1)" strm=""/>
-	<channel id="TVP 2"										title="(?=.*TVP)(?=.*2)" strm=""/>
+	<channel id="TVP 2"										title="(?=TVP\s*2\s*HD$)" strm=""/>
+	<channel id="TVP 2"										title="(?=TVP\s*2$)" strm=""/>
 	<channel id="TVP HD" 									title="(?=.*TVP)(?=.*HD)(?!.*1)(?!.*2)(?!.*Info)(?!.*Seriale)(?!.*Polonia)" strm=""/>
 	<channel id="TVN" 										title="(?=.*TVN)(?!.*24)(?!.*7)(?!.*Turbo)" strm=""/>
 	<channel id="TVN Style" 								title="(?=.*TVN)(?=.*Style)" strm=""/>
@@ -23,7 +24,8 @@
 	<channel id="Superstacja" 								title="(?=.*Superstacja)" strm=""/>
 	<channel id="TVN 24" 									title="(?=.*TVN)(?=.*24)" strm=""/>
 	<channel id="Polsat News" 								title="(?=.*Polsat)(?=.*News)(?!.*Sport)" strm=""/>
-	<channel id="TVP Info" 									title="(?=.*TVP)(?=.*Info)" strm=""/>
+	<channel id="TVP Info" 									title="(?=TVP\s*INFO\s*HD$)" strm=""/>
+	<channel id="TVP Info" 									title="(?=TVP\s*INFO$)" strm=""/>
 	<channel id="Domo+" 									title="(?=.*Domo\+)(?=.*HD)" strm=""/>
 	<channel id="Kuchnia+" 									title="(?=.*Kuchnia\+)(?!.*15)(?!.*minut)(?!.*Jamiego)" strm=""/>
 	<channel id="BBC" 										title="(^BBC$)|(^BBC\W*HD$)" strm=""/>
@@ -38,7 +40,8 @@
 	<channel id="13 Ulica" 									title="(?=.*13)(?=.*Ulica)" strm=""/>
 	<channel id="Canal+" 									title="(^Canal\+$)|(^Canal.?\W*HD$)" strm=""/>
 <!--<channel id="Canal+ 1" 									title="(^Canal\+$)|(^Canal.?\W*HD$) (?=.*1)" strm=""/> -->
-	<channel id="Canal+ Film" 								title="(?=.*Canal)(?=.*Film)(?!.*2)" strm=""/>
+	<channel id="Canal+ Film" 								title="(?=\s*CANAL.*\s*FILM\s*HD\s*$)" strm=""/>
+	<channel id="Canal+ Film" 								title="(?=\s*CANAL.*\s*FILM\s*$)" strm=""/>
 <!--<channel id="Canal+ Film 2" 							title="(?=.*Canal)(?=.*Film)(?=.*2)" strm=""/> -->
 	<channel id="Canal+ Family" 							title="(?=.*Canal)(?=.*Family)(?!.*2)" strm=""/>
 <!--<channel id="Canal+ Family 2" 							title="(?=.*Canal)(?=.*Family)(?=.*2)" strm=""/> -->
@@ -52,6 +55,7 @@
 	<channel id="Filmbox Extra" 							title="(?=.*Filmbox)(?=.*Extra)" strm=""/>  WeebTV zle nazwal program...
 	-->
 	<channel id="Filmbox Extra HD" 							title="(?=Filmbox(\s*HD)?$)" strm=""/>
+	<channel id="Filmbox Premium" 							title="(?=\s*FILM\s*BOX\s*PREMIUM(\s*-)?(\s*HD)?\s*$)" strm=""/>
 	
 	<channel id="Cinemax" 									title="(?=.*Cinemax)" strm=""/>
 	<channel id="Cinemax 2" 								title="(?=.*Cinemax)(?=.*2)" strm=""/>
@@ -77,7 +81,7 @@
 	<channel id="Discovery Science" 						title="(?=.*Discovery)(?=.*Science)" strm=""/>
 	<channel id="Discovery Turbo Xtra" 						title="(?=.*Discovery)(?=.*Turbo)(?=.*Xtra)" strm=""/>
 	<channel id="Discovery Historia" 						title="(?=.*Discovery)(?=.*Historia)" strm=""/>
-	<channel id="ID" 										title="(?=.*ID)|((?=.*Investigation)(?=.*Discovery))" strm=""/>
+	<channel id="ID" 										title="(?=Investigation\s*Discovery(\s*HD)?\s*$)" strm=""/>
 	<channel id="Crime &amp; Investigation Network Polsat" 	title="(?=.*Crime)(?=.*Investigation)(?=.*Polsat)" strm=""/>
 	<channel id="Planete+" 									title="(?=.*Planete)(?=.*\+)" strm=""/>
 	<channel id="History" 									title="(?=.*HISTORY)(?!.*Polsat)" strm=""/>
@@ -88,7 +92,8 @@
 	<channel id="Polsat Viasat Nature" 						title="(?=.*POLSAT)(?=.*Nature)" strm=""/>
 	<channel id="Canal+ Sport" 								title="(?=.*Canal)(?=.*Sport)(?=.*\+)(?!.*2)" strm=""/>
 	<channel id="Canal+ Sport 2" 							title="(?=.*Canal)(?=.*Sport)(?=.*\+)(?=.*2)" strm=""/>
-	<channel id="Polsat Sport" 								title="(?=.*POLSAT)(?=.*Sport)(?!.*News)" strm=""/>
+	<channel id="Polsat Sport" 								title="(?=\s*Polsat\s*Sport\s*HD\s*$)" strm=""/>
+	<channel id="Polsat Sport" 								title="(?=\s*Polsat\s*Sport\s*$)" strm=""/>
 	<channel id="Polsat Sport News" 					    title="(?=.*POLSAT)(?=.*Sport)(?=.*News)" strm=""/>
 	<channel id="Polsat Sport Extra" 						title="(?=.*POLSAT)(?=.*Sport)(?=.*Extra)" strm=""/>
 	<channel id="nSport" 									title="(?=.*nSport)" strm=""/>
@@ -228,6 +233,8 @@
 	<channel id="BBC World News"						    title="(?=.*BBC)(?=.*world)(?=.*news)(?=.*ANG)" strm=""/>
 	<channel id="France 24"								    title="(?=.*FRANCE)(?=.*24)(?=.*ANG)" strm=""/>
 	<channel id="KSW"								        title="(?=.*KSW)" strm=""/>
+	<channel id="Vox Music TV"								title="(?=VOX\s*MUSIC(\s*TV)?(\s*HD)?$)" strm=""/>
+	<channel id="TVN 24 BiS"								title="(?=TVN24\s*Biznes\s*i\s*Swiat(\s*HD)?\s*$)" strm=""/>
 	
 	
 	
