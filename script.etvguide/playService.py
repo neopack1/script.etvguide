@@ -15,16 +15,14 @@ SERVICES = {
 'weebtv': weebtvcids.WebbTvStrmUpdater(),
 'goldvod': goldvodcids.GoldVodUpdater(),
 'telewizjada': telewizjadacids.TelewizjaDaUpdater(),
-'playlist': playlistcids.PlaylistUpdater(),
-'mojefilmy' : mojefilmycids.MojeFilmyUpdater()
+'playlist': playlistcids.PlaylistUpdater()
 }
 
 SERVICE_AVAILABILITY = {
 'weebtv': ADDON.getSetting('WeebTV_enabled'),
 'goldvod': ADDON.getSetting('GoldVOD_enabled'),
 'telewizjada': ADDON.getSetting('telewizjada_enabled'),
-'playlist': ADDON.getSetting('playlist_enabled'),
-'mojefilmy' : ADDON.getSetting('MojeFilmy_enabled')
+'playlist': ADDON.getSetting('playlist_enabled')
 }
 
 class BasePlayService:
