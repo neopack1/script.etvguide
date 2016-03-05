@@ -18,7 +18,7 @@
 	<string id="30106">Pokaż powiadomienie przed rozpoczęciem programu</string>
 	<string id="30108">Wyczyść wszystkie przypomnienia...</string>
 	<string id="30109">Wyczyść wszystkie zaplanowane nagrywania...</string>
-	<string id="30110">Aktualizuj informacje o programie podczas startu XBMC</string>
+	<string id="30110">Aktualizuj informacje o programie podczas startu KODI</string>
 	<string id="30116">Wyszukaj obrazki kanałów w</string>
 	<string id="30117">Wybierz EPG:</string>
 	<string id="30118">Serwer:</string>
@@ -106,7 +106,7 @@
 	<string id="30913">Ustawienia</string>
 	<string id="30916">Ustawienia Bazy</string>
 	<string id="30914">Skórka</string>
-	<string id="30915">Uruchom e-TVGuide po starcie XBMC</string>
+	<string id="30915">Uruchom e-TVGuide po starcie KODI</string>
 	<string id="30917">Animacja maksymalizacji okna odtwarzania</string>
 	<string id="30930">Kolory</string>
 	<string id="30931">Kolory kategorii</string>
@@ -237,7 +237,7 @@
 	<string id="69015">Wyjść pomimo zaplanowanego nagrywania?</string>
 	<string id="69016">Korzystaj z FFMPEG do nagrywania RTMP zamiast rtmpdump</string>
 	<string id="69017">[COLOR red]Pobierz aplikacje do nagrywania z mods-kodi[/COLOR]</string>
-	<string id="69018">m-TVGuide pobierze teraz pliki z serwera - proszę nacisnąć OK i zaczekać</string>
+	<string id="69018">e-TVGuide pobierze teraz pliki z serwera - proszę nacisnąć OK i zaczekać</string>
 	<string id="69019">Pobieranie aplikacji nie powiodło się - spróbuj ponownie lub zainstaluj ręcznie</string>
 	<string id="69020">Debug log</string>
 	<string id="69021">Nie udało się znaleźć ffmpeg ani rtmpdump na systemie - proszę zainstalować korzystając z wbudowanego packet managera rtmpdump, ffmpeg lub libav-tools oraz ponownie spróbować zaimportować automatycznie lub wybrać pliki ręcznie</string>

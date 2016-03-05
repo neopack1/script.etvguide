@@ -18,7 +18,7 @@
 	<string id="30106">Show notification before selected programs start</string>
 	<string id="30108">Clear all reminders...</string>
 	<string id="30109">Clear all scheduled recordings...</string>
-	<string id="30110">Update program information on XBMC startup</string>
+	<string id="30110">Update program information on KODI startup</string>
 	<string id="30116">Search for channel logos in</string>
 	<string id="30117">Select EPG</string>
 	<string id="30118">Server:</string>
@@ -77,7 +77,7 @@
 	<string id="30606">Cancel</string>
 	<string id="30607">Stop preview</string>
 	<string id="30610">Browse...</string>
-	<string id="30611">Click Browse... below and navigate to your stream file. When you have chosen your file you can preview the stream to test if it works in XBMC.</string>
+	<string id="30611">Click Browse... below and navigate to your stream file. When you have chosen your file you can preview the stream to test if it works in KODI.</string>
 	<string id="30620">Choose a favourite below. Only [I]PlayMedia[/I] favourites are supported.</string>
 	<string id="30700">Multiple addons provide this channels.[CR]Choose one to watch the stream.</string>
 	<string id="30701">Source: </string>
@@ -105,7 +105,7 @@
 	<string id="59908">File</string>
 	<string id="30913">Settings</string>
 	<string id="30914">Skin</string>
-	<string id="30915">Enable XBMC m-TVGuide autostart</string>
+	<string id="30915">Enable KODI e-TVGuide autostart</string>
 	<string id="30916">Database Settings</string>
 	<string id="30917">Enable stream window resize animation</string>
 	<string id="30930">Colours</string>
