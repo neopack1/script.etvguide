@@ -7,7 +7,6 @@ import weebtvcids
 import telewizjadacids
 import goldvodcids
 import playlistcids
-import mojefilmycids
 import threading
 import time
 
