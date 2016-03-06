@@ -1,5 +1,5 @@
 # script.etvguide
-Modified version of script.tvguide for xbmc. This version is mainly focused for weeb.tv polish online television.
+Modified version of script.tvguide modified by mods-kodi.pl for KODI. This version is mainly focused for weeb.tv, goldvod.tv and telewizjada.net polish online television.
 
 
 check out my github site [HERE](http://en0x.github.io/script.etvguide/)
