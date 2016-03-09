@@ -1,3 +1,7 @@
+[B]wersja 2.1.25[/B] - 2016-03-09
+- naprawa goldvod.tv
+
+
 [B]wersja 2.1.21[/B] - 2016-03-04
 - naprawa telwziajda.net
 

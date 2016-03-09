@@ -1,16 +1,19 @@
 #      Copyright (C) 2016 Andrzej Mleczko
 
-import sys, re, copy
+import urllib, sys, re, copy
 import xbmc
 import datetime
 import os, xbmcaddon, xbmcgui
 from strings import *
 from serviceLib import *
+import io
 
 goldUrlSD = 'http://goldvod.tv/api/getTvChannelsSD.php'
 goldUrlHD = 'http://goldvod.tv/api/getTvChannels.php'
 goldImgBase = 'http://goldvod.tv/api/images/'
+
 onlineMapFile = 'http://epg.feenk.net/maps/goldvodmap.xml'
+
 localMapFile = 'goldvodmap.xml'
 serviceName = 'goldvod.tv'
 serviceRegex = "service=goldvod&cid=%"
@@ -31,9 +34,6 @@ class GoldVodUpdater(baseServiceUpdater):
         self.onlineMapFile = onlineMapFile
         self.localMapFile = localMapFile
         self.maxAllowedStreams = 2
-        self.addDuplicatesAtBeginningOfList = True
-        if ADDON.getSetting('assign_all_streams_goldvod') == 'true':
-            self.addDuplicatesToList = True
 
         if ADDON.getSetting('video_qualityGoldVOD') == 'true':
             self.url = goldUrlHD
@@ -56,6 +56,8 @@ class GoldVodUpdater(baseServiceUpdater):
             self.log('[UPD] -------------------------------------------------------------------------------------')
             self.log('[UPD] %-10s %-35s %-35s' % ( '-CID-', '-NAME-', '-RTMP-'))
         result = list()
+        channelsArray = None
+        failedCounter = 0
         post = { 'username': self.login, 'password': self.password }
         channelsArray = self.sl.getJsonFromAPI(self.url, post)
 
@@ -69,7 +71,6 @@ class GoldVodUpdater(baseServiceUpdater):
                     cid = self.sl.decode(channelsArray[s]['id']).replace("\"", '')
                     url = self.sl.decode(channelsArray[s]['rtmp']).replace("\"", '')
                     name = self.sl.decode(channelsArray[s]['name']).replace("\"", '')
-                    name = re.sub('SERWER\s*\d*', '', name, flags=re.IGNORECASE).replace('  ', ' ').strip()
                     ico = goldImgBase + self.sl.decode(channelsArray[s]['image']).replace("\"", '')
                     if silent is not True:
                         self.log('[UPD] %-10s %-35s %-35s' % (cid, name, url))
