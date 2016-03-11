@@ -11,7 +11,7 @@ else:
 pluginUrl = sys.argv[0]
 pluginHandle = int(sys.argv[1])
 pluginQuery = sys.argv[2]
-base_url = 'http://player.pl/api/?platform=ConnectedTV&terminal=Samsung&format=json&v=2.0&authKey=ba786b315508f0920eca1c34d65534cd'
+base_url = 'http://tvnplayer.pl/api/?platform=ConnectedTV&terminal=Samsung&format=json&v=3.0&authKey=ba786b315508f0920eca1c34d65534cd'
 scale_url = 'http://redir.atmcdn.pl/scale/o2/tvn/web-content/m/'
 
 __settings__ = xbmcaddon.Addon(id='plugin.video.tvnplayer.pl')
