@@ -7,6 +7,7 @@ import weebtvcids
 import telewizjadacids
 import goldvodcids
 import playlistcids
+import mojefilmycids
 import threading
 import time
 
@@ -14,14 +15,16 @@ SERVICES = {
 'weebtv': weebtvcids.WebbTvStrmUpdater(),
 'goldvod': goldvodcids.GoldVodUpdater(),
 'telewizjada': telewizjadacids.TelewizjaDaUpdater(),
-'playlist': playlistcids.PlaylistUpdater()
+'playlist': playlistcids.PlaylistUpdater(),
+'mojefilmy' : mojefilmycids.MojeFilmyUpdater()
 }
 
 SERVICE_AVAILABILITY = {
 'weebtv': ADDON.getSetting('WeebTV_enabled'),
 'goldvod': ADDON.getSetting('GoldVOD_enabled'),
 'telewizjada': ADDON.getSetting('telewizjada_enabled'),
-'playlist': ADDON.getSetting('playlist_enabled')
+'playlist': ADDON.getSetting('playlist_enabled'),
+'mojefilmy' : ADDON.getSetting('MojeFilmy_enabled')
 }
 
 class BasePlayService:
@@ -123,7 +126,7 @@ class PlayService(xbmc.Player, BasePlayService):
 
             for i in range(150):
 
-                if self.terminating == True or xbmc.abortRequested == True:
+                if self.terminating == True or M_TVGUIDE_CLOSING == True:
                     self.player.stop()
                     self.unlockService(self.currentlyPlayedService)
                     self.currentlyPlayedService = None

@@ -10,7 +10,6 @@ import signal
 from playService import BasePlayService
 import unicodedata
 import time
-import platform
 
 recordIcon = 'recordIcon.png'
 recordNotificationName = strings(69004).encode('utf-8')
@@ -33,23 +32,23 @@ class RecordService(BasePlayService):
         self.threadList = list()
         self.timers = list()
         self.cleanupTimer = None
-        self.scheduleAllRecordingsTimer = None
-        deb('RecordService __init__ System: %s, ARH: %s' % (platform.system(), platform.machine()))
 
     def scheduleAllRecordings(self):
-        self.scheduleAllRecordingsTimer = threading.Timer(1, self._scheduleAllRecordings)
-        self.scheduleAllRecordingsTimer.start()
-
-    def _scheduleAllRecordings(self):
-        debug('_scheduleAllRecordings')
+        deb('scheduleAllRecordings')
         channels = self.epg.database.getChannelList(True)
         for channel_name, program_title, start_date, end_date in self.epg.database.getRecordings():
+            timeDelta = end_date - datetime.datetime.now()
+            timeToProgramEnd = timeDelta.seconds + timeDelta.days * 86400
+            if timeToProgramEnd < 0:
+                debug('scheduleAllRecordings %s has already finished' % program_title)
+                continue
             for channel in channels:
                 if channel.id == channel_name:
                     program = self.epg.database.getProgramStartingAt(channel, start_date)
                     if program is not None and self.isProgramScheduled(program) == False:
                         self.scheduleRecording(program, 30)
                     break
+        debug('scheduleAllRecordings completed!')
 
     def scheduleRecording(self, program, delayRecording = 0):
         deb('RecordService scheduling record for program %s, starting at %s' % (program.title.encode('utf-8'), program.startDate))
@@ -104,9 +103,9 @@ class RecordService(BasePlayService):
         partNumber = 1
         nrOfReattempts = 0
 
-        while success == False and nrOfReattempts <= maxNrOfReattempts and self.terminating == False and threadData['terminateThread'] == False and xbmc.abortRequested == False:
+        while success == False and nrOfReattempts <= maxNrOfReattempts and self.terminating == False and threadData['terminateThread'] == False and M_TVGUIDE_CLOSING == False:
             for url in threadData['urlList']:
-                if success == True or self.terminating == True or threadData['terminateThread'] == True or nrOfReattempts > maxNrOfReattempts or xbmc.abortRequested == True:
+                if success == True or self.terminating == True or threadData['terminateThread'] == True or nrOfReattempts > maxNrOfReattempts or M_TVGUIDE_CLOSING == True:
                     break
 
                 recordCommand = None
@@ -123,7 +122,7 @@ class RecordService(BasePlayService):
                     deb('RecordService recordLoop - locked service %s - trying next, nrOfReattempts: %d, max: %d' % (service, nrOfReattempts, maxNrOfReattempts))
                     continue #go to next stream - this one seems to be locked
 
-                while os.path.isfile(destinationFile): #Generate output filename that is not used
+                while os.path.isfile(destinationFile): #Generate output filename which is not used
                     partNumber = partNumber + 1
                     outputFileName = self.getOutputFilename(threadData['program'], partNumber)
                     destinationFile = os.path.join(self.recordDestinationPath, outputFileName)
@@ -209,7 +208,7 @@ class RecordService(BasePlayService):
                                 pass
 
                 self.unlockService(service)
-                if self.terminating == True or xbmc.abortRequested == True or threadData['terminateThread'] == True:
+                if self.terminating == True or M_TVGUIDE_CLOSING == True or threadData['terminateThread'] == True:
                     deb('RecordService recordLoop abort requested - terminating')
 
             if missingRtmpdumpBinary or missingFfmpegumpBinary:
@@ -222,7 +221,7 @@ class RecordService(BasePlayService):
             if success == False:
                 if nrOfReattempts <= maxNrOfReattempts:
                     for sleepTime in range(5):
-                        if self.terminating == True or threadData['terminateThread'] == True:
+                        if self.terminating == True or threadData['terminateThread'] == True or M_TVGUIDE_CLOSING:
                             break
                         time.sleep(1) #Go to sleep, maybe after that any service will be free to use
         deb('RecordService - end of recording program: %s' % threadData['program'].title.encode('utf-8', 'ignore'))
@@ -271,8 +270,6 @@ class RecordService(BasePlayService):
     def close(self):
         deb('RecordService close')
         self.terminating = True
-        if self.scheduleAllRecordingsTimer is not None:
-            self.scheduleAllRecordingsTimer.cancel()
         for element in self.timers[:]:
             element[1].cancel()
         self.timers = list()
@@ -305,23 +302,29 @@ class RecordService(BasePlayService):
             filename = filename + "_part_%d" % partNumber
         return filename + ".flv"
 
+    def getListOfFilenamesForProgram(self, program):
+        debug('getListOfFilenamesForProgram')
+        filenameList = list()
+        filename = self.getOutputFilename(program)
+        filePath = xbmc.translatePath(os.path.join(self.recordDestinationPath, filename))
+        partNumber = 1
+        while os.path.isfile(filePath):
+            filenameList.append(filePath)
+            partNumber = partNumber + 1
+            filename = self.getOutputFilename(program, partNumber)
+            filePath = os.path.join(self.recordDestinationPath, filename)
+        return filenameList
+
     def isProgramRecorded(self, program):
         debug('RecordService isProgramRecorded program: %s' % program.title.encode('utf-8'))
         playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
         playlist.clear()
-        filename = self.getOutputFilename(program)
-        filePath = xbmc.translatePath(os.path.join(self.recordDestinationPath, filename))
-
-        partNumber = 1
-        while os.path.isfile(filePath):
-            playlist.add(url=filePath)
-            partNumber = partNumber + 1
-            filename = self.getOutputFilename(program, partNumber)
-            filePath = os.path.join(self.recordDestinationPath, filename)
+        filenameList = self.getListOfFilenamesForProgram(program)
+        for filename in filenameList:
+            playlist.add(url=filename)
 
         if playlist.size() > 0:
             return playlist
-        debug('RecordService isProgramRecorded not existing file: %s' % filePath)
         return None
 
     def isProgramScheduled(self, program):
@@ -384,3 +387,15 @@ class RecordService(BasePlayService):
         if len(self.timers) > 0:
             return True
         return False
+
+    def removeRecordedProgram(self, program):
+        debug('removeRecordedProgram')
+        if program is None:
+            deb('removeRecordedProgram got faulty program!!!!')
+        filenameList = self.getListOfFilenamesForProgram(program)
+        for filename in filenameList:
+            try:
+                os.remove(filename)
+                debug('removeRecordedProgram removing %s' % filename)
+            except Exception, ex:
+                deb('removeRecordedProgram exception: %s' % str(ex))

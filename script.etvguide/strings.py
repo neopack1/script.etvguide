@@ -28,6 +28,7 @@ ADDON_PATH          = ADDON.getAddonInfo('path')
 ADDON_CIDUPDATED    = False    #zabezpieczenie przed ponownym updatem cidow
 ADDON_AUTOSTART     = False    #zabezpieczenie przed ponownym uruchomieniem wtyczki
 FORCE_ADD_LOG_DEBUG = True     #True - Logowanie nawet jezeli wylaczone debugowanie w XBMC
+M_TVGUIDE_CLOSING   = False
 
 NO_DESCRIPTION = 30000
 CALCULATING_REMAINING_TIME = 30002
@@ -129,8 +130,11 @@ def deb(s):
         xbmc.log("ETVGUIDE @ " + str(s.encode('ascii', 'ignore')))
 
 def debug(s):
-    if DEBUG == True:
-        try:
-            xbmc.log("Debug @ " + str(s))
-        except:
-            xbmc.log("Debug @ " + str(s.encode('ascii', 'ignore')))
+    try:
+        if DEBUG == True:
+            try:
+                xbmc.log("Debug @ " + str(s))
+            except:
+                xbmc.log("Debug @ " + str(s.encode('ascii', 'ignore')))
+    except:
+        xbmc.log("Debug @ " + str(s.encode('ascii', 'ignore')))

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <settings>
 	<category label="55007">
+		<setting id="connection_reattempts" label="connection_reattempts" type="number" default="25" visible="false"/>
 		<setting label="30912" type="lsep"/>
 		<setting id="WeebTV_enabled" type="bool" label="59904" default="false"/>
 		<setting id="username" type="text" label="55002" default="" visible="eq(-1,true)"/>
@@ -14,11 +15,17 @@
 		<setting id="userpasswordGoldVOD" type="text" option="hidden" label="55003" default="" visible="eq(-2,true)"/>
 		<setting id="video_qualityGoldVOD" type="bool" label="55005" default="true" visible="eq(-3,true)"/>
 		<setting id="assign_all_streams_goldvod" type="bool" label="55008" default="true" visible="eq(-4,true) + eq(-1,true)"/>
-		<setting id="priority_goldvod" label="55009" type="enum" default="1" values="niski|sredni|wysoki|b.wysoki" visible="eq(-4,true)"/>
+		<setting id="priority_goldvod" label="55009" type="enum" default="1" values="niski|sredni|wysoki|b.wysoki" visible="eq(-5,true)"/>
 
 		<setting label="59903" type="lsep"/>
 		<setting id="telewizjada_enabled" type="bool" label="59904" default="true"/>
 		<setting id="priority_telewizjada" label="55009" type="enum" default="2" values="niski|sredni|wysoki|b.wysoki" visible="eq(-1,true)"/>
+
+		<setting label="30956" type="lsep"/>
+ 		<setting id="MojeFilmy_enabled" type="bool" label="59904" default="false"/>
+ 		<setting id="mail_mojefilmy" type="text" label="30957" default="" visible="eq(-1,true)"/>
+ 		<setting id="userpasswordMojeFilmy" type="text" option="hidden" label="55003" default="" visible="eq(-2,true)"/>
+ 		<setting id="priority_mojefilmy" label="55009" type="enum" default="1" values="niski|sredni|wysoki|b.wysoki" visible="eq(-3,true)"/>
 
 		<setting label="59905" type="lsep"/>
 		<setting id="playlist_enabled" type="bool" label="59904" default="false"/>
@@ -34,7 +41,7 @@
 		<setting id="xmltv.file" label="30103" type="file" visible="eq(-3,0)"/>
 		<setting id="xmltv.logo.folder" label="30116" type="folder" visible="eq(-4,0)"/>
 		<setting type="sep" visible="eq(-5,1)"/>
-		<setting id="Time.Zone" label="30911" type="labelenum" visible="eq(-6,1)" default="+01:00" values="-12:00|-11:00|-10:00|-09:30|-09:00|-08:00|-07:00|-06:00|-05:00|-04:30|-04:00|-03:30|-03:00|-02:00|-01:00|00:00|+01:00|+02:00|+03:00|+03:30|+04:00|+04:30|+05:00|+05:30|+05:45|+06:00|+06:30|+07:00|+08:00|+09:00|+09:30|+10:00|+10:30|+11:00|+11:30|+12:00|+12:45|+13:00|+14:00|"/>
+		<setting id="Time.Zone" label="30911" type="labelenum" default="+01:00" values="-12:00|-11:00|-10:00|-09:30|-09:00|-08:00|-07:00|-06:00|-05:00|-04:30|-04:00|-03:30|-03:00|-02:00|-01:00|00:00|+01:00|+02:00|+03:00|+03:30|+04:00|+04:30|+05:00|+05:30|+05:45|+06:00|+06:30|+07:00|+08:00|+09:00|+09:30|+10:00|+10:30|+11:00|+11:30|+12:00|+12:45|+13:00|+14:00|"/>
 		<setting type="sep" visible="eq(-7,1)"/>
 		<setting label="30117" type="lsep" visible="eq(-8,1)"/>
 		<setting id="e-TVGuide" label="30118" type="labelenum" visible="eq(-9,1)" default="1" values="1"/>
@@ -45,7 +52,7 @@
 		<setting type="sep" visible="eq(-14,1)"/>
 		<setting id="e-TVGuide4" label="30122" type="text" visible="eq(-15,1)" default=""/>
 		<setting id="e-TVGuide5" label="30123" type="text" visible="eq(-16,1)" default=""/>
-		<setting id="UpdateEPGOnModifiedDate" label="30706" type="bool" default="false"/>
+		<setting id="UpdateEPGOnModifiedDate" label="30706" visible="eq(-17,1)" type="bool" default="false"/>
 	</category>
 	<category label="30913">
 		<setting id="autostart_etvguide" label="30915" type="bool" default="false"/>
@@ -53,7 +60,7 @@
 		<setting id="notifications.enabled" label="30106" type="bool" default="false"/>
 		<setting id="sleep_enabled" type="labelenum" label="89001" default="Nie" values="Nie|Tak"/>
 		<setting id="sleep_timer" type="text" label="89003" default="100" visible="eq(-1,1)"/>
-		<setting id="sleep_action" type="labelenum" label="89002" default="Zatrzymaj odtw." values="Zatrzymaj odtw.|Wylacz Xbmc|Wylacz komputer|Uspij komputer" visible="eq(-2,1)"/>
+		<setting id="sleep_action" type="labelenum" label="89002" default="Zatrzymaj odtw." values="Zatrzymaj odtw.|Wylacz KODI|Wylacz komputer|Uspij komputer" visible="eq(-2,1)"/>
 		<setting id="pokazpanel" label="30910" type="bool" default="false"/>
 		<setting id="info.osd" label="31001" type="bool" default="false"/>
 		<setting id="start_video_minimalized" label="30917" type="bool" default="true"/>
@@ -67,7 +74,7 @@
 		<setting label="30109" type="action" action="RunScript($CWD/cleardb.py, clearRecordings)"/>
 		<setting type="sep"/>
 		<setting label="30953" type="action" action="RunScript($CWD/settingsImportExport.py, Export)"/>
-		<setting label="30954" type="action" action="RunScript($CWD/settingsImportExport.py, Import)"/>
+		<setting label="30954" type="action" option="close" action="RunScript($CWD/settingsImportExport.py, Import)"/>
 		<setting type="sep"/>
 		<setting label="30952" type="action" action="RunScript($CWD/cleardb.py, clearCustom)"/>
 		<setting label="30950" type="action" action="RunScript($CWD/cleardb.py, clearAll)"/>
@@ -83,6 +90,7 @@
 		<setting id="ffmpegExe" label="69002" type="action" option="close" value="" action="RunScript($CWD/settingsImportExport.py, ImportRecordApp)"/>
 		<setting id="ffmpeg_format" label="69014" type="labelenum" default="flv" values="flv|asf"/>
 		<setting id="max_reattempts" label="69024" type="number" default="20"/>
+		<setting id="ask_to_delete_watched" label="69025" type="enum" default="1" lvalues="69028|69029|69030"/>
 	</category>
 	<category label="30702">
 		<setting id="Skin" label="30914" type="select" source="/resources/skins/" mask="/" default="Default"/>

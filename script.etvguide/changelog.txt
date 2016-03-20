@@ -1,6 +1,10 @@
+[B]wersja 2.2.0[/B] - 2016-03-20
+- Dodanie moje-filmy.tk
+-Wprowadzona możliwość pytania/automatycznego usuwania nagrania po jego obejrzeniu
+-Poprawione dwukrotne ładowanie EPG po zatrzymaniu odtwarzania przy wyłączonej opcji "Animacja maksymalizacji okna odtwarzania"
+
 [B]wersja 2.1.25[/B] - 2016-03-09
 - naprawa goldvod.tv
-
 
 [B]wersja 2.1.21[/B] - 2016-03-04
 - naprawa telwziajda.net

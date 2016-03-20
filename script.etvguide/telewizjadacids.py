@@ -8,12 +8,12 @@ from serviceLib import *
 
 
 telewizjadaMainUrl  = 'http://www.telewizjada.net/'
-serviceName   = 'telewizjada.net'
-serviceRegex  = "service=telewizjada&cid=%"
-onlineMapFile = 'http://epg.feenk.net/maps/telewizjadamap.xml'
-localMapFile  = 'telewizjadamap.xml'
-servicePriority = int(ADDON.getSetting('priority_telewizjada'))
-COOKIE_FILE   = os.path.join(xbmc.translatePath(ADDON.getAddonInfo('profile')) , 'telewizjada.cookie')
+serviceName         = 'telewizjada.net'
+serviceRegex        = "service=telewizjada&cid=%"
+onlineMapFile       = 'http://epg.feenk.net/maps/telewizjadamap.xml'
+localMapFile        = 'telewizjadamap.xml'
+servicePriority     = int(ADDON.getSetting('priority_telewizjada'))
+COOKIE_FILE         = os.path.join(xbmc.translatePath(ADDON.getAddonInfo('profile')) , 'telewizjada.cookie')
 
 telewizjadaChannelList = None
 
@@ -81,12 +81,15 @@ class TelewizjaDaUpdater(baseServiceUpdater):
             for chann in telewizjadaChannelList:
                 if chann.cid == cid:
                     failedCounter = 0
-                    while failedCounter < 5:
-                        if xbmc.abortRequested:
+                    while failedCounter < 3:
+                        if M_TVGUIDE_CLOSING:
                             break
 
                         data = { 'cid': cid }
                         link = self.sl.getJsonFromExtendedAPI(telewizjadaMainUrl + 'get_mainchannel.php', post_data = data, jsonLoadsResult = True)
+                        if link is None:
+                            failedCounter = failedCounter + 1
+                            continue
 
                         data = { 'url': link['url'] }
                         self.sl.getJsonFromExtendedAPI(telewizjadaMainUrl + 'set_cookie.php', post_data = data, cookieFile = COOKIE_FILE, save_cookie = True)

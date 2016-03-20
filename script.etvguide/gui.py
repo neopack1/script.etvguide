@@ -25,7 +25,7 @@ import datetime
 import threading
 import time
 import ConfigParser
-
+import platform
 import xbmc
 import xbmcgui
 from xbmcgui import Dialog, WindowXMLDialog
@@ -268,7 +268,7 @@ class eTVGuide(xbmcgui.WindowXML):
         return super(eTVGuide, cls).__new__(cls, 'script-tvguide-main.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), "720p")
 
     def __init__(self):
-        deb('eTVGuide __init__')
+        deb('eTVGuide __init__ System: %s, ARH: %s' % (platform.system(), platform.machine()))
         super(eTVGuide, self).__init__()
         self.initialized = False
         self.notification = None
@@ -293,6 +293,7 @@ class eTVGuide(xbmcgui.WindowXML):
         self.mode = MODE_EPG
         self.currentChannel = None
         self.recordedFilesPlaylistPositions = {}
+        self.playingRecordedProgram = False
 
         # find nearest half hour
         self.viewStartDate = datetime.datetime.today()
@@ -317,6 +318,16 @@ class eTVGuide(xbmcgui.WindowXML):
             if ADDON.getSetting('start_video_minimalized') == 'false' and ADDON.getSetting('pokazpanel') == 'true': #workaroud for dissapearing mouse panel when start_video_minimalized disabled
                 self._hideControl(self.C_MAIN_MOUSEPANEL_CONTROLS)
             self._showEPG()
+            if pstate == "Ended" and self.playingRecordedProgram and self.recordService.isProgramScheduled(self.program) == False:
+                time.sleep(0.1)
+                if self.player.isPlaying() == False:
+                    deleteFiles = False
+                    if ADDON.getSetting('ask_to_delete_watched') == '1':
+                        deleteFiles = xbmcgui.Dialog().yesno(heading=strings(69026).encode('utf-8', 'replace'), line1='%s?' % strings(69027).encode('utf-8', 'replace'))
+                    elif ADDON.getSetting('ask_to_delete_watched') == '2':
+                        deleteFiles = True
+                    if deleteFiles == True:
+                        self.recordService.removeRecordedProgram(self.program)
         else:
             self._hideEpg()
 
@@ -344,7 +355,7 @@ class eTVGuide(xbmcgui.WindowXML):
                     return
 
             self.isClosing = True
-            xbmc.abortRequested = True
+            M_TVGUIDE_CLOSING = True
             self.playService.close()
             self.recordService.close()
             self.notification.close()
@@ -798,6 +809,7 @@ class eTVGuide(xbmcgui.WindowXML):
         self.playChannel2(self.database.getCurrentProgram(channel))
 
     def playRecordedProgram(self, program):
+        self.playingRecordedProgram = False
         recordedProgram = self.recordService.isProgramRecorded(program)
         if recordedProgram is not None:
             ret = xbmcgui.Dialog().yesno(heading=strings(RECORDED_FILE_POPUP).encode('utf-8', 'replace'), line1='%s %s?' % (strings(RECORDED_FILE_QUESTION).encode('utf-8', 'replace'), program.title.encode('utf-8', 'replace')), autoclose=60000)
@@ -814,6 +826,7 @@ class eTVGuide(xbmcgui.WindowXML):
 
                 deb('playRecordedProgram starting play of recorded program %s from index %d' % (program.title.encode('utf-8', 'replace'), playlistIndex))
                 self.player.play(item=recordedProgram, windowed=startWindowed, startpos=playlistIndex)
+                self.playingRecordedProgram = True
                 return True
         return False
 
@@ -890,7 +903,7 @@ class eTVGuide(xbmcgui.WindowXML):
         debug('waitForPlayBackStopped')
         while self.epg.playService.isWorking() == True:
             time.sleep(0.2)
-        while (self.player.isPlaying() or self.epg.playService.isWorking() == True) and not xbmc.abortRequested and not self.isClosing:
+        while (self.player.isPlaying() or self.epg.playService.isWorking() == True) and not M_TVGUIDE_CLOSING and not self.isClosing:
             time.sleep(0.5)
         self.onPlayBackStopped()
 
@@ -916,8 +929,8 @@ class eTVGuide(xbmcgui.WindowXML):
         if self.redrawingEPG or (self.database is not None and self.database.updateInProgress) or self.isClosing:
             deb('onRedrawEPG - already redrawing')
             return # ignore redraw request while redrawing
-
         self.redrawingEPG = True
+        self.redrawagain = False
         self.mode = MODE_EPG
 
         if self.infoDialog is not None:
@@ -936,6 +949,7 @@ class eTVGuide(xbmcgui.WindowXML):
         try:
             debug('onRedrawEPG self.database.getEPGView')
             self.channelIdx, channels, programs, cacheExpired = self.database.getEPGView(channelStart, startTime, self.onSourceProgressUpdate, clearExistingProgramList = True)
+            debug('onRedrawEPG after self.database.getEPGView')
         except src.SourceException:
             debug('onRedrawEPG onEPGLoadError')
             self.onEPGLoadError()
@@ -1072,6 +1086,7 @@ class eTVGuide(xbmcgui.WindowXML):
         self._hideControl(self.C_MAIN_LOADING)
         self.redrawingEPG = False
         if self.redrawagain:
+            debug('onRedrawEPG redrawing again')
             self.redrawagain = False
             self.onRedrawEPG(channelStart, self.viewStartDate, focusFunction)
         debug('onRedrawEPG done')
@@ -1087,6 +1102,8 @@ class eTVGuide(xbmcgui.WindowXML):
                     self.removeControl(elem.control)
                 except RuntimeError:
                     pass # happens if we try to remove a control that doesn't exist
+                except Exception, ex:
+                    deb('_clearEpg unhandled exception: %s' % str(ex))
         del self.controlAndProgramList[:]
         debug('_clearEpg end')
 
@@ -1106,7 +1123,7 @@ class eTVGuide(xbmcgui.WindowXML):
 
     def isSourceInitializationCancelled(self):
         deb('isSourceInitializationCancelled')
-        return xbmc.abortRequested or self.isClosing
+        return M_TVGUIDE_CLOSING or self.isClosing
 
     def onSourceInitialized(self, success):
         deb('onSourceInitialized')
@@ -1139,7 +1156,7 @@ class eTVGuide(xbmcgui.WindowXML):
                     secondsLeft -= secondsLeft % 10
                 self.setControlLabel(self.C_MAIN_LOADING_TIME_LEFT, strings(TIME_LEFT) % secondsLeft)
 
-        return not xbmc.abortRequested and not self.isClosing
+        return not M_TVGUIDE_CLOSING and not self.isClosing
 
     def onPlayBackStopped(self):
         deb('onPlayBackStopped')
@@ -1313,7 +1330,9 @@ class eTVGuide(xbmcgui.WindowXML):
                     pass
                 control.setPosition(self._secondsToXposition(timeDelta.seconds), y)
 
-            if scheduleTimer and not xbmc.abortRequested and not self.isClosing:
+            if scheduleTimer and not M_TVGUIDE_CLOSING and not self.isClosing:
+                if self.updateTimebarTimer is not None:
+                    self.updateTimebarTimer.cancel()
                 self.updateTimebarTimer = threading.Timer(20, self.updateTimebar)
                 self.updateTimebarTimer.start()
         except Exception:
@@ -1899,8 +1918,8 @@ class Pla(xbmcgui.WindowXMLDialog):
                 #jakies menu jest pod przyciskami i, pod m
 
 
-#        if action.getId() == KEY_CODEC_INFO: #przysik O
-#            xbmc.executebuiltin("Action(CodecInfo)")
+        #if action.getId() == KEY_CODEC_INFO: #przysik O
+            #xbmc.executebuiltin("Action(CodecInfo)")
 
         if action.getId() == ACTION_SHOW_INFO or (action.getButtonCode() == KEY_INFO and KEY_INFO != 0) or (action.getId() == KEY_INFO and KEY_INFO != 0):
             try:
@@ -1977,7 +1996,7 @@ class Pla(xbmcgui.WindowXMLDialog):
             time.sleep(0.1)
 
         while self.wait == True:
-            if self.epg.player.isPlaying() and not xbmc.abortRequested:
+            if self.epg.player.isPlaying() and not M_TVGUIDE_CLOSING:
                 time.sleep(0.2)
             else:
                 if self.ChannelChanged == 1:

@@ -22,6 +22,7 @@
 	<string id="30116">Search for channel logos in</string>
 	<string id="30117">Select EPG</string>
 	<string id="30118">Server:</string>
+	<string id="30119">[COLOR red][B]Additional EPG 1:[/B][/COLOR]</string>
 	<string id="30120">Weeb.TV 24h channels:</string>
 	<string id="30121">Telewizjada.net adult channels:</string>
 	<string id="30122">Custom 1:</string>
@@ -141,7 +142,6 @@
 	<string id="30964"></string>
 	<string id="30965"></string>
 	<string id="30966"></string>
-	
 	<string id="58000">Program info</string>
 
 	<string id="58001">Select destination folder</string>
@@ -181,6 +181,9 @@
 	<string id="55005">The highest quality (as available)</string>
 	<string id="55007">Services</string>
 	<string id="55008">Assign also low-quality/backup streams</string>
+	<string id="55010"></string>
+	<string id="55011"></string>
+
 	<string id="89001">Sleep timer enabled</string>
 	<string id="89002">Timeout action</string>
 	<string id="89003">Timeout value (min)</string>
@@ -242,4 +245,18 @@
 	<string id="69022">Import failed - try selecting files manually</string>
 	<string id="69023">Select your operating system</string>
 	<string id="69024">Max nr of reattempts after record failure</string>
+	<string id="69025">Deletion of watched recordings</string>
+	<string id="69026">Delete recording</string>
+	<string id="69027">Delete wached recording</string>
+	<string id="69028">Do nothing</string>
+	<string id="69029">Ask</string>
+	<string id="69030">Auto delete</string>
+	<string id="69031"></string>
+	<string id="69032"></string>
+	<string id="69033"></string>
+	<string id="69034"></string>
+	<string id="69035"></string>
+	<string id="69036"></string>
+	<string id="69037"></string>
+	<string id="69038"></string>
 </strings>

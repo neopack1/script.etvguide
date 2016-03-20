@@ -159,6 +159,7 @@ class WebbTvStrmUpdater(baseServiceUpdater):
             if chann.cid == cid:
                 self.log('getChannel found matching channel: cid: %s, name: %s title: %s' % (chann.cid, chann.name, chann.title))
                 return self.updateChannelRTMP(chann)
+        return None
 
     def updateChannelRTMP(self, channel):
         post = { 'cid': channel.cid, 'platform': 'XBMC', 'username': self.login, 'userpassword': self.password }

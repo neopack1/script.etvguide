@@ -8,23 +8,19 @@ import time
 import os, xbmcaddon
 from strings import *
 import threading
-import platform
 
-HOST       = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:19.0) Gecko/20121213 Firefox/19.0'
-pathAddons = os.path.join(ADDON.getAddonInfo('path'), 'resources', 'addons.ini')
+HOST        = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:19.0) Gecko/20121213 Firefox/19.0'
+pathAddons  = os.path.join(ADDON.getAddonInfo('path'), 'resources', 'addons.ini')
 pathMapBase = os.path.join(ADDON.getAddonInfo('path'), 'resources')
 
-TIMEZONE = ADDON.getSetting('Time.Zone')
-CHECK_NAME = ADDON.getSetting('username')
-ADDON_VERSION =  ADDON.getAddonInfo('version')
-PLATFORM_INFO = platform.system()
-KODI_VERSION = xbmc.getInfoLabel( "System.BuildVersion" )
+HTTP_ConnectionTimeout = 5
+try:
+    max_connection_reattempts = int(ADDON.getSetting('connection_reattempts'))
+except:
+    deb('ERROR serviceLib failed to fetch max connection_reattempts')
+    max_connection_reattempts = 25
 
 
-if CHECK_NAME:
-    USER_AGENT = ADDON.getSetting('username')
-else:
-    USER_AGENT = ADDON.getSetting('usernameGoldVOD')
 
 class ShowList:
     def __init__(self, logCall=deb):
@@ -56,9 +52,9 @@ class ShowList:
             reqUrl.add_header('ContentType', 'application/x-www-form-urlencoded')
 
             failedCounter = 0
-            while failedCounter < 50:
+            while failedCounter < max_connection_reattempts:
                 try:
-                    raw_json = urllib2.urlopen(reqUrl, timeout = 3)
+                    raw_json = urllib2.urlopen(reqUrl, timeout = HTTP_ConnectionTimeout)
                     content_json = raw_json.read()
                     result_json = json.loads(content_json)
                     break
@@ -80,8 +76,8 @@ class ShowList:
                     else:
                         raise
 
-                if xbmc.abortRequested:
-                    self.logCall('ShowList getJsonFromAPI xbmc.abortRequested - aborting!')
+                if M_TVGUIDE_CLOSING:
+                    self.logCall('ShowList getJsonFromAPI M_TVGUIDE_CLOSING - aborting!')
                     break
                 time.sleep(.050)
 
@@ -98,9 +94,9 @@ class ShowList:
         def urlOpen(req, customOpeners):
             if len(customOpeners) > 0:
                 opener = urllib2.build_opener( *customOpeners )
-                response = opener.open(req, timeout = 3)
+                response = opener.open(req, timeout = HTTP_ConnectionTimeout)
             else:
-                response = urllib2.urlopen(req, timeout = 3)
+                response = urllib2.urlopen(req, timeout = HTTP_ConnectionTimeout)
             return response
 
         try:
@@ -117,7 +113,7 @@ class ShowList:
             reqUrl = urllib2.Request(url, data, headers)
 
             failedCounter = 0
-            while failedCounter < 50:
+            while failedCounter < max_connection_reattempts:
                 try:
                     raw_json = urlOpen(reqUrl, customOpeners)
                     if jsonLoadResult:
@@ -139,8 +135,8 @@ class ShowList:
                     else:
                         raise
 
-                if xbmc.abortRequested:
-                    self.logCall('ShowList getJsonFromExtendedAPI xbmc.abortRequested - aborting!')
+                if M_TVGUIDE_CLOSING:
+                    self.logCall('ShowList getJsonFromExtendedAPI M_TVGUIDE_CLOSING - aborting!')
                     break
                 time.sleep(.050)
 
@@ -166,9 +162,8 @@ class ShowList:
     def downloadUrl(self, url):
         fileContent = None
         try:
-            urlFile = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (AGENT:' + USER_AGENT + ' TIMEZONE:' + TIMEZONE + ' PLUGIN_VERSION:' + ADDON_VERSION + ' PLATFORM:' + PLATFORM_INFO + ' KODI_VERSION:' + KODI_VERSION + ')' })
-            response = urllib2.urlopen(urlFile,timeout=2)
-            fileContent = response.read()
+            urlFile = urllib2.urlopen(url, timeout=HTTP_ConnectionTimeout)
+            fileContent = urlFile.read()
         except Exception, ex:
             self.logCall('File download error, exception: %s' % str(ex))
             fileContent = None

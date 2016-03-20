@@ -869,6 +869,11 @@ class Database(object):
                 c.execute('UPDATE version SET major=6, minor=1, patch=2')
                 self.conn.commit()
 
+            if version < [6, 1, 3]:
+                xbmcgui.Dialog().ok("eTVGuide - aktualizacja", "Wersja 2.2.0:\nNaprawiono goldvod.tv\nPoprawione dwukrotne ladowanie EPG")
+                c.execute('UPDATE version SET major=6, minor=1, patch=3')
+                self.conn.commit()
+
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
             self.conn.commit()
