@@ -294,6 +294,7 @@ class eTVGuide(xbmcgui.WindowXML):
         self.currentChannel = None
         self.recordedFilesPlaylistPositions = {}
         self.playingRecordedProgram = False
+        self.program = None
 
         # find nearest half hour
         self.viewStartDate = datetime.datetime.today()
@@ -576,15 +577,16 @@ class eTVGuide(xbmcgui.WindowXML):
             except Exception, ex:
                 deb('RecordAppImporter Error: %s' % str(ex))
 
+        program = self._getProgramFromControl(self.getControl(controlId))
         if channel is not None:
-            if not self.playChannel(channel):
+            if not self.playChannel(channel, program):
                 result = self.streamingService.detectStream(channel)
                 if not result:
                     return
                 elif type(result) == str:
                     # one single stream detected, save it and start streaming
                     self.database.setCustomStreamUrl(channel, result)
-                    self.playChannel(channel)
+                    self.playChannel(channel, program)
 
                 else:
                     # multiple matches, let user decide
@@ -593,11 +595,9 @@ class eTVGuide(xbmcgui.WindowXML):
                     d.doModal()
                     if d.stream is not None:
                         self.database.setCustomStreamUrl(channel, d.stream)
-                        self.playChannel(channel)
+                        self.playChannel(channel, program)
             return
 
-
-        program = self._getProgramFromControl(self.getControl(controlId))
         if program is None:
             return
 
@@ -860,6 +860,7 @@ class eTVGuide(xbmcgui.WindowXML):
         self.currentChannel = channel
         wasPlaying = self.player.isPlaying()
         if program is not None:
+            self.program = program
             if self.playRecordedProgram(program):
                 return True
         self.urlList = self.database.getStreamUrlList(channel)
@@ -1043,9 +1044,9 @@ class eTVGuide(xbmcgui.WindowXML):
 						noFocusTexture = ADDON.getSetting('kolor.InteraktywnyProgramRozrywkowy')+'.png'
                 else:
                     if ADDON.getSetting('kolor.default') == '':
-						noFocusTexture = 'default.png'
+                        noFocusTexture = 'default.png'
                     else:
-						noFocusTexture = ADDON.getSetting('kolor.default')+'.png'
+                        noFocusTexture = ADDON.getSetting('kolor.default')+'.png'
 
                 if program.notificationScheduled:
                     noFocusTexture = ADDON.getSetting('kolor.notification')+'.png'
