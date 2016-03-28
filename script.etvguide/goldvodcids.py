@@ -7,9 +7,8 @@ import os, xbmcaddon, xbmcgui
 from strings import *
 from serviceLib import *
 
-goldUrlSD = 'http://goldvod.tv/api/getTvChannelsSD.php'
-goldUrlHD = 'http://goldvod.tv/api/getTvChannels.php'
-goldImgBase = 'http://goldvod.tv/api/images/'
+goldUrl = 'http://goldvod.tv/api/get_tv_channels'
+goldImgBase = 'http://goldvod.com/api/images/'
 onlineMapFile = 'http://epg.feenk.net/maps/goldvodmap.xml'
 localMapFile = 'goldvodmap.xml'
 serviceName = 'goldvod.tv'
@@ -32,13 +31,9 @@ class GoldVodUpdater(baseServiceUpdater):
         self.localMapFile = localMapFile
         self.maxAllowedStreams = 2
         self.addDuplicatesAtBeginningOfList = True
+        self.url = goldUrl
         if ADDON.getSetting('assign_all_streams_goldvod') == 'true':
             self.addDuplicatesToList = True
-
-        if ADDON.getSetting('video_qualityGoldVOD') == 'true':
-            self.url = goldUrlHD
-        else:
-            self.url = goldUrlSD
 
     def getChannelList(self, silent = False):
         global goldVODChannelList
@@ -56,7 +51,7 @@ class GoldVodUpdater(baseServiceUpdater):
             self.log('[UPD] -------------------------------------------------------------------------------------')
             self.log('[UPD] %-10s %-35s %-35s' % ( '-CID-', '-NAME-', '-RTMP-'))
         result = list()
-        post = { 'username': self.login, 'password': self.password }
+        post = { 'login': self.login, 'pass': self.password }
         channelsArray = self.sl.getJsonFromAPI(self.url, post)
 
         if channelsArray is None:
@@ -67,21 +62,25 @@ class GoldVodUpdater(baseServiceUpdater):
             try:
                 for s in range(len(channelsArray)):
                     cid = self.sl.decode(channelsArray[s]['id']).replace("\"", '')
-                    url = self.sl.decode(channelsArray[s]['rtmp']).replace("\"", '')
+                    ico = self.sl.decode(channelsArray[s]['icon']).replace("\"", '')
+                    url = self.sl.decode(channelsArray[s]['url_sd']).replace("\"", '')
+                    if len(channelsArray[s]['url_hd']) is not 0 and ADDON.getSetting('video_qualityGoldVOD') == 'true':
+                        url = self.sl.decode(channelsArray[s]['url_hd']).replace("\"", '')
                     name = self.sl.decode(channelsArray[s]['name']).replace("\"", '')
                     try:
                         name = re.sub('SERWER\s*\d*', '', name, flags=re.IGNORECASE).replace('  ', ' ').strip()
                     except:
                         #fix for old python not supporting 'flags' argument
                         name = re.sub('SERWER\s*\d*', '', name).replace('  ', ' ').strip()
-                    ico = goldImgBase + self.sl.decode(channelsArray[s]['image']).replace("\"", '')
                     if silent is not True:
                         self.log('[UPD] %-10s %-35s %-35s' % (cid, name, url))
+
                     goldvodProgram = WeebTvCid(cid, name, name, '2', url, ico)
                     goldvodProgram.rtmpdumpLink = list()
                     goldvodProgram.rtmpdumpLink.append("--rtmp")
                     goldvodProgram.rtmpdumpLink.append("%s" % url)
                     result.append(goldvodProgram)
+
                 goldVODChannelList = copy.deepcopy(result)
                 goldVODLastUpdate  = datetime.datetime.now()
             except KeyError, keyerr:

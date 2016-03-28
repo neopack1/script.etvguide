@@ -870,8 +870,13 @@ class Database(object):
                 self.conn.commit()
 
             if version < [6, 1, 3]:
-                xbmcgui.Dialog().ok("eTVGuide - aktualizacja", "Wersja 2.2.0:\nNaprawiono goldvod.tv\nPoprawione dwukrotne ladowanie EPG")
+                #xbmcgui.Dialog().ok("eTVGuide - aktualizacja", "Wersja 2.2.0:\nNaprawiono goldvod.tv\nPoprawione dwukrotne ladowanie EPG")
                 c.execute('UPDATE version SET major=6, minor=1, patch=3')
+                self.conn.commit()
+
+            if version < [6, 1, 4]:
+                xbmcgui.Dialog().ok("eTVGuide - aktualizacja", "Wersja 2.2.1 - 28/03/2016:\nNaprawiono goldvod.tv\nDodanie serwisu moje-filmy.tk")
+                c.execute('UPDATE version SET major=6, minor=1, patch=4')
                 self.conn.commit()
 
             # make sure we have a record in sources for this Source

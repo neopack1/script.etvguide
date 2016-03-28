@@ -12,7 +12,6 @@
 	<channel id="TVN METEO ACTIVE"						    title="(?=\s*TVN\s*METEO\s*ACTIVE(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVP Seriale" 								title="(?=\s*TVP\s*Seriale(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVP Kultura" 								title="(?=\s*TVP\s*Kultura(\s*TV)?(\s*HD)?\s*$)" strm=""/>
-	<channel id="TVP Polonia" 								title="(?=\s*Polonia\s*1(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVP Polonia" 								title="(?=\s*TVP\s*Polonia(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVP Rozrywka" 								title="(?=\s*.*TVP)(?=\s*.*Rozrywka)" strm=""/>
 	<channel id="TVP Historia" 								title="(?=\s*.*TVP)(?=\s*.*Historia)" strm=""/>
@@ -100,7 +99,7 @@ Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN st
 	<channel id="nSport" 									title="(?=\s*nSport(\s*\+)?(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVP Sport" 								title="(?=\s*TVP\s*Sport(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="Orange Sport" 								title="(?=\s*Orange\s*Sport(\s*TV)?(\s*HD)?\s*$)" strm=""/>
-	<channel id="Eurosport" 								title="(?=\s*EuroSport(\s*TV)?(\s*HD)?\s*$)" strm=""/>
+	<channel id="Eurosport" 								title="(?=\s*EuroSport(\s*1)?(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="Eurosport 2" 								title="(?=\s*EuroSport\s*2(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="FightBox" 									title="(?=\s*Fight\s*Box(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="Eleven" 									title="(?=\s*Eleven(\s*TV)?(\s*HD)?\s*$)" strm=""/>
@@ -121,7 +120,7 @@ Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN st
 	<channel id="Teletoon" 									title="(?=\s*Teletoon.*(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="BBC CBeebies" 								title="(?=\s*.*BBC)(?=\s*.*CBeebies)" strm=""/>
 	<channel id="Da Vinci Learning" 						title="(?=\s*DA\s*VINCI\s*LEARNING(\s*TV)?(\s*HD)?\s*$)" strm=""/>
-	<channel id="MTV Polska" 								title="(^MTV\s*$)" strm=""/>
+	<channel id="MTV Polska" 								title="(?=\s*MTV\s*Polska(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="MTV Live HD" 								title="(?=\s*.*MTV)(?=\s*.*Live)" strm=""/>
 	<channel id="Kino Polska Muzyka" 						title="(?=\s*.*Kino)(?=\s*.*Polska)(?=\s*.*Muzyka)" strm=""/>
 	<channel id="Eska TV" 									title="(?=\s*Eska\s*TV(\s*TV)?(\s*HD)?\s*$)" strm=""/>
@@ -170,6 +169,7 @@ Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN st
 	<channel id="TVS"										title="(?=\s*TVS(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVP WARSZAWA"								title="(?=\s*TVP\s*Warszawa(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVN METEO"									title="(?=\s*TVN\s*Meteo(\s*TV)?(\s*HD)?\s*$)" strm=""/>
+	<channel id="DOCUBOX"									title="(?=\s*DocuBox(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 </map>
 
 <!--

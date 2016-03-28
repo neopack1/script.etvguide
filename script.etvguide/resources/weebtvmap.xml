@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <map id="weebtv" version="1.0" strm="service=weebtv&amp;cid=%s">
 	<channel id="TVP 1" 									title="(?=.*TVP)(?=.*1)" strm=""/>
+	<channel id="TVP 1" 									title="(?=\s*TVP1\s*HD\s*$)" strm=""/>
 	<channel id="TVP 2"										title="(?=TVP\s*2\s*HD$)" strm=""/>
 	<channel id="TVP 2"										title="(?=TVP\s*2$)" strm=""/>
 	<channel id="TVP HD" 									title="(?=.*TVP)(?=.*HD)(?!.*1)(?!.*2)(?!.*Info)(?!.*Seriale)(?!.*Polonia)" strm=""/>
@@ -85,7 +86,8 @@
 	<channel id="Crime &amp; Investigation Network Polsat" 	title="(?=.*Crime)(?=.*Investigation)(?=.*Polsat)" strm=""/>
 	<channel id="Planete+" 									title="(?=.*Planete)(?=.*\+)" strm=""/>
 	<channel id="History" 									title="(?=.*HISTORY)(?!.*Polsat)" strm=""/>
-	<channel id="TVN Turbo" 								title="(?=.*TVN)(?=.*Turbo)" strm=""/>
+	<channel id="TVN Turbo" 								title="(?=TVN\s*TURBO\s*$)" strm=""/>
+	<channel id="TVN Turbo" 								title="(?=TVN\s*Turbo\s*HD$)" strm=""/>
 	<channel id="Polsat Play" 								title="(?=.*Polsat)(?=.*Play)" strm=""/>
 	<channel id="Polsat Viasat Explorer" 					title="(?=.*POLSAT)(?=.*Explorer)" strm=""/>
 	<channel id="Polsat Viasat History" 					title="(?=.*POLSAT)(?=.*History)" strm=""/>
@@ -235,6 +237,7 @@
 	<channel id="KSW"								        title="(?=.*KSW)" strm=""/>
 	<channel id="Vox Music TV"								title="(?=VOX\s*MUSIC(\s*TV)?(\s*HD)?$)" strm=""/>
 	<channel id="TVN 24 BiS"								title="(?=TVN24\s*Biznes\s*i\s*Swiat(\s*HD)?\s*$)" strm=""/>
+	<channel id="Fokus TV"						    		title="(?=\s*TV\s*FOCUS(\s*HD)?\s*$)" strm=""/>
 	
 	
 	
