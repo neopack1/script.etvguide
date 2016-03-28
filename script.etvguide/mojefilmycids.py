@@ -78,7 +78,7 @@ class MojeFilmyUpdater(baseServiceUpdater):
         channels = self.getChannelList(True)
         for chann in channels:
             if chann.cid == cid:
-                chann.strm = self.sl.getJsonFromExtendedAPI(chann.strm, post_data = self.post, customHeaders = self.headers)
+                #chann.strm = self.sl.getJsonFromExtendedAPI(chann.strm, post_data = self.post, customHeaders = self.headers)
                 self.log('getChannel found matching channel: cid: %s, name: %s, rtmp: %s' % (chann.cid, chann.name, chann.strm))
                 return chann
         return None

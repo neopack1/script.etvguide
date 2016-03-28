@@ -53,14 +53,14 @@
 	<channel id="AXN Spin" 									title="(?=.*AXN)(?=.*Spin)" strm=""/>
 	<channel id="SciFi" 									title="(?=.*Scifi)(?=.*Universal)" strm=""/>
 	<channel id="MGM" 										title="(?=.*MGM)" strm=""/>
-	<channel id="Comedy Central" 							title="(?=Comedy\s*Central(\s*HD)?$)" strm=""/>
+	<channel id="Comedy Central" 							title="(?=Comedy\s*(Central|CENTERAL)(\s*HD)?$)" strm=""/>
 	<channel id="Comedy Central Family" 					title="(?=Comedy\s*Central\s*Family(\s*HD)?$)" strm=""/>
 	<channel id="FOX Comedy" 								title="(?=.*FOX)(?=.*Comedy)" strm=""/>
 	<channel id="Universal Channel" 						title="(?=.*Universal)(?=.*Channel)" strm=""/>
 	<channel id="Paramount Channel" 						title="(?=.*Paramount)(?=.*Channel)" strm=""/>
 	<channel id="Ale Kino+" 								title="(?=.*ale)(?=.*kino)" strm=""/>
 	<channel id="Animal Planet" 							title="(?=Animal\s*Planet(\s*HD)?$)" strm=""/>
-	<channel id="National Geographic Channel" 				title="(?=National\s*Geographic(\s*HD)?$)" strm=""/>
+	<channel id="National Geographic Channel" 				title="(?=National\s*Geographic(\s*CHANNEL)?(\s*HD)?$)" strm=""/>
 	<channel id="Nat Geo Wild" 								title="(?=Nat\s*Geo\s*Wild(\s*HD)?$)" strm=""/>
 	
 <!-- 
@@ -76,7 +76,7 @@ Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN st
 	<channel id="Discovery Science" 						title="(?=.*Discovery)(?=.*Science)" strm=""/>
 	<channel id="Discovery Turbo Xtra" 						title="(?=Discovery\s*Turbo\s*Xtra(\s*HD)?$)" strm=""/>
 	<channel id="Discovery Historia" 						title="(?=.*Discovery)(?=.*Historia)" strm=""/>
-	<channel id="ID" 										title="(?=INVESTIGATION\s*DISCOVERY(\s*HD)?$)" strm=""/>
+	<channel id="ID" 										title="(?=(INVESTIGATION\s*DISCOVERY|ID)(\s*HD)?$)" strm=""/>
 	<channel id="Crime &amp; Investigation Network Polsat" 	title="(?=.*Crime)(?=.*Investigation)(?=.*Polsat)" strm=""/>
 	<channel id="Planete+" 									title="(?=.*Planete)(?=.*\+)" strm=""/>
 	<channel id="History" 									title="(?=.*HISTORY)(?!.*Polsat)" strm=""/>
@@ -107,8 +107,8 @@ Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN st
 	<channel id="JimJam Polsat" 							title="(?=.*JimJam)(?=.*Polsat)" strm=""/>
 	<channel id="Duck" 										title="(?=.*Duck)(?=.*TV)" strm=""/>
 	<channel id="Nickelodeon" 								title="(?=Nickoledeon(\s*HD)?$)" strm=""/>
-	<channel id="Nick Jr." 									title="(?=Nick\s*Jr(\s*HD)?$)" strm=""/>
-	<channel id="Minimini+" 								title="(?=MiniMini(\s*HD)?$)" strm=""/>
+	<channel id="Nick Jr." 									title="(?=Nick\s*(Jr|JUNIOR)(\s*HD)?$)" strm=""/>
+	<channel id="Minimini+" 								title="(?=(MiniMini|MINI\s*MINI)(\+)?(\s*HD)?$)" strm=""/>
 	<channel id="Boomerang" 								title="(?=.*Boomerang)" strm=""/>
 	<channel id="Teletoon" 									title="(?=.*tele)(?=.*TOON)(?=.*HYPER)(?=.*\+)" strm=""/>
 	<channel id="BBC CBeebies" 								title="(?=.*BBC)(?=.*CBeebies)" strm=""/>
@@ -125,8 +125,7 @@ Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN st
 	<channel id="Filmbox Family"						    title="(?=FILMBOX\s*FAMILY(\s*HD)?$)" strm=""/>
 	<channel id="Fokus TV"						    		title="(?=Focus\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="Travel Channel"						    title="(?=TRAVEL\s*CHANNEL(\s*HD)?\s*$)" strm=""/>
-	
-	<channel id="ESKA BEST MUSIC"						    title="(?=ESKA\s*BEST\s*MUSIC(\s*HD)?\s*$)" strm=""/>
+	<channel id="ESKA BEST MUSIC"						    title="(?=ESKA\s*BEST\s*MUSIC(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="ESKA GO"						    		title="(?=ESKA\s*GO(\s*HD)?\s*$)" strm=""/>
 	<channel id="ESKA ROCK"						    		title="(?=ESKA\s*ROCK(\s*HD)?\s*$)" strm=""/>
 	<channel id="MUSIC VOX TV 2"						    title="(?=MUSIC\s*VOX\s*TV\s*2(\s*HD)?\s*$)" strm=""/>

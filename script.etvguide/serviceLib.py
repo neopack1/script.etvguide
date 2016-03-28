@@ -266,6 +266,7 @@ class baseServiceUpdater:
         for trace in self.traceList:
             deb(trace)
         del self.traceList[:]
+        self.traceList = list()
 
     def startLoadingChannelList(self):
         self.thread = threading.Thread(name='loadChannelList thread', target = self.loadChannelList)
@@ -276,13 +277,13 @@ class baseServiceUpdater:
     def printLogTimeout(self):
         self.printLogTimer = None
         self.forcePrintintingLog = True
-        if self.thread is not None and self.thread.is_alive():
-            self.printLog()
+        self.printLog()
 
     def close(self):
         if self.printLogTimer is not None:
             self.printLogTimer.cancel()
-            self.printLog()
+        self.printLog()
+        self.forcePrintintingLog = True
 
     def loadChannelList(self):
         try:
@@ -290,6 +291,7 @@ class baseServiceUpdater:
             if len(self.channels) <= 0:
                 self.log('loadChannelList error loding channel list for service %s - aborting!' % self.serviceName)
                 self.automap = list()
+                self.close()
                 return
 
             self.log('\n')
