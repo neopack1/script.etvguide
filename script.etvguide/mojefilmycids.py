@@ -9,7 +9,7 @@ from serviceLib import *
 
 Url = 'http://api1.moje-filmy.tk/api2/getTv.php'
 
-onlineMapFile = 'http://mods-kodi.pl/m-tvguide/maps/mojefilmymap.xml'
+onlineMapFile = 'http://epg.feenk.net/maps/mojefilmymap.xml'
 localMapFile = 'mojefilmymap.xml'
 serviceName = 'moje-filmy.tk'
 serviceRegex = "service=mojefilmy&cid=%"
