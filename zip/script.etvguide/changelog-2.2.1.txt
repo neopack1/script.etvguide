@@ -1,0 +1,4 @@
+- dodana obsługa serwisu moje-filmy
+- wprowadzona możliwość pytania/automatycznego usuwania nagrania po jego obejrzeniu
+- poprawione dwukrotne ładowanie EPG po zatrzymaniu odtwarzania przy wyłączonej opcji "Animacja maksymalizacji okna odtwarzania"
+- aktualizacja API GoldVod
