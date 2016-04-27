@@ -1,3 +1,7 @@
+
+[B]wersja 2.2.2[/B] - 2016-04-27
+- Zmieniono nazwe odnosnie kanalow dla doroslych w ustawieniach
+
 [B]wersja 2.2.0[/B] - 2016-03-20
 - Dodanie moje-filmy.tk
 -Wprowadzona możliwość pytania/automatycznego usuwania nagrania po jego obejrzeniu
