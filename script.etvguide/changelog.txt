@@ -1,4 +1,7 @@
 
+[B]wersja 2.2.3[/B] - 2016-04-28
+- Aktualizacja plikow map
+
 [B]wersja 2.2.2[/B] - 2016-04-27
 - Zmieniono nazwe odnosnie kanalow dla doroslych w ustawieniach
 
