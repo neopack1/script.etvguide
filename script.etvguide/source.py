@@ -44,15 +44,16 @@ import io, zipfile
 SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', 'Time.Zone']
 
 TIMEZONE = ADDON.getSetting('Time.Zone')
-CHECK_NAME = ADDON.getSetting('username')
 ADDON_VERSION =  ADDON.getAddonInfo('version')
 PLATFORM_INFO = platform.system()
 KODI_VERSION = xbmc.getInfoLabel( "System.BuildVersion" )
 
 CHECK_SERVER_ID = ADDON.getSetting('e-TVGuide')
 
-if CHECK_NAME:
+if ADDON.getSetting('username') != "":
     USER_AGENT = ADDON.getSetting('username')
+elif ADDON.getSetting('mail_mojefilmy') != "":
+    USER_AGENT = ADDON.getSetting('mail_mojefilmy')
 else:
     USER_AGENT = ADDON.getSetting('usernameGoldVOD')
 
