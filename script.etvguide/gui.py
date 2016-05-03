@@ -933,10 +933,10 @@ class eTVGuide(xbmcgui.WindowXML):
         if recordedProgram is not None:
             ret = xbmcgui.Dialog().yesno(heading=strings(RECORDED_FILE_POPUP).encode('utf-8', 'replace'), line1='%s %s?' % (strings(RECORDED_FILE_QUESTION).encode('utf-8', 'replace'), program.title.encode('utf-8', 'replace')), autoclose=60000)
             if ret == True:
-                #if ADDON.getSetting('start_video_minimalized') == 'true':
-                    #startWindowed = True
-                #else:
-                    #startWindowed = False
+                if ADDON.getSetting('start_video_minimalized') == 'true':
+                    startWindowed = True
+                else:
+                    startWindowed = False
                 try:
                     firstFileInPlaylist = recordedProgram[0].getfilename()
                     playlistIndex = int(self.recordedFilesPlaylistPositions[firstFileInPlaylist])
