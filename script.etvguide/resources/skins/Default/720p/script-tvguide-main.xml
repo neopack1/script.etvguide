@@ -5,7 +5,7 @@
 		<system>1</system><posx>0</posx><posy>0</posy>
 	</coordinates>
 	<controls>
-		<control type="image"><posx>10000</posx><texture>czarny.png</texture></control><control type="image"><posx>10000</posx><texture>czerwony.png</texture></control><control type="image"><posx>10000</posx><texture>default.png</texture></control><control type="image"><posx>10000</posx><texture>default-focus.png</texture></control><control type="image"><posx>10000</posx><texture>default-przypomnienie.png</texture></control><control type="image"><posx>10000</posx><texture>fioletowy.png</texture></control><control type="image"><posx>100000</posx><texture>niebieski.png</texture></control><control type="image"><posx>10000</posx><texture>pomaranczowy.png</texture></control><control type="image"><posx>10000</posx><texture>purpurowy.png</texture></control><control type="image"><posx>10000</posx><texture>seledynowy.png</texture></control><control type="image"><posx>100000</posx><texture>zielony.png</texture></control><control type="image"><posx>10000</posx><texture>zolty.png</texture></control><control type="image"><posx>10000</posx><texture>default.png</texture></control><control type="image"><posx>10000</posx><texture>kolorowy.png</texture></control><control type="image"><posx>10000</posx><texture>srebrnoszary.png</texture></control><control type="image"><posx>10000</posx><texture>kolorowyciemny.png</texture></control><control type="image"><posx>10000</posx><texture>dark.png</texture></control><control type="image"><posx>10000</posx><texture>live.png</texture></control>
+		<control type="image"><posx>10000</posx><texture>czarny.png</texture></control><control type="image"><posx>10000</posx><texture>czerwony.png</texture></control><control type="image"><posx>10000</posx><texture>default.png</texture></control><control type="image"><posx>10000</posx><texture>default-focus.png</texture></control><control type="image"><posx>10000</posx><texture>default-przypomnienie.png</texture></control><control type="image"><posx>10000</posx><texture>fioletowy.png</texture></control><control type="image"><posx>100000</posx><texture>niebieski.png</texture></control><control type="image"><posx>10000</posx><texture>pomaranczowy.png</texture></control><control type="image"><posx>10000</posx><texture>purpurowy.png</texture></control><control type="image"><posx>10000</posx><texture>seledynowy.png</texture></control><control type="image"><posx>100000</posx><texture>zielony.png</texture></control><control type="image"><posx>10000</posx><texture>zolty.png</texture></control><control type="image"><posx>10000</posx><texture>default.png</texture></control><control type="image"><posx>10000</posx><texture>kolorowy.png</texture></control><control type="image"><posx>10000</posx><texture>srebrnoszary.png</texture></control><control type="image"><posx>10000</posx><texture>kolorowyciemny.png</texture></control><control type="image"><posx>10000</posx><texture>dark.png</texture></control><control type="image"><posx>10000</posx><texture>live.png</texture></control><control type="image"><posx>10000</posx><texture>pomarancz_pelny.png</texture></control><control type="image"><posx>10000</posx><texture>czerwony_pelny.png</texture></control><control type="image"><posx>10000</posx><texture>niebieski_pelny.png</texture></control>
 
 		<!-- Background -->
 		<control type="image" id="4600">
@@ -627,7 +627,7 @@
 				<posx>0</posx>
 				<posy>0</posy>
 				<width>30</width>
-				<height>40</height>
+				<height>30</height>
 			</control>
 			<control type="group">
 				<posx>0</posx>
@@ -644,39 +644,15 @@
 					<height>36</height>
 					<texture>tvguide-glasspane.png</texture>
 				</control>
-				<control type="label">
-					<posx>0</posx>
-					<posy>5</posy>
-					<width>140</width>
-					<height>26</height>
-					<label>$ADDON[script.etvguide 30005]</label>
-					<textcolor>cyan</textcolor>
-					<shadowcolor>black</shadowcolor>
-					<font>font10_title</font>
-					<align>center</align>
-					<aligny>center</aligny>
-				</control>
-				<control type="label">
-					<posx>760</posx>
-					<posy>5</posy>
-					<width>420</width>
-					<height>26</height>
-					<label>$ADDON[script.etvguide 30007]</label>
-					<textcolor>cyan</textcolor>
-					<shadowcolor>black</shadowcolor>
-					<font>font12</font>
-					<align>center</align>
-					<aligny>center</aligny>
-				</control>
 				<control type="button" id="4301">
 					<description>navigate to now</description>
-					<posx>200</posx>
+					<posx>20</posx>
 					<posy>5</posy>
-					<width>100</width>
-					<height>26</height>
-					<label>$ADDON[script.etvguide 30006]</label>
+					<width>150</width>
+					<height>25</height>
+					<label>TERAZ</label>
 					<textcolor>white</textcolor>
-					<font>font12</font>
+					<font>font10_title</font>
 					<aligny>center</aligny>
 					<align>center</align>
 					<texturefocus>tvguide-program-grey-focus.png</texturefocus>
@@ -684,10 +660,10 @@
 				</control>
 				<control type="button" id="4302">
 					<description>navigate left</description>
-					<posx>340</posx>
+					<posx>170</posx>
 					<posy>5</posy>
-					<width>100</width>
-					<height>26</height>
+					<width>150</width>
+					<height>25</height>
 					<textcolor>white</textcolor>
 					<font>font12_title</font>
 					<label>&lt;</label>
@@ -698,10 +674,10 @@
 				</control>
 				<control type="button" id="4303">
 					<description>navigate up</description>
-					<posx>450</posx>
+					<posx>320</posx>
 					<posy>5</posy>
-					<width>100</width>
-					<height>26</height>
+					<width>150</width>
+					<height>25</height>
 					<textcolor>white</textcolor>
 					<font>font22_title</font>
 					<label>^</label>
@@ -712,10 +688,10 @@
 				</control>
 				<control type="button" id="4304">
 					<description>navigate down</description>
-					<posx>560</posx>
+					<posx>490</posx>
 					<posy>5</posy>
-					<width>100</width>
-					<height>26</height>
+					<width>150</width>
+					<height>25</height>
 					<textcolor>white</textcolor>
 					<font>font12_title</font>
 					<label>v</label>
@@ -726,13 +702,26 @@
 				</control>
 				<control type="button" id="4305">
 					<description>navigate right</description>
-					<posx>670</posx>
+					<posx>660</posx>
 					<posy>5</posy>
-					<width>100</width>
-					<height>26</height>
+					<width>150</width>
+					<height>25</height>
 					<textcolor>white</textcolor>
 					<font>font12_title</font>
 					<label>&gt;</label>
+					<aligny>center</aligny>
+					<align>center</align>
+					<texturefocus>tvguide-program-grey-focus.png</texturefocus>
+					<texturenofocus>tvguide-program-grey.png</texturenofocus>
+				</control>
+				<control type="button" id="4311">
+					<description>options</description>
+					<posx>1050</posx>
+					<posy>5</posy>
+					<width>150</width>
+					<height>25</height>
+					<font>font10_title</font>
+					<label>OPCJE</label>
 					<aligny>center</aligny>
 					<align>center</align>
 					<texturefocus>tvguide-program-grey-focus.png</texturefocus>
@@ -743,10 +732,10 @@
 					<posx>1220</posx>
 					<posy>5</posy>
 					<width>50</width>
-					<height>26</height>
+					<height>25</height>
 					<textcolor>white</textcolor>
 					<font>font12_title</font>
-					<label>X</label>
+					<label>x</label>
 					<aligny>center</aligny>
 					<align>center</align>
 					<texturefocus>tvguide-program-grey-focus.png</texturefocus>
