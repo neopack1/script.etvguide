@@ -25,10 +25,12 @@ import os
 import threading
 import datetime
 import time
+import re
 import urllib2
 from xml.etree import ElementTree
 from datetime import datetime as dt
 from strings import *
+import strings as strings2
 from time import mktime, strptime
 import ConfigParser
 import xbmc
@@ -37,7 +39,6 @@ import xbmcvfs
 import sqlite3
 import playService
 from itertools import chain
-import platform
 
 import io, zipfile
 
@@ -56,7 +57,6 @@ elif ADDON.getSetting('mail_mojefilmy') != "":
     USER_AGENT = ADDON.getSetting('mail_mojefilmy')
 else:
     USER_AGENT = ADDON.getSetting('usernameGoldVOD')
-
 
 class Channel(object):
     def __init__(self, id, title, logo = None, streamUrl = None, visible = True, weight = -1):
@@ -104,6 +104,77 @@ class Program(object):
     def __repr__(self):
         return 'Program(channel=%s, title=%s, startDate=%s, endDate=%s, description=%s, imageLarge=%s, imageSmall=%s, categoryA=%s, categoryB=%s)' % \
             (self.channel, self.title, self.startDate, self.endDate, self.description, self.imageLarge, self.imageSmall, self.categoryA, self.categoryB)
+
+
+class ProgramDescriptionParser(object):
+    def __init__(self, description):
+        self.description = description
+    def extractCategory(self):
+        try:
+            category = re.search(".*(\[COLOR\s*\w*\]\s*Kategoria.*?\[/COLOR\]).*", self.description).group(1)
+            category = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]|\[I\]|\[/I\]", "", category)
+            self.description = re.sub("\[COLOR\s*\w*\]\s*Kategoria.*?\[/COLOR\]", "", self.description).strip()
+        except:
+            category = ''
+        return category
+
+    def extractProductionDate(self):
+        try:
+            productionDate = re.search(".*(\[COLOR\s*\w*\]\s*Rok produkcji.*?\[/COLOR\]).*", self.description).group(1)
+            productionDate = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]|\[I\]|\[/I\]", "", productionDate)
+            self.description = re.sub("\[COLOR\s*\w*\]\s*Rok produkcji.*?\[/COLOR\]", "", self.description).strip()
+        except:
+            productionDate = ''
+        return productionDate
+
+    def extractDirector(self):
+        try:
+            director = re.search(".*(\[COLOR\s*\w*\]\s*Re.?yser.*?\[/COLOR\]).*", self.description).group(1)
+            director = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]|\[I\]|\[/I\]", "", director)
+            self.description = re.sub("\[COLOR\s*\w*\]\s*Re.?yser.*?\[/COLOR\]", "", self.description).strip()
+        except:
+            director = ''
+        return director
+
+    def extractEpisode(self):
+        try:
+            episode = re.search(".*(\[COLOR\s*\w*\]\s*Odcinek.*?\[/COLOR\]).*", self.description).group(1)
+            episode = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]|\[I\]|\[/I\]", "", episode)
+            if (re.match('Odcinek:\s*0', episode)):
+                episode = ''
+            self.description = re.sub("\[COLOR\s*\w*\]\s*Odcinek.*?\[/COLOR\]", "", self.description).strip()
+        except:
+            episode = ''
+        return episode
+
+    def extractAllowedAge(self):
+        try:
+            icon = 'icon.png'
+            age = re.search(".*(\[COLOR\s*\w*\]\s*Od lat.*?\[/COLOR\]).*", self.description).group(1)
+            age = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]", "", age)
+            age = re.sub("\+\+O\?\.", "18", age)
+            age = re.sub("\+", "", age)
+            age = re.sub("\.", "", age)
+            age_number = re.search("Od lat:\s*(.*)", age).group(1)
+            icon = 'icon_%s.png' % age_number
+            self.description = re.sub("\[COLOR\s*\w*\]\s*Od lat.*?\[/COLOR\]", "", self.description).strip()
+        except:
+            icon = ''
+        return icon
+
+    def extractActors(self):
+        try:
+            regex = re.compile(".*(\[COLOR\s*\w*\]\[B\]Aktorzy:\[/B\]\[/COLOR\].*?\[COLOR\s*\w*\].*?\[/COLOR\]).*", re.DOTALL)
+            match = regex.findall(self.description)
+            if len(match) > 0:
+                actors = match[0]
+                self.description = self.description.replace(actors, '').strip()
+                actors = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]|\[I\]|\[/I\]", "", actors)
+            else:
+                actors = ''
+        except:
+            actors = ''
+        return actors
 
 class SourceException(Exception):
     pass
@@ -223,7 +294,7 @@ class Database(object):
                 break
 
             except sqlite3.OperationalError:
-                if cancel_requested_callback is None:
+                if cancel_requested_callback is None or strings2.M_TVGUIDE_CLOSING:
                     deb('[%] Database is locked, bailing out...' % ADDON_ID)
                     break
                 else: # ignore 'database is locked'
@@ -356,6 +427,7 @@ class Database(object):
             self.updateFailed = False
             dateStr = date.strftime('%Y-%m-%d')
             self._removeOldRecordings()
+            self._removeOldNotifications()
             c = self.conn.cursor()
 
             try:
@@ -394,14 +466,17 @@ class Database(object):
                 # channels updated
                 c.execute("UPDATE sources SET channels_updated=? WHERE id=?", [self.source.getNewUpdateTime(), self.source.KEY])
                 self.conn.commit()
+                self.channelList = None
                 if imported == 0:
                     self.updateFailed = True
 
             except SourceUpdateCanceledException:
                 # force source update on next load
+                deb('_updateChannelAndProgramListCaches SourceUpdateCanceledException!')
                 c.execute('UPDATE sources SET channels_updated=? WHERE id=?', [0, self.source.KEY])
                 c.execute("DELETE FROM updates WHERE source=?", [self.source.KEY]) # cascades and deletes associated programs records
                 self.conn.commit()
+                self.updateFailed = True
 
             except Exception:
                 import traceback as tb
@@ -441,6 +516,7 @@ class Database(object):
         self.printStreamsWithoutChannelEPG()
 
         ADDON_CIDUPDATED = True
+        self.channelList = None
         deb ('[UPD] Aktualizacja zakonczona')
         return cacheExpired
 
@@ -498,7 +574,13 @@ class Database(object):
         return result
 
     def _getEPGView(self, channelStart, date, progress_callback, clearExistingProgramList):
+        if strings2.M_TVGUIDE_CLOSING:
+            self.updateFailed = True
+            return
         cacheExpired = self._updateChannelAndProgramListCaches(date, progress_callback, clearExistingProgramList)
+        if strings2.M_TVGUIDE_CLOSING:
+            self.updateFailed = True
+            return
         channels = self._getChannelList(onlyVisible = True)
 
         if channelStart < 0:
@@ -593,11 +675,13 @@ class Database(object):
         row = c.fetchone()
         if row:
             program = Program(channel, row['title'], row['start_date'], row['end_date'], row['description'], row['image_large'], row['image_small'], row['categoryA'], row['categoryB'])
+        else:
+            program = Program(channel, channel.title, datetime.datetime.now(), datetime.datetime.now(), '', channel.logo, 'tvguide-logo-epg.png', '', '', '')
         c.close()
         return program
 
-    def getNextProgram(self, channel):
-        return self._invokeAndBlockForResult(self._getNextProgram, channel)
+    def getNextProgram(self, program):
+        return self._invokeAndBlockForResult(self._getNextProgram, program)
 
     def _getNextProgram(self, program):
         nextProgram = None
@@ -609,8 +693,8 @@ class Database(object):
         c.close()
         return nextProgram
 
-    def getPreviousProgram(self, channel):
-        return self._invokeAndBlockForResult(self._getPreviousProgram, channel)
+    def getPreviousProgram(self, program):
+        return self._invokeAndBlockForResult(self._getPreviousProgram, program)
 
     def _getPreviousProgram(self, program):
         previousProgram = None
@@ -623,11 +707,9 @@ class Database(object):
         return previousProgram
 
     def getProgramStartingAt(self, channel, startTime):
-        #debug('getProgramStartingAt _invokeAndBlockForResult channel %s, startTime %s' % (channel.id, startTime))
         return self._invokeAndBlockForResult(self._getProgramStartingAt, channel, startTime)
 
     def _getProgramStartingAt(self, channel, startTime):
-        #debug('_getProgramStartingAt channel %s, startTime %s' % (channel.id, startTime))
         program = None
         c = self.conn.cursor()
         c.execute('SELECT * FROM programs WHERE channel=? AND source=? AND start_date = ? AND end_date >= ?', [channel.id, self.source.KEY, startTime, startTime])
@@ -657,7 +739,7 @@ class Database(object):
             return []
 
         c = self.conn.cursor()
-        c.execute('SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source) AS notification_scheduled , (SELECT 1 FROM recordings r WHERE r.channel=p.channel AND r.program_title=p.title AND r.start_date=p.start_date AND r.source=p.source) AS recording_scheduled FROM programs p WHERE p.channel IN (\'' + ('\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?', [self.source.KEY, startTime, endTime])
+        c.execute('SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source AND (n.start_date IS NULL OR n.start_date = p.start_date)) AS notification_scheduled , (SELECT 1 FROM recordings r WHERE r.channel=p.channel AND r.program_title=p.title AND r.start_date=p.start_date AND r.source=p.source) AS recording_scheduled FROM programs p WHERE p.channel IN (\'' + ('\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?', [self.source.KEY, startTime, endTime])
 
         for row in c:
             program = Program(channelMap[row['channel']], row['title'], row['start_date'], row['end_date'], row['description'], row['image_large'], row['image_small'], row['categoryA'], row['categoryB'], row['notification_scheduled'], row['recording_scheduled'])
@@ -854,31 +936,27 @@ class Database(object):
                 self.conn.commit()
 
             if version < [6, 1, 1]:
-                c.execute('DELETE FROM channels')
-                c.execute('DELETE FROM programs')
-                c.execute('DELETE FROM notifications')
-                c.execute('DELETE FROM recordings')
-                c.execute('DELETE FROM updates')
-                c.execute('DELETE FROM sources')
-                c.execute('DELETE FROM custom_stream_url')
-                c.execute('UPDATE settings SET value=0 WHERE rowid=1')
-                c.execute('UPDATE version set major=6, minor=1, patch=1')
-                self.conn.commit()
-
-            if version < [6, 1, 2]:
                 c.execute('ALTER TABLE updates ADD COLUMN epg_size INTEGER DEFAULT 0')
-                c.execute('UPDATE version SET major=6, minor=1, patch=2')
+                c.execute('UPDATE version SET major=6, minor=1, patch=1')
                 self.conn.commit()
 
-            if version < [6, 1, 3]:
-                #xbmcgui.Dialog().ok("eTVGuide - aktualizacja", "Wersja 2.2.0:\nNaprawiono goldvod.tv\nPoprawione dwukrotne ladowanie EPG")
-                c.execute('UPDATE version SET major=6, minor=1, patch=3')
+            if version < [6, 1, 5]:
+                c.execute('ALTER TABLE notifications ADD COLUMN start_date TIMESTAMP DEFAULT NULL')
+                c.execute('UPDATE version SET major=6, minor=1, patch=5')
                 self.conn.commit()
 
-            if version < [6, 1, 4]:
-                xbmcgui.Dialog().ok("eTVGuide - aktualizacja", "Wersja 2.2.1 - 28/03/2016:\nNaprawiono goldvod.tv\nDodanie serwisu moje-filmy.tk")
-                c.execute('UPDATE version SET major=6, minor=1, patch=4')
-                self.conn.commit()
+            # if we want to clear the database
+            #if version < [6, 1, 5]:
+                #c.execute('DELETE FROM channels')
+                #c.execute('DELETE FROM programs')
+                #c.execute('DELETE FROM notifications')
+                #c.execute('DELETE FROM recordings')
+                #c.execute('DELETE FROM updates')
+                #c.execute('DELETE FROM sources')
+                #c.execute('DELETE FROM custom_stream_url')
+                #c.execute('UPDATE settings SET value=0 WHERE rowid=1')
+                #c.execute('UPDATE version set major=6, minor=1, patch=1')
+                #self.conn.commit()
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
@@ -888,16 +966,20 @@ class Database(object):
         except sqlite3.OperationalError, ex:
             raise DatabaseSchemaException(ex)
 
-    def addNotification(self, program):
-        self._invokeAndBlockForResult(self._addNotification, program)
+    def addNotification(self, program, onlyOnce = False):
+        self._invokeAndBlockForResult(self._addNotification, program, onlyOnce)
         # no result, but block until operation is done
 
-    def _addNotification(self, program):
+    def _addNotification(self, program, onlyOnce = False):
         """
         @type program: source.program
         """
+        if onlyOnce:
+            programStartDate = program.startDate
+        else:
+            programStartDate = None
         c = self.conn.cursor()
-        c.execute("INSERT INTO notifications(channel, program_title, source) VALUES(?, ?, ?)", [program.channel.id, program.title, self.source.KEY])
+        c.execute("INSERT INTO notifications(channel, program_title, source, start_date) VALUES(?, ?, ?, ?)", [program.channel.id, program.title, self.source.KEY, programStartDate])
         self.conn.commit()
         c.close()
 
@@ -914,6 +996,13 @@ class Database(object):
         self.conn.commit()
         c.close()
 
+    def _removeOldNotifications(self):
+        debug('_removeOldNotifications')
+        c = self.conn.cursor()
+        c.execute("DELETE FROM notifications WHERE start_date IS NOT NULL AND start_date <= ? AND source=?", [datetime.datetime.now() - datetime.timedelta(days=1), self.source.KEY])
+        self.conn.commit()
+        c.close()
+
     def getNotifications(self, daysLimit = 2):
         return self._invokeAndBlockForResult(self._getNotifications, daysLimit)
 
@@ -922,7 +1011,7 @@ class Database(object):
         start = datetime.datetime.now()
         end = start + datetime.timedelta(days = daysLimit)
         c = self.conn.cursor()
-        c.execute("SELECT DISTINCT c.title, p.title, p.start_date FROM notifications n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ?", [self.source.KEY, start, end])
+        c.execute("SELECT DISTINCT c.title, p.title, p.start_date FROM notifications n, channels c, programs p WHERE n.channel = c.id AND p.channel = c.id AND n.program_title = p.title AND n.source=? AND p.start_date >= ? AND p.end_date <= ? AND (n.start_date IS NULL OR n.start_date = p.start_date)", [self.source.KEY, start, end])
         programs = c.fetchall()
         c.close()
         return programs
@@ -935,7 +1024,7 @@ class Database(object):
         @type program: source.program
         """
         c = self.conn.cursor()
-        c.execute("SELECT 1 FROM notifications WHERE channel=? AND program_title=? AND source=?", [program.channel.id, program.title, self.source.KEY])
+        c.execute("SELECT 1 FROM notifications WHERE channel=? AND program_title=? AND source=? AND (start_date IS NULL OR start_date=?)", [program.channel.id, program.title, self.source.KEY, program.startDate])
         result = c.fetchone()
         c.close()
         return result
@@ -1025,6 +1114,7 @@ class Database(object):
     def _deleteDbFile(self):
         try:
             os.remove(self.databasePath)
+            os.remove(self.databasePath + '-journal')
         except:
             pass
 
@@ -1063,12 +1153,17 @@ class Source(object):
 
     def _downloadUrl(self, url):
         try:
+            remoteFilename = ''
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
             u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (AGENT:' + USER_AGENT + ' TIMEZONE:' + TIMEZONE + ' PLUGIN_VERSION:' + ADDON_VERSION + ' PLATFORM:' + PLATFORM_INFO + ' KODI_VERSION:' + KODI_VERSION + ')' })
             response = urllib2.urlopen(u,timeout=30)
             content = response.read()
-            if url.lower().endswith('.zip'):
+            try:
+                remoteFilename = u.info()['Content-Disposition'].split('filename=')[-1].replace('"','').replace(';','').strip()
+            except:
+                pass
+            if url.lower().endswith('.zip') or remoteFilename.lower().endswith('.zip'):
                 tnow = datetime.datetime.now()
                 deb("[EPG] Unpacking epg: %s [%s sek.]" % (url, str((tnow-start).seconds)))
                 memfile = io.BytesIO(content)
@@ -1114,9 +1209,9 @@ class ETVGUIDESource(Source):
             self.USE_ZIPPED_FILES = ""
 
         self.BASE_EPG_URL = "http://epg.feenk.net/"
-       
+
         self.ETVGUIDEUrl1 = self.BASE_EPG_URL + 'epg.xml' + self.USE_ZIPPED_FILES
-    
+
         if ADDON.getSetting('e-TVGuide2') == "true":
             self.ETVGUIDEUrl2 = self.BASE_EPG_URL + "weeb24h.xml" + self.USE_ZIPPED_FILES
         else:
@@ -1151,15 +1246,18 @@ class ETVGUIDESource(Source):
             data = chain(data, parsedData)
         return data
 
+
     def _getDataFromExternal(self, date, progress_callback, url):
         try:
             xml = self._downloadUrl(url)
+            if strings2.M_TVGUIDE_CLOSING:
+                raise SourceUpdateCanceledException()
             io = StringIO.StringIO(xml)
             context = ElementTree.iterparse(io)
             return parseXMLTV(context, io, len(xml), self.logoFolder, progress_callback)
         except Exception, ex:
             deb("Blad pobierania epg: %s\n\nSzczegoly:\n%s" % (url, str(ex)))
-            raise ex
+            raise
 
     def isUpdated(self, channelsLastUpdated, programLastUpdate, epgSizeInDB):
         if self.epgBasedOnLastModDate == 'false':
@@ -1175,7 +1273,7 @@ class ETVGUIDESource(Source):
             return 0
         if self.EPGSize is not None and forceCheck == False:
             return self.EPGSize
-        epgRecheckTimeout = 3600
+        epgRecheckTimeout = 1200
         failedCounter = 0
         while failedCounter < 3:
             try:
@@ -1287,9 +1385,12 @@ def parseXMLTV(context, f, size, logoFolder, progress_callback):
 
             if result:
                 elements_parsed += 1
-                if progress_callback and elements_parsed % 500 == 0:
-                    if not progress_callback(100.0 / size * f.tell()):
+                if elements_parsed % 500 == 0:
+                    if strings2.M_TVGUIDE_CLOSING:
                         raise SourceUpdateCanceledException()
+                    if progress_callback:
+                        if not progress_callback(100.0 / size * f.tell()):
+                            raise SourceUpdateCanceledException()
                 yield result
         root.clear()
     f.close()
