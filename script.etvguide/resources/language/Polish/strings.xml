@@ -43,7 +43,7 @@
 	<string id="30200">na [B]%s[/B] za 5 minut...</string>
 	<string id="30201">na [B]%s[/B] rozpoczyna się...</string>
 	<string id="30202">Uruchomienie zapisanego programu</string>
-	<string id="30203">Uruchomic zapisany program</string>
+	<string id="30203">Uruchomić zaplanowany program</string>
 	<string id="30204">Anuluj</string>
 	<string id="30300">[B]Oglądaj %s[/B]</string>
 	<string id="30301">[B]Przypomnij[/B]</string>
@@ -85,7 +85,7 @@
 	<string id="30703">Automatycznie przypisz aktualnie nadawane streamy</string>
 	<string id="30704">Użyj skompresowanego epg</string>
 	<string id="30705">Wyświetlaj tylko programy z przypisanym stream'em</string>
-	<string id="30706">Automatycznie wykrywaj aktualizacje EPG (Testowe)</string>
+	<string id="30706">Automatycznie wykrywaj aktualizacje EPG</string>
 
 <!-- weeb.tv mod -->
 	<string id="30802">e-TVGuide jest skonfigurowany, aby używać dodatku Weeb.Tv</string>
@@ -103,11 +103,13 @@
 	<string id="59906">Link</string>
 	<string id="59907">Źródło</string>
 	<string id="59908">Plik</string>
+	<string id="59909">Wykupiona usługa multisesji</string>
 	<string id="30913">Ustawienia</string>
 	<string id="30916">Ustawienia Bazy</string>
 	<string id="30914">Skórka</string>
 	<string id="30915">Uruchom e-TVGuide po starcie KODI</string>
 	<string id="30917">Animacja maksymalizacji okna odtwarzania</string>
+	<string id="30918">Video OSD zamiast Info OSD pod przyciskiem select</string>
 	<string id="30930">Kolory</string>
 	<string id="30931">Kolory kategorii</string>
 	<string id="30932">Filmy</string>
@@ -132,8 +134,8 @@
 
 	<string id="30956">Ustawienia moje-filmy.tk</string>
 	<string id="30957">Adres e-mail</string>
-	<string id="30958"></string>
-	<string id="30959"></string>
+	<string id="30958">Maksymalny czas uruchamiania serwisu</string>
+	<string id="30959">Adres playlisty</string>
 	<string id="30960"></string>
 	<string id="30961"></string>
 	<string id="30962"></string>
@@ -155,7 +157,7 @@
 	<string id="58009">Nie udało się wczytać ustawień</string>
 	<string id="58010">Proszę sprawdzić czy wybrany plik zip jest poprawną kopią ustawień</string>
 
-	<string id="31001">VIDEO OSD</string>
+	<string id="31001">Video OSD aktywne</string>
 	<string id="31002">Ustaw klawisze</string>
 	<string id="31003">USTAW</string>
 	<string id="31004">Zamknij</string>
@@ -169,6 +171,8 @@
 	<string id="31012">Resetuj ustawienia klawiszy</string>
 	<string id="31013">Reset</string>
 	<string id="31014">/ zmiana strm</string>
+	<string id="31015">Klawisz [B]Vol+[/B]</string>
+	<string id="31016">Klawisz [B]Vol-[/B]</string>
 
 	<string id="310010"></string>
 	<string id="310011">Zatrzymaj odtwarzanie przyciskiem wstecz</string>
@@ -261,4 +265,11 @@
 	<string id="69036"></string>
 	<string id="69037"></string>
 	<string id="69038"></string>
+
+	<string id="69040">Ustawienia video</string>
+	<string id="69041">Klawisze prawo/lewo wskazują poprzedni/następny program</string>
+	<string id="69042">Wyświetlaj przyciski info/setup/ch+/ch- na OSD</string>
+	<string id="69043">Automatycznie pokazuj OSD po uruchomieniu programu</string>
+	<string id="69044">Czas wyświetlania automatycznego OSD</string>
+	<string id="69045">Czas wyświetlania OSD</string>
 </strings>
