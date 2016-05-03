@@ -92,22 +92,23 @@ class Notification(object):
         xbmc.executebuiltin('CancelAlarm(%s-5mins,True)' % name.encode('utf-8', 'replace'))
         xbmc.executebuiltin('CancelAlarm(%s-now,True)' % name.encode('utf-8', 'replace'))
 
-        element = self.getScheduledNotificationForThisTime(startTime)
-        if element is not None:
-            programList = element[2]
-            for program in programList:
-                if program.title == programTitle:
-                    try:
-                        programList.remove(program)
-                    except:
-                        pass
-                    break
-            if len(programList) == 0:
-                element[1].cancel()
-                self.timers.remove(element)
+        #element = self.getScheduledNotificationForThisTime(startTime)
+        for element in self.timers[:]:
+            if element is not None:
+                programList = element[2]
+                for program in programList[:]:
+                    if program.title == programTitle:
+                        try:
+                            programList.remove(program)
+                        except:
+                            pass
+                        #break
+                if len(programList) == 0:
+                    element[1].cancel()
+                    self.timers.remove(element)
 
-    def addNotification(self, program):
-        self.database.addNotification(program)
+    def addNotification(self, program, onlyOnce = False):
+        self.database.addNotification(program, onlyOnce)
         self._scheduleNotification(program.channel.title, program.title, program.startDate)
 
     def removeNotification(self, program):
@@ -140,11 +141,11 @@ class Notification(object):
                 programToPlay = programList[ret-1]
 
         if programToPlay is not None:
-            xbmc.Player().stop()
+            #xbmc.Player().stop()
             if ADDON.getSetting('info.osd') == "true":
                 self.epg.playChannel2(programToPlay)
             else:
-                self.epg.playChannel(programToPlay.channel)
+                self.epg.playChannel(programToPlay.channel, programToPlay)
 
     def getScheduledNotificationForThisTime(self, startDate):
         for element in self.timers:
@@ -153,6 +154,15 @@ class Notification(object):
                 return element
         debug('getScheduledNotificationForThisTime no programs starting at %s' % startDate)
         return None
+
+    def isScheduled(self, program):
+        element = self.getScheduledNotificationForThisTime(program.startDate)
+        if element is not None:
+            programList = element[2]
+            for prog in programList:
+                if prog.channel.id == program.channel.id:
+                    return True
+        return False
 
     def close(self):
         debug('Notification close')

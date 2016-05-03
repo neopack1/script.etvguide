@@ -3,6 +3,7 @@
 import re, sys, os, cgi
 import xbmcplugin, xbmcgui, xbmcaddon, xbmc, gui
 from strings import *
+import strings as strings2
 import threading
 import datetime
 import subprocess
@@ -103,9 +104,9 @@ class RecordService(BasePlayService):
         partNumber = 1
         nrOfReattempts = 0
 
-        while success == False and nrOfReattempts <= maxNrOfReattempts and self.terminating == False and threadData['terminateThread'] == False and M_TVGUIDE_CLOSING == False:
+        while success == False and nrOfReattempts <= maxNrOfReattempts and self.terminating == False and threadData['terminateThread'] == False and strings2.M_TVGUIDE_CLOSING == False:
             for url in threadData['urlList']:
-                if success == True or self.terminating == True or threadData['terminateThread'] == True or nrOfReattempts > maxNrOfReattempts or M_TVGUIDE_CLOSING == True:
+                if success == True or self.terminating == True or threadData['terminateThread'] == True or nrOfReattempts > maxNrOfReattempts or strings2.M_TVGUIDE_CLOSING == True:
                     break
 
                 recordCommand = None
@@ -208,7 +209,7 @@ class RecordService(BasePlayService):
                                 pass
 
                 self.unlockService(service)
-                if self.terminating == True or M_TVGUIDE_CLOSING == True or threadData['terminateThread'] == True:
+                if self.terminating == True or strings2.M_TVGUIDE_CLOSING == True or threadData['terminateThread'] == True:
                     deb('RecordService recordLoop abort requested - terminating')
 
             if missingRtmpdumpBinary or missingFfmpegumpBinary:
@@ -221,7 +222,7 @@ class RecordService(BasePlayService):
             if success == False:
                 if nrOfReattempts <= maxNrOfReattempts:
                     for sleepTime in range(5):
-                        if self.terminating == True or threadData['terminateThread'] == True or M_TVGUIDE_CLOSING:
+                        if self.terminating == True or threadData['terminateThread'] == True or strings2.M_TVGUIDE_CLOSING:
                             break
                         time.sleep(1) #Go to sleep, maybe after that any service will be free to use
         deb('RecordService - end of recording program: %s' % threadData['program'].title.encode('utf-8', 'ignore'))
@@ -306,7 +307,7 @@ class RecordService(BasePlayService):
         debug('getListOfFilenamesForProgram')
         filenameList = list()
         filename = self.getOutputFilename(program)
-        filePath = xbmc.translatePath(os.path.join(self.recordDestinationPath, filename))
+        filePath = os.path.join(self.recordDestinationPath, filename)
         partNumber = 1
         while os.path.isfile(filePath):
             filenameList.append(filePath)
@@ -322,7 +323,6 @@ class RecordService(BasePlayService):
         filenameList = self.getListOfFilenamesForProgram(program)
         for filename in filenameList:
             playlist.add(url=filename)
-
         if playlist.size() > 0:
             return playlist
         return None
@@ -392,7 +392,9 @@ class RecordService(BasePlayService):
         debug('removeRecordedProgram')
         if program is None:
             deb('removeRecordedProgram got faulty program!!!!')
+
         filenameList = self.getListOfFilenamesForProgram(program)
+
         for filename in filenameList:
             try:
                 os.remove(filename)
