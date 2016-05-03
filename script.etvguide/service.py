@@ -19,7 +19,6 @@
 #  http://www.gnu.org/copyleft/gpl.html
 #
 import xbmcaddon
-import notification
 import xbmc
 import source
 from strings import *
@@ -35,13 +34,7 @@ class Service(object):
         else:
             self.database.close()
 
-
     def onCachesUpdated(self):
-
-        if ADDON.getSetting('notifications.enabled') == 'true':
-            n = notification.Notification(self.database, ADDON.getAddonInfo('path'))
-            n.scheduleNotifications()
-
         self.database.close(None)
 
 try:
@@ -50,7 +43,7 @@ try:
     if ADDON.getSetting('cache.data.on.xbmc.startup') == 'true' and ADDON.getSetting('autostart_etvguide') == 'false':
         #Make sure to start service only when autostart is disabled to prevent from database lock issues
         Service()
-    if ADDON_AUTOSTART == False:
+    elif ADDON_AUTOSTART == False:
         ADDON_AUTOSTART = True
         if ADDON.getSetting('autostart_etvguide') == 'true' and xbmc.getCondVisibility('System.HasAddon(%s)' % ADDON_ID):
             xbmc.executebuiltin('RunAddon(%s)' % ADDON_ID)
