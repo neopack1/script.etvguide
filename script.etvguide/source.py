@@ -38,6 +38,7 @@ import xbmcgui
 import xbmcvfs
 import sqlite3
 import playService
+import platform
 from itertools import chain
 
 import io, zipfile
