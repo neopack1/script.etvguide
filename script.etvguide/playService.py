@@ -3,6 +3,7 @@
 import re, sys, os, cgi
 import xbmcplugin, xbmcgui, xbmcaddon, xbmc
 from strings import *
+import strings as strings2
 import weebtvcids
 import telewizjadacids
 import goldvodcids
@@ -38,6 +39,7 @@ class BasePlayService:
     def __init__(self):
         self.thread = None
         self.terminating = False
+        self.starting = False
 
     def parseUrl(self, url):
         cid = 0
@@ -53,7 +55,7 @@ class BasePlayService:
 
     def isWorking(self):
         if self.thread is not None:
-            return self.thread.is_alive()
+            return self.thread.is_alive() or self.starting
         return False
 
     def getChannel(self, cid, service, currentlyPlayedService = None):
@@ -107,9 +109,9 @@ class PlayService(xbmc.Player, BasePlayService):
         self.playbackStopped = False
         self.playbackStarted = False
         self.currentlyPlayedService = None
-        self.player = xbmc.Player(xbmc.PLAYER_CORE_DVDPLAYER)
 
     def playUrlList(self, urlList):
+        self.starting = True
         if self.thread is not None and self.thread.is_alive():
             deb('PlayService playUrlList waiting for thread to terminate')
             self.terminating = True
@@ -117,6 +119,7 @@ class PlayService(xbmc.Player, BasePlayService):
 
         self.thread = threading.Thread(name='playUrlList Loop', target = self._playUrlList, args=[urlList])
         self.thread.start()
+        self.starting = False
 
     def _playUrlList(self, urlList):
         self.terminating = False
@@ -126,8 +129,9 @@ class PlayService(xbmc.Player, BasePlayService):
 
             for i in range(150):
 
-                if self.terminating == True or M_TVGUIDE_CLOSING == True:
-                    self.player.stop()
+                if self.terminating == True or strings2.M_TVGUIDE_CLOSING == True:
+                    if strings2.M_TVGUIDE_CLOSING == True:
+                        xbmc.Player().stop()
                     self.unlockService(self.currentlyPlayedService)
                     self.currentlyPlayedService = None
                     deb('PlayService _playUrlList abort requested - terminating')
@@ -143,7 +147,7 @@ class PlayService(xbmc.Player, BasePlayService):
                 time.sleep(.100)
 
             deb('PlayService _playUrlList detected faulty stream!')
-            self.player.stop()
+            xbmc.Player().stop()
             self.unlockService(self.currentlyPlayedService)
             self.currentlyPlayedService = None
 
@@ -168,7 +172,7 @@ class PlayService(xbmc.Player, BasePlayService):
             cid, service = self.parseUrl(url)
             success = self.LoadVideoLink(cid, service)
         else:
-            self.player.play(url)
+            xbmc.Player().play(url)
         return success
 
     def close(self):
@@ -195,7 +199,7 @@ class PlayService(xbmc.Player, BasePlayService):
             try:
                 if channelInfo.premium == 0:
                     xbmcgui.Dialog().ok(strings(57034).encode('utf-8'), strings(57036).encode('utf-8') + '\n' + strings(57037).encode('utf-8') + '\n' + 'service: %s' % service.encode('utf-8'))
-                self.player.play(channelInfo.strm, liz, windowed=startWindowed)
+                xbmc.Player().play(channelInfo.strm, liz, windowed=startWindowed)
                 res = True
             except Exception, ex:
                 self.unlockService(self.currentlyPlayedService)
@@ -207,7 +211,7 @@ class PlayService(xbmc.Player, BasePlayService):
         self.playbackStopped = True
         self.unlockService(self.currentlyPlayedService)
         self.currentlyPlayedService = None
-        self.player.stop()
+        xbmc.Player().stop()
 
     def onPlayBackStarted(self):
         self.playbackStarted = True

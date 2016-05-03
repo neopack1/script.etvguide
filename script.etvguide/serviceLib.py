@@ -7,20 +7,21 @@ import xbmc
 import time
 import os, xbmcaddon
 from strings import *
+import strings as strings2
 import threading
+import datetime
 
 HOST        = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:19.0) Gecko/20121213 Firefox/19.0'
 pathAddons  = os.path.join(ADDON.getAddonInfo('path'), 'resources', 'addons.ini')
 pathMapBase = os.path.join(ADDON.getAddonInfo('path'), 'resources')
 
-HTTP_ConnectionTimeout = 5
+
 try:
-    max_connection_reattempts = int(ADDON.getSetting('connection_reattempts'))
+    MAX_CONNECTION_TIME = int(ADDON.getSetting('max_connection_time'))
 except:
-    deb('ERROR serviceLib failed to fetch max connection_reattempts')
-    max_connection_reattempts = 25
+    MAX_CONNECTION_TIME = 30
 
-
+HTTP_ConnectionTimeout = 5
 
 class ShowList:
     def __init__(self, logCall=deb):
@@ -51,35 +52,32 @@ class ShowList:
             reqUrl.add_header('Connection', 'Keep-Alive')
             reqUrl.add_header('ContentType', 'application/x-www-form-urlencoded')
 
-            failedCounter = 0
-            while failedCounter < max_connection_reattempts:
+            startTime = datetime.datetime.now()
+            while (datetime.datetime.now() - startTime).seconds < MAX_CONNECTION_TIME and strings2.M_TVGUIDE_CLOSING == False:
                 try:
                     raw_json = urllib2.urlopen(reqUrl, timeout = HTTP_ConnectionTimeout)
                     content_json = raw_json.read()
                     result_json = json.loads(content_json)
                     break
                 except (httplib.IncompleteRead, socket.timeout) as ex:
-                    failedCounter = failedCounter + 1
-                    self.logCall('ShowList getJsonFromAPI exception: %s - retrying failedCounter = %s' % (str(ex), failedCounter))
+                    self.logCall('ShowList getJsonFromAPI exception: %s - retrying seconds = %s' % (str(ex), (datetime.datetime.now() - startTime).seconds))
 
                 except urllib2.HTTPError as ex:
-                    if ex.code == 500:
-                        failedCounter = failedCounter + 5
-                        self.logCall('ShowList getJsonFromAPI exception: %s - retrying failedCounter = %s' % (str(ex), failedCounter))
+                    if ex.code in [500, 408]:
+                        self.logCall('ShowList getJsonFromAPI exception: %s - retrying seconds = %s' % (str(ex), (datetime.datetime.now() - startTime).seconds))
                     else:
                         raise
 
                 except urllib2.URLError as ex:
-                    if 'timed out' in str(ex):
-                        failedCounter = failedCounter + 5
-                        self.logCall('ShowList getJsonFromAPI exception: %s - retrying failedCounter = %s' % (str(ex), failedCounter))
+                    if 'timed out' in str(ex) or 'Timeout' in str(ex):
+                        self.logCall('ShowList getJsonFromAPI exception: %s - retrying seconds = %s' % (str(ex), (datetime.datetime.now() - startTime).seconds))
                     else:
                         raise
 
-                if M_TVGUIDE_CLOSING:
+                if strings2.M_TVGUIDE_CLOSING:
                     self.logCall('ShowList getJsonFromAPI M_TVGUIDE_CLOSING - aborting!')
                     break
-                time.sleep(.050)
+                xbmc.sleep(150)
 
         except (urllib2.URLError, NameError, ValueError, httplib.BadStatusLine) as ex:
             self.logCall('ShowList getJsonFromAPI exception: %s - aborting!' % str(ex))
@@ -112,8 +110,8 @@ class ShowList:
             data = urllib.urlencode(post_data)
             reqUrl = urllib2.Request(url, data, headers)
 
-            failedCounter = 0
-            while failedCounter < max_connection_reattempts:
+            startTime = datetime.datetime.now()
+            while (datetime.datetime.now() - startTime).seconds < MAX_CONNECTION_TIME and strings2.M_TVGUIDE_CLOSING == False:
                 try:
                     raw_json = urlOpen(reqUrl, customOpeners)
                     if jsonLoadResult:
@@ -125,20 +123,25 @@ class ShowList:
                             result_json = json.loads(result_json)
                         break
                 except (httplib.IncompleteRead, socket.timeout) as ex:
-                    failedCounter = failedCounter + 1
-                    self.logCall('ShowList getJsonFromExtendedAPI exception: %s - retrying failedCounter = %s' % (str(ex), failedCounter))
+                    self.logCall('ShowList getJsonFromExtendedAPI exception: %s - retrying seconds = %s' % (str(ex), (datetime.datetime.now() - startTime).seconds))
 
-                except urllib2.URLError as ex:
-                    if 'timed out' in str(ex):
-                        failedCounter = failedCounter + 10
-                        self.logCall('ShowList getJsonFromAPI exception: %s - retrying failedCounter = %s' % (str(ex), failedCounter))
+                except urllib2.HTTPError as ex:
+                    if ex.code in [500, 408]:
+                        self.logCall('ShowList getJsonFromExtendedAPI exception: %s - retrying seconds = %s' % (str(ex), (datetime.datetime.now() - startTime).seconds))
                     else:
                         raise
 
-                if M_TVGUIDE_CLOSING:
+                except urllib2.URLError as ex:
+                    if 'timed out' in str(ex) or 'Timeout' in str(ex):
+                        self.logCall('ShowList getJsonFromExtendedAPI exception: %s - retrying seconds = %s' % (str(ex), (datetime.datetime.now() - startTime).seconds))
+                    else:
+                        raise
+
+                if strings2.M_TVGUIDE_CLOSING:
                     self.logCall('ShowList getJsonFromExtendedAPI M_TVGUIDE_CLOSING - aborting!')
                     break
-                time.sleep(.050)
+                xbmc.sleep(150)
+                #time.sleep(.15)
 
             if cookieFile is not None and save_cookie == True:
                 cj.save(cookieFile, ignore_discard = True)

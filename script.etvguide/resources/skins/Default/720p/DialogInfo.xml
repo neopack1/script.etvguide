@@ -36,23 +36,19 @@
 				<textcolor>selected</textcolor>
 				<shadowcolor>black</shadowcolor>
 			</control>
-
-		<control type="button" id="1000">
-			<description>Close Window button</description>
-			<posx>830</posx>
-			<posy>15</posy>
-			<width>64</width>
-			<height>32</height>
-			<label>-</label>
-			<font>-</font>
-			<onclick>Dialog.Close(VideoOSD,true)</onclick>
-			<onclick>FullScreen</onclick>
-			<texturefocus>DialogCloseButton-focus.png</texturefocus>
-			<texturenofocus>DialogCloseButton.png</texturenofocus>
-			<animation effect="fade" time="200">VisibleChange</animation>
-			<visible>true</visible>
-		</control>
-
+			<control type="button" id="1000">
+				<description>Close Window button</description>
+				<posx>830</posx>
+				<posy>15</posy>
+				<width>64</width>
+				<height>32</height>
+				<onclick>Dialog.Close(VideoOSD,true)</onclick>
+				<onclick>FullScreen</onclick>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<animation effect="fade" time="200">VisibleChange</animation>
+				<visible>true</visible>
+			</control>
 			<control type="label" id="4920">
 				<description>Program title</description>
 				<posx>30</posx>
@@ -67,13 +63,12 @@
 			<control type="image" id="4924">
 				<description>Channel logo</description>
 				<posx>640</posx>
-				<posy>125</posy>
+				<posy>130</posy>
 				<width>240</width>
 				<height>120</height>
 				<aspectratio>keep</aspectratio>
 				<fadetime>500</fadetime>
 			</control>
-
 			<control type="image" id="4944">
 				<description>Live</description>
 				<posx>778</posx>
@@ -84,7 +79,30 @@
 				<fadetime>500</fadetime>
 				<visible>true</visible>
 			</control>
-
+			<control type="label">
+				<description>Current time</description>
+				<posx>835</posx>
+				<posy>85</posy>
+				<width>100</width>
+				<height>50</height>
+				<textcolor>gray</textcolor>
+				<label>[B]$INFO[System.Time(hh:mm)][/B]</label>
+				<font>font13</font>
+				<align>right</align>
+				<aligny>center</aligny>
+			</control>
+			<control type="label">
+				<description>Current time - sec</description>
+				<posx>835</posx>
+				<posy>87</posy>
+				<width>50</width>
+				<height>50</height>
+				<textcolor>gray</textcolor>
+				<label>[B]:$INFO[System.Time(ss)][/B]</label>
+				<font>font10</font>
+				<align>left</align>
+				<aligny>center</aligny>
+			</control>
 			<control type="label" id="4921">
 				<description>Program time</description>
 				<posx>880</posx>
@@ -107,16 +125,19 @@
 				<wrapmultiline>true</wrapmultiline>
 				<autoscroll time="3500" delay="2500" repeat="10000">true</autoscroll>
 			</control>
-
-			<control type="progress" id="4999">
-				<posx>30</posx>
-				<posy>470</posy>
-				<width>580</width>
-				<height>20</height>
+			<control type="label" id="4921">
+				<description>Program time</description>
+				<posx>880</posx>
+				<posy>55</posy>
+				<width>140</width>
+				<height>50</height>
+				<textcolor>ffffffff</textcolor>
+				<font>font13</font>
+				<align>right</align>
+				<aligny>center</aligny>	
 			</control>
-
 			<control type="image" id="4923">
-				<description>Program logo / Source logo</description>
+				<description>Program logo</description>
 				<posx>640</posx>
 				<posy>260</posy>
 				<width>240</width>
@@ -124,6 +145,12 @@
 				<aspectratio>keep</aspectratio>
 				<fadetime>500</fadetime>
 				<texture>tvguide-logo-epg.png</texture>
+			</control>
+			<control type="progress" id="4999">
+				<posx>30</posx>
+				<posy>470</posy>
+				<width>580</width>
+				<height>20</height>
 			</control>
 		</control>
 	</controls>

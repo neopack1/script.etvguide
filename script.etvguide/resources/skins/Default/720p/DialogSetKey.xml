@@ -2,7 +2,7 @@
 	<defaultcontrol always="false">9001</defaultcontrol>
 	<zorder>50</zorder>
 	<coordinates>
-		<system>1</system><posx>335</posx><posy>200</posy>
+		<system>1</system><posx>335</posx><posy>0</posy>
 	</coordinates>
 	<include>dialogeffect</include>
 	<controls>
@@ -11,7 +11,7 @@
 			<posx>0</posx>
 			<posy>0</posy>
 			<width>600</width>
-			<height>430</height>
+			<height>710</height>
 			<texture border="40">DialogBack.png</texture>
 		</control>
 		<control type="image">
@@ -35,10 +35,9 @@
 			<textcolor>selected</textcolor>
 			<shadowcolor>black</shadowcolor>
 		</control>
-
 		<control type="button" id="9001">
 			<posx>400</posx>
-			<posy>100</posy>
+			<posy>95</posy>
 			<width>170</width>
 			<height>40</height>
 			<align>center</align>
@@ -50,7 +49,7 @@
 			<ondown>9002</ondown>
 		</control>
 		<control type="label" id="8001">
-			<posx>50</posx>
+			<posx>45</posx>
 			<posy>100</posy>
 			<width>550</width>
 			<height>30</height>
@@ -59,18 +58,18 @@
 			<font>font13</font>
 		</control>
 		<control type="label" id="7001">
-			<posx>250</posx>
+			<posx>280</posx>
 			<posy>100</posy>
 			<width>100</width>
 			<height>30</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font13</font>
+			<font>font13_title</font>
+			<textcolor>gold</textcolor>
 		</control>
-
 		<control type="button" id="9002">
 			<posx>400</posx>
-			<posy>150</posy>
+			<posy>145</posy>
 			<width>170</width>
 			<height>40</height>
 			<align>center</align>
@@ -82,7 +81,7 @@
 			<ondown>9003</ondown>
 		</control>
 		<control type="label" id="8002">
-			<posx>50</posx>
+			<posx>45</posx>
 			<posy>150</posy>
 			<width>550</width>
 			<height>30</height>
@@ -91,18 +90,18 @@
 			<font>font13</font>
 		</control>
 		<control type="label" id="7002">
-			<posx>250</posx>
+			<posx>280</posx>
 			<posy>150</posy>
 			<width>100</width>
 			<height>30</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font13</font>
+			<font>font13_title</font>
+			<textcolor>gold</textcolor>
 		</control>
-
 		<control type="button" id="9003">
 			<posx>400</posx>
-			<posy>200</posy>
+			<posy>195</posy>
 			<width>170</width>
 			<height>40</height>
 			<align>center</align>
@@ -114,7 +113,7 @@
 			<ondown>9004</ondown>
 		</control>
 		<control type="label" id="8003">
-			<posx>50</posx>
+			<posx>45</posx>
 			<posy>200</posy>
 			<width>550</width>
 			<height>30</height>
@@ -123,18 +122,18 @@
 			<font>font13</font>
 		</control>
 		<control type="label" id="7003">
-			<posx>250</posx>
+			<posx>280</posx>
 			<posy>200</posy>
 			<width>100</width>
 			<height>30</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font13</font>
+			<font>font13_title</font>
+			<textcolor>gold</textcolor>
 		</control>
-
 		<control type="button" id="9004">
 			<posx>400</posx>
-			<posy>250</posy>
+			<posy>245</posy>
 			<width>170</width>
 			<height>40</height>
 			<align>center</align>
@@ -143,10 +142,10 @@
 			<textcolor>ffffffff</textcolor>
 			<label>$ADDON[script.etvguide 31003]</label>
 			<onup>9003</onup>
-			<ondown>9005</ondown>
+			<ondown>9009</ondown>
 		</control>
 		<control type="label" id="8004">
-			<posx>50</posx>
+			<posx>45</posx>
 			<posy>250</posy>
 			<width>550</width>
 			<height>30</height>
@@ -155,18 +154,21 @@
 			<font>font13</font>
 		</control>
 		<control type="label" id="7004">
-			<posx>250</posx>
+			<posx>280</posx>
 			<posy>250</posy>
 			<width>100</width>
 			<height>30</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font13</font>
+			<font>font13_title</font>
+			<textcolor>gold</textcolor>
 		</control>
-
-		<control type="button" id="9005">
+		
+		
+		
+		<control type="button" id="9009">
 			<posx>400</posx>
-			<posy>300</posy>
+			<posy>295</posy>
 			<width>170</width>
 			<height>40</height>
 			<align>center</align>
@@ -175,11 +177,75 @@
 			<textcolor>ffffffff</textcolor>
 			<label>$ADDON[script.etvguide 31003]</label>
 			<onup>9004</onup>
-			<ondown>9099</ondown>
+			<ondown>9010</ondown>
+		</control>
+		<control type="label" id="8009">
+			<posx>45</posx>
+			<posy>300</posy>
+			<width>550</width>
+			<height>30</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31015]</label>
+			<font>font13</font>
+		</control>
+		<control type="label" id="7009">
+			<posx>280</posx>
+			<posy>300</posy>
+			<width>100</width>
+			<height>30</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font13_title</font>
+			<textcolor>gold</textcolor>
+		</control>
+		<control type="button" id="9010">
+			<posx>400</posx>
+			<posy>345</posy>
+			<width>170</width>
+			<height>40</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>ffffffff</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9009</onup>
+			<ondown>9005</ondown>
+		</control>
+		<control type="label" id="8010">
+			<posx>45</posx>
+			<posy>350</posy>
+			<width>550</width>
+			<height>30</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31016]</label>
+			<font>font13</font>
+		</control>
+		<control type="label" id="7010">
+			<posx>280</posx>
+			<posy>350</posy>
+			<width>100</width>
+			<height>30</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font13_title</font>
+			<textcolor>gold</textcolor>
+		</control>
+		<control type="button" id="9005">
+			<posx>400</posx>
+			<posy>395</posy>
+			<width>170</width>
+			<height>40</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>ffffffff</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9010</onup>
+			<ondown>9006</ondown>
 		</control>
 		<control type="label" id="8005">
-			<posx>50</posx>
-			<posy>300</posy>
+			<posx>45</posx>
+			<posy>400</posy>
 			<width>550</width>
 			<height>30</height>
 			<aligny>center</aligny>
@@ -187,27 +253,136 @@
 			<font>font13</font>
 		</control>
 		<control type="label" id="7005">
-			<posx>250</posx>
-			<posy>300</posy>
+			<posx>280</posx>
+			<posy>400</posy>
 			<width>100</width>
 			<height>30</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font13</font>
+			<font>font13_title</font>
+			<textcolor>gold</textcolor>
 		</control>
-
-		<control type="button" id="9099">
-			<posx>200</posx>
-			<posy>350</posy>
+		<control type="button" id="9006">
+			<posx>400</posx>
+			<posy>445</posy>
 			<width>170</width>
 			<height>40</height>
 			<align>center</align>
 			<aligny>center</aligny>
 			<font>font13</font>
 			<textcolor>ffffffff</textcolor>
-			<label>$ADDON[script.etvguide 31004]</label>
+			<label>$ADDON[script.etvguide 31003]</label>
 			<onup>9005</onup>
+			<ondown>9007</ondown>
+		</control>
+		<control type="label" id="8006">
+			<posx>45</posx>
+			<posy>438</posy>
+			<width>550</width>
+			<height>30</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31010]</label>
+			<font>font13</font>
+		</control>
+		<control type="label" id="8016">
+			<posx>45</posx>
+			<posy>462</posy>
+			<width>550</width>
+			<height>30</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31014]</label>
+			<font>font13</font>
+		</control>
+		<control type="label" id="7006">
+			<posx>280</posx>
+			<posy>450</posy>
+			<width>100</width>
+			<height>30</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font13_title</font>
+			<textcolor>gold</textcolor>
+		</control>
+		<control type="button" id="9007">
+			<posx>400</posx>
+			<posy>495</posy>
+			<width>170</width>
+			<height>40</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>ffffffff</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9006</onup>
+			<ondown>9008</ondown>
+		</control>
+		<control type="label" id="8007">
+			<posx>45</posx>
+			<posy>500</posy>
+			<width>550</width>
+			<height>30</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31011]</label>
+			<font>font13</font>
+		</control>
+		<control type="label" id="7007">
+			<posx>280</posx>
+			<posy>500</posy>
+			<width>100</width>
+			<height>30</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font13_title</font>
+			<textcolor>gold</textcolor>
+		</control>
+		<control type="button" id="9008">
+			<posx>400</posx>
+			<posy>565</posy>
+			<width>170</width>
+			<height>40</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>gray</textcolor>
+			<label>$ADDON[script.etvguide 31013]</label>
+			<onup>9007</onup>
+			<ondown>9099</ondown>
+		</control>
+		<control type="label" id="8008">
+			<posx>45</posx>
+			<posy>570</posy>
+			<width>550</width>
+			<height>30</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31012]</label>
+			<font>font13</font>
+			<textcolor>gray</textcolor>
+		</control>
+		<control type="button" id="9099">
+			<posx>190</posx>
+			<posy>640</posy>
+			<width>210</width>
+			<height>40</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>ffffffff</textcolor>
+			<label>$ADDON[script.etvguide 31004]</label>
+			<onup>9008</onup>
 			<ondown>9001</ondown>
+		</control>
+		<control type="button" id="9099">
+			<description>Close Window button</description>
+			<posx>510</posx>
+			<posy>20</posy>
+			<width>64</width>
+			<height>32</height>
+			<texturefocus>DialogCloseButton-focus.png</texturefocus>
+			<texturenofocus>DialogCloseButton.png</texturenofocus>
+			<onup>9008</onup>
+			<ondown>9001</ondown>
+			<animation effect="fade" time="200">VisibleChange</animation>
+			<visible>true</visible>
 		</control>
 	</controls>
 </window>

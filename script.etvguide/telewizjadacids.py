@@ -4,6 +4,7 @@ import urllib, sys, copy, re
 import xbmc
 import os, xbmcaddon
 from strings import *
+import strings as strings2
 from serviceLib import *
 
 
@@ -78,11 +79,12 @@ class TelewizjaDaUpdater(baseServiceUpdater):
 
     def getChannel(self, cid):
         try:
-            for chann in telewizjadaChannelList:
+            channels = self.getChannelList()
+            for chann in channels:
                 if chann.cid == cid:
                     failedCounter = 0
-                    while failedCounter < 3:
-                        if M_TVGUIDE_CLOSING:
+                    while failedCounter < 1:
+                        if strings2.M_TVGUIDE_CLOSING:
                             break
 
                         data = { 'cid': cid }

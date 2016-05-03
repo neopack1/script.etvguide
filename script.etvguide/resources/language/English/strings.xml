@@ -86,7 +86,7 @@
 	<string id="30703">Automaticly set actual streams</string>
 	<string id="30704">Use zipped epg</string>
 	<string id="30705">Show only programs with stream assigned</string>
-	<string id="30706">Auto detect EPG change (Beta)</string>
+	<string id="30706">Auto detect EPG change</string>
 
 <!-- weeb.tv mod -->
 	<string id="30802">TV Guide is configured to stream using Weeb.Tv</string>
@@ -104,11 +104,13 @@
 	<string id="59906">Url</string>
 	<string id="59907">Source</string>
 	<string id="59908">File</string>
+	<string id="59909">Premium multisession service enabled</string>
 	<string id="30913">Settings</string>
 	<string id="30914">Skin</string>
 	<string id="30915">Enable KODI e-TVGuide autostart</string>
 	<string id="30916">Database Settings</string>
 	<string id="30917">Enable stream window resize animation</string>
+	<string id="30918">Select key open Video OSD instead of Info OSD</string>
 	<string id="30930">Colours</string>
 	<string id="30931">Category colours</string>
 	<string id="30932">Movies</string>
@@ -133,8 +135,8 @@
 
 	<string id="30956">Moje-filmy.tk settings</string>
 	<string id="30957">e-mail adress</string>
-	<string id="30958"></string>
-	<string id="30959"></string>
+	<string id="30958">Max service startup time</string>
+	<string id="30959">Playlist URL</string>
 	<string id="30960"></string>
 	<string id="30961"></string>
 	<string id="30962"></string>
@@ -155,7 +157,7 @@
 	<string id="58009">Failed to import settings</string>
 	<string id="58010">Please check if chosen file is a correct settings backup</string>
 
-	<string id="31001">VIDEO OSD</string>
+	<string id="31001">Video OSD enabled</string>
 	<string id="31002">Set Keys</string>
 	<string id="31003">SET</string>
 	<string id="31004">Close</string>
@@ -169,6 +171,9 @@
 	<string id="31012">Reset key settings</string>
 	<string id="31013">Reset</string>
 	<string id="31014">And change strm</string>
+	<string id="31015">Vol+ Key</string>
+	<string id="31016">Vol- Key</string>
+
 	<string id="310010"></string>
 	<string id="310011">Stop playback using navi_back button</string>
 	<string id="310012">Recorded program</string>
@@ -259,4 +264,11 @@
 	<string id="69036"></string>
 	<string id="69037"></string>
 	<string id="69038"></string>
+
+	<string id="69040">Video settings</string>
+	<string id="69041">Right/Left key show next/previous program</string>
+	<string id="69042">Show buttons info/setup/ch+/ch- on OSD</string>
+	<string id="69043">Display auto OSD on play/channel change</string>
+	<string id="69044">Auto OSD display time</string>
+	<string id="69045">OSD display time</string>
 </strings>

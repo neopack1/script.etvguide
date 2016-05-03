@@ -28,6 +28,7 @@ ADDON_PATH          = ADDON.getAddonInfo('path')
 ADDON_CIDUPDATED    = False    #zabezpieczenie przed ponownym updatem cidow
 ADDON_AUTOSTART     = False    #zabezpieczenie przed ponownym uruchomieniem wtyczki
 FORCE_ADD_LOG_DEBUG = True     #True - Logowanie nawet jezeli wylaczone debugowanie w XBMC
+global M_TVGUIDE_CLOSING
 M_TVGUIDE_CLOSING   = False
 
 NO_DESCRIPTION = 30000
@@ -93,6 +94,14 @@ C_MAIN_IMAGE = 4923
 C_MAIN_LOGO = 4924          #logo programu
 C_MAIN_LIVE = 4944
 C_PROGRAM_PROGRESS = 4999
+
+C_PROGRAM_CATEGORY = 4926
+C_PROGRAM_EPISODE  = 4925
+C_PROGRAM_ACTORS = 4928
+C_PROGRAM_PRODUCTION_DATE = 4929
+C_PROGRAM_DIRECTOR = 4930
+C_PROGRAM_AGE_ICON = 4932
+C_MAIN_PROGRAM_PROGRESS = 4230
 
 C_MAIN_EPG = 5000
 

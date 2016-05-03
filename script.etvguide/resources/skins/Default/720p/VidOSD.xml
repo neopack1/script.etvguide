@@ -1,5 +1,4 @@
 <window>
-	<defaultcontrol always="true">101</defaultcontrol>
 	<include>dialogeffect</include>
 	<coordinates>
 		<system>1</system><posx>0</posx><posy>0</posy>
@@ -26,7 +25,6 @@
 		<control type="group" id="100">
 			<posx>0</posx>
 			<posy>0</posy>
-			<defaultcontrol always="true">101</defaultcontrol>
 			<animation effect="fade" time="1000">VisibleChange</animation>
 			<visible>true</visible>
 
@@ -59,7 +57,7 @@
 			</control>
 			<control type="label" id="4921">
 				<description>Program time</description>
-				<posx>1255</posx>
+				<posx>1270</posx>
 				<posy>570</posy>
 				<width>200</width>
 				<height>30</height>
@@ -95,56 +93,94 @@
 				<width>300</width>
 				<height>15</height>
 			</control>
-<!--
-			<control type="button" id="101">
-				<posx>36</posx>
+
+			<control type="label" id="6666">
+				<description>Program time</description>
+				<posx>1025</posx>
+				<posy>570</posy>
+				<width>100</width>
+				<height>30</height>
+				<textcolor>ffffffff</textcolor>
+				<font>font13</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>[B]$INFO[System.Time(hh:mm)][/B]</label>
+			</control>
+
+			<control type="button" id="108">
+				<posx>20</posx>
 				<posy>670</posy>
 				<width>40</width>
 				<height>40</height>
-				<texturefocus>stopfo.png</texturefocus>
-				<texturenofocus>stopbd.png</texturenofocus>
-				<onleft>104</onleft>
-				<onright>102</onright>
+				<texturefocus>../../Default/media/unschedulefo.png</texturefocus>
+				<texturenofocus>../../Default/media/unschedulebd.png</texturenofocus>
+			</control>
+			<control type="button" id="107">
+				<posx>20</posx>
+				<posy>670</posy>
+				<width>40</width>
+				<height>40</height>
+				<texturefocus>../../Default/media/schedulefo.png</texturefocus>
+				<texturenofocus>../../Default/media/schedulebd.png</texturenofocus>
+			</control>
+			<control type="button" id="105">
+				<posx>20</posx>
+				<posy>670</posy>
+				<width>40</width>
+				<height>40</height>
+				<texturefocus>../../Default/media/playfo.png</texturefocus>
+				<texturenofocus>../../Default/media/playbd.png</texturenofocus>
+			</control>
+			<control type="button" id="101">
+				<posx>20</posx>
+				<posy>670</posy>
+				<width>40</width>
+				<height>40</height>
+				<texturefocus>../../Default/media/stopfo.png</texturefocus>
+				<texturenofocus>../../Default/media/stopbd.png</texturenofocus>
 				<onup>1000</onup>
 				<ondown>1000</ondown>
 			</control>
 			<control type="button" id="102">
-				<posx>106</posx>
+				<posx>85</posx>
 				<posy>670</posy>
 				<width>40</width>
 				<height>40</height>
-				<texturefocus>infofo.png</texturefocus>
-				<texturenofocus>infobd.png</texturenofocus>
-				<onleft>101</onleft>
-				<onright>103</onright>
+				<texturefocus>../../Default/media/infofo.png</texturefocus>
+				<texturenofocus>../../Default/media/infobd.png</texturenofocus>
+				<onup>1000</onup>
+				<ondown>1000</ondown>
+			</control>
+			<control type="button" id="106">
+				<posx>150</posx>
+				<posy>670</posy>
+				<width>40</width>
+				<height>40</height>
+				<texturefocus>../../Default/media/setupfo.png</texturefocus>
+				<texturenofocus>../../Default/media/setupbd.png</texturenofocus>
 				<onup>1000</onup>
 				<ondown>1000</ondown>
 			</control>
 			<control type="button" id="103">
-				<posx>176</posx>
+				<posx>215</posx>
 				<posy>670</posy>
 				<width>40</width>
 				<height>40</height>
-				<texturefocus>minusfo.png</texturefocus>
-				<texturenofocus>minusbd.png</texturenofocus>
-				<onleft>102</onleft>
-				<onright>104</onright>
+				<texturefocus>../../Default/media/minusfo.png</texturefocus>
+				<texturenofocus>../../Default/media/minusbd.png</texturenofocus>
 				<onup>1000</onup>
 				<ondown>1000</ondown>
 			</control>
 			<control type="button" id="104">
-				<posx>246</posx>
+				<posx>280</posx>
 				<posy>670</posy>
 				<width>40</width>
 				<height>40</height>
-				<texturefocus>plusfo.png</texturefocus>
-				<texturenofocus>plusbd.png</texturenofocus>
-				<onleft>103</onleft>
-				<onright>101</onright>
+				<texturefocus>../../Default/media/plusfo.png</texturefocus>
+				<texturenofocus>../../Default/media/plusbd.png</texturenofocus>
 				<onup>1000</onup>
 				<ondown>1000</ondown>
 			</control>
--->
 		</control>
 	</controls>
 </window>
