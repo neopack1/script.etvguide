@@ -31,6 +31,8 @@ class WebbTvStrmUpdater(baseServiceUpdater):
         self.servicePriority = servicePriority
         self.onlineMapFile = onlineMapFile
         self.localMapFile = localMapFile
+        if ADDON.getSetting('miltisession_enabled') == 'true':
+            self.maxAllowedStreams = 4
 
     def loadChannelList(self):
         try:
@@ -51,7 +53,7 @@ class WebbTvStrmUpdater(baseServiceUpdater):
             self.log('\n')
             self.log('[UPD] Wyszykiwanie STRM')
             self.log('-------------------------------------------------------------------------------------')
-            self.log('[UPD] %-30s %-25s %s' % ('-ID eTvGuide-', '-    STRM   ', '-    SRC   -'))
+            self.log('[UPD] %-30s %-25s %s' % ('-ID mTvGuide-', '-    STRM   ', '-    SRC   -'))
 
             for x in self.automap:
                 if x.strm != '':
