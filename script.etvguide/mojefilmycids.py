@@ -28,7 +28,7 @@ class MojeFilmyUpdater(baseServiceUpdater):
         self.breakAfterFirstMatchFromMap = False #Look for better quality streams if available
         self.onlineMapFile = onlineMapFile
         self.localMapFile = localMapFile
-        self.maxAllowedStreams = 1
+        self.maxAllowedStreams = 4
         self.url = Url
         self.addDuplicatesToList = True
         self.post = { 'password' : self.password, 'email' : self.login }
