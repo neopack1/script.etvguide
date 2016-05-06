@@ -1,0 +1,7 @@
+- dodane Video OSD dostępne pod klawiszami z klawiatury/pilota
+- poprawki błedów powodujących zwisy m-TVGuide oraz Kodi
+- dodane wsparcie dla kodi v17
+- dodana opcja multisesji dla weeb.tv
+- dodana opcja do serwisów: maksymalny czas oczekiwania na połączenie
+- rozbudowana możliwość wyświetlania danych o programie w EPG oraz Info OSD (zależne od skórki), możliwość wyświetlania w osonych miejscach takich danych z opsiu: Dozwolony wiek, Reżyser, Aktorzy, Rok produkcji, Kategoria, Nr odcinka
+- samoczynne przeładowywanie EPG gdy pasek czasu dojdzie do końca EPG (w przypadku braku aktowyności)

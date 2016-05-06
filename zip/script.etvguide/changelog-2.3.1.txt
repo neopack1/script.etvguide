@@ -1,0 +1,1 @@
+- wyczyszczenie bazy danych bo dodano nowe kanaly
