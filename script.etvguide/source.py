@@ -947,17 +947,17 @@ class Database(object):
                 self.conn.commit()
 
             # if we want to clear the database
-            #if version < [6, 1, 5]:
-                #c.execute('DELETE FROM channels')
-                #c.execute('DELETE FROM programs')
-                #c.execute('DELETE FROM notifications')
-                #c.execute('DELETE FROM recordings')
-                #c.execute('DELETE FROM updates')
-                #c.execute('DELETE FROM sources')
-                #c.execute('DELETE FROM custom_stream_url')
-                #c.execute('UPDATE settings SET value=0 WHERE rowid=1')
-                #c.execute('UPDATE version set major=6, minor=1, patch=1')
-                #self.conn.commit()
+            if version < [6, 1, 6]:
+                c.execute('DELETE FROM channels')
+                c.execute('DELETE FROM programs')
+                c.execute('DELETE FROM notifications')
+                c.execute('DELETE FROM recordings')
+                c.execute('DELETE FROM updates')
+                c.execute('DELETE FROM sources')
+                c.execute('DELETE FROM custom_stream_url')
+                c.execute('UPDATE settings SET value=0 WHERE rowid=1')
+                c.execute('UPDATE version set major=6, minor=1, patch=6')
+                self.conn.commit()
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
