@@ -31,7 +31,12 @@ from strings import *
 import re, sys, os
 import streaming
 
-
+config = ConfigParser.RawConfigParser()
+config.read(os.path.join(ADDON.getAddonInfo('path'), 'resources', 'skins', ADDON.getSetting('Skin'), 'settings.ini'))
+try:
+    skin_resolution = config.getboolean("Skin", "resolution")
+except:
+    skin_resolution = '720p'
 
 ACTION_LEFT = 1
 ACTION_RIGHT = 2
@@ -70,15 +75,20 @@ ACTION_MOUSE_MOVE = 107
 KEY_NAV_BACK = 92
 KEY_CONTEXT_MENU = 117
 KEY_HOME = 159
+AUTO_OSD = 666
+
 try:
      KEY_STOP = int(ADDON.getSetting('stop_key'))
 except:
      KEY_STOP = -1
-AUTO_OSD = 666
+try:
+     KEY_CONTEXT = int(ADDON.getSetting('context_key'))
+except:
+     KEY_CONTEXT = -1
 
 class VideoOSD(xbmcgui.WindowXMLDialog):
     def __new__(cls, gu, controlledByMouse = True, action = None):
-        return super(VideoOSD, cls).__new__(cls, 'VidOSD.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), "720p")
+        return super(VideoOSD, cls).__new__(cls, 'VidOSD.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), skin_resolution)
 
     def __init__(self, gu, controlledByMouse = True, action = None):
         self.gu = gu
@@ -176,6 +186,7 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
         self.mousetime = time.mktime(datetime.datetime.now().timetuple())
         self.keyboardTime = time.mktime(datetime.datetime.now().timetuple())
         threading.Timer(1, self.waitForPlayBackStopped).start()
+
         self.initialized = True
         self.refreshControls()
 
@@ -230,10 +241,15 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
 
 
     def onAction(self, action):
+        debug('VideoOSD onAction keyId %d, buttonCode %d' % (action.getId(), action.getButtonCode()))
         self.keyboardTime = time.mktime(datetime.datetime.now().timetuple())
 
-        if action.getId() in [ACTION_PREVIOUS_MENU, KEY_NAV_BACK, ACTION_PARENT_DIR, 100, 101, ACTION_STOP] or action.getButtonCode() == KEY_STOP:
+        if action.getId() in [ACTION_PREVIOUS_MENU, KEY_NAV_BACK, ACTION_PARENT_DIR, 100, 101]:
             self.isClosing = True
+
+        if action.getId() in [ACTION_STOP] or action.getButtonCode() == KEY_STOP:
+            self.isClosing = True
+            self.playService.stopPlayback()
 
         elif action.getId() == ACTION_MOUSE_MOVE:
             self.mouseCount = self.mouseCount + 1
@@ -241,6 +257,10 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
                 self.mouseCount =  0
                 self.mousetime = time.mktime(datetime.datetime.now().timetuple())
                 self.refreshControls()
+
+        elif action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
+            self.isClosing = True
+            self.gu.changeStream()
 
         elif self.controlledByMouse:
             return #remaining are for keyboard

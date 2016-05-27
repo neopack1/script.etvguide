@@ -107,8 +107,11 @@ class ShowList:
                 headers = customHeaders
             else:
                 headers = { 'User-Agent' : HOST }
-            data = urllib.urlencode(post_data)
-            reqUrl = urllib2.Request(url, data, headers)
+            if post_data:
+                data = urllib.urlencode(post_data)
+            else:
+                data = None
+            reqUrl = urllib2.Request(url=url, data=data, headers=headers)
 
             startTime = datetime.datetime.now()
             while (datetime.datetime.now() - startTime).seconds < MAX_CONNECTION_TIME and strings2.M_TVGUIDE_CLOSING == False:
@@ -173,17 +176,14 @@ class ShowList:
 
         return fileContent
 
-class WeebTvCid:
-    def __init__(self, cid, name, title, online, strm = "", img = "", multibitrate = 0):
+class TvCid:
+    def __init__(self, cid, name, title, strm = "", img = ""):
         self.cid = cid
         self.name = name
         self.title = title
-        self.online = online
         self.strm = strm
         self.src = ""
         self.img = img
-        self.multibitrate = multibitrate
-        self.premium = 1
         self.rtmpdumpLink = None
         self.ffmpegdumpLink = None
 
@@ -227,7 +227,45 @@ class MapString:
         logCall('[UPD] Wczytywanie mapy => mtvguide: %s' % path)
         with open(path, 'r') as content_file:
             content = content_file.read()
-        return content #.replace("\t", "")
+        return content
+
+class SleepSupervisor(object):
+    def __init__(self, stopCallback):
+        self.stopPlaybackCall = stopCallback
+        self.sleepEnabled = ADDON.getSetting('sleep__enabled')
+        self.sleepAction = ADDON.getSetting('sleep__action')
+        self.sleepTimer = int(ADDON.getSetting('sleep_timer')) * 60 #time in secs
+        self.timer = None
+        self.actions = {
+                        '0': 'PlayerControl(Stop)',
+                        '1': 'Quit',
+                        '2': 'Powerdown',
+                        '3': 'Suspend'
+        }
+        try:
+            self.action = self.actions[self.sleepAction]
+        except KeyError:
+            self.action = 'PlayerControl(Stop)'
+        deb('SleepSupervisor timer init: sleepEnabled %s, sleepAction: %s, sleepTimer: %s' % (self.sleepEnabled, self.action, self.sleepTimer))
+
+    def Start(self):
+        if self.sleepEnabled == 'true' and self.sleepTimer > 0:
+            self.Stop()
+            debug('SleepSupervisor timer Start, action = %s' % self.action)
+            self.timer = threading.Timer(self.sleepTimer, self.sleepTimeout)
+            self.timer.start()
+
+    def Stop(self):
+        if self.timer:
+            self.timer.cancel()
+            self.timer = None
+            debug('SleepSupervisor timer Stop')
+
+    def sleepTimeout(self):
+        deb('SleepSupervisor sleepTimeout, executing action: %s' % self.action)
+        self.timer = None
+        self.stopPlaybackCall()
+        xbmc.executebuiltin('%s' % self.action)
 
 class baseServiceUpdater:
     def __init__(self):
@@ -287,6 +325,9 @@ class baseServiceUpdater:
             self.printLogTimer.cancel()
         self.printLog()
         self.forcePrintintingLog = True
+
+    def unlockService(self):
+        pass
 
     def loadChannelList(self):
         try:

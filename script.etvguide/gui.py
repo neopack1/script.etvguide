@@ -103,6 +103,10 @@ try:
     skin_separate_program_actors = config.getboolean("Skin", "program_show_actors")
 except:
     skin_separate_program_actors = False
+try:
+    skin_resolution = config.getboolean("Skin", "resolution")
+except:
+    skin_resolution = '720p'
 
 try:
      KEY_INFO = int(ADDON.getSetting('info_key'))
@@ -197,7 +201,6 @@ class VideoPlayerStateChange(xbmc.Player):
     def __init__(self, *args, **kwargs):
         deb ( "################ Starting control VideoPlayer events" )
         self.playerStateChanged = Event()
-        self.sleepSupervisor = SleepSupervisor()
         self.updatePositionTimerData = {}
         self.recordedFilesPositions = {}
         self.updatePositionTimer = None
@@ -214,17 +217,17 @@ class VideoPlayerStateChange(xbmc.Player):
 
     def onPlayBackPaused(self):
         deb ( "################ Im paused" )
-        self.playerStateChanged("Paused")
+        #self.playerStateChanged("Paused")
         #threading.Timer(0.3, self.stopplaying).start()
 
     def onPlayBackResumed(self):
         deb ( "################ Im Resumed" )
-        self.onStateChange("Resumed")
+        #self.onStateChange("Resumed")
 
     def onPlayBackStarted(self):
+        xbmc.sleep(50)
         deb ( "################ Playback Started" )
         self.updatePositionTimerData['stop'] = True
-        self.sleepSupervisor.Start()
         self.onStateChange("Started")
         try:
             playedFile = xbmc.Player().getPlayingFile()
@@ -250,14 +253,15 @@ class VideoPlayerStateChange(xbmc.Player):
             pass
 
     def onPlayBackEnded(self):
+        xbmc.sleep(50)
         deb ("################# Playback Ended")
         self.updatePositionTimerData['stop'] = True
         self.onStateChange("Ended")
 
     def onPlayBackStopped(self):
+        xbmc.sleep(50)
         deb( "################# Playback Stopped")
         self.updatePositionTimerData['stop'] = True
-        self.sleepSupervisor.Stop()
         self.onStateChange("Stopped")
 
     def updatePosition(self, updatePositionTimerData):
@@ -305,7 +309,7 @@ class eTVGuide(xbmcgui.WindowXML):
     C_MAIN_LIVE = 4944
 
     def __new__(cls):
-        return super(eTVGuide, cls).__new__(cls, 'script-tvguide-main.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), "720p")
+        return super(eTVGuide, cls).__new__(cls, 'script-tvguide-main.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), skin_resolution)
 
     def __init__(self):
         deb('eTVGuide __init__ System: %s, ARH: %s' % (platform.system(), platform.machine()))
@@ -328,7 +332,6 @@ class eTVGuide(xbmcgui.WindowXML):
         self.infoDialog = None
         self.oldchan = 0
         self.a = {}
-        self.urlList = None
         self.mode = MODE_EPG
         self.currentChannel = None
         self.recordedFilesPlaylistPositions = {}
@@ -363,10 +366,9 @@ class eTVGuide(xbmcgui.WindowXML):
         if (pstate == "Stopped" or pstate == "Ended"):  #or pstate == "Paused" or pstate == "Resumed"
             if ADDON.getSetting('start_video_minimalized') == 'false' and ADDON.getSetting('pokazpanel') == 'true': #workaroud for dissapearing mouse panel when start_video_minimalized disabled
                 self._hideControl(self.C_MAIN_MOUSEPANEL_CONTROLS)
-            if (pstate == "Stopped" or pstate == "Ended") and self.playService.isWorking():
+            if (pstate == "Stopped" or pstate == "Ended") and (self.playService.isWorking() or xbmc.Player().isPlaying()):
                 while self.playService.isWorking() == True:
                     time.sleep(0.1)
-                time.sleep(0.1)
                 if xbmc.Player().isPlaying():
                     debug('onPlayerStateChanged - was able to recover playback - dont show EPG!')
                     return
@@ -410,7 +412,6 @@ class eTVGuide(xbmcgui.WindowXML):
 
             self.isClosing = True
             strings2.M_TVGUIDE_CLOSING = True
-            xbmc.Player().stop()
             self.playService.close()
             self.recordService.close()
             if self.notification:
@@ -489,15 +490,15 @@ class eTVGuide(xbmcgui.WindowXML):
         elif action.getId() == ACTION_PAGE_DOWN:
             self._channelDown()
 
-#        elif action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
-#            if self.urlList is not None and len(self.urlList) > 1 and not self.playingRecordedProgram:
-#                tmpUrl = self.urlList.pop(0)
-#                self.urlList.append(tmpUrl)
-#                self.playService.playUrlList(self.urlList)
-#                time.sleep(0.3)
+        elif action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
+            if not self.playingRecordedProgram:
+                self.playService.playNextStream()
 
         elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate, self._getCurrentProgramFocus)
+
+        elif action.getId() == ACTION_STOP or (action.getButtonCode() == KEY_STOP and KEY_STOP != 0):
+            self.playService.stopPlayback()
 
 
     def onActionEPGMode(self, action):
@@ -539,6 +540,9 @@ class eTVGuide(xbmcgui.WindowXML):
                     osd.close()
                     del osd
                 return
+
+        elif action.getId() == ACTION_STOP or (action.getButtonCode() == KEY_STOP and KEY_STOP != 0):
+            self.playService.stopPlayback()
 
         controlInFocus = None
         currentFocus = self.focusPoint
@@ -931,12 +935,18 @@ class eTVGuide(xbmcgui.WindowXML):
         self.playingRecordedProgram = False
         recordedProgram = self.recordService.isProgramRecorded(program)
         if recordedProgram is not None:
-            ret = xbmcgui.Dialog().yesno(heading=strings(RECORDED_FILE_POPUP).encode('utf-8', 'replace'), line1='%s %s?' % (strings(RECORDED_FILE_QUESTION).encode('utf-8', 'replace'), program.title.encode('utf-8', 'replace')), autoclose=60000)
+            diff = program.endDate - datetime.datetime.now()
+            diffSeconds = (diff.days * 86400) + diff.seconds
+            if diffSeconds <= 0:
+                #start recorded program which already ended
+                ret = True
+            else:
+                ret = xbmcgui.Dialog().yesno(heading=strings(RECORDED_FILE_POPUP).encode('utf-8', 'replace'), line1='%s %s?' % (strings(RECORDED_FILE_QUESTION).encode('utf-8', 'replace'), program.title.encode('utf-8', 'replace')), autoclose=60000)
             if ret == True:
-                if ADDON.getSetting('start_video_minimalized') == 'true':
-                    startWindowed = True
-                else:
-                    startWindowed = False
+                #if ADDON.getSetting('start_video_minimalized') == 'true':
+                    #startWindowed = True
+                #else:
+                    #startWindowed = False
                 try:
                     firstFileInPlaylist = recordedProgram[0].getfilename()
                     playlistIndex = int(self.recordedFilesPlaylistPositions[firstFileInPlaylist])
@@ -956,10 +966,10 @@ class eTVGuide(xbmcgui.WindowXML):
         if self.playRecordedProgram(program):
             return True
 
-        self.urlList = self.database.getStreamUrlList(program.channel)
-        if len(self.urlList) > 0:
+        urlList = self.database.getStreamUrlList(program.channel)
+        if len(urlList) > 0:
             self.oldchan = self.database.getCurrentChannelIdx(program.channel)
-            osd = Pla(self.program, self.database, self.urlList, self)
+            osd = Pla(self.program, self.database, urlList, self)
             #debug('GUI playChannel2 started Pla, pointer: %s' % (osd))
             osd.doModal()
             osd.close()
@@ -973,7 +983,7 @@ class eTVGuide(xbmcgui.WindowXML):
                     self.viewStartDate -= datetime.timedelta(minutes = self.viewStartDate.minute % 30, seconds = self.viewStartDate.second)
                     self.onRedrawEPG(newStartIndex, self.viewStartDate, self._getCurrentProgramFocus)
         #self.onPlayBackStopped()
-        return len(self.urlList) > 0
+        return len(urlList) > 0
 
 
     def playChannel(self, channel, program = None):
@@ -984,15 +994,9 @@ class eTVGuide(xbmcgui.WindowXML):
             self.program = program
             if self.playRecordedProgram(program):
                 return True
-        self.urlList = self.database.getStreamUrlList(channel)
-        if len(self.urlList) > 0:
-            self.playService.playUrlList(self.urlList)
-            #if not wasPlaying:
-                #self._hideEpg()
-
-        #threading.Timer(1, self.waitForPlayBackStopped).start()
-
-        return len(self.urlList) > 0
+        urlList = self.database.getStreamUrlList(channel)
+        self.playService.playUrlList(urlList)
+        return len(urlList) > 0
 
     def recordProgram(self, program):
         deb('recordProgram')
@@ -1024,9 +1028,9 @@ class eTVGuide(xbmcgui.WindowXML):
     def waitForPlayBackStopped(self):
         debug('waitForPlayBackStopped')
         while self.epg.playService.isWorking() == True:
-            time.sleep(0.2)
+            xbmc.sleep(200)
         while (xbmc.Player().isPlaying() or self.epg.playService.isWorking() == True) and not strings2.M_TVGUIDE_CLOSING and not self.isClosing:
-            time.sleep(0.5)
+            xbmc.sleep(200)
         self.onPlayBackStopped()
 
     def _hideEpg(self):
@@ -1520,7 +1524,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
     LABEL_CHOOSE_STRM = CHOOSE_STRM_FILE
 
     def __new__(cls, database, program, showRemind):
-        return super(PopupMenu, cls).__new__(cls, 'script-tvguide-menu.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), "720p")
+        return super(PopupMenu, cls).__new__(cls, 'script-tvguide-menu.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), skin_resolution)
 
     def __init__(self, database, program, showRemind):
         """
@@ -1621,7 +1625,7 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
     C_CHANNELS_CANCEL = 6004
 
     def __new__(cls, database):
-        return super(ChannelsMenu, cls).__new__(cls, 'script-tvguide-channels.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), "720p")
+        return super(ChannelsMenu, cls).__new__(cls, 'script-tvguide-channels.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), skin_resolution)
 
     def __init__(self, database):
         """
@@ -1769,7 +1773,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
     VISIBLE_ADDONS = 'addons'
 
     def __new__(cls, database, channel):
-        return super(StreamSetupDialog, cls).__new__(cls, 'script-tvguide-streamsetup.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), "720p")
+        return super(StreamSetupDialog, cls).__new__(cls, 'script-tvguide-streamsetup.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), skin_resolution)
 
     def __init__(self, database, channel):
         """
@@ -1909,7 +1913,7 @@ class StreamSetupDialog(xbmcgui.WindowXMLDialog):
 
         self.previousAddonId = item.getProperty('addon_id')
         addon = xbmcaddon.Addon(id = item.getProperty('addon_id'))
-        self.getControl(self.C_STREAM_ADDONS_NAME).setLabel('[B]%s[/B]' % addon.getAddonInfo('name'))
+        self.getControl(self.C_STREAM_ADDONS_NAME).setLabel('%s' % addon.getAddonInfo('name'))
         self.getControl(self.C_STREAM_ADDONS_DESCRIPTION).setText(addon.getAddonInfo('description'))
 
         streams = self.streamingService.getAddonStreams(item.getProperty('addon_id'))
@@ -1926,7 +1930,7 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
     C_SELECTION_LIST = 1000
 
     def __new__(cls, addons):
-        return super(ChooseStreamAddonDialog, cls).__new__(cls, 'script-tvguide-streamaddon.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), "720p")
+        return super(ChooseStreamAddonDialog, cls).__new__(cls, 'script-tvguide-streamaddon.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), skin_resolution)
 
     def __init__(self, addons):
         super(ChooseStreamAddonDialog, self).__init__()
@@ -1963,7 +1967,7 @@ class ChooseStreamAddonDialog(xbmcgui.WindowXMLDialog):
 
 class InfoDialog(xbmcgui.WindowXMLDialog):
     def __new__(cls, program):
-        return super(InfoDialog, cls).__new__(cls, 'DialogInfo.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), "720p")
+        return super(InfoDialog, cls).__new__(cls, 'DialogInfo.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), skin_resolution)
 
     def __init__(self, program):
         super(InfoDialog, self).__init__()
@@ -2089,58 +2093,62 @@ class InfoDialog(xbmcgui.WindowXMLDialog):
 
 class Pla(xbmcgui.WindowXMLDialog):
     def __new__(cls, program, database, urlList, epg):
-        return super(Pla, cls).__new__(cls, 'Vid.xml', ADDON.getAddonInfo('path'), "Default", "720p")
-
-    def play(self, urlList):
-        #debug('Pla play %s' % self)
-        self.epg.playService.playUrlList(urlList)
+        return super(Pla, cls).__new__(cls, 'Vid.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), skin_resolution)
 
     def __init__(self, program, database, urlList, epg):
-        #debug('Pla __init__ %s' % self)
+        debug('Pla __init__ %s' % self)
         super(Pla, self).__init__()
         self.epg = epg
         self.database = database
+        self.currentChannel = self.epg.currentChannel
         self.controlAndProgramList = list()
         self.ChannelChanged = 0
         self.mouseCount = 0
         self.isClosing = False
         self.playbackStarted = False
         self.key_right_left_show_next = ADDON.getSetting('key_right_left_show_next')
-        self.showOsdOnPlay = False
-        self.displayAutoOsd = False
         self.playButtonAsSchedule = False
         self.videoOSD = None
+        self.displayService = True
+        self.displayServiceTimer = None
+        self.showOsdOnPlay = False
+        self.displayAutoOsd = False
+        self.ctrlService = None
         if ADDON.getSetting('show_osd_on_play') == 'true':
             self.showOsdOnPlay = True
             self.displayAutoOsd = True
         if program is not None:
             self.program = program
-            self.currentChannel = program.channel
-            self.urlList = urlList
             self.play(urlList)
         else:
-            self.currentChannel = self.epg.currentChannel
             self.program = self.database.getCurrentProgram(self.currentChannel)
-            self.urlList = self.database.getStreamUrlList(self.currentChannel)
+
         threading.Timer(0, self.waitForPlayBackStopped).start()
+
+    def onInit(self):
+        try:
+            self.ctrlService = self.getControl(C_VOSD_SERVICE)
+        except:
+            pass
+
+    def play(self, urlList):
+        self.epg.playService.playUrlList(urlList)
 
     def onAction(self, action):
         debug('Pla onAction keyId %d, buttonCode %d' % (action.getId(), action.getButtonCode()))
 
         if action.getId() == ACTION_PREVIOUS_MENU or action.getId() == ACTION_STOP or (action.getButtonCode() == KEY_STOP and KEY_STOP != 0) or (action.getId() == KEY_STOP and KEY_STOP != 0):
-            #debug('Pla before self.epg.player.stop()')
-            xbmc.Player().stop()
-            #debug('Pla before self.close()')
+            self.epg.playService.stopPlayback()
             self.closeOSD()
-            #debug('Pla after self.close()')
 
 #        elif action.getId() == KEY_NAV_BACK:
 #            if ADDON.getSetting('start_video_minimalized') == 'true' and ADDON.getSetting('navi_back_stop_play') == 'false':
 #                self.closeOSD()
 #                self.epg._showEPG()
 #            else:
-#                xbmc.Player().stop()
+#                self.epg.playService.stopPlayback()
 #                self.closeOSD()
+#            return
 
         #if action.getId() == KEY_CODEC_INFO: #przysik O
             #xbmc.executebuiltin("Action(CodecInfo)")
@@ -2155,8 +2163,8 @@ class Pla(xbmcgui.WindowXMLDialog):
             self._channelDown()
             return
 
-#        elif action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
-#            self.changeStream()
+        elif action.getId() == KEY_CONTEXT_MENU or action.getButtonCode() == KEY_CONTEXT:
+            self.changeStream()
 
         elif self.playbackStarted == False:
             debug('Playback has not started yet, canceling all key requests')
@@ -2210,11 +2218,10 @@ class Pla(xbmcgui.WindowXMLDialog):
                 osd.doModal()
                 del osd
 
-
     def onAction2(self, action, program = None):
         debug('Pla onAction2 %s' % self)
         if action in [ACTION_STOP, KEY_NAV_BACK]:
-            xbmc.Player().stop()
+            self.epg.playService.stopPlayback()
             self.closeOSD()
 
         elif action == ACTION_SHOW_INFO:
@@ -2241,27 +2248,33 @@ class Pla(xbmcgui.WindowXMLDialog):
     def waitForPlayBackStopped(self):
         self.wait = True
 
+        xbmc.sleep(50)
         while self.epg.playService.isWorking() == True and not self.isClosing:
-            time.sleep(0.1)
+            xbmc.sleep(100)
 
         while self.wait == True and not self.isClosing:
             if xbmc.Player().isPlaying() and not strings2.M_TVGUIDE_CLOSING and not self.isClosing and not self.epg.playService.isWorking():
                 self.playbackStarted = True
+                if self.displayService:
+                    self.displayServiceOnOSD()
                 if self.displayAutoOsd and self.showOsdOnPlay:
                     self.displayAutoOsd = False
                     self.showVidOsd(AUTO_OSD)
                 else:
-                    time.sleep(0.2)
+                    xbmc.sleep(200)
             else:
+                xbmc.sleep(100)
                 self.playbackStarted = False
                 if not self.isClosing and (self.ChannelChanged == 1 or self.epg.playService.isWorking() == True):
                     while self.epg.playService.isWorking() == True and not self.isClosing:
-                        time.sleep(0.1)
+                        xbmc.sleep(100)
                     self.ChannelChanged = 0
                     self.show()
+                    self.displayService = True
                 else:
                     debug('Pla waitForPlayBackStopped not waiting anymore %s' % self)
                     self.wait = False
+                    break
 
         self.onPlayBackStopped()
 
@@ -2283,20 +2296,16 @@ class Pla(xbmcgui.WindowXMLDialog):
             self.epg.currentChannel = channel
             self.program = self.database.getCurrentProgram(self.currentChannel)
             self.epg.program = self.program
-            self.urlList = self.database.getStreamUrlList(channel)
-            if len(self.urlList) > 0:
-                self.epg.playService.playUrlList(self.urlList)
+            urlList = self.database.getStreamUrlList(channel)
+            if len(urlList) > 0:
+                self.epg.playService.playUrlList(urlList)
                 if self.showOsdOnPlay:
                     self.displayAutoOsd = True
 
     def changeStream(self):
         deb('Changing stream for channel %s' % self.currentChannel.id)
-        if len(self.urlList) > 1:
-            tmpUrl = self.urlList.pop(0)
-            self.urlList.append(tmpUrl)
-            self.ChannelChanged = 1
-            self.epg.playService.playUrlList(self.urlList)
-            time.sleep(0.3)
+        self.epg.playService.playNextStream()
+        self.displayService = True
 
     def getProgramUp(self, program):
         channel = self.database.getPreviousChannel(program.channel)
@@ -2317,6 +2326,7 @@ class Pla(xbmcgui.WindowXMLDialog):
 
     def showVidOsd(self, action = None):
         self.program = self.database.getCurrentProgram(self.currentChannel)
+        self.displayServiceOnOSD()
         self.videoOSD = VideoOSD(self, False, action)
         self.videoOSD.doModal()
         del self.videoOSD
@@ -2324,37 +2334,34 @@ class Pla(xbmcgui.WindowXMLDialog):
 
     def closeOSD(self):
         #debug('Pla closeOSD %s' % self)
+        self.isClosing = True
         if self.videoOSD:
             self.videoOSD.isClosing = True
             self.videoOSD.close()
-        self.isClosing = True
+        if self.displayServiceTimer:
+            self.displayServiceTimer.cancel()
         self.close()
 
-class SleepSupervisor(object):
-    def __init__(self):
-        self.sleepEnabled = ADDON.getSetting('sleep_enabled')
-        self.sleepAction = ADDON.getSetting('sleep_action')
-        self.sleepTimer = ADDON.getSetting('sleep_timer')
-        self.actions = {
-                        'Zatrzymaj odtw.': 'PlayerControl(Stop)',
-                        'Wylacz Xbmc': 'Quit',
-                        'Wylacz komputer': 'Powerdown',
-                        'Uspij komputer': 'Suspend'
-        }
-        deb('Supervisor timer init: sleepEnabled %s, sleepAction: %s, sleepTimer: %s' % (self.sleepEnabled, self.sleepAction, self.sleepTimer))
+    def displayServiceOnOSD(self):
+        #debug('displayServiceOnOSD')
+        self.displayService = False
+        if self.ctrlService:
+            displayedService = self.epg.playService.currentlyPlayedService
+            if self.epg.playService.streamQuality != '':
+                displayedService = displayedService + ' ' + self.epg.playService.streamQuality
+            self.ctrlService.setLabel(displayedService)
+            if self.displayServiceTimer:
+                self.displayServiceTimer.cancel()
+            self.displayServiceTimer = threading.Timer(3, self.hideServiceOnOSD)
+            self.displayServiceTimer.start()
 
-    def Start(self):
-        if self.sleepEnabled == 'Tak':
-            self.Stop()
-            try:
-                action = self.actions[self.sleepAction]
-            except KeyError:
-                action = self.sleepAction
+    def hideServiceOnOSD(self):
+        self.displayServiceTimer = None
+        self.ctrlService.setLabel('')
 
-            deb('Supervisor timer Start, action = %s' % action)
-            xbmc.executebuiltin('AlarmClock(Stopper,%s,%s,True)' % (action, self.sleepTimer))
-
-    def Stop(self):
-        if self.sleepEnabled == 'Tak':
-            deb('Supervisor timer Stop')
-            xbmc.executebuiltin('CancelAlarm(Stopper,True)')
+    def getControl(self, controlId):
+        try:
+            return super(Pla, self).getControl(controlId)
+        except:
+            pass
+        return None

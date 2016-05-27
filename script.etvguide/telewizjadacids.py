@@ -67,7 +67,7 @@ class TelewizjaDaUpdater(baseServiceUpdater):
                             online = arg[1].replace('"', '').strip()
 
                     if online == '1':
-                        result.append(WeebTvCid(ID, displayName, displayName, '2', url, img))
+                        result.append(TvCid(ID, displayName, displayName, url, img))
                     else:
                         self.log('getChannelList skipping disabled channel %s' % displayName)
                 telewizjadaChannelList = copy.deepcopy(result)

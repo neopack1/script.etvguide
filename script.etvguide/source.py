@@ -38,12 +38,13 @@ import xbmcgui
 import xbmcvfs
 import sqlite3
 import playService
-import platform
 from itertools import chain
+import platform
 
 import io, zipfile
 
 SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', 'Time.Zone']
+
 
 TIMEZONE = ADDON.getSetting('Time.Zone')
 ADDON_VERSION =  ADDON.getAddonInfo('version')
@@ -58,6 +59,7 @@ elif ADDON.getSetting('mail_mojefilmy') != "":
     USER_AGENT = ADDON.getSetting('mail_mojefilmy')
 else:
     USER_AGENT = ADDON.getSetting('usernameGoldVOD')
+
 
 class Channel(object):
     def __init__(self, id, title, logo = None, streamUrl = None, visible = True, weight = -1):
@@ -507,7 +509,7 @@ class Database(object):
             return cacheExpired #to wychodzimy - nie robimy aktualizacji
 
         deb('[UPD] Rozpoczynam aktualizacje STRM')
-        for priority in reversed(range(4)):
+        for priority in reversed(range(6)):
             for service in serviceList:
                 if priority == service.servicePriority:
                     service.waitUntilDone()
@@ -947,17 +949,18 @@ class Database(object):
                 self.conn.commit()
 
             # if we want to clear the database
-            if version < [6, 1, 6]:
-                c.execute('DELETE FROM channels')
-                c.execute('DELETE FROM programs')
-                c.execute('DELETE FROM notifications')
-                c.execute('DELETE FROM recordings')
-                c.execute('DELETE FROM updates')
-                c.execute('DELETE FROM sources')
-                c.execute('DELETE FROM custom_stream_url')
-                c.execute('UPDATE settings SET value=0 WHERE rowid=1')
-                c.execute('UPDATE version set major=6, minor=1, patch=6')
-                self.conn.commit()
+#            if version < [6, 1, 6]:
+#                c.execute('DELETE FROM channels')
+#                c.execute('DELETE FROM programs')
+#                c.execute('DELETE FROM notifications')
+#                c.execute('DELETE FROM recordings')
+#                c.execute('DELETE FROM updates')
+#                c.execute('DELETE FROM sources')
+#                c.execute('DELETE FROM custom_stream_url')
+#                c.execute('UPDATE settings SET value=0 WHERE rowid=1')
+#                c.execute('UPDATE version set major=6, minor=1, patch=6')
+#                self.conn.commit()
+
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
@@ -1157,9 +1160,19 @@ class Source(object):
             remoteFilename = ''
             deb("[EPG] Downloading epg: %s" % url)
             start = datetime.datetime.now()
-            u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (AGENT:' + USER_AGENT + ' TIMEZONE:' + TIMEZONE + ' PLUGIN_VERSION:' + ADDON_VERSION + ' PLATFORM:' + PLATFORM_INFO + ' KODI_VERSION:' + KODI_VERSION + ')' })
-            response = urllib2.urlopen(u,timeout=30)
-            content = response.read()
+            failCounter = 0
+            while True:
+                try:
+                    u = urllib2.Request(url, headers={ 'User-Agent': 'Mozilla/5.0 (AGENT:' + USER_AGENT + ' TIMEZONE:' + TIMEZONE + ' PLUGIN_VERSION:' + ADDON_VERSION + ' PLATFORM:' + PLATFORM_INFO + ' KODI_VERSION:' + KODI_VERSION + ')' })
+                    response = urllib2.urlopen(u,timeout=20)
+                    content = response.read()
+                    break
+                except Exception, ex:
+                    failCounter+=1
+                    deb('_downloadUrl Error downloading url: %s, Exceptiion: %s, failcounter: %s' % (url, str(ex), failCounter))
+                    if failCounter > 3:
+                        raise
+                    time.sleep(1)
             try:
                 remoteFilename = u.info()['Content-Disposition'].split('filename=')[-1].replace('"','').replace(';','').strip()
             except:
@@ -1246,7 +1259,6 @@ class ETVGUIDESource(Source):
             parsedData = self._getDataFromExternal(date, progress_callback, self.ETVGUIDEUrl5)
             data = chain(data, parsedData)
         return data
-
 
     def _getDataFromExternal(self, date, progress_callback, url):
         try:
