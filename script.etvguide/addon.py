@@ -34,6 +34,7 @@ class Start:
             w.close()
             del w
             del xbmc.Player
+            deb('e-TVGuide successfully closed')
         except Exception, ex:
             deb('addon.py exception: %s' % str(ex))
 
