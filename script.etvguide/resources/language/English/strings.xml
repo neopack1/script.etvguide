@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <strings>
 	<string id="30000">No description</string>
-	<string id="30001">[B]Loading data from external source...[/B]</string>
+	<string id="30001">[B]Loading...[/B]</string>
 	<string id="30002">Calculating remaning time...</string>
 	<string id="30003">Approximately %d seconds left...</string>
 	<string id="30004">Loading of data already in progress...</string>
@@ -10,15 +10,16 @@
 	<string id="30007">[B]Tip![/B] You can also use the scroll wheel</string>
 	<string id="30008">Cancel</string>
 	<string id="30100">General</string>
-	<string id="30101">Source</string>
+	<string id="30101">EPG</string>
 	<string id="30102">Show channels from category</string>
 	<string id="30103">XMLTV file</string>
 	<string id="30104">Clear cache...</string>
 	<string id="30105">Done!</string>
 	<string id="30106">Show notification before selected programs start</string>
 	<string id="30108">Clear all reminders...</string>
-	<string id="30109">Clear all scheduled recordings...</string>
+	<string id="30109">Clear all planed recordings...</string>
 	<string id="30110">Update program information on KODI startup</string>
+	<string id="30111">[COLOR grey][LIGHT]Select premium EPG from [/LIGHT][/COLOR] [COLOR FFFF0000]http://mods-kodi.pl[/COLOR]</string>
 	<string id="30116">Search for channel logos in</string>
 	<string id="30117">Select EPG</string>
 	<string id="30118">Server:</string>
@@ -31,8 +32,8 @@
 	<string id="30125">Main:</string>
 	<string id="30130">Server #1</string>
 	<string id="30131">Server #2</string>
-	<string id="30150">Oops, sorry about that!</string>
-	<string id="30151">It was not possible to load program data,</string>
+	<string id="30150">Sorry, an error has occurred</string>
+	<string id="30151">Service temporarily unavailable, please try again later.</string>
 	<string id="30152">check settings or try again later...</string>
 	<string id="30153">because the settings are invalid!</string>
 	<string id="30154">It looks like your current skin has a special</string>
@@ -40,7 +41,7 @@
 	<string id="30156">Please try with a different skin...</string>
 	<string id="30157">It looks like the TV Guide database is broken.</string>
 	<string id="30158">Please remove database file using option in plugin settings "Database settings"</string>
-	<string id="30159">Channel configuration, etc. is unfortunately lost.</string>
+	<string id="30159">Channel configuration is unfortunately lost.</string>
 	<string id="30200">on [B]%s[/B] in 5 minutes...</string>
 	<string id="30201">on [B]%s[/B] is starting now...</string>
 	<string id="30202">Starting scheduled program</string>
@@ -50,10 +51,14 @@
 	<string id="30301">Remind</string>
 	<string id="30302">Don't remind</string>
 	<string id="30304">Choose stream</string>
-	<string id="30305">You can choose your own .strm file to play, when you want to watch this channel.</string>
-	<string id="30306">Remove stream file</string>
+	<string id="30305">You can choose your own .STRM file.</string>
+	<string id="30306">Remove stream</string>
 	<string id="30307">Channels</string>
 	<string id="30308">Quit</string>
+	<string id="30500">Edit channel order and visibility</string>
+	<string id="30501">Move up and down to change the position of[CR]the channel. Select or navigate left to accept[CR]the position.</string>
+	<string id="30502">Save</string>
+	<string id="30503">Cancel</string>
 
 	<string id="30400">CHANNELS LIST</string>
 	<string id="30401">EXIT</string>
@@ -65,15 +70,11 @@
 	<string id="30407">CHOOSE STREAM</string>
 	<string id="30408">REMOVE STREAM</string>
 
-	<string id="30500">[B]Edit channel order and visibility[/B]</string>
-	<string id="30501">Move up and down to change the position of[CR]the channel. Select or navigate left to accept[CR]the position.</string>
-	<string id="30502">Save</string>
-	<string id="30503">Cancel</string>
-	<string id="30600">[B]Setup stream[/B]</string>
-	<string id="30601">.strm file</string>
+	<string id="30600">Setup stream</string>
+	<string id="30601">.STRM file</string>
 	<string id="30602">Favourites</string>
 	<string id="30603">Addons</string>
-	<string id="30604">Preview stream</string>
+	<string id="30604">Preview</string>
 	<string id="30605">Save</string>
 	<string id="30606">Cancel</string>
 	<string id="30607">Stop preview</string>
@@ -88,31 +89,31 @@
 	<string id="30705">Show only programs with stream assigned</string>
 	<string id="30706">Auto detect EPG change</string>
 
-<!-- weeb.tv mod -->
-	<string id="30802">TV Guide is configured to stream using Weeb.Tv</string>
+<!-- settings -->
+	<string id="30802">TV Guide is configured to stream using</string>
 	<string id="30803">addon which is not installed.</string>
 	<string id="30804">Streaming using that addon is now disabled.</string>
 	<string id="30901">Update</string>
 	<string id="30902">Update now</string>
 	<string id="30910">Show mouse control panel</string>
-	<string id="30911">Time Zone UTC (+01:00 Poland)</string>
-	<string id="30912">Weeb.tv settings</string>
-	<string id="59902">GoldVOD settings</string>
-	<string id="59903">Telewizjada settings</string>
+	<string id="30911">Time Zone UTC (+00:00 London)</string>
+	<string id="30912">[COLOR]WeebTV[/COLOR]</string>
+	<string id="59902">[COLOR]GoldVodTV[/COLOR]</string>
+	<string id="59903">[COLOR]Telewizjada[/COLOR]</string>
 	<string id="59904">Enabled</string>
-	<string id="59905">Playlist</string>
-	<string id="59906">Url</string>
+	<string id="59905">[COLOR]Playlist[/COLOR]</string>
+	<string id="59906">Link</string>
 	<string id="59907">Source</string>
 	<string id="59908">File</string>
-	<string id="59909">Premium multisession service enabled</string>
+	<string id="59909">Multisession</string>
 	<string id="30913">Settings</string>
 	<string id="30914">Skin</string>
-	<string id="30915">Enable KODI e-TVGuide autostart</string>
+	<string id="30915">Enable TVGuide autostart</string>
 	<string id="30916">Database Settings</string>
 	<string id="30917">Enable stream window resize animation</string>
-	<string id="30918">Select key open Video OSD instead of Info OSD</string>
+	<string id="30918">Guide about the programs instead of displaying information</string>
 	<string id="30930">Colours</string>
-	<string id="30931">Category colours</string>
+	<string id="30931">[COLOR]Category colours[/COLOR]</string>
 	<string id="30932">Movies</string>
 	<string id="30933">TV series</string>
 	<string id="30934">Informations</string>
@@ -121,7 +122,7 @@
 	<string id="30937">For kids</string>
 	<string id="30938">Sport</string>
 	<string id="30939">Interactive Entertainment</string>
-	<string id="30940">Default colors</string>
+	<string id="30940">[COLOR]Default colors[/COLOR]</string>
 	<string id="30941">Default color</string>
 	<string id="30942">Focus colour</string>
 	<string id="30943">Notification colour</string>
@@ -133,17 +134,18 @@
 	<string id="30954">Import settings</string>
 	<string id="30955">Delete database file</string>
 
-	<string id="30956">Moje-filmy.tk settings</string>
-	<string id="30957">e-mail adress</string>
+	<string id="30956">[COLOR]MojeFilmy[/COLOR]</string>
+	<string id="30957">Username</string>
 	<string id="30958">Max service startup time</string>
 	<string id="30959">Playlist URL</string>
-	<string id="30960"></string>
-	<string id="30961"></string>
-	<string id="30962"></string>
+	<string id="30960">Reconnect broken stream</string>
+	<string id="30961">Max nr of reattempts</string>
+	<string id="30962">Reattempt delay (ms)</string>
 	<string id="30963"></string>
 	<string id="30964"></string>
 	<string id="30965"></string>
 	<string id="30966"></string>
+
 	<string id="58000">Program info</string>
 
 	<string id="58001">Select destination folder</string>
@@ -157,43 +159,56 @@
 	<string id="58009">Failed to import settings</string>
 	<string id="58010">Please check if chosen file is a correct settings backup</string>
 
-	<string id="31001">Video OSD enabled</string>
-	<string id="31002">Set Keys</string>
+	<string id="31001">Enable OSD</string>
+	<string id="31002">Set keys</string>
 	<string id="31003">SET</string>
-	<string id="31004">Close</string>
-	<string id="31005">HOME Key</string>
-	<string id="31006">P- Key</string>
-	<string id="31007">P+ Key</string>
-	<string id="31008">STOP Key</string>
-	<string id="31009">INFO Key</string>
-	<string id="31010">CONTEXT key/</string>
-	<string id="31011">RECORD key</string>
-	<string id="31012">Reset key settings</string>
-	<string id="31013">Reset</string>
-	<string id="31014">And change strm</string>
-	<string id="31015">Vol+ Key</string>
-	<string id="31016">Vol- Key</string>
+	<string id="31004">[B]OK[/B]</string>
+	<string id="31005">[B]HOME[/B]</string>
+	<string id="31006">[B]PROG -[/B]</string>
+	<string id="31007">[B]PROG +[/B]</string>
+	<string id="31008">[B]STOP[/B]</string>
+	<string id="31009">[B]INFO[/B]</string>
+	<string id="31010">[B]CONTEXT[/B]</string>
+	<string id="31011">[B]RECORD[/B]</string>
+	<string id="31012">[B]RESET[/B]</string>
+	<string id="31013">RESET</string>
+	<string id="31014">[COLOR][B]CHANGE STRM[/B][/COLOR]</string>
+	<string id="31015">[B]VOL +[/B]</string>
+	<string id="31016">[B]VOL -[/B]</string>
 
 	<string id="310010"></string>
-	<string id="310011">Stop playback using navi_back button</string>
+	<string id="310011">Stop playback using navi back button</string>
 	<string id="310012">Recorded program</string>
 	<string id="310013">Start recorded program</string>
 	<string id="310014">Save plugin settings!</string>
 
 <!-- general settings -->
-	<string id="55002">Username:</string>
-	<string id="55003">Password:</string>
-	<string id="55005">The highest quality (as available)</string>
+	<string id="55002">Username</string>
+	<string id="55003">Password</string>
+	<string id="55005">Highest quality</string>
+	<string id="55006">WeebTV</string>
 	<string id="55007">Services</string>
-	<string id="55008">Assign also low-quality/backup streams</string>
-	<string id="55010"></string>
-	<string id="55011"></string>
+	<string id="55008">Assign also the streams of low- quality/up</string>
+	<string id="55010">very low</string>
+	<string id="55011">low</string>
+	<string id="55012">mid</string>
+	<string id="55013">high</string>
+	<string id="55014">very high</string>
+	<string id="55015"></string>
+	<string id="55016"></string>
 
-	<string id="89001">Sleep timer enabled</string>
+	<string id="89001">Enable sleep timer</string>
 	<string id="89002">Timeout action</string>
 	<string id="89003">Timeout value (min)</string>
-	<string id="59901">GoldVOD</string>
-	<string id="55009">Stream assign priority</string>
+	<string id="89004">Stop playback</string>
+	<string id="89005">Quit Xbmc</string>
+	<string id="89006">Shutdown</string>
+	<string id="89007">Hibernate</string>
+	<string id="89008"></string>
+	<string id="89009"></string>
+	
+	<string id="59901">GoldVodTV</string>
+	<string id="55009">Priority</string>
 
 <!-- errors & messages -->
 	<string id="57001">API error</string>
@@ -216,14 +231,14 @@
 	<string id="57034">Information about user account</string>
 	<string id="57036">You do not have a premium account. Starting a sponsored broadcast.</string>
 	<string id="57037">To purchase a premium right now go to:</string>
-	<string id="57038">http://weeb.tv/premium</string>
+	<string id="57038">http://mods-kodi.pl/</string>
 	<string id="57039">Probably no premium service:</string>
 	<string id="57042">Error connection with website!</string>
 	<string id="57043">Selected channel does not exist!</string>
 	<string id="57044">No channel selected!</string>
 	<string id="57045">No active server. We are sorry.</string>
 	<string id="57046">Rules are not accepted!</string>
-	<string id="57047">Go to http://weeb.tv/rules and accept it, to use service.</string>
+	<string id="57047">Go to http://mods-kodi.pl/ and accept it, to use service.</string>
 
 	<string id="69000">Recording</string>
 	<string id="69001">Import RTMPDUMP</string>
@@ -239,24 +254,24 @@
 	<string id="69011">Cancel ongoing recording?</string>
 	<string id="69012">Import record app</string>
 	<string id="69013">successfully imported</string>
-	<string id="69014">FFmpeg record format - use asf for OpenELEC</string>
+	<string id="69014">FFMPEG record format</string>
 	<string id="69015">Exit despite of scheduled recording?</string>
-	<string id="69016">Use FFmpeg to record rtmp instead of rtmpdump</string>
-	<string id="69017">[COLOR red]Download record apps from mods-kodi[/COLOR]</string>
-	<string id="69018">m-TVGuide will download files from mods-kodi server - press OK and wait</string>
-	<string id="69019">Download failed - try again or select files manually</string>
+	<string id="69016">Use FFMPEG to record RTMP instead of RTMPDUMP</string>
+	<string id="69017">[COLOR FFFF0000]Download record apps from mods-kodi[/COLOR]</string>
+	<string id="69018">m-TVGuide is downloading files - please press OK and wait</string>
+	<string id="69019">An error has occurred - try again or install manualy</string>
 	<string id="69020">Debug log</string>
-	<string id="69021">Failed to find ffmpeg or rtmpdump on your system - install then using build in packet manager or download from internet and select manually. Needed are rtmpdump, ffmpeg or libav-tools</string>
-	<string id="69022">Import failed - try selecting files manually</string>
-	<string id="69023">Select your operating system</string>
-	<string id="69024">Max nr of reattempts after record failure</string>
+	<string id="69021">Can't find FFMPEG or RTMPDUMP in system - please try to install by packet manager RTMPDUMP, FFMPEG or libav-tools or install manualy</string>
+	<string id="69022">Error during automatic import - try importing files manually</string>
+	<string id="69023">Choose OS</string>
+	<string id="69024">Maximum number of attempts to resume recording</string>
 	<string id="69025">Deletion of watched recordings</string>
 	<string id="69026">Delete recording</string>
 	<string id="69027">Delete wached recording</string>
 	<string id="69028">Do nothing</string>
 	<string id="69029">Ask</string>
 	<string id="69030">Auto delete</string>
-	<string id="69031"></string>
+	<string id="69031">[COLOR grey][LIGHT]Use only option[/LIGHT][/COLOR] [COLOR FFFF0000]"asf"[/COLOR] [COLOR grey][LIGHT]for OpenELEC systems[/LIGHT][/COLOR]</string>
 	<string id="69032"></string>
 	<string id="69033"></string>
 	<string id="69034"></string>
@@ -264,11 +279,20 @@
 	<string id="69036"></string>
 	<string id="69037"></string>
 	<string id="69038"></string>
+	<string id="69039"></string>
 
-	<string id="69040">Video settings</string>
+	<string id="69040">Video</string>
 	<string id="69041">Right/Left key show next/previous program</string>
-	<string id="69042">Show buttons info/setup/ch+/ch- on OSD</string>
-	<string id="69043">Display auto OSD on play/channel change</string>
+	<string id="69042">Show extra buttons on OSD</string>
+	<string id="69043">Display auto OSD on play</string>
 	<string id="69044">Auto OSD display time</string>
 	<string id="69045">OSD display time</string>
+	
+	<string id="80000">Pierwsza.tv</string>
+	<string id="80001"></string>
+	<string id="80002"></string>
+	<string id="80003"></string>
+	<string id="80004"></string>
+	<string id="80005"></string>
+
 </strings>

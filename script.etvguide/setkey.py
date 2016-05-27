@@ -28,19 +28,24 @@ import datetime
 import threading
 import time
 import ConfigParser
-
 import xbmc
 from xbmcgui import Dialog, WindowXMLDialog
-
 import source as src
 from notification import Notification
 import re, sys, os
 import streaming
 
+config = ConfigParser.RawConfigParser()
+config.read(os.path.join(ADDON.getAddonInfo('path'), 'resources', 'skins', ADDON.getSetting('Skin'), 'settings.ini'))
+try:
+    skin_resolution = config.getboolean("Skin", "resolution")
+except:
+    skin_resolution = '720p'
+
 class KeyListener(WindowXMLDialog):
 
   def __new__(cls):
-    return super(KeyListener, cls).__new__(cls, 'DialogSetKey.xml', ADDON.getAddonInfo('path'), "Default", "720p")
+    return super(KeyListener, cls).__new__(cls, 'DialogSetKey.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), skin_resolution)
 
   def onInit(self):
     self.key = 0

@@ -1,3 +1,16 @@
+[B]wersja 3.0.1[/B] - 2016-05-27
+- dodana obsługa serwisu Pierwsza.tv
+- wyświetlanie aktualnie wykorzystywanego serwisu oraz jakości streamu podczas odtwarzania
+- dodana możliwość przypisywania równocześnie streamów high/low quality dla weeb.tv
+- przywrócona możliwość przypisywania streamów high/low dla goldvod.tv
+- dodana funkcja reconnecta w przypadku zerwania połączenia
+- rozbudowana obsługa playlist o inne formaty zapisi programów
+- dodanie możliwości korzystania z mapy dla programów z playlisty
+- optymalizacja skórek Estuary
+- dodana skórka Estuary 
+- poprawki tłumaczeń
+
+
 [B]wersja 2.3.0[/B] - 2016-05-03
 - dodane Video OSD dostępne pod klawiszami z klawiatury/pilota
 - poprawki błedów powodujących zwisy m-TVGuide oraz Kodi

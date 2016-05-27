@@ -19,6 +19,14 @@ localMapFile = 'weebtvmap.xml'
 servicePriority = int(ADDON.getSetting('priority_weebtv'))
 weebtvChannelList = None
 
+class WeebTvCid(TvCid):
+    def __init__(self, cid, name, title, online, strm = "", img = "", multibitrate = 0, origCid = 0):
+        TvCid.__init__(self, cid, name, title, strm, img)
+        self.multibitrate = multibitrate
+        self.premium = 1
+        self.online = online
+        self.origCid = origCid
+
 class WebbTvStrmUpdater(baseServiceUpdater):
     def __init__(self):
         baseServiceUpdater.__init__(self)
@@ -53,12 +61,12 @@ class WebbTvStrmUpdater(baseServiceUpdater):
             self.log('\n')
             self.log('[UPD] Wyszykiwanie STRM')
             self.log('-------------------------------------------------------------------------------------')
-            self.log('[UPD] %-30s %-25s %s' % ('-ID mTvGuide-', '-    STRM   ', '-    SRC   -'))
+            self.log('[UPD] %-30s %-30s %s' % ('-ID mTvGuide-', '-    STRM   ', '-    SRC   -'))
 
             for x in self.automap:
                 if x.strm != '':
                     x.src = 'CONST'
-                    self.log('[UPD] %-30s %-25s %s' % (x.channelid, x.strm, x.src))
+                    self.log('[UPD] %-30s %-30s %s' % (x.channelid, x.strm, x.src))
                     continue
                 try:
                     error=""
@@ -66,12 +74,19 @@ class WebbTvStrmUpdater(baseServiceUpdater):
                     for y in self.channels:
                         b=p.match(y.title)
                         if (b):
-                            x.strm = self.rstrm % y.cid
-                            x.src  = self.serviceName
-                            y.strm = x.strm
-                            y.src = x.src
-                            self.log('[UPD] %-30s %-25s %s' % (x.channelid, x.strm, x.src))
-                            break
+                            if x.strm != '':
+                                newMapElement = copy.deepcopy(x)
+                                newMapElement.strm = self.rstrm % y.cid
+                                y.src = newMapElement.src
+                                y.strm = newMapElement.strm
+                                self.log('[UPD] [B] %-30s %-30s %s' % (newMapElement.channelid, newMapElement.strm, newMapElement.src))
+                                self.automap.append(newMapElement)
+                            else:
+                                x.strm = self.rstrm % y.cid
+                                x.src  = self.serviceName
+                                y.strm = x.strm
+                                y.src = x.src
+                                self.log('[UPD]     %-30s %-30s %s' % (x.channelid, x.strm, x.src))
 
                     if x.strm == '':
                         try:
@@ -79,21 +94,12 @@ class WebbTvStrmUpdater(baseServiceUpdater):
                             if addonini_strm:
                                 x.strm = addonini_strm
                                 x.src = 'addons.ini [%s]' % ADDON_ID
-                                self.log('[UPD] %-30s %-25s %s' % (x.channelid, error+x.strm, x.src))
+                                self.log('[UPD]     %-30s %-30s %s' % (x.channelid, error+x.strm, x.src))
                         except Exception, ex:
                             error = ' ERROR=%s' % str(ex)
 
                 except Exception, ex:
                     self.log('%s Error %s %s' % (x.channelid, x.titleRegex, str(ex)))
-
-            #self.log('\n')
-            #self.log('[UPD] Nie znaleziono/wykorzystano odpowiednikow w %s dla:' % self.serviceName)
-            #self.log('-------------------------------------------------------------------------------------')
-            #config = ConfigParser.RawConfigParser()
-            #config.read(pathAddons)
-            #for x in self.automap:
-                #if x.src!=self.serviceName:
-                    #self.log('[UPD] CH=%-30s STRM=%-25s SRC=%s' % (x.channelid, x.strm, x.src))
 
             self.log('\n')
             self.log('[UPD] Nie wykorzystano CID nadawanych przez %s programow:' % self.serviceName)
@@ -119,7 +125,7 @@ class WebbTvStrmUpdater(baseServiceUpdater):
 
         self.log('[UPD] Pobieram liste dostepnych kanalow Weeb.tv z %s' % self.url)
         self.log('[UPD] -------------------------------------------------------------------------------------')
-        self.log('[UPD] %-7s %-35s %-30s' % ('-CID-', '-NAME-', '-TITLE-'))
+        self.log('[UPD] %-10s %-35s %-30s' % ('-CID-', '-NAME-', '-TITLE-'))
         result = list()
         post = { 'username': self.login, 'userpassword': self.password }
         tmpChannels = self.sl.getJsonFromAPI(self.url, post)
@@ -141,11 +147,18 @@ class WebbTvStrmUpdater(baseServiceUpdater):
                         cid      = self.sl.decode(k['cid']).replace("\"", '')
                         title    = self.sl.decode(k['channel_title']).replace("\"", '')
                         image   = k['channel_logo_url'].replace("\"", '')
-                        mbitrate = k['multibitrate']
+                        mbitrate = '0'
+                        if self.highQuality == 'true':
+                            mbitrate = k['multibitrate']
                         online   = k['channel_online']
 
-                        self.log('[UPD] %-7s %-35s %-30s' % (cid, name, title))
-                        result.append(WeebTvCid(cid, name, title, online, img=image, multibitrate=mbitrate))
+                        if mbitrate == '1':
+                            self.log('[UPD] %-10s %-35s %-30s' % (cid + '_HD', name, title))
+                            result.append(WeebTvCid(cid + '_HD', name, title, online, img=image, multibitrate=mbitrate, origCid=cid))
+                        if mbitrate != '1' or ADDON.getSetting('assign_all_streams_weeb') == 'true':
+                            self.log('[UPD] %-10s %-35s %-30s' % (cid + '_SD', name, title))
+                            result.append(WeebTvCid(cid + '_SD', name, title, online, img=image, multibitrate='0', origCid=cid))
+
             except KeyError, keyerr:
                 self.log('getChannelList exception while looping channelsArray, error: %s' % str(keyerr))
 
@@ -164,7 +177,7 @@ class WebbTvStrmUpdater(baseServiceUpdater):
         return None
 
     def updateChannelRTMP(self, channel):
-        post = { 'cid': channel.cid, 'platform': 'XBMC', 'username': self.login, 'userpassword': self.password }
+        post = { 'cid': channel.origCid, 'platform': 'XBMC', 'username': self.login, 'userpassword': self.password }
         params = self.sl.getJsonFromExtendedAPI(playerUrl, post_data = post)
         if params == None:
             self.log('updateChannelRTMP failed to fetch channel data')
@@ -181,7 +194,7 @@ class WebbTvStrmUpdater(baseServiceUpdater):
         playPath = param[11]
         ticket = param[73]
 
-        if channel.multibitrate == '1' and self.highQuality == 'true':
+        if channel.multibitrate == '1':
             playPath = playPath + 'HI'
 
         channel.strm    = str(rtmpLink) + '/' + str(playPath) + ' swfUrl='  + str(ticket) + ' pageUrl=token' + ' live=true'

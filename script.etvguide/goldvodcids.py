@@ -61,25 +61,45 @@ class GoldVodUpdater(baseServiceUpdater):
         if len(channelsArray) > 0:
             try:
                 for s in range(len(channelsArray)):
+                    url_hd = ''
                     cid = self.sl.decode(channelsArray[s]['id']).replace("\"", '')
                     ico = self.sl.decode(channelsArray[s]['icon']).replace("\"", '')
                     url = self.sl.decode(channelsArray[s]['url_sd']).replace("\"", '')
                     if len(channelsArray[s]['url_hd']) is not 0 and ADDON.getSetting('video_qualityGoldVOD') == 'true':
-                        url = self.sl.decode(channelsArray[s]['url_hd']).replace("\"", '')
+                        url_hd = self.sl.decode(channelsArray[s]['url_hd']).replace("\"", '')
                     name = self.sl.decode(channelsArray[s]['name']).replace("\"", '')
                     try:
                         name = re.sub('SERWER\s*\d*', '', name, flags=re.IGNORECASE).replace('  ', ' ').strip()
                     except:
                         #fix for old python not supporting 'flags' argument
                         name = re.sub('SERWER\s*\d*', '', name).replace('  ', ' ').strip()
-                    if silent is not True:
-                        self.log('[UPD] %-10s %-35s %-35s' % (cid, name, url))
 
-                    goldvodProgram = WeebTvCid(cid, name, name, '2', url, ico)
-                    goldvodProgram.rtmpdumpLink = list()
-                    goldvodProgram.rtmpdumpLink.append("--rtmp")
-                    goldvodProgram.rtmpdumpLink.append("%s" % url)
-                    result.append(goldvodProgram)
+                    if url_hd == '':
+                        if silent is not True:
+                            self.log('[UPD] %-10s %-35s %-35s' % (cid + "_SD", name, url))
+                        goldvodProgram = TvCid(cid + "_SD", name, name, url, ico)
+                        goldvodProgram.rtmpdumpLink = list()
+                        goldvodProgram.rtmpdumpLink.append("--rtmp")
+                        goldvodProgram.rtmpdumpLink.append("%s" % url)
+                        result.append(goldvodProgram)
+                    else:
+                        if ADDON.getSetting('assign_all_streams_goldvod') == 'true':
+                            if silent is not True:
+                                self.log('[UPD] %-10s %-35s %-35s' % (cid + "_SD", name, url))
+                            goldvodProgram = TvCid(cid + "_SD", name, name, url, ico)
+                            goldvodProgram.rtmpdumpLink = list()
+                            goldvodProgram.rtmpdumpLink.append("--rtmp")
+                            goldvodProgram.rtmpdumpLink.append("%s" % url)
+                            result.append(goldvodProgram)
+
+                        if silent is not True:
+                            self.log('[UPD] %-10s %-35s %-35s' % (cid + "_HD", name, url_hd))
+
+                        goldvodProgram = TvCid(cid + "_HD", name, name, url_hd, ico)
+                        goldvodProgram.rtmpdumpLink = list()
+                        goldvodProgram.rtmpdumpLink.append("--rtmp")
+                        goldvodProgram.rtmpdumpLink.append("%s" % url_hd)
+                        result.append(goldvodProgram)
 
                 goldVODChannelList = copy.deepcopy(result)
                 goldVODLastUpdate  = datetime.datetime.now()
