@@ -6,22 +6,20 @@ import datetime
 import os, xbmcaddon, xbmcgui
 from strings import *
 from serviceLib import *
-
-Url = 'http://api1.moje-filmy.tk/api2/getTv.php'
+import operator
 
 onlineMapFile = 'http://epg.feenk.net/maps/mojefilmymap.xml'
 localMapFile = 'mojefilmymap.xml'
 serviceName = 'moje-filmy.tk'
 serviceRegex = "service=mojefilmy&cid=%"
 servicePriority = int(ADDON.getSetting('priority_mojefilmy'))
+Url = ADDON.getSetting('mojefilmy_playlist')
 
 mojefilmyChannelList = None
 
 class MojeFilmyUpdater(baseServiceUpdater):
     def __init__(self):
         baseServiceUpdater.__init__(self)
-        self.login    = ADDON.getSetting('mail_mojefilmy')
-        self.password = ADDON.getSetting('userpasswordMojeFilmy')
         self.serviceName = serviceName
         self.serviceRegex = serviceRegex
         self.servicePriority = servicePriority
@@ -31,54 +29,69 @@ class MojeFilmyUpdater(baseServiceUpdater):
         self.maxAllowedStreams = 4
         self.url = Url
         self.addDuplicatesToList = True
-        self.post = { 'password' : self.password, 'email' : self.login }
-        self.headers = {'Token' : 'HSYW73^@*SJDEU@ks', 'ContentType' : 'application/x-www-form-urlencoded', 'User-Agent' : 'XBMC-KODI-MOJE-FILMY.TK'}
+        self.addDuplicatesAtBeginningOfList = True
 
-    def getChannelList(self, silent = False):
-        global mojefilmyChannelList
-        if mojefilmyChannelList is not None:
-            self.log('getChannelList return cached channel list')
-            return copy.deepcopy(mojefilmyChannelList)
+    def getChannelList(self):
+        result = list()
+        try:
+            global mojefilmyChannelList
+            if mojefilmyChannelList is not None:
+                return copy.deepcopy(mojefilmyChannelList)
 
-        if silent is not True:
+            data = {}
+            title = None
+            nextFreeCid = 0
             self.log('\n\n')
             self.log('[UPD] Pobieram liste dostepnych kanalow %s z %s' % (self.serviceName, self.url))
             self.log('[UPD] -------------------------------------------------------------------------------------')
-            self.log('[UPD] %-10s %-35s %-35s' % ( '-CID-', '-NAME-', '-URL-'))
-        result = list()
-        channelsArray = self.sl.getJsonFromExtendedAPI(self.url, post_data = self.post, jsonLoadResult = True, customHeaders = self.headers)
+            self.log('[UPD] %-10s %-35s %-35s' % ( '-CID-', '-NAME-', '-RTMP-'))
 
-        if channelsArray is None:
-            self.log('Error while loading Json from URL: %s - aborting' % self.url)
-            return result
+            channelsArray = self.sl.getJsonFromExtendedAPI(self.url, post_data = data)
 
-        if len(channelsArray) > 0:
-            try:
-                for s in range(len(channelsArray['data'])):
-                    url = channelsArray['data'][s]['url'].strip()
-                    title = channelsArray['data'][s]['name'].replace(':', '').replace('1080p', '').replace('(ENG)', '').replace('SD', '').replace('18+', '')
-                    try:
-                        title = re.sub('- mirror\s*\d*', '', title, flags=re.IGNORECASE).replace('  ', ' ').strip()
-                    except:
-                        title = re.sub('- mirror\s*\d*', '', title).replace('  ', ' ').strip()
-                    ico = channelsArray['data'][s]['img'].strip()
-                    if silent is not True:
-                        self.log('[UPD] %-10s %-35s %-35s' % (s, title, url))
-                    mojeFilmyProgram = WeebTvCid(cid=str(s), name=title, title=title, online='2', strm=url, img=ico)
-                    result.append(mojeFilmyProgram)
+            if channelsArray is not None and len(channelsArray) > 0:
+                regex = re.compile(".*?tvg-id.*?audio-track.*?group-title.*?tvg-logo=\".*?\",(.*)", re.IGNORECASE)
+                for line in channelsArray.split('\n'):
+                    stripLine = line.strip()
+                    if "#EXTM3U" in stripLine:
+                        continue
+                    match = regex.findall(stripLine)
+                    if len(match) > 0:
+                        title = match[0]
+                        title = re.sub(' FHD', ' HD', title)
+                        title = re.sub('HD Ready', 'HD', title)
+                        #title = re.sub(' FHD', ' XHD', title) #we do this so FHD will be assigned higher than HD
+                        title = re.sub('18\+', '', title)
+                        try:
+                            title = re.sub('test', '', title, flags=re.IGNORECASE)
+                        except:
+                            title = re.sub('test', '', title)
+                            title = re.sub('Test', '', title)
+                        title = title.strip()
+                    elif title is not None and len(stripLine) > 0:
+                        if title != '':
+                            result.append(TvCid(nextFreeCid, title, title, stripLine, ''))
+                            self.log('[UPD] %-10s %-35s %-35s' % (nextFreeCid, title, stripLine))
+                            nextFreeCid += 1
+
+                #result = sorted(result, key=operator.attrgetter('title'))
+                #nextFreeCid = 0
+                #for channel in sorted_result:
+                    #channel.cid = nextFreeCid
+                    #channel.title = re.sub(' XHD', ' HD', channel.title)
+                    #channel.name = channel.title
+                    #self.log('[UPD] %-10s %-35s %-35s' % (channel.cid, channel.title, channel.strm))
+                    #nextFreeCid += 1
+
                 mojefilmyChannelList = copy.deepcopy(result)
-            except KeyError, keyerr:
-                self.log('getChannelList exception while looping channelsArray, error: %s' % str(keyerr))
-        else:
-            self.log('getChannelList returned empty channel array!!!!!!!!!!!!!!!!')
-            xbmcgui.Dialog().ok(strings(SERVICE_ERROR),"\n" + strings(SERVICE_NO_PREMIUM) + ' ' + self.serviceName)
+
+        except Exception, ex:
+            self.log('getChannelList Error %s' % str(ex))
         return result
 
     def getChannel(self, cid):
-        channels = self.getChannelList(True)
+        channels = self.getChannelList()
         for chann in channels:
-            if chann.cid == cid:
-                #chann.strm = self.sl.getJsonFromExtendedAPI(chann.strm, post_data = self.post, customHeaders = self.headers)
+            if chann.cid == int(cid):
                 self.log('getChannel found matching channel: cid: %s, name: %s, rtmp: %s' % (chann.cid, chann.name, chann.strm))
                 return chann
         return None
