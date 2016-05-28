@@ -35,12 +35,7 @@
 
 		<setting label="30956" type="lsep"/>
  		<setting id="MojeFilmy_enabled" type="bool" label="59904" default="false"/>
-		<setting id="mail_mojefilmy" type="text" label="30957" default="" visible="eq(-1,true)"/>
-		<setting id="userpasswordMojeFilmy" type="text" option="hidden" label="55003" default="" visible="eq(-2,true)"/>
-		<setting id="priority_mojefilmy" label="55009" type="enum" default="1" values="niski|sredni|wysoki|b.wysoki" visible="eq(-3,true)"/>
-		<!--
 		<setting id="mojefilmy_playlist" type="text" label="30959" default="" visible="eq(-1,true)"/>
-		-->
  		<setting id="priority_mojefilmy" label="55009" type="enum" default="1" lvalues="55010|55011|55012|55013|55014" visible="eq(-2,true)"/>
 
 		<setting label="59905" type="lsep"/>
