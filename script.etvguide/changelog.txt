@@ -1,3 +1,6 @@
+[B]wersja 3.0.3[/B] - 2016-06-01
+- Moje-filmy.tk teraz jako pierwszy stream jest HD potem SD po nacisnieciu C
+
 [B]wersja 3.0.1[/B] - 2016-05-27
 - dodana obsługa serwisu Pierwsza.tv
 - wyświetlanie aktualnie wykorzystywanego serwisu oraz jakości streamu podczas odtwarzania

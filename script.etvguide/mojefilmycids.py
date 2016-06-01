@@ -73,14 +73,14 @@ class MojeFilmyUpdater(baseServiceUpdater):
                             self.log('[UPD] %-10s %-35s %-35s' % (nextFreeCid, title, stripLine))
                             nextFreeCid += 1
 
-                #result = sorted(result, key=operator.attrgetter('title'))
-                #nextFreeCid = 0
-                #for channel in sorted_result:
-                    #channel.cid = nextFreeCid
-                    #channel.title = re.sub(' XHD', ' HD', channel.title)
-                    #channel.name = channel.title
-                    #self.log('[UPD] %-10s %-35s %-35s' % (channel.cid, channel.title, channel.strm))
-                    #nextFreeCid += 1
+                result = sorted(result, key=operator.attrgetter('title'))
+                nextFreeCid = 0
+                for channel in sorted_result:
+                    channel.cid = nextFreeCid
+                    channel.title = re.sub(' XHD', ' HD', channel.title)
+                    channel.name = channel.title
+                    self.log('[UPD] %-10s %-35s %-35s' % (channel.cid, channel.title, channel.strm))
+                    nextFreeCid += 1
 
                 mojefilmyChannelList = copy.deepcopy(result)
 
