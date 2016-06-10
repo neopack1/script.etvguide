@@ -78,7 +78,7 @@
 		<setting id="debug_log" label="69020" type="bool" default="false"/>
 	</category>
 	<category label="69040">
-		<setting id="info.osd" label="31001" type="bool" default="true"/>
+		<setting id="info.osd" label="31001" type="bool" default="false"/>
 		<setting id="osd_time" label="69045" type="slider" default="20" range="1,50" option="int" visible="eq(-1,true)"/>
 		<setting id="VidOSD_on_select" label="30918" type="bool" default="true" visible="eq(-2,true)"/>
 		<setting id="start_video_minimalized" label="30917" type="bool" default="true"/>
