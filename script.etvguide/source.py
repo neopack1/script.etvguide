@@ -1222,7 +1222,7 @@ class ETVGUIDESource(Source):
         else:
             self.USE_ZIPPED_FILES = ""
 
-        self.BASE_EPG_URL = "http://epg.feenk.net/"
+        self.BASE_EPG_URL = "http://epg.feenk.net/epg/"
 
         self.ETVGUIDEUrl1 = self.BASE_EPG_URL + 'epg.xml' + self.USE_ZIPPED_FILES
 
@@ -1232,7 +1232,7 @@ class ETVGUIDESource(Source):
             self.ETVGUIDEUrl2 = ""
 
         if ADDON.getSetting('e-TVGuide3') == "true":
-            self.ETVGUIDEUrl3 = self.BASE_EPG_URL + "telewizjada_adult.xml" + self.USE_ZIPPED_FILES
+            self.ETVGUIDEUrl3 = self.BASE_EPG_URL + "adult.xml" + self.USE_ZIPPED_FILES
         else:
             self.ETVGUIDEUrl3 = ""
 
