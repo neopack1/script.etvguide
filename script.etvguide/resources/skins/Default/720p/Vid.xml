@@ -1,4 +1,27 @@
 <window>
 	<defaultcontrol>-</defaultcontrol>
-	<controls></controls>
+	<controls>
+		<control type="image">
+			<description>serwis_bg</description>
+			<posx>1110</posx>
+			<posy>0</posy>
+			<width>300</width>
+			<height>40</height>
+			<aligny>center</aligny>
+			<texture>dark.png</texture>
+			<visible>Control.IsVisible(4940)</visible>
+		</control>
+		<control type="label" id="4940">
+			<description>serwis</description>
+			<posx>1050</posx>
+			<posy>0</posy>
+			<width>300</width>
+			<height>30</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font24_title</font>
+			<textcolor>white</textcolor>
+      <visible>!IsEmpty(Control.GetLabel(4940))</visible>
+		</control>
+	</controls>
 </window>
