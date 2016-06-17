@@ -23,9 +23,9 @@
 		<setting id="assign_all_streams_goldvod" type="bool" label="55008" default="true" visible="eq(-1,true) + eq(-4,true)"/>
 		<setting id="priority_goldvod" label="55009" type="enum" default="1" lvalues="55010|55011|55012|55013|55014" visible="eq(-5,true)"/>
 
-		<setting label="59903" type="lsep"/>
-		<setting id="telewizjada_enabled" type="bool" label="59904" default="false" visible="false"/>
-		<setting id="priority_telewizjada" label="55009" type="enum" default="2" lvalues="55010|55011|55012|55013|55014" visible="eq(-1,true)" visible="false"/>
+		<setting label="59903" type="lsep" visible="false"/>
+		<setting id="telewizjada_enabled" type="bool" label="59904" default="true" visible="false"/>
+		<setting id="priority_telewizjada" label="55009" type="enum" default="2" lvalues="55010|55011|55012|55013|55014" visible="false"/>
 
 		<setting label="80000" type="lsep"/>
  		<setting id="pierwszatv_enabled" type="bool" label="59904" default="false"/>
