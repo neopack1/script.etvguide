@@ -24,8 +24,8 @@
 		<setting id="priority_goldvod" label="55009" type="enum" default="1" lvalues="55010|55011|55012|55013|55014" visible="eq(-5,true)"/>
 
 		<setting label="59903" type="lsep"/>
-		<setting id="telewizjada_enabled" type="bool" label="59904" default="false"/>
-		<setting id="priority_telewizjada" label="55009" type="enum" default="2" lvalues="55010|55011|55012|55013|55014" visible="eq(-1,true)"/>
+		<setting id="telewizjada_enabled" type="bool" label="59904" default="false" visible="false"/>
+		<setting id="priority_telewizjada" label="55009" type="enum" default="2" lvalues="55010|55011|55012|55013|55014" visible="eq(-1,true)" visible="false"/>
 
 		<setting label="80000" type="lsep"/>
  		<setting id="pierwszatv_enabled" type="bool" label="59904" default="false"/>
@@ -50,6 +50,7 @@
 		<setting id="AutoUpdateCid" label="30703" type="bool" default="true" visible="eq(-1,1)"/>
 		<setting id="OnlyChannelsWithStream" label="30705" type="bool" default="true" visible="eq(-2,1)"/>
 		<setting id="UpdateEPGOnModifiedDate" label="30706" type="bool" default="true" visible="eq(-3,1)"/>
+		<setting id="ShowRssMessages" label="30707" type="bool" default="true" visible="eq(-4,1)"/>
 		<setting id="xmltv.file" label="30103" type="file" visible="eq(-4,0)"/>
 		<setting id="xmltv.logo.folder" label="30116" type="folder" visible="eq(-5,0)"/>
 		<setting type="sep" visible="eq(-6,1)"/>

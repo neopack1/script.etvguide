@@ -87,7 +87,7 @@
 	<string id="30704">Użyj skompresowanego EPG</string>
 	<string id="30705">Wyświetlaj tylko programy nadające</string>
 	<string id="30706">Automatycznie wykrywaj aktualizacje EPG</string>
-
+	<string id="30707">Pokazuj komunikaty z serwisu http://epg.feenk.net</string>
 <!-- settings -->
 	<string id="30802">TV Guide jest skonfigurowany, aby używać dodatku</string>
 	<string id="30803">który nie jest zainstalowany.</string>

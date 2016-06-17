@@ -88,6 +88,7 @@
 	<string id="30704">Use zipped epg</string>
 	<string id="30705">Show only programs with stream assigned</string>
 	<string id="30706">Auto detect EPG change</string>
+	<string id="30707">Show notifications from http://epg.feenk.net</string>
 
 <!-- settings -->
 	<string id="30802">TV Guide is configured to stream using</string>
