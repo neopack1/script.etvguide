@@ -7,26 +7,22 @@ from strings import *
 import strings as strings2
 from serviceLib import *
 
+serviceName         = 'Telewizjada'
 
 telewizjadaMainUrl  = 'http://www.telewizjada.net/'
-serviceName         = 'telewizjada.net'
-serviceRegex        = "service=telewizjada&cid=%"
-onlineMapFile       = 'http://epg.feenk.net/maps/telewizjadamap.xml'
-localMapFile        = 'telewizjadamap.xml'
-servicePriority     = int(ADDON.getSetting('priority_telewizjada'))
 COOKIE_FILE         = os.path.join(xbmc.translatePath(ADDON.getAddonInfo('profile')) , 'telewizjada.cookie')
-
 telewizjadaChannelList = None
 
 class TelewizjaDaUpdater(baseServiceUpdater):
     def __init__(self):
         baseServiceUpdater.__init__(self)
-        self.serviceName = serviceName
-        self.serviceRegex = serviceRegex
-        self.servicePriority = servicePriority
-        self.onlineMapFile = onlineMapFile
-        self.localMapFile = localMapFile
-        self.maxAllowedStreams = 1
+        self.serviceName        = serviceName
+        self.serviceEnabled     = 'false'
+        self.servicePriority    = int(ADDON.getSetting('priority_telewizjada'))
+        self.onlineMapFile      = 'http://epg.feenk.net/maps/telewizjadamap.xml'
+        self.localMapFile       = 'telewizjadamap.xml'
+        self.serviceRegex       = "service=" + self.serviceName + "&cid=%"
+        self.rstrm              = self.serviceRegex + 's'
 
     def getChannelList(self):
         try:
