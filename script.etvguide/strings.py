@@ -23,7 +23,7 @@
 import xbmcaddon, xbmc
 
 ADDON_ID            = 'script.etvguide'
-RSS_FILE            = 'http://mods-kodi.pl/infusions/kodi_info/kodi_info.txt'
+RSS_FILE            = 'http://epg.feenk.net/rss/info.txt'
 ADDON               = xbmcaddon.Addon(id = ADDON_ID)
 ADDON_PATH          = ADDON.getAddonInfo('path')
 ADDON_CIDUPDATED    = False    #zabezpieczenie przed ponownym updatem cidow

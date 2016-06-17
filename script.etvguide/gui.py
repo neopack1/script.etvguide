@@ -2154,14 +2154,14 @@ class Pla(xbmcgui.WindowXMLDialog):
             self.epg.playService.stopPlayback()
             self.closeOSD()
 
-#        elif action.getId() == KEY_NAV_BACK:
-#            if ADDON.getSetting('start_video_minimalized') == 'true' and ADDON.getSetting('navi_back_stop_play') == 'false':
-#                self.closeOSD()
-#                self.epg._showEPG()
-#            else:
-#                self.epg.playService.stopPlayback()
-#                self.closeOSD()
-#            return
+        elif action.getId() == KEY_NAV_BACK:
+            if ADDON.getSetting('start_video_minimalized') == 'true' and ADDON.getSetting('navi_back_stop_play') == 'false':
+                self.closeOSD()
+                self.epg._showEPG()
+            else:
+                self.epg.playService.stopPlayback()
+                self.closeOSD()
+            return
 
         #if action.getId() == KEY_CODEC_INFO: #przysik O
             #xbmc.executebuiltin("Action(CodecInfo)")
