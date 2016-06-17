@@ -58,6 +58,7 @@
 	<string id="30501">Przesuwaj w górę i w dół, aby zmienić pozycję kanału.[CR]Zaznacz lub wybierz lewo, aby zaakceptować pozycję.</string>
 	<string id="30502">Zapisz</string>
 	<string id="30503">Anuluj</string>
+	<string id="30504">Informacja</string>
 
 	<string id="30400">LISTA KANAŁÓW</string>
 	<string id="30401">WYJDŹ</string>
@@ -88,6 +89,7 @@
 	<string id="30705">Wyświetlaj tylko programy nadające</string>
 	<string id="30706">Automatycznie wykrywaj aktualizacje EPG</string>
 	<string id="30707">Pokazuj komunikaty z serwisu http://epg.feenk.net</string>
+
 <!-- settings -->
 	<string id="30802">TV Guide jest skonfigurowany, aby używać dodatku</string>
 	<string id="30803">który nie jest zainstalowany.</string>
@@ -107,7 +109,7 @@
 	<string id="59909">Multisesja</string>
 	<string id="30913">Ustawienia</string>
 	<string id="30914">Skórka</string>
-	<string id="30915">Uruchom m-TVGuide po starcie systemu</string>
+	<string id="30915">Uruchom TVGuide po starcie systemu</string>
 	<string id="30916">Baza</string>
 	<string id="30917">Animacja maksymalizacji okna odtwarzania</string>
 	<string id="30918">Przewodnik po programach zamiast wyświetlania informacji</string>
@@ -139,8 +141,8 @@
 	<string id="30960">Połącz ponownie w przypadku rozłączenia</string>
 	<string id="30961">Maksymalna liczba prób połączenia</string>
 	<string id="30962">Opóźnienie próby połączenia (ms)</string>
-	<string id="30963"></string>
-	<string id="30964"></string>
+	<string id="30963">Zamykanie</string>
+	<string id="30964">Wciśnij ponownie klawisz aby wyjść</string>
 	<string id="30965"></string>
 	<string id="30966"></string>
 
