@@ -6,31 +6,25 @@ import os, xbmcaddon
 from strings import *
 from serviceLib import *
 
-serviceName   = 'playlist'
-serviceRegex  = "service=playlist&cid=%"
-servicePriority = int(ADDON.getSetting('priority_playlist'))
-
-onlineMapFile = 'http://epg.feenk.net/maps/playlistmap.xml'
-localMapFile = 'playlistmap.xml'
+serviceName   = 'Playlist'
 
 playlistChannelList = None
-
 if ADDON.getSetting('playlist_source') == 'Url':
     playlistFile = ADDON.getSetting('playlist_url')
 else:
     playlistFile = xbmc.translatePath(ADDON.getSetting('playlist_file'))
 
-
 class PlaylistUpdater(baseServiceUpdater):
     def __init__(self):
         baseServiceUpdater.__init__(self)
-        self.serviceName = serviceName
-        self.serviceRegex = serviceRegex
-        self.onlineMapFile = onlineMapFile
-        self.localMapFile = localMapFile
-        self.servicePriority = servicePriority
-        self.url = playlistFile
-        self.rstrm = serviceRegex + 's'
+        self.serviceName        = serviceName
+        self.serviceEnabled     = ADDON.getSetting('playlist_enabled')
+        self.servicePriority    = int(ADDON.getSetting('priority_playlist'))
+        self.onlineMapFile      = 'http://epg.feenk.net/maps/playlistmap.xml'
+        self.localMapFile       = 'playlistmap.xml'
+        self.serviceRegex       = "service=" + self.serviceName + "&cid=%"
+        self.rstrm              = self.serviceRegex + 's'
+        self.url                = playlistFile
 
     def getChannelList(self):
         result = list()
@@ -54,7 +48,7 @@ class PlaylistUpdater(baseServiceUpdater):
 
             if channelsArray is not None and len(channelsArray) > 0:
                 for line in channelsArray.split('\n'):
-                    stripLine = line.strip()
+                    stripLine = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]|\[I\]|\[/I\]", "", line).strip()
                     if "#EXTM3U" in stripLine:
                         continue
                     if '#EXTINF:' in stripLine:
@@ -70,6 +64,24 @@ class PlaylistUpdater(baseServiceUpdater):
 
                         if tmpTitle is not None and tmpTitle != '':
                             title = tmpTitle
+                            try:
+                                title = re.sub(' PL', '', title, flags=re.IGNORECASE).replace('  ', ' ').strip()
+                                title = re.sub(' HD', '', title, flags=re.IGNORECASE).replace('  ', ' ').strip()
+                                title = re.sub(' Polska', '', title, flags=re.IGNORECASE).replace('  ', ' ').strip()
+                                title = re.sub(' Poland', '', title, flags=re.IGNORECASE).replace('  ', ' ').strip()
+                                title = re.sub(' Europe', '', title, flags=re.IGNORECASE).replace('  ', ' ').strip()
+                                title = re.sub(' \[pl\]', '', title, flags=re.IGNORECASE).replace('  ', ' ').strip()
+                                title = re.sub(' 720', '', title, flags=re.IGNORECASE).replace('  ', ' ').strip()
+                            except:
+                                #fix for old python not supporting 'flags' argument
+                                title = re.sub(' PL', '', title).replace('  ', ' ').strip()
+                                title = re.sub(' HD', '', title).replace('  ', ' ').strip()
+                                title = re.sub(' Polska', '', title).replace('  ', ' ').strip()
+                                title = re.sub(' Poland', '', title).replace('  ', ' ').strip()
+                                title = re.sub(' Europe', '', title).replace('  ', ' ').strip()
+                                title = re.sub(' \[pl\]', '', title).replace('  ', ' ').strip()
+                                title = re.sub(' 720', '', title).replace('  ', ' ').strip()
+
 
                     elif title is not None and len(stripLine) > 0:
                         if title != '':

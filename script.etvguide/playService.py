@@ -15,21 +15,12 @@ import threading
 import time
 
 SERVICES = {
-'weebtv': weebtvcids.WebbTvStrmUpdater(),
-'goldvod': goldvodcids.GoldVodUpdater(),
-'telewizjada': telewizjadacids.TelewizjaDaUpdater(),
-'playlist': playlistcids.PlaylistUpdater(),
-'mojefilmy' : mojefilmycids.MojeFilmyUpdater(),
-'pierwszatv' : pierwszatvcids.PierwszaTvUpdater()
-}
-
-SERVICE_AVAILABILITY = {
-'weebtv': ADDON.getSetting('WeebTV_enabled'),
-'goldvod': ADDON.getSetting('GoldVOD_enabled'),
-'telewizjada': ADDON.getSetting('telewizjada_enabled'),
-'playlist': ADDON.getSetting('playlist_enabled'),
-'mojefilmy' : ADDON.getSetting('MojeFilmy_enabled'),
-'pierwszatv' : ADDON.getSetting('pierwszatv_enabled')
+    weebtvcids.serviceName      : weebtvcids.WebbTvStrmUpdater(),
+    goldvodcids.serviceName     : goldvodcids.GoldVodUpdater(),
+    telewizjadacids.serviceName : telewizjadacids.TelewizjaDaUpdater(),
+    playlistcids.serviceName    : playlistcids.PlaylistUpdater(),
+    mojefilmycids.serviceName   : mojefilmycids.MojeFilmyUpdater(),
+    pierwszatvcids.serviceName  : pierwszatvcids.PierwszaTvUpdater()
 }
 
 class BasePlayService:
@@ -233,8 +224,6 @@ class PlayService(xbmc.Player, BasePlayService):
             liz = xbmcgui.ListItem(channelInfo.title, iconImage = channelInfo.img, thumbnailImage = channelInfo.img)
             liz.setInfo( type="Video", infoLabels={ "Title": channelInfo.title, } )
             try:
-                if isinstance(channelInfo, weebtvcids.WeebTvCid) and channelInfo.premium == 0:
-                    xbmcgui.Dialog().ok(strings(57034).encode('utf-8'), strings(57036).encode('utf-8') + '\n' + strings(57037).encode('utf-8') + '\n' + 'service: %s' % service.encode('utf-8'))
                 xbmc.Player().play(channelInfo.strm, liz, windowed=startWindowed)
                 res = True
             except Exception, ex:

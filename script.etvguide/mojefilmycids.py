@@ -8,28 +8,25 @@ from strings import *
 from serviceLib import *
 import operator
 
-onlineMapFile = 'http://epg.feenk.net/maps/mojefilmymap.xml'
-localMapFile = 'mojefilmymap.xml'
-serviceName = 'moje-filmy.tk'
-serviceRegex = "service=mojefilmy&cid=%"
-servicePriority = int(ADDON.getSetting('priority_mojefilmy'))
-Url = ADDON.getSetting('mojefilmy_playlist')
+serviceName = 'MojeFilmy'
 
 mojefilmyChannelList = None
 
 class MojeFilmyUpdater(baseServiceUpdater):
     def __init__(self):
         baseServiceUpdater.__init__(self)
-        self.serviceName = serviceName
-        self.serviceRegex = serviceRegex
-        self.servicePriority = servicePriority
-        self.breakAfterFirstMatchFromMap = False #Look for better quality streams if available
-        self.onlineMapFile = onlineMapFile
-        self.localMapFile = localMapFile
-        self.maxAllowedStreams = 4
-        self.url = Url
+        self.serviceName        = serviceName
+        self.serviceEnabled     = ADDON.getSetting('MojeFilmy_enabled')
+        self.servicePriority    = int(ADDON.getSetting('priority_mojefilmy'))
+        self.url                = ADDON.getSetting('mojefilmy_playlist')
+        self.onlineMapFile      = 'http://epg.feenk.net/maps/mojefilmymap.xml'
+        self.localMapFile       = 'mojefilmymap.xml'
+        self.serviceRegex       = "service=" + self.serviceName + "&cid=%"
+        self.rstrm              = self.serviceRegex + 's'
+        self.maxAllowedStreams  = 4
         self.addDuplicatesToList = True
         self.addDuplicatesAtBeginningOfList = True
+        self.breakAfterFirstMatchFromMap = False #Look for better quality streams if available
 
     def getChannelList(self):
         result = list()
@@ -57,6 +54,10 @@ class MojeFilmyUpdater(baseServiceUpdater):
                     match = regex.findall(stripLine)
                     if len(match) > 0:
                         title = match[0]
+                        title = re.sub(' 480p', '', title)
+                        title = re.sub(' 360p', '', title)
+                        title = re.sub(' HQ', ' HD', title)
+                        title = re.sub(' LQ', '', title)
                         title = re.sub(' FHD', ' HD', title)
                         title = re.sub('HD Ready', 'HD', title)
                         #title = re.sub(' FHD', ' XHD', title) #we do this so FHD will be assigned higher than HD
@@ -69,18 +70,16 @@ class MojeFilmyUpdater(baseServiceUpdater):
                         title = title.strip()
                     elif title is not None and len(stripLine) > 0:
                         if title != '':
-                            result.append(TvCid(nextFreeCid, title, title, stripLine, ''))
-                            self.log('[UPD] %-10s %-35s %-35s' % (nextFreeCid, title, stripLine))
+                            channelCid = str(nextFreeCid)
+                            if ' HD' in title:
+                                channelCid = channelCid + '_HD'
+                            else:
+                                channelCid = channelCid + '_SD'
+                            result.append(TvCid(channelCid, title, title, stripLine, ''))
+                            self.log('[UPD] %-10s %-35s %-35s' % (channelCid, title, stripLine))
                             nextFreeCid += 1
 
                 result = sorted(result, key=operator.attrgetter('title'))
-                #nextFreeCid = 0
-                #for channel in sorted_result:
-                #    channel.cid = nextFreeCid
-                #    channel.title = re.sub(' XHD', ' HD', channel.title)
-                #    channel.name = channel.title
-                #    self.log('[UPD] %-10s %-35s %-35s' % (channel.cid, channel.title, channel.strm))
-                #    nextFreeCid += 1
 
                 mojefilmyChannelList = copy.deepcopy(result)
 
@@ -91,7 +90,7 @@ class MojeFilmyUpdater(baseServiceUpdater):
     def getChannel(self, cid):
         channels = self.getChannelList()
         for chann in channels:
-            if chann.cid == int(cid):
+            if chann.cid == cid:
                 self.log('getChannel found matching channel: cid: %s, name: %s, rtmp: %s' % (chann.cid, chann.name, chann.strm))
                 return chann
         return None

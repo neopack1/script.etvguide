@@ -1,0 +1,29 @@
+<window>
+	<defaultcontrol>-</defaultcontrol>
+	<zorder>2</zorder>
+	<controls>
+		<control type="image">
+			<description>serwis_bg</description>
+			<left>105</left>
+			<top>45</top>
+			<width>300</width>
+			<height>75</height>
+			<colordiffuse>EEFFFFFF</colordiffuse>
+			<texture flipy="true" border="12">dialogs/infomessagepanel.png</texture>
+			<visible>Control.IsVisible(4940)</visible>
+		</control>
+		<control type="label" id="4940">
+			<description>serwis</description>
+			<left>140</left>
+			<top>70</top>
+			<width>240</width>
+			<height>20</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13_title</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<shadowcolor>22000000</shadowcolor>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
+		</control>
+	</controls>
+</window>

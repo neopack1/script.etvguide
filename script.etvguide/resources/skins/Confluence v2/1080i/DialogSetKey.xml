@@ -1,0 +1,407 @@
+<window>
+	<defaultcontrol always="false">9001</defaultcontrol>
+	<zorder>50</zorder>
+	<coordinates>
+		<system>1</system><posx>502</posx><posy>0</posy>
+	</coordinates>
+	<include>dialogeffect</include>
+	<controls>
+	<ondown>9002</ondown>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>900</width>
+			<height>1065</height>
+			<texture border="40">dialogs/dialogback.png</texture>
+		</control>
+		<control type="image">
+			<description>Dialog Header image</description>
+			<posx>60</posx>
+			<posy>24</posy>
+			<width>795</width>
+			<height>60</height>
+			<texture>dialogheader.png</texture>
+		</control>
+		<control type="label" id="1">
+			<description>header label</description>
+			<posx>60</posx>
+			<posy>30</posy>
+			<width>795</width>
+			<height>45</height>
+			<font>font13_title</font>
+			<label>$ADDON[script.etvguide 31002]</label>
+			<align>center</align>
+			<aligny>center</aligny>
+			<textcolor>FFEB9E17</textcolor>
+			<shadowcolor>FF000000</shadowcolor>
+		</control>
+		<control type="button" id="9001">
+			<posx>600</posx>
+			<posy>142</posy>
+			<width>255</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9099</onup>
+			<ondown>9002</ondown>
+			<texturefocus border="5">dialogs/button-focus.png</texturefocus>
+			<texturenofocus border="5">dialogs/button-nofocus.png</texturenofocus>
+		</control>
+		<control type="label" id="8001">
+			<posx>68</posx>
+			<posy>150</posy>
+			<width>825</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31009]</label>
+			<font>font12</font>
+		</control>
+		<control type="label" id="7001">
+			<posx>420</posx>
+			<posy>150</posy>
+			<width>150</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font12_title</font>
+			<textcolor>FFEB9E17</textcolor>
+		</control>
+		<control type="button" id="9002">
+			<posx>600</posx>
+			<posy>218</posy>
+			<width>255</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9001</onup>
+			<ondown>9003</ondown>
+			<texturefocus border="5">dialogs/button-focus.png</texturefocus>
+			<texturenofocus border="5">dialogs/button-nofocus.png</texturenofocus>
+		</control>
+		<control type="label" id="8002">
+			<posx>68</posx>
+			<posy>225</posy>
+			<width>825</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31008]</label>
+			<font>font12</font>
+		</control>
+		<control type="label" id="7002">
+			<posx>420</posx>
+			<posy>225</posy>
+			<width>150</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font12_title</font>
+			<textcolor>FFEB9E17</textcolor>
+		</control>
+		<control type="button" id="9003">
+			<posx>600</posx>
+			<posy>292</posy>
+			<width>255</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9002</onup>
+			<ondown>9004</ondown>
+			<texturefocus border="5">dialogs/button-focus.png</texturefocus>
+			<texturenofocus border="5">dialogs/button-nofocus.png</texturenofocus>
+		</control>
+		<control type="label" id="8003">
+			<posx>68</posx>
+			<posy>300</posy>
+			<width>825</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31007]</label>
+			<font>font12</font>
+		</control>
+		<control type="label" id="7003">
+			<posx>420</posx>
+			<posy>300</posy>
+			<width>150</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font12_title</font>
+			<textcolor>FFEB9E17</textcolor>
+		</control>
+		<control type="button" id="9004">
+			<posx>600</posx>
+			<posy>368</posy>
+			<width>255</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9003</onup>
+			<ondown>9009</ondown>
+			<texturefocus border="5">dialogs/button-focus.png</texturefocus>
+			<texturenofocus border="5">dialogs/button-nofocus.png</texturenofocus>
+		</control>
+		<control type="label" id="8004">
+			<posx>68</posx>
+			<posy>375</posy>
+			<width>825</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31006]</label>
+			<font>font12</font>
+		</control>
+		<control type="label" id="7004">
+			<posx>420</posx>
+			<posy>375</posy>
+			<width>150</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font12_title</font>
+			<textcolor>FFEB9E17</textcolor>
+		</control>
+		<control type="button" id="9009">
+			<posx>600</posx>
+			<posy>442</posy>
+			<width>255</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9004</onup>
+			<ondown>9010</ondown>
+			<texturefocus border="5">dialogs/button-focus.png</texturefocus>
+			<texturenofocus border="5">dialogs/button-nofocus.png</texturenofocus>
+		</control>
+		<control type="label" id="8009">
+			<posx>68</posx>
+			<posy>450</posy>
+			<width>825</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31015]</label>
+			<font>font12</font>
+		</control>
+		<control type="label" id="7009">
+			<posx>420</posx>
+			<posy>450</posy>
+			<width>150</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font12_title</font>
+			<textcolor>FFEB9E17</textcolor>
+		</control>
+		<control type="button" id="9010">
+			<posx>600</posx>
+			<posy>518</posy>
+			<width>255</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9009</onup>
+			<ondown>9005</ondown>
+			<texturefocus border="5">dialogs/button-focus.png</texturefocus>
+			<texturenofocus border="5">dialogs/button-nofocus.png</texturenofocus>
+		</control>
+		<control type="label" id="8010">
+			<posx>68</posx>
+			<posy>525</posy>
+			<width>825</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31016]</label>
+			<font>font12</font>
+		</control>
+		<control type="label" id="7010">
+			<posx>420</posx>
+			<posy>525</posy>
+			<width>150</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font12_title</font>
+			<textcolor>FFEB9E17</textcolor>
+		</control>
+		<control type="button" id="9005">
+			<posx>600</posx>
+			<posy>592</posy>
+			<width>255</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9010</onup>
+			<ondown>9006</ondown>
+			<texturefocus border="5">dialogs/button-focus.png</texturefocus>
+			<texturenofocus border="5">dialogs/button-nofocus.png</texturenofocus>
+		</control>
+		<control type="label" id="8005">
+			<posx>68</posx>
+			<posy>600</posy>
+			<width>825</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31005]</label>
+			<font>font12</font>
+		</control>
+		<control type="label" id="7005">
+			<posx>420</posx>
+			<posy>600</posy>
+			<width>150</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font12_title</font>
+			<textcolor>FFEB9E17</textcolor>
+		</control>
+		<control type="button" id="9006">
+			<posx>600</posx>
+			<posy>668</posy>
+			<width>255</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9005</onup>
+			<ondown>9007</ondown>
+			<texturefocus border="5">dialogs/button-focus.png</texturefocus>
+			<texturenofocus border="5">dialogs/button-nofocus.png</texturenofocus>
+		</control>
+		<control type="label" id="8006">
+			<posx>68</posx>
+			<posy>657</posy>
+			<width>825</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31010]</label>
+			<font>font12</font>
+		</control>
+		<control type="label" id="8016">
+			<posx>68</posx>
+			<posy>693</posy>
+			<width>825</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31014]</label>
+			<font>font12</font>
+		</control>
+		<control type="label" id="7006">
+			<posx>420</posx>
+			<posy>675</posy>
+			<width>150</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font12_title</font>
+			<textcolor>FFEB9E17</textcolor>
+		</control>
+		<control type="button" id="9007">
+			<posx>600</posx>
+			<posy>742</posy>
+			<width>255</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<label>$ADDON[script.etvguide 31003]</label>
+			<onup>9006</onup>
+			<ondown>9008</ondown>
+			<texturefocus border="5">dialogs/button-focus.png</texturefocus>
+			<texturenofocus border="5">dialogs/button-nofocus.png</texturenofocus>
+		</control>
+		<control type="label" id="8007">
+			<posx>68</posx>
+			<posy>750</posy>
+			<width>825</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31011]</label>
+			<font>font12</font>
+		</control>
+		<control type="label" id="7007">
+			<posx>420</posx>
+			<posy>750</posy>
+			<width>150</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>0</label>
+			<font>font12_title</font>
+			<textcolor>FFEB9E17</textcolor>
+		</control>
+		<control type="button" id="9008">
+			<posx>600</posx>
+			<posy>848</posy>
+			<width>255</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<label>$ADDON[script.etvguide 31013]</label>
+			<onup>9007</onup>
+			<ondown>9099</ondown>
+			<texturefocus border="5">dialogs/button-focus.png</texturefocus>
+			<texturenofocus border="5">dialogs/button-nofocus.png</texturenofocus>
+		</control>
+		<control type="label" id="8008">
+			<posx>68</posx>
+			<posy>855</posy>
+			<width>825</width>
+			<height>45</height>
+			<aligny>center</aligny>
+			<label>$ADDON[script.etvguide 31012]</label>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+		</control>
+		<control type="button" id="9099">
+			<posx>285</posx>
+			<posy>960</posy>
+			<width>330</width>
+			<height>60</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<label>$ADDON[script.etvguide 31004]</label>
+			<onup>9008</onup>
+			<ondown>9001</ondown>
+			<texturefocus border="5">dialogs/button-focus.png</texturefocus>
+			<texturenofocus border="5">dialogs/button-nofocus.png</texturenofocus>
+		</control>
+		<control type="button" id="9099">
+			<description>Close Window button</description>
+			<posx>765</posx>
+			<posy>30</posy>
+			<width>96</width>
+			<height>48</height>
+			<texturefocus>DialogCloseButton-focus.png</texturefocus>
+			<texturenofocus>DialogCloseButton.png</texturenofocus>
+			<onup>9008</onup>
+			<ondown>9001</ondown>
+			<animation effect="fade" time="200">VisibleChange</animation>
+			<visible>true</visible>
+		</control>
+	</controls>
+</window>
