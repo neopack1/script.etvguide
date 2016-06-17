@@ -1,3 +1,14 @@
+[B]wersja 3.0.7[/B] - 2016-06-17
+- dodana obsługa powiadomień
+- poprawione sortowanie wg jakości streamów w serwisie moje-filmy
+- usprawniona obsługa playlist
+- poprawione importowanie binarek do nagrywana na Android 6.0
+- zmiana sposobu zapisywania nazw kanałów na case insensitive - zmiana nazwy programu w EPG nie spowoduje pojawiania się zduplikowanych programów
+- dodana nowa skórka Confluence v2 autorstwa Mariusz89B
+- komunikat o braku premium w serwisie weeb.tv wyświetla się tylko raz
+- wyłączony serwis Telewizjada
+- zmiana sposobu wyłączania wtyczki na podwójne kliknięcie klawisza wstecz
+
 [B]wersja 3.0.3[/B] - 2016-06-01
 - Moje-filmy.tk teraz jako pierwszy stream jest HD potem SD po nacisnieciu C
 
