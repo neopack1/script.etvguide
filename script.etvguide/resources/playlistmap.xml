@@ -1,30 +1,46 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <map id="playlist" version="1.0" strm="service=playlist&amp;cid=%s">
 	<channel id="HBO2" 									title="(?=HBO\s*2$)" strm=""/>
+	<channel id="HBO3" 									title="(?=HBO\s*3$)" strm=""/>
+	<channel id="Canal+1" 								title="(?=Canal\s*\+\s*1$)" strm=""/>
+	<channel id="TV 4" 									title="(?=TV4$)" strm=""/>
+	<channel id="TV 6" 									title="(?=TV6$)" strm=""/>
+	<channel id="Discovery Channel" 					title="(?=Discovery$)" strm=""/>
+	<channel id="Animal Planet" 						title="(?=Animal\s*Planet(\s*HD)?$)" strm=""/>
+	<channel id="National Geographic Channel" 			title="(?=National\s*Geographic(\s*CHANNEL)?(\s*HD)?$)" strm=""/>
+	<channel id="POLSAT Viasat Explore" 				title="(?=(POLSAT\s*)?VIASAT\s*Explore(R)?(\s*HD)?\s*$)" strm=""/>
+	<channel id="Polsat Viasat History" 				title="(?=(POLSAT\s*)?Viasat\s*History(\s*HD)?\s*$)" strm=""/>
+	<channel id="Polsat Viasat Nature" 					title="(?=(POLSAT\s*)?Viasat\s*Nature(\s*HD)?\s*$)" strm=""/>
+	<channel id="Nick Jr." 								title="(?=Nick\s*Jr.*$)" strm=""/>
+	<channel id="JimJam Polsat" 						title="(?=(Polsat\s*)?Jim\s*Jam$)" strm=""/>
+	<channel id="Teletoon" 								title="(?=Teletoon\s*(\+)?$)" strm=""/>
+	<channel id="Eurosport" 							title="(?=Eurosport\s*1$)" strm=""/>
+	<channel id="Eleven Sport" 							title="(?=Eleven\s*Sports$)" strm=""/>
+	<channel id="nSport" 								title="(?=nSport\+$)" strm=""/>
+	<channel id="MTV Polska" 							title="(?=MTV$)" strm=""/>
+	<channel id="Red Light" 							title="(?=Redlight$)" strm=""/>
+	<channel id="Hustler" 								title="(?=Hustler(\s*TV)?$)" strm=""/>
+	<channel id="TVP 2"									title="(?=TV2$)" strm=""/>
+	<channel id="Nat Geo People" 						title="(?=Nat\s*Geo\s*eople$)" strm=""/>
+	<channel id="Animal Planet" 						title="(?=Animal\s*(Pl)?anet(\s*HD)?$)" strm=""/>
+	<channel id="Polsat Play" 							title="(?=Polsatay$)" strm=""/>
+	<channel id="VIVA Polska" 							title="(?=VIVA$)" strm=""/>
+	<channel id="Universal Channel" 					title="(?=Universal\s*(Channel)?$)" strm=""/>
+	<channel id="TVP HD" 								title="(?=TVP(\s*HD)?$)" strm=""/>
+	<channel id="Private TV" 							title="(?=Private(\s*TV)?$)" strm=""/>
+	<channel id="H2" 									title="(?=History\s*2$)" strm=""/>
+	<channel id="Eska Rock" 							title="(?=Eska\s*Rock(\s*TV)?$)" strm=""/>
+	<channel id="ESKA PARTY TV" 						title="(?=ESKA\s*PARTY(\s*TV)?$)" strm=""/>
+	<channel id="Eska Best Music" 						title="(?=Eska\s*Best\s*Music(\s*TV)?$)" strm=""/>
+	<channel id="Amazing" 								title="(?=Amazing(\s*TV)?$)" strm=""/>
 </map>
 
 <!--
-	Uwaga:
-		1)	Jeżeli podamy w strm danego kanału ścieżkę to przypisujemy na sztywno tego streama - nie generujemy sami na podstawie pobranej z weeb.tv listy CIDów.
-			<channel id="TVP 2" title="" strm="service=weebtv&amp;cid=00000"/>
-			
-		2)	Jeżeli jakieś kanały nie mają ustawionego strm-a to te kanały przypasowujemy:
-			egex.match(title, "TITLE KANAŁU WEEB.TV")
-
-		3)	strm dla tych znalezionych kanałów powstaje tak (pole strm w atrybutach mapy) "service=weebtv&amp;cid=%s" % CID 
-			&amp; = & !!
-
-			Nie dopasowujemy nazwy kanału bo np. a może to użytkownik? np: worlddiscovery emituje program ESKA TV, więc kto wie czy za jakiś czas nie zmieni planów.
-			Na pewno wtedy title kanału się zmieni a jak widać name może zostać takie same.
-
-	Kilka słów o użytym często tutaj regexie
-
-		(?=.*slowo1)(?=.*slowo2)(?=.*slowo3)(?=.*slowo4) sprawdza czy wszystkie słowa znajdują się w danym stringu, obojętnie w jakiej kolejności
-		Uwaga (?=.*Canal)(?=.*Film) nie zwróci grup pasujących tylko powie, że wyrażenie pasuje - jest spełnione
-		np.: regex = (?=.*Canal)(?=.*Film)	string = Film Canal+ HD 2
-		No match groups were extracted.
-		This means that your pattern matches but there were no (capturing (groups)) in it that matched anything in the subject string.
-
-		(?=.*Canal)(?=.*Film)(?!.*HD)	- musi zawierać Canal, musi zawierać Film, nie może zawierać HD
-		^(?=.*Canal)(?=.*Film)(?!.*HD)	- j/w w razie jak by powyższe nie działało, to spróbować tego (niby jak HD będzie na poczatku to by tamto nie załapało), ale na moich testerach oba wyrażenia działają
+	<channel id="" 									title="(?=HBO\s*3$)" strm=""/>
+	<channel id="" 									title="(?=HBO\s*3$)" strm=""/>
+	<channel id="" 									title="(?=HBO\s*3$)" strm=""/>
+	<channel id="" 									title="(?=HBO\s*3$)" strm=""/>
+	<channel id="" 									title="(?=HBO\s*3$)" strm=""/>
+	<channel id="" 									title="(?=HBO\s*3$)" strm=""/>
+	<channel id="" 									title="(?=HBO\s*3$)" strm=""/>
 -->

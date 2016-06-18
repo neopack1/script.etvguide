@@ -10,11 +10,11 @@ from strings import *
 import strings as strings2
 import threading
 import datetime
+import zlib
 
 HOST        = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:19.0) Gecko/20121213 Firefox/19.0'
 pathAddons  = os.path.join(ADDON.getAddonInfo('path'), 'resources', 'addons.ini')
 pathMapBase = os.path.join(ADDON.getAddonInfo('path'), 'resources')
-
 
 try:
     MAX_CONNECTION_TIME = int(ADDON.getSetting('max_connection_time'))
@@ -51,12 +51,16 @@ class ShowList:
             reqUrl.add_header('Keep-Alive', 'timeout=60')
             reqUrl.add_header('Connection', 'Keep-Alive')
             reqUrl.add_header('ContentType', 'application/x-www-form-urlencoded')
+            reqUrl.add_header('Accept-Encoding', 'gzip')
 
             startTime = datetime.datetime.now()
             while (datetime.datetime.now() - startTime).seconds < MAX_CONNECTION_TIME and strings2.M_TVGUIDE_CLOSING == False:
                 try:
                     raw_json = urllib2.urlopen(reqUrl, timeout = HTTP_ConnectionTimeout)
                     content_json = raw_json.read()
+                    if raw_json.headers.get("Content-Encoding", "") == "gzip":
+                        content_json = zlib.decompressobj(16 + zlib.MAX_WBITS).decompress(content_json)
+
                     result_json = json.loads(content_json)
                     break
                 except (httplib.IncompleteRead, socket.timeout) as ex:
@@ -107,6 +111,8 @@ class ShowList:
                 headers = customHeaders
             else:
                 headers = { 'User-Agent' : HOST }
+            headers['Accept-Encoding'] = 'gzip'
+
             if post_data:
                 data = urllib.urlencode(post_data)
             else:
@@ -117,14 +123,13 @@ class ShowList:
             while (datetime.datetime.now() - startTime).seconds < MAX_CONNECTION_TIME and strings2.M_TVGUIDE_CLOSING == False:
                 try:
                     raw_json = urlOpen(reqUrl, customOpeners)
-                    if jsonLoadResult:
-                        result_json = json.load(raw_json)
-                        break
-                    else:
-                        result_json = raw_json.read()
-                        if jsonLoadsResult == True:
-                            result_json = json.loads(result_json)
-                        break
+                    result_json = raw_json.read()
+                    if raw_json.headers.get("Content-Encoding", "") == "gzip":
+                        result_json = zlib.decompressobj(16 + zlib.MAX_WBITS).decompress(result_json)
+
+                    if jsonLoadsResult == True:
+                        result_json = json.loads(result_json)
+                    break
                 except (httplib.IncompleteRead, socket.timeout) as ex:
                     self.logCall('ShowList getJsonFromExtendedAPI exception: %s - retrying seconds = %s' % (str(ex), (datetime.datetime.now() - startTime).seconds))
 
@@ -292,6 +297,7 @@ class baseServiceUpdater:
         self.breakAfterFirstMatchFromMap = True
         self.addDuplicatesToList = False
         self.addDuplicatesAtBeginningOfList = False
+        self.serviceEnabled = 'false'
 
     def waitUntilDone(self):
         if self.thread is not None:
@@ -347,7 +353,9 @@ class baseServiceUpdater:
             else:
                 self.log('loadChannelList success downloading online map file: %s' % self.onlineMapFile)
 
-            self.automap, self.rstrm = MapString.Parse(mapfile, self.log)
+            self.automap, rstrm = MapString.Parse(mapfile, self.log)
+            if not self.rstrm or self.rstrm == '':
+                self.rstrm = rstrm
 
             self.log('\n')
             self.log('[UPD] Wyszykiwanie STRM')

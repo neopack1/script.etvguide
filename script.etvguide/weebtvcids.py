@@ -8,41 +8,43 @@ from strings import *
 import ConfigParser
 from serviceLib import *
 
+serviceName = 'WeebTV'
+
 url        = 'http://weeb.tv'
 jsonUrl    = url + '/api/getChannelList'
 playerUrl  = url + '/api/setplayer'
 
-serviceName = 'weeb.tv'
-serviceRegex = "service=weebtv&cid=%"
-onlineMapFile = 'http://epg.feenk.net/maps/weebtvmap.xml'
-localMapFile = 'weebtvmap.xml'
-servicePriority = int(ADDON.getSetting('priority_weebtv'))
 weebtvChannelList = None
 
 class WeebTvCid(TvCid):
     def __init__(self, cid, name, title, online, strm = "", img = "", multibitrate = 0, origCid = 0):
         TvCid.__init__(self, cid, name, title, strm, img)
         self.multibitrate = multibitrate
-        self.premium = 1
         self.online = online
         self.origCid = origCid
 
 class WebbTvStrmUpdater(baseServiceUpdater):
     def __init__(self):
         baseServiceUpdater.__init__(self)
-        self.login    = ADDON.getSetting('username')
-        self.password = ADDON.getSetting('userpassword')
-        self.highQuality = ADDON.getSetting('video_quality')
-        self.url = jsonUrl
-        self.serviceName = serviceName
-        self.serviceRegex = serviceRegex
-        self.servicePriority = servicePriority
-        self.onlineMapFile = onlineMapFile
-        self.localMapFile = localMapFile
+        self.serviceName        = serviceName
+        self.login              = ADDON.getSetting('username')
+        self.password           = ADDON.getSetting('userpassword')
+        self.highQuality        = ADDON.getSetting('video_quality')
+        self.serviceEnabled     = ADDON.getSetting('WeebTV_enabled')
+        self.servicePriority    = int(ADDON.getSetting('priority_weebtv'))
+        self.onlineMapFile      = 'http://epg.feenk.net/maps/weebtvmap.xml'
+        self.localMapFile       = 'weebtvmap.xml'
+        self.url                = jsonUrl
+        self.serviceRegex       = "service=" + self.serviceName + "&cid=%"
+        self.rstrm              = self.serviceRegex + 's'
+
+        self.shownNoPremiumNotification = False
         if ADDON.getSetting('miltisession_enabled') == 'true':
             self.maxAllowedStreams = 4
 
     def loadChannelList(self):
+        self.automap = list()
+        self.channels = list()
         try:
             mapfile = self.sl.downloadUrl(self.onlineMapFile)
             if mapfile is None:
@@ -53,7 +55,9 @@ class WebbTvStrmUpdater(baseServiceUpdater):
                 self.log('loadChannelList success downloading online map file: %s' % self.onlineMapFile)
 
             self.channels = self.getChannelList()
-            self.automap, self.rstrm = MapString.Parse(mapfile, self.log)
+            self.automap, rstrm = MapString.Parse(mapfile, self.log)
+            if not self.rstrm or self.rstrm == '':
+                self.rstrm = rstrm
 
             config = ConfigParser.RawConfigParser()
             config.read(pathAddons)
@@ -198,7 +202,7 @@ class WebbTvStrmUpdater(baseServiceUpdater):
             playPath = playPath + 'HI'
 
         channel.strm    = str(rtmpLink) + '/' + str(playPath) + ' swfUrl='  + str(ticket) + ' pageUrl=token' + ' live=true'
-        channel.premium = int(param[5])
+        premium = int(param[5])
         channel.rtmpdumpLink = list()
         channel.rtmpdumpLink.append("--rtmp")
         channel.rtmpdumpLink.append("%s/%s"  % (str(rtmpLink), str(playPath)) )
@@ -207,8 +211,8 @@ class WebbTvStrmUpdater(baseServiceUpdater):
         channel.rtmpdumpLink.append("-p")
         channel.rtmpdumpLink.append("token")
 
-        #channel.rtmpdumpLink = "--rtmp %s/%s -s %s -p token" % (str(rtmpLink), str(playPath), str(ticket))
-
         self.log('updateChannelRTMP generated RTMP is %s' % channel.strm)
-        #print channel.rtmpdumpLink
+        if not self.shownNoPremiumNotification and premium == 0:
+            xbmcgui.Dialog().ok(strings(57034).encode('utf-8'), strings(57039).encode('utf-8') + ' weeb.tv')
+            self.shownNoPremiumNotification = True
         return channel

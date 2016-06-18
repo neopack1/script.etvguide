@@ -62,19 +62,9 @@
 	<channel id="Animal Planet" 							title="(?=Animal\s*Planet(\s*HD)?$)" strm=""/>
 	<channel id="National Geographic Channel" 				title="(?=National\s*Geographic(\s*CHANNEL)?(\s*HD)?$)" strm=""/>
 	<channel id="Nat Geo Wild" 								title="(?=Nat\s*Geo\s*Wild(\s*HD)?$)" strm=""/>
-	
-<!-- 
-Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN style, oryg kopia zapisana:
-<channel id="Discovery Channel" 						title="(?=Discovery\s*Channel(\s*HD)?$)" strm=""/>
--->
-	
 	<channel id="Discovery Channel" 						title="(?=Discovery\s*Channel\s*$)" strm=""/>
-	
-	
-	
 	<channel id="Canal+ Discovery" 							title="(?=.*Canal)(?=.*Discovery)" strm=""/>
 	<channel id="Discovery Science" 						title="(?=.*Discovery)(?=.*Science)" strm=""/>
-	<channel id="Discovery Turbo Xtra" 						title="(?=Discovery\s*Turbo\s*Xtra(\s*HD)?$)" strm=""/>
 	<channel id="Discovery Historia" 						title="(?=.*Discovery)(?=.*Historia)" strm=""/>
 	<channel id="ID" 										title="(?=(INVESTIGATION\s*DISCOVERY|ID)(\s*HD)?$)" strm=""/>
 	<channel id="Crime &amp; Investigation Network Polsat" 	title="(?=.*Crime)(?=.*Investigation)(?=.*Polsat)" strm=""/>
@@ -160,30 +150,16 @@ Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN st
 	<channel id="Amazing"						    		title="(?=Amazing(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="Trace Urban"						    	title="(?=Trace\s*Urban(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="To!TV"						    			title="(?=TOTV(\s*TV)?(\s*HD)?\s*$)" strm=""/>
+	<channel id="H2" 										title="(?=\s*H2(\s*HD)?\s*$)" strm=""/>
+	<channel id="Water Planet" 								title="(?=\s*Water\s*Planet(\s*HD)?\s*$)" strm=""/>
+	<channel id="Scifi Universal" 							title="(?=Sci-Fi(\s*HD)?\s*$)" strm=""/>
+	<channel id="Discovery Turbo Xtra" 						title="(?=Discover(y)?\s*Turbo\s*Xtra(\s*HD)?$)" strm=""/>
+	<channel id="Nat Geo People" 							title="(?=Nat\s*Geo\s*People(\s*HD)?$)" strm=""/>
+	<channel id="CBS Action" 								title="(?=CBS\s*Action(\s*HD)?$)" strm=""/>
+	<channel id="CBS Europa" 								title="(?=CBS\s*Europa(\s*HD)?$)" strm=""/>
 </map>
 
 <!--
-	Uwaga:
-		1)	Jeżeli podamy w strm danego kanału ścieżkę to przypisujemy na sztywno tego streama - nie generujemy sami na podstawie pobranej z weeb.tv listy CIDów.
-			<channel id="TVP 2" title="" strm="service=weebtv&amp;cid=00000"/>
-			
-		2)	Jeżeli jakieś kanały nie mają ustawionego strm-a to te kanały przypasowujemy:
-			egex.match(title, "TITLE KANAŁU WEEB.TV")
-
-		3)	strm dla tych znalezionych kanałów powstaje tak (pole strm w atrybutach mapy) "service=weebtv&amp;cid=%s" % CID 
-			&amp; = & !!
-
-			Nie dopasowujemy nazwy kanału bo np. a może to użytkownik? np: worlddiscovery emituje program ESKA TV, więc kto wie czy za jakiś czas nie zmieni planów.
-			Na pewno wtedy title kanału się zmieni a jak widać name może zostać takie same.
-
-	Kilka słów o użytym często tutaj regexie
-
-		(?=.*slowo1)(?=.*slowo2)(?=.*slowo3)(?=.*slowo4) sprawdza czy wszystkie słowa znajdują się w danym stringu, obojętnie w jakiej kolejności
-		Uwaga (?=.*Canal)(?=.*Film) nie zwróci grup pasujących tylko powie, że wyrażenie pasuje - jest spełnione
-		np.: regex = (?=.*Canal)(?=.*Film)	string = Film Canal+ HD 2
-		No match groups were extracted.
-		This means that your pattern matches but there were no (capturing (groups)) in it that matched anything in the subject string.
-
-		(?=.*Canal)(?=.*Film)(?!.*HD)	- musi zawierać Canal, musi zawierać Film, nie może zawierać HD
-		^(?=.*Canal)(?=.*Film)(?!.*HD)	- j/w w razie jak by powyższe nie działało, to spróbować tego (niby jak HD będzie na poczatku to by tamto nie załapało), ale na moich testerach oba wyrażenia działają
+	<channel id="" 									title="(?=HBO\s*3$)" strm=""/>
+	<channel id="" 									title="(?=HBO\s*3$)" strm=""/>
 -->

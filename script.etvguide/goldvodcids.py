@@ -7,13 +7,9 @@ import os, xbmcaddon, xbmcgui
 from strings import *
 from serviceLib import *
 
+serviceName = 'GoldVOD'
+
 goldUrl = 'http://goldvod.tv/api/get_tv_channels'
-goldImgBase = 'http://goldvod.com/api/images/'
-onlineMapFile = 'http://epg.feenk.net/maps/goldvodmap.xml'
-localMapFile = 'goldvodmap.xml'
-serviceName = 'goldvod.tv'
-serviceRegex = "service=goldvod&cid=%"
-servicePriority = int(ADDON.getSetting('priority_goldvod'))
 
 goldVODChannelList = None
 goldVODLastUpdate = None
@@ -21,17 +17,20 @@ goldVODLastUpdate = None
 class GoldVodUpdater(baseServiceUpdater):
     def __init__(self):
         baseServiceUpdater.__init__(self)
-        self.login    = ADDON.getSetting('usernameGoldVOD')
-        self.password = ADDON.getSetting('userpasswordGoldVOD')
-        self.serviceName = serviceName
-        self.serviceRegex = serviceRegex
-        self.servicePriority = servicePriority
-        self.breakAfterFirstMatchFromMap = False #Look for better quality streams if available
-        self.onlineMapFile = onlineMapFile
-        self.localMapFile = localMapFile
-        self.maxAllowedStreams = 2
+        self.serviceName        = serviceName
+        self.serviceEnabled     = ADDON.getSetting('GoldVOD_enabled')
+        self.login              = ADDON.getSetting('usernameGoldVOD')
+        self.password           = ADDON.getSetting('userpasswordGoldVOD')
+        self.servicePriority    = int(ADDON.getSetting('priority_goldvod'))
+        self.onlineMapFile      = 'http://epg.feenk.net/maps/goldvodmap.xml'
+        self.localMapFile       = 'goldvodmap.xml'
+        self.serviceRegex       = "service=" + self.serviceName + "&cid=%"
+        self.rstrm              = self.serviceRegex + 's'
+        self.url                = goldUrl
+        self.maxAllowedStreams  = 2
         self.addDuplicatesAtBeginningOfList = True
-        self.url = goldUrl
+        self.breakAfterFirstMatchFromMap = False #Look for better quality streams if available
+
         if ADDON.getSetting('assign_all_streams_goldvod') == 'true':
             self.addDuplicatesToList = True
 

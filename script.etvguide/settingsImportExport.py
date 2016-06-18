@@ -111,9 +111,9 @@ class SettingsImp:
                 deb('importRecordApp no file selected for import!')
                 return
             binaryFilename = os.path.basename(filename)
-            deb('RecordAppImporter filepath: %s, filename: %s' % (filename, binaryFilename))
+            deb('RecordAppImporter filepath: %s, filename: %s, xbmcRootDir: %s' % (filename, binaryFilename, xbmcRootDir) )
 
-            if '/data/data' in xbmcRootDir:
+            if '/data/data' in xbmcRootDir or '/data/user/0/' in xbmcRootDir:
                 #android
                 recordDirName = 'recapp-' +  os.name
                 recordAppDir = os.path.join(xbmcRootDir.replace('cache/apk/assets/', ''), recordDirName)
@@ -252,7 +252,7 @@ class SettingsImp:
                     unziped = zipfile.ZipFile(memfile)
                     unziped.extractall(recordAppDir)
                     for filename in unziped.namelist():
-                        if 'ffmpeg' in filename:
+                        if 'ffmpeg' in filename or 'avconv' in filename:
                             ffmpegExe = os.path.join(recordAppDir, filename)
                         elif 'rtmpdump' in filename:
                             rtmpdumpExe = os.path.join(recordAppDir, filename)

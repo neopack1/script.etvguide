@@ -349,6 +349,8 @@ class eTVGuide(xbmcgui.WindowXML):
         threading.Timer(0.3, self.playerstate).start()
         self.updateTimebarTimer = None
         self.lastKeystroke = datetime.datetime.now()
+        self.lastCloseKeystroke = datetime.datetime.now()
+        self.rssFeed = None
 
     def playerstate(self):
         vp = VideoPlayerStateChange()
@@ -419,6 +421,8 @@ class eTVGuide(xbmcgui.WindowXML):
             if self.updateTimebarTimer:
                 self.updateTimebarTimer.cancel()
             self._clearEpg()
+            if self.rssFeed:
+                self.rssFeed.close()
             if self.database:
                 self.database.close(super(eTVGuide, self).close)
             else:
@@ -494,7 +498,7 @@ class eTVGuide(xbmcgui.WindowXML):
             if not self.playingRecordedProgram:
                 self.playService.playNextStream()
 
-        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, KEY_CONTEXT_MENU, ACTION_PREVIOUS_MENU]:
+        elif action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
             self.onRedrawEPG(self.channelIdx, self.viewStartDate, self._getCurrentProgramFocus)
 
         elif action.getId() == ACTION_STOP or (action.getButtonCode() == KEY_STOP and KEY_STOP != 0):
@@ -504,7 +508,11 @@ class eTVGuide(xbmcgui.WindowXML):
     def onActionEPGMode(self, action):
         debug('onActionEPGMode keyId %d, buttonCode %d' % (action.getId(), action.getButtonCode()))
         if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
-            self.close()
+            if (datetime.datetime.now() - self.lastCloseKeystroke).seconds < 3:
+                self.close()
+            else:
+                self.lastCloseKeystroke = datetime.datetime.now()
+                xbmc.executebuiltin('Notification(%s,%s,3000)' % (strings(30963).encode('utf-8'), strings(30964).encode('utf-8')))
             return
 
         elif action.getId() == ACTION_MOUSE_MOVE:
@@ -1272,6 +1280,8 @@ class eTVGuide(xbmcgui.WindowXML):
             if ADDON.getSetting('notifications.enabled') == 'true':
                 self.notification.scheduleNotifications()
             self.recordService.scheduleAllRecordings()
+            if ADDON.getSetting('ShowRssMessages') == 'true':
+                self.rssFeed = src.RssFeed(url=RSS_FILE, last_message=self.database.getLastRssDate(), update_date_call=self.database.updateRssDate)
             if strings2.M_TVGUIDE_CLOSING == False:
                 self.onRedrawEPG(0, self.viewStartDate)
 
@@ -1283,6 +1293,11 @@ class eTVGuide(xbmcgui.WindowXML):
                 control.setPercent(1)
             self.progressStartTime = datetime.datetime.now()
             self.progressPreviousPercentage = percentageComplete
+        elif percentageComplete >= 100:
+            if control:
+                control.setPercent(100)
+            self.progressStartTime = datetime.datetime.now()
+            self.progressPreviousPercentage = 100
         elif percentageComplete != self.progressPreviousPercentage:
             if control:
                 control.setPercent(percentageComplete)
@@ -1295,6 +1310,7 @@ class eTVGuide(xbmcgui.WindowXML):
                 secondsLeft = int(delta.seconds) / float(percentageComplete) * (100.0 - percentageComplete)
                 if secondsLeft > 30:
                     secondsLeft -= secondsLeft % 10
+
                 self.setControlLabel(self.C_MAIN_LOADING_TIME_LEFT, strings(TIME_LEFT) % secondsLeft)
 
         return not strings2.M_TVGUIDE_CLOSING and not self.isClosing
@@ -1494,7 +1510,7 @@ class eTVGuide(xbmcgui.WindowXML):
                     diffSeconds = (diff.days * 86400) + diff.seconds
                     debug('updateTimebar seconds since last user action %s' % diffSeconds)
                     if diffSeconds > 300:
-                        debug('updateTimebar redrawing EPG start')
+                        deb('updateTimebar redrawing EPG start')
                         self.lastKeystroke = datetime.datetime.now()
                         self.viewStartDate = datetime.datetime.today()
                         self.viewStartDate -= datetime.timedelta(minutes = self.viewStartDate.minute % 30, seconds = self.viewStartDate.second)
@@ -2090,7 +2106,6 @@ class InfoDialog(xbmcgui.WindowXMLDialog):
         if controlId == 1000:
             self.close()
 
-
 class Pla(xbmcgui.WindowXMLDialog):
     def __new__(cls, program, database, urlList, epg):
         return super(Pla, cls).__new__(cls, 'Vid.xml', ADDON.getAddonInfo('path'), ADDON.getSetting('Skin'), skin_resolution)
@@ -2126,10 +2141,8 @@ class Pla(xbmcgui.WindowXMLDialog):
         threading.Timer(0, self.waitForPlayBackStopped).start()
 
     def onInit(self):
-        try:
+        if not self.ctrlService:
             self.ctrlService = self.getControl(C_VOSD_SERVICE)
-        except:
-            pass
 
     def play(self, urlList):
         self.epg.playService.playUrlList(urlList)
@@ -2141,14 +2154,14 @@ class Pla(xbmcgui.WindowXMLDialog):
             self.epg.playService.stopPlayback()
             self.closeOSD()
 
-#        elif action.getId() == KEY_NAV_BACK:
-#            if ADDON.getSetting('start_video_minimalized') == 'true' and ADDON.getSetting('navi_back_stop_play') == 'false':
-#                self.closeOSD()
-#                self.epg._showEPG()
-#            else:
-#                self.epg.playService.stopPlayback()
-#                self.closeOSD()
-#            return
+        elif action.getId() == KEY_NAV_BACK:
+            if ADDON.getSetting('start_video_minimalized') == 'true' and ADDON.getSetting('navi_back_stop_play') == 'false':
+                self.closeOSD()
+                self.epg._showEPG()
+            else:
+                self.epg.playService.stopPlayback()
+                self.closeOSD()
+            return
 
         #if action.getId() == KEY_CODEC_INFO: #przysik O
             #xbmc.executebuiltin("Action(CodecInfo)")
@@ -2348,7 +2361,7 @@ class Pla(xbmcgui.WindowXMLDialog):
         if self.ctrlService:
             displayedService = self.epg.playService.currentlyPlayedService
             if self.epg.playService.streamQuality != '':
-                displayedService = displayedService + ' ' + self.epg.playService.streamQuality
+                displayedService = displayedService + ' ' + self.epg.playService.streamQuality.upper()
             self.ctrlService.setLabel(displayedService)
             if self.displayServiceTimer:
                 self.displayServiceTimer.cancel()

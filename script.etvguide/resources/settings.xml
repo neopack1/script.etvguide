@@ -23,9 +23,9 @@
 		<setting id="assign_all_streams_goldvod" type="bool" label="55008" default="true" visible="eq(-1,true) + eq(-4,true)"/>
 		<setting id="priority_goldvod" label="55009" type="enum" default="1" lvalues="55010|55011|55012|55013|55014" visible="eq(-5,true)"/>
 
-		<setting label="59903" type="lsep"/>
-		<setting id="telewizjada_enabled" type="bool" label="59904" default="false"/>
-		<setting id="priority_telewizjada" label="55009" type="enum" default="2" lvalues="55010|55011|55012|55013|55014" visible="eq(-1,true)"/>
+		<setting label="59903" type="lsep" visible="false"/>
+		<setting id="telewizjada_enabled" type="bool" label="59904" default="true" visible="false"/>
+		<setting id="priority_telewizjada" label="55009" type="enum" default="2" lvalues="55010|55011|55012|55013|55014" visible="false"/>
 
 		<setting label="80000" type="lsep"/>
  		<setting id="pierwszatv_enabled" type="bool" label="59904" default="false"/>
@@ -50,16 +50,17 @@
 		<setting id="AutoUpdateCid" label="30703" type="bool" default="true" visible="eq(-1,1)"/>
 		<setting id="OnlyChannelsWithStream" label="30705" type="bool" default="true" visible="eq(-2,1)"/>
 		<setting id="UpdateEPGOnModifiedDate" label="30706" type="bool" default="true" visible="eq(-3,1)"/>
-		<setting id="xmltv.file" label="30103" type="file" visible="eq(-4,0)"/>
-		<setting id="xmltv.logo.folder" label="30116" type="folder" visible="eq(-5,0)"/>
-		<setting type="sep" visible="eq(-6,1)"/>
-		<setting label="30117" type="lsep" visible="eq(-7,1)"/>
-		<setting id="e-TVGuide" label="30118" type="labelenum" visible="eq(-8,1)" default="1" values="1"/>
+		<setting id="ShowRssMessages" label="30707" type="bool" default="true" visible="eq(-4,1)"/>
+		<setting id="xmltv.file" label="30103" type="file" visible="eq(-5,0)"/>
+		<setting id="xmltv.logo.folder" label="30116" type="folder" visible="eq(-6,0)"/>
+		<setting type="sep" visible="eq(-7,1)"/>
+		<setting label="30117" type="lsep" visible="eq(-8,1)"/>
+		<setting id="e-TVGuide" label="30118" type="labelenum" visible="eq(-9,1)" default="1" values="1"/>
 		<setting id="e-TVGuide1" label="30125" type="bool" visible="hidden" default="true"/>
-		<setting id="e-TVGuide2" label="30120" type="bool" visible="eq(-10,1)" default="false"/>
-		<setting id="e-TVGuide3" label="30121" type="bool" visible="eq(-11,1)" default="false"/>
-		<setting id="use_zipped_files" label="30124" type="bool" visible="eq(-12,1)" default="true"/>
-		<setting type="sep" visible="eq(-13,1)"/>
+		<setting id="e-TVGuide2" label="30120" type="bool" visible="eq(-11,1)" default="false"/>
+		<setting id="e-TVGuide3" label="30121" type="bool" visible="eq(-12,1)" default="false"/>
+		<setting id="use_zipped_files" label="30124" type="bool" visible="eq(-13,1)" default="true"/>
+		<setting type="sep" visible="eq(-14,1)"/>
 		<setting id="e-TVGuide4" label="30122" type="text" visible="eq(-15,1)" default=""/>
 		<setting id="e-TVGuide5" label="30123" type="text" visible="eq(-16,1)" default=""/>
 		<setting type="sep"/>

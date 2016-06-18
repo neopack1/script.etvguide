@@ -8,28 +8,28 @@ from strings import *
 from serviceLib import *
 import base64
 
+serviceName = 'PierwszaTV'
+
 baseUrl = 'http://pierwsza.tv/'
-onlineMapFile = 'http://epg.feenk.net/maps/pierwszatvmap.xml'
-localMapFile = 'pierwszatvmap.xml'
-serviceName = 'pierwsza.tv'
-serviceRegex = "service=pierwszatv&cid=%"
-servicePriority = int(ADDON.getSetting('priority_pierwszatv'))
+
 pierwszaTVChannelList = None
 lo = 'VzRaQS0+PC1iMGZjZTI4NzlhM2Q0MDYwNzQ2YTI1Zjc1ZDUwZGFkZQ=='
 
 class PierwszaTvUpdater(baseServiceUpdater):
     def __init__(self):
         baseServiceUpdater.__init__(self)
-        self.login    = ADDON.getSetting('pierwszatv_username').strip()
-        self.password = ADDON.getSetting('pierwszatv_password').strip()
-        self.serviceName = serviceName
-        self.serviceRegex = serviceRegex
-        self.servicePriority = servicePriority
-        self.onlineMapFile = onlineMapFile
-        self.localMapFile = localMapFile
-        self.url = baseUrl
-        self.refreshTimer = None
-        self.timerData = {}
+        self.serviceName        = serviceName
+        self.serviceEnabled     = ADDON.getSetting('pierwszatv_enabled')
+        self.login              = ADDON.getSetting('pierwszatv_username').strip()
+        self.password           = ADDON.getSetting('pierwszatv_password').strip()
+        self.servicePriority    = int(ADDON.getSetting('priority_pierwszatv'))
+        self.onlineMapFile      = 'http://epg.feenk.net/maps/pierwszatvmap.xml'
+        self.localMapFile       = 'pierwszatvmap.xml'
+        self.serviceRegex       = "service=" + self.serviceName + "&cid=%"
+        self.rstrm              = self.serviceRegex + 's'
+        self.url                = baseUrl
+        self.refreshTimer       = None
+        self.timerData          = {}
 
     def getChannelList(self, silent = False):
         global pierwszaTVChannelList
@@ -91,8 +91,8 @@ class PierwszaTvUpdater(baseServiceUpdater):
         for chann in channels:
             if chann.cid == cid:
                 channelData = self.sl.getJsonFromExtendedAPI(self.url + 'api/stream/create?api_id=%s&checksum=%s&id=%s&user=%s&password=%s' % (self.apiId, self.apiChecksum, cid, self.login, self.password), jsonLoadsResult=True)
-                deb('XXXXXXX %sapi/stream/create?api_id=%s&checksum=%s&id=%s&user=%s&password=%s' % (self.url, self.apiId, self.apiChecksum, cid, self.login, self.password))
-                debug('Mleczan stream/create URL returned: %s' % str(channelData))
+                #self.log('getChannel %sapi/stream/create?api_id=%s&checksum=%s&id=%s&user=%s&password=%s' % (self.url, self.apiId, self.apiChecksum, cid, self.login, self.password))
+                self.log('getChannel stream/create URL returned: %s' % str(channelData))
 
                 if not channelData or channelData['status'] != 'ok':
                     self.log('Error while trying to get channel data: %s' % str(channelData))
@@ -108,7 +108,7 @@ class PierwszaTvUpdater(baseServiceUpdater):
                 startTime = datetime.datetime.now()
                 while (datetime.datetime.now() - startTime).seconds < 25 and strings2.M_TVGUIDE_CLOSING == False:
                     serverStatus = self.sl.getJsonFromExtendedAPI(self.url + 'api/stream/status?api_id=%s&checksum=%s&serverId=%s&streamId=%s' % (self.apiId, self.apiChecksum, serverId, streamId), jsonLoadsResult=True)
-                    debug('Mleczan stream/status URL returned: %s' % str(serverStatus))
+                    self.log('getChannel stream/status URL returned: %s' % str(serverStatus))
 
                     if not serverStatus or serverStatus['status'] != 'ok' or serverStatus['sourceError'] == True:
                         self.log('Error while trying to get server status: %s' % str(serverStatus))
@@ -142,7 +142,7 @@ class PierwszaTvUpdater(baseServiceUpdater):
     def refreshToken(self, timerData):
         if not timerData['terminate']:
             refreshData = self.sl.getJsonFromExtendedAPI(self.url + 'api/stream/refresh?api_id=%s&checksum=%s&serverId=%s&streamId=%s&token=%s' % (self.apiId, self.apiChecksum, timerData['serverId'], timerData['streamId'], timerData['token']), jsonLoadsResult=True)
-            debug('Mleczan stream/refresh URL returned: %s' % str(refreshData))
+            self.log('refreshToken stream/refresh URL returned: %s' % str(refreshData))
 
             if not timerData['terminate'] and refreshData and refreshData['status'] == 'ok':
                 refreshTokenIn = int(int(refreshData['tokenExpireIn']) * 0.75)

@@ -59,6 +59,7 @@
 	<string id="30501">Move up and down to change the position of[CR]the channel. Select or navigate left to accept[CR]the position.</string>
 	<string id="30502">Save</string>
 	<string id="30503">Cancel</string>
+	<string id="30504">Notification</string>
 
 	<string id="30400">CHANNELS LIST</string>
 	<string id="30401">EXIT</string>
@@ -88,6 +89,7 @@
 	<string id="30704">Use zipped epg</string>
 	<string id="30705">Show only programs with stream assigned</string>
 	<string id="30706">Auto detect EPG change</string>
+	<string id="30707">Show notifications from http://epg.feenk.net</string>
 
 <!-- settings -->
 	<string id="30802">TV Guide is configured to stream using</string>
@@ -141,8 +143,8 @@
 	<string id="30960">Reconnect broken stream</string>
 	<string id="30961">Max nr of reattempts</string>
 	<string id="30962">Reattempt delay (ms)</string>
-	<string id="30963"></string>
-	<string id="30964"></string>
+	<string id="30963">Exit</string>
+	<string id="30964">Press one more time to exit</string>
 	<string id="30965"></string>
 	<string id="30966"></string>
 
@@ -206,7 +208,7 @@
 	<string id="89007">Hibernate</string>
 	<string id="89008"></string>
 	<string id="89009"></string>
-	
+
 	<string id="59901">GoldVodTV</string>
 	<string id="55009">Priority</string>
 
@@ -287,7 +289,7 @@
 	<string id="69043">Display auto OSD on play</string>
 	<string id="69044">Auto OSD display time</string>
 	<string id="69045">OSD display time</string>
-	
+
 	<string id="80000">Pierwsza.tv</string>
 	<string id="80001"></string>
 	<string id="80002"></string>

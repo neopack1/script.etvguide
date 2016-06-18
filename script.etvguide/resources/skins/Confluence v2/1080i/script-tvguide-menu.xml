@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window type="dialog">
+	<allowoverlay>no</allowoverlay>
+	<defaultcontrol always="false">4000</defaultcontrol>
+	<coordinates>
+		<system>1</system><posx>60</posx><posy>120</posy>
+	</coordinates>
+		<depth>DepthSideBlade</depth>
+			<animation effect="slide" start="-480,0" end="0,0" time="375" tween="quadratic" easing="out">WindowOpen</animation>
+			<animation effect="slide" end="-480,0" start="0,0" time="375" tween="quadratic" easing="out">WindowClose</animation>
+	<controls>
+		<control type="button">
+			<left>312</left>
+			<top>270</top>
+			<width>69</width>
+			<height>192</height>
+			<font>-</font>
+			<texturefocus>dialogs/hassub.png</texturefocus>
+			<texturenofocus>dialogs/hassub.png</texturenofocus>
+		</control>
+		<control type="image">
+			<left>-96</left>
+			<top>-120</top>
+			<width>426</width>
+			<height>1080</height>
+			<texture border="0,0,10,0">dialogs/mediabladesub.png</texture>
+		</control>
+		<control type="image">
+			<description>LOGO</description>
+			<left>-38</left>
+			<top>-120</top>
+			<width>330</width>
+			<height>120</height>
+			<aspectratio>keep</aspectratio>
+			<texture>dialogs/confluence_logo.png</texture>
+		</control>
+
+		<control type="label">
+			<posx>20</posx>
+			<posy>330</posy>
+			<width>240</width>
+			<height>200</height>
+			<font>font13</font>
+			<textcolor>white</textcolor>
+			<label>$ADDON[script.etvguide 30305]</label>
+			<wrapmultiline>true</wrapmultiline>
+		</control>
+		
+		<control type="image" id="4100">
+			<posx>20</posx>
+			<posy>20</posy>
+			<width>240</width>
+			<height>80</height>
+			<aspectratio>keep</aspectratio>
+		</control>
+		<control type="label" id="4101">
+			<posx>20</posx>
+			<posy>50</posy>
+			<width>240</width>
+			<height>50</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>white</textcolor>
+		</control>
+		
+		<!-- Play -->
+		<control type="button" id="4000">
+			<posx>-75</posx>
+			<posy>240</posy>
+			<width>415</width>
+			<height>100</height>
+			<onup>4004</onup>
+			<ondown>4001</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>white</textcolor>
+			<visible>false</visible>
+		</control>
+		
+		<control type="label" id="4102">
+			<posx>20</posx>
+			<posy>130</posy>
+			<width>240</width>
+			<height>50</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font16</font>
+			<textcolor>FF0084FF</textcolor>
+		</control>
+		
+		<control type="label" id="4103">
+			<posx>20</posx>
+			<posy>170</posy>
+			<width>240</width>
+			<height>50</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>white</textcolor>
+		</control>
+		
+		<!-- Remaind me / not -->
+		<control type="button" id="4002"> 
+			<posx>-75</posx>
+			<posy>510</posy>
+			<width>415</width>
+			<height>100</height>
+			<onup>4001</onup>
+			<ondown>4006</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>white</textcolor>
+			<texturefocus border="40">dialogs/dialogbutton-fo.png</texturefocus>
+			<texturenofocus border="40">dialogs/dialogbutton-nofo</texturenofocus>
+		</control>
+
+		<!-- Button Add/Remove Strm -->
+		<control type="button" id="4001">
+			<posx>-75</posx>
+			<posy>220</posy>
+			<width>415</width>
+			<height>100</height>
+			<onup>4000</onup>
+			<ondown>4002</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>white</textcolor>
+			<label>$ADDON[script.etvguide 30304]</label>
+			<texturefocus border="40">dialogs/dialogbutton-fo.png</texturefocus>
+			<texturenofocus border="40">dialogs/dialogbutton-nofo</texturenofocus>
+		</control>
+		
+				<!-- Channels -->
+		<control type="button" id="4003">
+			<posx>-75</posx>
+			<posy>650</posy>
+			<width>415</width>
+			<height>100</height>
+			<onup>4006</onup>
+			<ondown>4005</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>white</textcolor>
+			<label>$ADDON[script.etvguide 30307]</label>
+			<texturefocus border="40">dialogs/dialogbutton-fo.png</texturefocus>
+			<texturenofocus border="40">dialogs/dialogbutton-nofo</texturenofocus>
+		</control>
+
+				<!-- Exit -->
+		<control type="button" id="4004">
+			<posx>-75</posx>
+			<posy>790</posy>
+			<width>415</width>
+			<height>100</height>
+			<onup>4005</onup>
+			<ondown>4000</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>white</textcolor>
+			<label>$ADDON[script.etvguide 30308]</label>
+			<texturefocus border="40">dialogs/dialogbutton-fo.png</texturefocus>
+			<texturenofocus border="40">dialogs/dialogbutton-nofo</texturenofocus>
+		</control>
+		
+				<!-- Settings -->
+		<control type="button" id="4005">
+			<posx>-75</posx>
+			<posy>720</posy>
+			<width>415</width>
+			<height>100</height>
+			<onup>4003</onup>
+			<ondown>4004</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>white</textcolor>
+			<label>$LOCALIZE[33063]</label>
+			<onclick>Addon.OpenSettings(script.etvguide)</onclick>
+			<texturefocus border="40">dialogs/dialogbutton-fo.png</texturefocus>
+			<texturenofocus border="40">dialogs/dialogbutton-nofo</texturenofocus>
+		</control>
+		
+				<!-- Recordings -->
+		<control type="button" id="4006"> 
+			<posx>-75</posx>
+			<posy>580</posy>
+			<width>415</width>
+			<height>100</height>
+			<onup>4002</onup>
+			<ondown>4003</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font13</font>
+			<textcolor>white</textcolor>
+			<label>$LOCALIZE[19017]</label>
+			<onclick>ActivateWindow(Videos,sources://video/ ,return)</onclick>
+			<texturefocus border="40">dialogs/dialogbutton-fo.png</texturefocus>
+			<texturenofocus border="40">dialogs/dialogbutton-nofo</texturenofocus>
+		</control>
+	</controls>
+</window>

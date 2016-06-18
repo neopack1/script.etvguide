@@ -39,12 +39,11 @@ import xbmcvfs
 import sqlite3
 import playService
 from itertools import chain
+import io, zipfile
+import zlib
 import platform
 
-import io, zipfile
-
 SETTINGS_TO_CHECK = ['source', 'xmltv.file', 'xmltv.logo.folder', 'e-TVGuide', 'Time.Zone']
-
 
 TIMEZONE = ADDON.getSetting('Time.Zone')
 ADDON_VERSION =  ADDON.getAddonInfo('version')
@@ -59,7 +58,6 @@ elif ADDON.getSetting('mail_mojefilmy') != "":
     USER_AGENT = ADDON.getSetting('mail_mojefilmy')
 else:
     USER_AGENT = ADDON.getSetting('usernameGoldVOD')
-
 
 class Channel(object):
     def __init__(self, id, title, logo = None, streamUrl = None, visible = True, weight = -1):
@@ -219,7 +217,7 @@ class Database(object):
         threading.Thread(name='Database Event Loop', target = self.eventLoop).start()
 
     def eventLoop(self):
-        print 'Database.eventLoop() >>>>>>>>>> starting...'
+        deb('Database.eventLoop() >>>>>>>>>> starting...')
         while True:
             self.event.wait()
             self.event.clear()
@@ -227,7 +225,7 @@ class Database(object):
             command = event[0]
             callback = event[1]
 
-            print 'Database.eventLoop() >>>>>>>>>> processing command: ' + command.__name__
+            deb('Database.eventLoop() >>>>>>>>>> processing command: %s' % command.__name__ )
             try:
                 result = command(*event[2:])
                 self.eventResults[command.__name__] = result
@@ -241,8 +239,8 @@ class Database(object):
                     break
 
             except Exception, ex:
-                print 'Database.eventLoop() >>>>>>>>>> exception: %s!' % str(ex)
-        print 'Database.eventLoop() >>>>>>>>>> exiting...'
+                deb('Database.eventLoop() >>>>>>>>>> exception: %s!' % str(ex) )
+        deb('Database.eventLoop() >>>>>>>>>> exiting...')
 
     def _invokeAndBlockForResult(self, method, *args):
         self.lock.acquire()
@@ -355,7 +353,7 @@ class Database(object):
                     c.execute('UPDATE settings SET value=? WHERE key=?', [value, key])
             self.conn.commit()
         c.close()
-        print 'Settings changed: ' + str(settingsChanged)
+        deb('Settings changed: %s' % str(settingsChanged) )
         return settingsChanged
 
     def _isCacheExpired(self, date):
@@ -414,9 +412,9 @@ class Database(object):
         if updateServices == True:
             serviceList = list()
 
-            for serviceName in playService.SERVICE_AVAILABILITY:
+            for serviceName in playService.SERVICES:
                 serviceHandler = playService.SERVICES[serviceName]
-                if playService.SERVICE_AVAILABILITY[serviceName] == 'true':
+                if serviceHandler.serviceEnabled == 'true':
                     serviceHandler.startLoadingChannelList()
                     serviceList.append(serviceHandler)
                 else:
@@ -453,10 +451,13 @@ class Database(object):
                 c.execute("INSERT INTO updates(source, date, programs_updated, epg_size) VALUES(?, ?, ?, ?)", [self.source.KEY, dateStr, self.source.getNewUpdateTime(), self.source.getEpgSize()])
                 updatesId = c.lastrowid
                 imported = 0
+
+                startTime = datetime.datetime.now()
                 for item in self.source.getDataFromExternal(date, progress_callback):
                     imported += 1
                     if imported % 10000 == 0:
                         self.conn.commit()
+
                     if isinstance(item, Channel):
                         c.execute('INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)', [item.id, item.title, item.logo, item.streamUrl, item.visible, item.weight, self.source.KEY, item.weight, self.source.KEY])
                         if not c.rowcount:
@@ -469,6 +470,7 @@ class Database(object):
                 # channels updated
                 c.execute("UPDATE sources SET channels_updated=? WHERE id=?", [self.source.getNewUpdateTime(), self.source.KEY])
                 self.conn.commit()
+                deb('_updateChannelAndProgramListCaches parsing EPG and database update took %s seconds, nr of imports: %d' % ((datetime.datetime.now() - startTime).seconds, imported))
                 self.channelList = None
                 if imported == 0:
                     self.updateFailed = True
@@ -515,7 +517,7 @@ class Database(object):
                     service.waitUntilDone()
                     self.storeCustomStreams(service, service.serviceName, service.serviceRegex)
 
-        del serviceList[:]
+        serviceList = list()
         self.printStreamsWithoutChannelEPG()
 
         ADDON_CIDUPDATED = True
@@ -543,11 +545,15 @@ class Database(object):
             for x in streams.automap:
                 if x.strm is not None and x.strm != '':
                     deb ('[UPD] Updating: CH=%-35s STRM=%-30s SRC=%s' % (x.channelid, x.strm, x.src))
-                    c.execute("INSERT INTO custom_stream_url(channel, stream_url) VALUES(?, ?)", [x.channelid, x.strm.decode('utf-8', 'ignore')])
+                    try:
+                        c.execute("INSERT INTO custom_stream_url(channel, stream_url) VALUES(?, ?)", [x.channelid, x.strm.decode('utf-8', 'ignore')])
+                    except Exception, ex:
+                        deb('[UPD] Error updating stream: %s' % str(ex))
+
             self.conn.commit()
             c.close()
         except Exception, ex:
-            deb('[UPD] Error updating strms: %s' % str(ex))
+            deb('[UPD] Error updating streams: %s' % str(ex))
 
     def printStreamsWithoutChannelEPG(self):
         try:
@@ -561,7 +567,7 @@ class Database(object):
                 #cur = self.conn.cursor()
                 for row in c:
                     deb('%-25s %-35s' % (row['channel'], row['stream_url']))
-                    #cur.execute('INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)', [row['channel'], row['channel'], '', '', 1, -1, 'e-TVGuide', -1, 'e-TVGuide'])
+                    #cur.execute('INSERT OR IGNORE INTO channels(id, title, logo, stream_url, visible, weight, source) VALUES(?, ?, ?, ?, ?, (CASE ? WHEN -1 THEN (SELECT COALESCE(MAX(weight)+1, 0) FROM channels WHERE source=?) ELSE ? END), ?)', [row['channel'], row['channel'], '', '', 1, -1, 'm-TVGuide', -1, 'm-TVGuide'])
                 #self.conn.commit()
                 deb('End of streams without EPG!')
                 deb('----------------------------------------------------------------------------------------------')
@@ -723,38 +729,41 @@ class Database(object):
         return program
 
     def _getProgramList(self, channels, startTime):
-        """
-        @param channels:
-        @type channels: list of source.Channel
-        @param startTime:
-        @type startTime: datetime.datetime
-        @return:
-        """
-        endTime = startTime + datetime.timedelta(hours = 2)
         programList = list()
-        channelsWithoutProg = list(channels)
+        try:
+            """
+            @param channels:
+            @type channels: list of source.Channel
+            @param startTime:
+            @type startTime: datetime.datetime
+            @return:
+            """
+            endTime = startTime + datetime.timedelta(hours = 2)
+            channelsWithoutProg = list(channels)
 
-        channelMap = dict()
-        for c in channels:
-            if c.id:
-                channelMap[c.id] = c
-        if not channels:
-            return []
+            channelMap = dict()
+            for c in channels:
+                if c.id:
+                    channelMap[c.id] = c
+            if not channels:
+                return []
 
-        c = self.conn.cursor()
-        c.execute('SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source AND (n.start_date IS NULL OR n.start_date = p.start_date)) AS notification_scheduled , (SELECT 1 FROM recordings r WHERE r.channel=p.channel AND r.program_title=p.title AND r.start_date=p.start_date AND r.source=p.source) AS recording_scheduled FROM programs p WHERE p.channel IN (\'' + ('\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?', [self.source.KEY, startTime, endTime])
+            c = self.conn.cursor()
+            c.execute('SELECT p.*, (SELECT 1 FROM notifications n WHERE n.channel=p.channel AND n.program_title=p.title AND n.source=p.source AND (n.start_date IS NULL OR n.start_date = p.start_date)) AS notification_scheduled , (SELECT 1 FROM recordings r WHERE r.channel=p.channel AND r.program_title=p.title AND r.start_date=p.start_date AND r.source=p.source) AS recording_scheduled FROM programs p WHERE p.channel IN (\'' + ('\',\''.join(channelMap.keys())) + '\') AND p.source=? AND p.end_date > ? AND p.start_date < ?', [self.source.KEY, startTime, endTime])
 
-        for row in c:
-            program = Program(channelMap[row['channel']], row['title'], row['start_date'], row['end_date'], row['description'], row['image_large'], row['image_small'], row['categoryA'], row['categoryB'], row['notification_scheduled'], row['recording_scheduled'])
-            programList.append(program)
-            try:
-                channelsWithoutProg.remove(channelMap[row['channel']])
-            except ValueError:
-                pass
-        for channel in channelsWithoutProg:
-            program = Program(channel, channel.title, startTime, endTime, '', '', 'tvguide-logo-epg.png', '', '', '')
-            programList.append(program)
-        c.close()
+            for row in c:
+                program = Program(channelMap[row['channel']], row['title'], row['start_date'], row['end_date'], row['description'], row['image_large'], row['image_small'], row['categoryA'], row['categoryB'], row['notification_scheduled'], row['recording_scheduled'])
+                programList.append(program)
+                try:
+                    channelsWithoutProg.remove(channelMap[row['channel']])
+                except ValueError:
+                    pass
+            for channel in channelsWithoutProg:
+                program = Program(channel, channel.title, startTime, endTime, '', '', 'tvguide-logo-epg.png', '', '', '')
+                programList.append(program)
+            c.close()
+        except Exception, ex:
+            deb('Error in _getProgramList!!!!!! Code: %s' % str(ex))
         return programList
 
     def _isProgramListCacheExpired(self, date = datetime.datetime.now()):
@@ -841,7 +850,6 @@ class Database(object):
         return customStreamUrlList
 
     def adapt_datetime(self, ts):
-		# http://docs.python.org/2/library/sqlite3.html#registering-an-adapter-callable
         return time.mktime(ts.timetuple())
 
     def convert_datetime(self, ts):
@@ -910,7 +918,7 @@ class Database(object):
                 c.execute('CREATE TABLE IF NOT EXISTS updates(id INTEGER PRIMARY KEY, source TEXT, date TEXT, programs_updated TIMESTAMP)')
                 c.execute('CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY, value TEXT)')
                 c.execute("CREATE TABLE IF NOT EXISTS notifications(channel TEXT, program_title TEXT, source TEXT, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE)")
-                c.execute('CREATE TABLE IF NOT EXISTS channels(id TEXT COLLATE NOCASE, title TEXT, logo TEXT, stream_url TEXT, source TEXT, visible BOOLEAN, weight INTEGER, PRIMARY KEY (id, source), FOREIGN KEY(source) REFERENCES sources(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
+                c.execute('CREATE TABLE IF NOT EXISTS channels(id TEXT, title TEXT, logo TEXT, stream_url TEXT, source TEXT, visible BOOLEAN, weight INTEGER, PRIMARY KEY (id, source), FOREIGN KEY(source) REFERENCES sources(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
                 c.execute('CREATE TABLE IF NOT EXISTS programs(channel TEXT, title TEXT, start_date TIMESTAMP, end_date TIMESTAMP, description TEXT, image_large TEXT, image_small TEXT, categoryA TEXT, categoryB TEXT, source TEXT, updates_id INTEGER, FOREIGN KEY(channel, source) REFERENCES channels(id, source) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, FOREIGN KEY(updates_id) REFERENCES updates(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)')
                 c.execute('CREATE INDEX program_list_idx ON programs(source, channel, start_date, end_date)')
                 c.execute('CREATE INDEX start_date_idx ON programs(start_date)')
@@ -948,19 +956,37 @@ class Database(object):
                 c.execute('UPDATE version SET major=6, minor=1, patch=5')
                 self.conn.commit()
 
-            # if we want to clear the database
-#            if version < [6, 1, 6]:
-#                c.execute('DELETE FROM channels')
-#                c.execute('DELETE FROM programs')
-#                c.execute('DELETE FROM notifications')
-#                c.execute('DELETE FROM recordings')
-#                c.execute('DELETE FROM updates')
-#                c.execute('DELETE FROM sources')
-#                c.execute('DELETE FROM custom_stream_url')
-#                c.execute('UPDATE settings SET value=0 WHERE rowid=1')
-#                c.execute('UPDATE version set major=6, minor=1, patch=6')
-#                self.conn.commit()
 
+            if version < [6, 2, 3]:
+                deb('DATABASE UPLIFT TO VERSION 6.2.3')
+                channelList = list()
+                notificationList = list()
+
+                c.execute("SELECT * FROM channels ORDER BY VISIBLE DESC, WEIGHT ASC")
+                for row in c:
+                    channelList.append(row)
+
+                c.execute("SELECT * FROM notifications")
+                for row in c:
+                    notificationList.append(row)
+
+                c.execute('DELETE FROM channels')
+                c.execute('DELETE FROM programs')
+                c.execute('DELETE FROM notifications')
+                c.execute('DELETE FROM recordings')
+                c.execute('DELETE FROM updates')
+                self.conn.commit()
+
+                for channel in channelList:
+                    c.execute("INSERT OR IGNORE INTO channels(id, title, logo, stream_url, source, visible, weight) VALUES(?, ?, ?, ?, ?, ?, ?)", [channel['id'].upper(), channel['title'], channel['logo'], channel['stream_url'], channel['source'], channel['visible'], channel['weight'] ])
+
+                for notification in notificationList:
+                    c.execute("INSERT OR IGNORE INTO notifications(channel, program_title, source, start_date) VALUES(?, ?, ?, ?)", [ notification['channel'].upper(), notification['program_title'], notification['source'], notification['start_date'] ])
+
+                c.execute('CREATE TABLE IF NOT EXISTS rss_messages(last_message TIMESTAMP)')
+                c.execute('UPDATE version SET major=6, minor=2, patch=3')
+
+                self.conn.commit()
 
             # make sure we have a record in sources for this Source
             c.execute("INSERT OR IGNORE INTO sources(id, channels_updated) VALUES(?, ?)", [self.source.KEY, 0])
@@ -969,6 +995,30 @@ class Database(object):
 
         except sqlite3.OperationalError, ex:
             raise DatabaseSchemaException(ex)
+
+    def updateRssDate(self, date):
+        self._invokeAndBlockForResult(self._updateRssDate, date)
+
+    def _updateRssDate(self, date):
+        c = self.conn.cursor()
+        c.execute("DELETE FROM rss_messages")
+        c.execute("INSERT INTO rss_messages(last_message) VALUES(?)", [date])
+        self.conn.commit()
+        c.close()
+
+    def getLastRssDate(self):
+        return self._invokeAndBlockForResult(self._getLastRssDate)
+
+    def _getLastRssDate(self):
+        c = self.conn.cursor()
+        c.execute("SELECT last_message FROM rss_messages")
+        row = c.fetchone()
+        if row:
+            date = row['last_message']
+        else:
+            date = None
+        c.close()
+        return date
 
     def addNotification(self, program, onlyOnce = False):
         self._invokeAndBlockForResult(self._addNotification, program, onlyOnce)
@@ -1143,9 +1193,9 @@ class Source(object):
 
     def isUpdated(self, channelsLastUpdated, programsLastUpdated, epgSize):
         today = datetime.datetime.now()
-        if channelsLastUpdated is None or channelsLastUpdated.day != today.day:
+        if channelsLastUpdated is None or channelsLastUpdated.day != today.day or channelsLastUpdated.year != today.year:
             return True
-        if programsLastUpdated is None or programsLastUpdated.day != today.day:
+        if programsLastUpdated is None or programsLastUpdated.day != today.day or programsLastUpdated.year != today.year:
             return True
         return False
 
@@ -1352,7 +1402,7 @@ def parseXMLTV(context, f, size, logoFolder, progress_callback):
         if event == "end":
             result = None
             if elem.tag == "programme":
-                channel = elem.get("channel")
+                channel = elem.get("channel").upper()
                 description = elem.findtext("desc")
                 iconElement = elem.findtext("sub-title")
                 cat = elem.findall("category")
@@ -1381,7 +1431,7 @@ def parseXMLTV(context, f, size, logoFolder, progress_callback):
                 result = Program(channel, elem.findtext('title'), TimeZone(parseXMLTVDate(elem.get('start'))),TimeZone( parseXMLTVDate(elem.get('stop'))), description, imageLarge=live3, imageSmall=icon, categoryA=cata,categoryB=catb)
 
             elif elem.tag == "channel":
-                id = elem.get("id")
+                id = elem.get("id").upper()
                 title = elem.findtext("display-name")
                 if title == "":
                     title = id
@@ -1425,9 +1475,8 @@ class FileWrapper(object):
 
 def instantiateSource():
     SOURCES = {
-    'XMLTV': XMLTVSource,
-    'e-TVGuide': ETVGUIDESource,
-#	'E-Screen.tv': ESCREENTVSource
+    'XMLTV' : XMLTVSource,
+    'e-TVGuide' : ETVGUIDESource
     }
 
     try:
@@ -1435,3 +1484,67 @@ def instantiateSource():
     except KeyError:
         activeSource = SOURCES['e-TVGuide']
     return activeSource(ADDON)
+
+class RssFeed(object):
+    def __init__(self, url, last_message, update_date_call):
+        self.dateFormat = '%d.%m.%Y_%H:%M:%S'
+        deb('RssFeed __init__ url: %s, File format: \"%s MESSAGE\"' % (url, self.dateFormat) )
+        self.updateInterval = 1200 # check every 20m
+        self.rssUrl = url
+        self.closing = False
+        self.lastPrintedMessageInDB = last_message
+        self.updateDbCall = update_date_call
+        self.timer = threading.Timer(0, self.checkForUpdates)
+        self.timer.start()
+
+    def checkForUpdates(self):
+        debug('RssFeed checkForUpdates')
+        rssData = self.downloadFile(self.rssUrl)
+        if rssData is not None:
+            for line in reversed(rssData.split('\n')):
+                strippedLine = line.strip()
+                if len(strippedLine) == 0:
+                    continue
+                try:
+                    strippedLine = strippedLine.decode('iso-8859-2')
+                    message = re.search(".*?([_.0-9:]*)(.*)", strippedLine)
+                    dateStr = message.group(1).strip()
+                    messageStr = message.group(2).strip()
+                    t = time.strptime(dateStr, self.dateFormat)
+                    messageDate = datetime.datetime(t.tm_year, t.tm_mon, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec)
+
+                    if (not self.lastPrintedMessageInDB or messageDate > self.lastPrintedMessageInDB) and len(messageStr) > 0 and messageDate < datetime.datetime.now() + datetime.timedelta(days=1):
+                        deb('RssFeed News: %s' % messageStr)
+                        xbmcgui.Dialog().ok(strings(RSS_MESSAGE), "\n" + messageStr )
+                        self.lastPrintedMessageInDB = messageDate
+                        self.updateDbCall(self.lastPrintedMessageInDB)
+                except Exception, ex:
+                    deb('RssFeed checkForUpdates Error: %s' % str(ex))
+
+        if not self.closing:
+            self.timer = threading.Timer(self.updateInterval, self.checkForUpdates)
+            self.timer.start()
+
+    def downloadFile(self, url):
+        content = None
+        failCounter = 0
+        while True:
+            try:
+                reqUrl = urllib2.Request(url)
+                reqUrl.add_header('Accept-Encoding', 'gzip')
+                u = urllib2.urlopen(reqUrl, timeout=20)
+                content = u.read()
+                if u.headers.get("Content-Encoding", "") == "gzip":
+                    content = zlib.decompressobj(16 + zlib.MAX_WBITS).decompress(content)
+                break
+            except Exception, ex:
+                failCounter+=1
+                debug('RssFeed checkForUpdates Error downloading url: %s, Exceptiion: %s, failcounter: %s' % (self.rssUrl, str(ex), failCounter))
+                if failCounter > 3 or self.closing:
+                    break
+                time.sleep(1)
+        return content
+
+    def close(self):
+        self.closing = True
+        self.timer.cancel()

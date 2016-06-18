@@ -23,6 +23,7 @@
 import xbmcaddon, xbmc
 
 ADDON_ID            = 'script.etvguide'
+RSS_FILE            = 'http://epg.feenk.net/rss/info.txt'
 ADDON               = xbmcaddon.Addon(id = ADDON_ID)
 ADDON_PATH          = ADDON.getAddonInfo('path')
 ADDON_CIDUPDATED    = False    #zabezpieczenie przed ponownym updatem cidow
@@ -31,6 +32,7 @@ FORCE_ADD_LOG_DEBUG = True     #True - Logowanie nawet jezeli wylaczone debugowa
 global M_TVGUIDE_CLOSING
 M_TVGUIDE_CLOSING   = False
 
+RSS_MESSAGE = 30504
 NO_DESCRIPTION = 30000
 CALCULATING_REMAINING_TIME = 30002
 TIME_LEFT = 30003
