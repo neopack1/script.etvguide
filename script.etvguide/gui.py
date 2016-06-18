@@ -508,11 +508,7 @@ class eTVGuide(xbmcgui.WindowXML):
     def onActionEPGMode(self, action):
         debug('onActionEPGMode keyId %d, buttonCode %d' % (action.getId(), action.getButtonCode()))
         if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
-            if (datetime.datetime.now() - self.lastCloseKeystroke).seconds < 3:
-                self.close()
-            else:
-                self.lastCloseKeystroke = datetime.datetime.now()
-                xbmc.executebuiltin('Notification(%s,%s,3000)' % (strings(30963).encode('utf-8'), strings(30964).encode('utf-8')))
+            self.close()
             return
 
         elif action.getId() == ACTION_MOUSE_MOVE:
