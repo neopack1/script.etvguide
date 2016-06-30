@@ -1,29 +1,36 @@
 <window>
 	<defaultcontrol>-</defaultcontrol>
 	<zorder>2</zorder>
+	<coordinates>
+		<system>1</system><posx>0</posx><posy>0</posy>
+	</coordinates>
 	<controls>
 		<control type="image">
 			<description>serwis_bg</description>
-			<left>105</left>
-			<top>45</top>
-			<width>300</width>
-			<height>75</height>
-			<colordiffuse>EEFFFFFF</colordiffuse>
-			<texture flipy="true" border="12">dialogs/infomessagepanel.png</texture>
+			<left>25</left>
+			<top>20</top>
+			<width>282</width>
+			<height>90</height>
+			<texture border="20">dialogs/overlaydialogbackground.png</texture>
+			<animation effect="fade" start="0" end="100" time="250" delay="240">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="250">WindowClose</animation>
 			<visible>Control.IsVisible(4940)</visible>
 		</control>
 		<control type="label" id="4940">
 			<description>serwis</description>
-			<left>140</left>
-			<top>70</top>
+			<left>40</left>
+			<top>55</top>
 			<width>240</width>
 			<height>20</height>
 			<align>center</align>
 			<aligny>center</aligny>
 			<font>font13_title</font>
-			<textcolor>FFF0F0F0</textcolor>
-			<shadowcolor>22000000</shadowcolor>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<animation effect="fade" start="0" end="100" time="250" delay="240">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="250">WindowClose</animation>
 			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
 		</control>
 	</controls>
 </window>
+		

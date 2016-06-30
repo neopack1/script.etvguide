@@ -1,0 +1,31 @@
+<window>
+	<defaultcontrol>-</defaultcontrol>
+	<zorder>3</zorder>
+	<controls>
+		<control type="image">
+			<description>serwis_bg</description>
+			<posx>74</posx>
+			<posy>70</posy>
+			<width>277</width>
+			<height>100</height>
+			<texture border="16" colordiffuse="ffdddddd">dialogs/rounded-shadow.png</texture>
+			<animation effect="fade" start="0" end="100" time="150" delay="240">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
+			<visible>Control.IsVisible(4940)</visible>
+		</control>
+		<control type="label" id="4940">
+			<description>serwis</description>
+			<posx>140</posx>
+			<posy>82</posy>
+			<width min="20" max="300">auto</width>
+			<height>75</height>
+			<align>left</align>
+			<aligny>center</aligny>
+			<font>Small</font>
+			<textcolor>ff333333</textcolor>
+			<animation effect="fade" start="0" end="100" time="150" delay="240">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
+		</control>
+	</controls>
+</window>

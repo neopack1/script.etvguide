@@ -1,0 +1,241 @@
+<window>
+	<zorder>2</zorder>
+	<include>dialogeffect</include>
+	<coordinates>
+		<system>1</system><posx>0</posx><posy>0</posy>
+	</coordinates>
+		<animation effect="fade" start="0" end="100" time="150" delay="150">WindowOpen</animation>
+		<animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
+	<controls>
+
+		<!-- !LiveTV -->
+		<control type="group" id="100">
+			<posx>0</posx>
+			<posy>75</posy>
+			<visible>true</visible>
+
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>705</posy>
+				<width>1920</width>
+				<height>300</height>
+				<texture border="16" colordiffuse="B3dddddd">dialogs/white.png</texture>
+			</control>
+			<control type="label">
+				<description>Program channel</description>
+				<posx>372</posx>
+				<posy>736</posy>
+				<width>260</width>
+				<height>20</height>
+				<textcolor>ff333333</textcolor>
+				<font>TinyBold</font>
+				<label>[UPPERCASE]$INFO[Player.Title][/UPPERCASE]</label>
+			</control>
+			<control type="image">
+				<posx>1300</posx>
+				<posy>-5</posy>
+				<width>554</width>
+				<height>100</height>
+				<texture border="16" colordiffuse="ffdddddd">dialogs/rounded-shadow.png</texture>
+			</control>
+			<control type="image">
+                <posx>1330</posx>
+                <posy>21</posy>
+                <width>48</width>
+                <height>48</height>
+                <aspectratio aligny="center">keep</aspectratio>
+				<texture colordiffuse="ff333333">osd/clock.png</texture>
+			</control>
+			<control type="image">
+                <posx>1772</posx>
+                <posy>21</posy>
+                <width>48</width>
+                <height>48</height>
+                <aspectratio aligny="center">keep</aspectratio>
+				<texture colordiffuse="ff333333">osd/finishtime.png</texture>
+			</control>
+			<control type="image">
+                <posx>1550</posx>
+                <posy>21</posy>
+                <width>48</width>
+                <height>48</height>
+                <aspectratio aligny="center">keep</aspectratio>
+				<texture colordiffuse="ff333333">osd/arrow.png</texture>
+			</control>
+			<control type="label" id="4920">
+				<description>Program title</description>
+                <posx>370</posx>
+                <posy>777</posy>
+				<width>870</width>
+				<height>40</height>
+				<font>Medium</font>
+				<textcolor>FF333333</textcolor>
+			</control>
+			<control type="image" id="4924">
+				<description>Channel logo</description>
+				<posx>25</posx>
+				<top>800</top>
+				<width>320</width>
+				<height>90</height>
+			</control>
+			<control type="progress" id="4999">
+				<posx>370</posx>
+				<posy>968</posy>
+				<width>1470</width>
+				<height>10</height>
+			</control>
+			<control type="label">
+				<description>Now playing</description>
+                <posx>370</posx>
+                <posy>924</posy>
+				<width>220</width>
+				<height>26</height>
+				<font>Tiny</font>
+				<textcolor>ff333333</textcolor>
+				<label>[B]$LOCALIZE[31114][/B]</label>
+			</control>
+			<control type="label" id="4921">
+				<description>Program time</description>
+				<posx>1840</posx>
+				<posy>924</posy>
+				<width>250</width>
+				<height>26</height>
+				<textcolor>ff333333</textcolor>
+				<font>Tiny</font>
+				<aligny>center</aligny>
+				<align>right</align>
+			</control>
+			<control type="textbox" id="4922">
+				<description>Program description</description>
+				<posx>370</posx>
+				<posy>831</posy>
+				<width>1470</width>
+				<height>58</height>
+				<textcolor>white</textcolor>
+				<font>Mini</font>
+				<align>left</align>
+				<wrapmultiline>true</wrapmultiline>
+				<autoscroll time="3500" delay="4500" repeat="10000">false</autoscroll>
+			</control>
+			<control type="image" id="4923">
+				<description>Program logo / Source logo</description>
+				<posx>1410</posx>
+				<posy>780</posy>
+				<width>480</width>
+				<height>270</height>
+				<aspectratio>keep</aspectratio>
+				<fadetime>500</fadetime>
+				<texture>tvguide-logo-epg.png</texture>
+				<visible>!Player.Playing</visible>\
+			</control>
+
+			<control type="label" id="6666">
+				<description>Program time</description>
+				<posx>1416</posx>
+				<posy>7</posy>
+				<width>350</width>
+				<height>75</height>
+				<textcolor>ff333333</textcolor>
+				<font>Small</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>$INFO[System.Time(hh:mm)]</label>
+			</control>
+
+			<control type="button" id="108">
+				<posx>936</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">buttons/schedule-bd.png</texturefocus>
+				<texturenofocus colordiffuse="ff0385b5">buttons/schedule-bd.png</texturenofocus>
+			</control>
+			<control type="button" id="107">
+				<posx>936</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff333333">buttons/schedule-bd.png</texturefocus>
+				<texturenofocus colordiffuse="ff333333">buttons/schedule-bd.png</texturenofocus>
+			</control>
+			<control type="button" id="105">
+				<posx>936</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">buttons/playbd.png</texturefocus>
+				<texturenofocus colordiffuse="1f333333">buttons/playbd.png</texturenofocus>
+			</control>
+			<control type="button" id="101">
+				<posx>936</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">buttons/stopbd.png</texturefocus>
+				<texturenofocus colordiffuse="1f333333">buttons/stopbd.png</texturenofocus>
+				<onleft>106</onleft>
+				<onright>103</onright>
+			</control>
+			<control type="button" id="102">
+				<posx>808</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">buttons/infobd.png</texturefocus>
+				<texturenofocus colordiffuse="1f333333">buttons/infobd.png</texturenofocus>
+				<onleft>104</onleft>
+				<onright>106</onright>
+			</control>
+			<control type="button" id="106">
+				<posx>872</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">buttons/setupbd.png</texturefocus>
+				<texturenofocus colordiffuse="1f333333">buttons/setupbd.png</texturenofocus>
+				<onleft>102</onleft>
+				<onright>101</onright>
+			</control>
+			<control type="button" id="103">
+				<posx>1000</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">buttons/minusbd.png</texturefocus>
+				<texturenofocus colordiffuse="ff333333">buttons/minusbd.png</texturenofocus>
+				<onleft>101</onleft>
+				<onright>104</onright>
+			</control>
+			<control type="button" id="104">
+				<posx>1064</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">buttons/plusbd.png</texturefocus>
+				<texturenofocus colordiffuse="ff333333">buttons/plusbd.png</texturenofocus>
+				<onleft>103</onleft>
+				<onright>102</onright>
+			</control>
+			<control type="button" id="1000">
+				<description>Close Window button</description>
+				<posx>126r</posx>
+				<posy>0</posy>
+				<width>96</width>
+				<height>48</height>
+				<label>-</label>
+				<font>-</font>
+				<onclick>Dialog.Close(VideoOSD,true)</onclick>
+				<onclick>FullScreen</onclick>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>1000</onleft>
+				<onright>1000</onright>
+				<onup>101</onup>
+				<ondown>101</ondown>
+				<animation effect="fade" time="200">VisibleChange</animation>
+				<visible>false</visible>
+			</control>
+		</control>
+	</controls>
+</window>

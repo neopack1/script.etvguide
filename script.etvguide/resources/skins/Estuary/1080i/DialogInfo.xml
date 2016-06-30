@@ -1,110 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <window type="dialog">
-	<allowoverlay>no</allowoverlay>
+	<defaultcontrol always="true">1000</defaultcontrol>
 	<coordinates>
-		<system>1</system><posx>26</posx><posy>0</posy>
+		<system>1</system><posx>0</posx><posy>0</posy>
 	</coordinates>
-	<animation effect="slide" start="280,0" end="0,0" time="250">WindowOpen</animation>
-	<animation effect="slide" start="0,0" end="280,0" time="250">WindowClose</animation>
-	<include>dialogeffect</include>
+		<animation effect="fade" start="100" end="0" time="240">WindowClose</animation>
 	<controls>
 		<control type="group">
-			<include>VisibleFadeEffect</include>
 			<control type="image">
-				<description>Dialog</description>
-				<left>1464</left>
-				<top>79</top>
-				<width>484</width>
-				<height>920</height>
-				<texture border="22">dialogs/panel.png</texture>
+				<description>background image</description>
+				<width>1920</width>
+				<top>0</top>
+				<height>1080</height>
+				<texture>tvguide-background-default.jpg</texture>
+				<animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+				<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
 			</control>
-			<control type="label" id="4920">
-				<description>Program info</description>
-				<left>1490</left>
-				<top>120</top>
-				<width>300</width>
-				<height>20</height>
-				<font>font12_title</font>
+			<control type="image">
+				<description>Dialog shadow</description>
+				<posx>670</posx>
+				<posy>232</posy>
+				<width>1130</width>
+				<height>468</height>
+				<texture colordiffuse="9F000000">osd/white.png</texture>
+				<animation effect="slide" start="320" end="0" time="400" tween="cubic" easing="out">WindowOpen</animation>
+				<animation effect="slide" start="0" end="320" time="300" tween="cubic" easing="out">WindowClose</animation>
+			</control>
+			<control type="image">
+				<description>Dialog shadow</description>
+				<posx>102</posx>
+				<posy>309</posy>
+				<width>464</width>
+				<height>310</height>
+				<texture colordiffuse="9F000000">osd/white.png</texture>
+				<aspectratio>scale</aspectratio>
+				<animation effect="slide" start="-380" end="0" time="400" tween="cubic" easing="out" >WindowOpen</animation>
+				<animation effect="slide" start="0" end="-380" time="300" tween="cubic" easing="out" >WindowClose</animation>
+			</control>
+			<control type="label">
+				<posx>25%</posx>
+				<posy>104</posy>
+				<width>960</width>
+				<font>font13</font>
+				<align>center</align>
 				<textcolor>FFF0F0F0</textcolor>
-				<align>left</align>
-				<aligny>center</aligny>	
 				<shadowcolor>22000000</shadowcolor>
+				<label>$LOCALIZE[31000]</label>
+				<animation effect="fade" start="0" end="100" time="300" tween="sine" delay="400" easing="out">WindowOpen</animation>
+				<animation effect="fade" start="100" end="0" time="240">WindowClose</animation>
 			</control>
+
 			<control type="button" id="1000">
 				<description>Close Window button</description>
-				<posx>830</posx>
+				<posx>1245</posx>
 				<posy>15</posy>
-				<width>64</width>
-				<height>32</height>
+				<width>96</width>
+				<height>48</height>
 				<onclick>Dialog.Close(VideoOSD,true)</onclick>
 				<onclick>FullScreen</onclick>
-				<texturefocus></texturefocus>
-				<texturenofocus></texturenofocus>
-				<visible>true</visible>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<animation effect="fade" time="200">VisibleChange</animation>
+				<visible>false</visible>
+			</control>
+			
+			<control type="label">
+				<description>Program date</description>
+				<posx>711</posx>
+				<posy>293</posy>
+				<width>375</width>
+				<height>26</height>
+				<textcolor>FFF0F0F0</textcolor>
+				<shadowcolor>22000000</shadowcolor>
+				<font>font10</font>
+				<align>left</align>
+				<aligny>center</aligny>	
+				<label>[B]$INFO[System.Date][/B]</label>
+				<animation effect="slide" start="320" end="0" time="400" tween="cubic" easing="out">WindowOpen</animation>
+				<animation effect="slide" start="0" end="320" time="300" tween="cubic" easing="out">WindowClose</animation>
+			</control>
+			
+			<control type="label" id="4920">
+				<description>Program title</description>
+				<posx>25%</posx>
+				<posy>44</posy>
+				<width>960</width>
+				<height>50</height>
+				<textcolor>FFF0F0F0</textcolor>
+				<shadowcolor>22000000</shadowcolor>
+				<font>font30</font>
+				<align>center</align>
+				<animation effect="fade" start="0" end="100" time="300" tween="sine" delay="400" easing="out">WindowOpen</animation>
+				<animation effect="fade" start="100" end="0" time="240">WindowClose</animation>
 			</control>
 			<control type="image" id="4924">
 				<description>Channel logo</description>
-				<posx>1575</posx>
-				<posy>85</posy>
-				<width>240</width>
-				<height>120</height>
-				<aspectratio>keep</aspectratio>
-				<fadetime>100</fadetime>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>0</width>
+				<height>0</height>
 				<visible>false</visible>
 			</control>
 			<control type="image" id="4944">
 				<description>Live</description>
-				<left>1650</left>
-				<top>149</top>
-				<width>100</width>
-				<height>43</height>
-				<aspectratio>keep</aspectratio>
-				<fadetime>100</fadetime>
+				<posx>100</posx>
+				<posy>933</posy>
+				<width>120</width>
+				<height>37</height>
 			</control>
 			<control type="label" id="4921">
 				<description>Program time</description>
-				<left>1490</left>
-				<top>160</top>
-				<width>175</width>
-				<height>20</height>
+				<posx>711</posx>
+				<posy>256</posy>
+				<width>375</width>
+				<height>26</height>
 				<textcolor>FFF0F0F0</textcolor>
 				<shadowcolor>22000000</shadowcolor>
-				<font>font12_title</font>
+				<font>font10</font>
 				<align>left</align>
-				<aligny>center</aligny>	
+				<aligny>center</aligny>
+				<animation effect="slide" start="320" end="0" time="400" tween="cubic" easing="out">WindowOpen</animation>
+				<animation effect="slide" start="0" end="320" time="300" tween="cubic" easing="out">WindowClose</animation>				
 			</control>
 			<control type="textbox" id="4922">
 				<description>Program description</description>
-				<left>1490</left>
-				<top>200</top>
-				<width>365</width>
-				<height>756</height>
-				<textcolor>FFF0F0F0</textcolor>
-				<font>font10</font>
-				<align>left</align>
-				<autoscroll time="3500" delay="2500" repeat="10000">true</autoscroll>
-			</control>
-			<control type="label" id="4921">
-				<description>Program time</description>
-				<posx>440</posx>
-				<posy>600</posy>
-				<width>140</width>
-				<height>20</height>
+				<posx>711</posx>
+				<posy>327</posy>
+				<width>1048</width>
+				<height>320</height>
 				<textcolor>FFF0F0F0</textcolor>
 				<shadowcolor>22000000</shadowcolor>
 				<font>font10</font>
-				<align>right</align>
-				<aligny>center</aligny>	
+				<align>left</align>
+				<wrapmultiline>true</wrapmultiline>
+				<autoscroll time="3500" delay="7500" repeat="10000">true</autoscroll>
+				<animation effect="slide" start="320" end="0" time="400" tween="cubic" easing="out">WindowOpen</animation>
+				<animation effect="slide" start="0" end="320" time="300" tween="cubic" easing="out">WindowClose</animation>
 			</control>
 			<control type="image" id="4923">
 				<description>Program logo</description>
-				<left>1490</left>
-				<top>725</top>
-				<width>380</width>
-				<height>230</height>
-				<aspectratio>stretch</aspectratio>
-				<fadetime>100</fadetime>
+				<posx>106</posx>
+				<posy>313</posy>
+				<width>456</width>
+				<height>302</height>
 				<texture>tvguide-logo-epg.png</texture>
+				<aspectratio>scale</aspectratio>
+				<animation effect="slide" start="-320" end="0" time="400" tween="cubic" easing="out" >WindowOpen</animation>
+				<animation effect="slide" start="0" end="-320" time="300" tween="cubic" easing="out" >WindowClose</animation>
+			</control>
+			<control type="progress" id="4999">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>0</width>
+				<height>0</height>
 				<visible>false</visible>
 			</control>
 		</control>

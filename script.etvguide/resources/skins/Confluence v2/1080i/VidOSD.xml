@@ -1,9 +1,10 @@
 <window>
 	<zorder>1</zorder>
-	<include>dialogeffect</include>
 	<coordinates>
 		<system>1</system><posx>0</posx><posy>0</posy>
 	</coordinates>
+		<animation effect="fade" start="0" end="100" time="250">WindowOpen</animation>
+		<animation effect="fade" start="100" end="0" time="250">WindowClose</animation>
 	<controls>
 
 		<!-- !LiveTV -->
@@ -25,7 +26,7 @@
 				<left>-30</left>
 				<top>-225</top>
 				<width>1980</width>
-				<height>384</height>
+				<height>385</height>
 				<texture flipy="true" border="1">dialogs/homenowplayingback.png</texture>
 			</control>
 			<control type="label" id="4920">
@@ -34,23 +35,22 @@
 				<posy>780</posy>
 				<width>852</width>
 				<height>75</height>
-				<textcolor>white</textcolor>
+				<textcolor>FFEB9E17</textcolor>
 				<shadowcolor>black</shadowcolor>
 				<font>font13</font>
 				<aligny>center</aligny>
 			</control>
 			<control type="image">
-				<left>1505</left>
-				<top>45</top>
-				<width>300</width>
-				<height>75</height>
-				<colordiffuse>EEFFFFFF</colordiffuse>
-				<texture flipy="true" border="12">dialogs/infomessagepanel.png</texture>
+				<left>1614</left>
+				<top>20</top>
+				<width>282</width>
+				<height>90</height>
+				<texture border="20">dialogs/overlaydialogbackground.png</texture>
 			</control>
 			<control type="label" id="4920">
 				<description>Program channel</description>
-				<left>1540</left>
-				<top>70</top>
+				<left>1640</left>
+				<top>55</top>
 				<width>240</width>
 				<height>20</height>
 				<font>font13_title</font>
@@ -58,17 +58,14 @@
 				<aligny>center</aligny>
 				<textcolor>white</textcolor>
 				<shadowcolor>black</shadowcolor>
-				<label>[UPPERCASE]$INFO[Player.Title][/UPPERCASE][CR]</label>
+				<label>[UPPERCASE]$INFO[Player.Title][/UPPERCASE]</label>
 			</control>
 			<control type="image" id="4924">
 				<description>Channel logo</description>
 				<posx>95</posx>
-				<posy>688</posy>
+				<posy>788</posy>
 				<width>320</width>
-				<height>320</height>
-				<aspectratio>keep</aspectratio>
-				<fadetime>500</fadetime>
-				<visible>true</visible>
+				<height>90</height>
 			</control>
 			<control type="progress" id="4999">
 				<posx>82</posx>
@@ -112,11 +109,21 @@
 				<texture>tvguide-logo-epg.png</texture>
 				<visible>!Player.Playing</visible>\
 			</control>
+			<control type="image" id="4944">
+				<description>Live</description>
+				<left>1530</left>
+				<top>798</top>
+				<width>100</width>
+				<height>45</height>
+				<aspectratio>keep</aspectratio>
+				<fadetime>100</fadetime>
+				<visible>!Control.IsVisible(5000)</visible>
+			</control>
 
 			<control type="label" id="6666">
 				<description>Program time</description>
-				<posx>1660</posx>
-				<posy>795</posy>
+				<posx>1680</posx>
+				<posy>780</posy>
 				<width>350</width>
 				<height>75</height>
 				<textcolor>white</textcolor>
@@ -124,7 +131,7 @@
 				<font>font35_title</font>
 				<align>left</align>
 				<aligny>center</aligny>
-				<label>[B]$INFO[System.Time(hh:mm)][/B]</label>
+				<label>$INFO[System.Time(hh:mm)]</label>
 			</control>
 
 			<control type="button" id="108">
