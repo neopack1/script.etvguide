@@ -30,7 +30,7 @@
 			<height>40</height>
 			<align>center</align>
 			<font>MediumBold</font>
-			<label>$ADDON[script.etvguide 31002] - [COLOR B3dddddd]e-TVGuide [B][COLOR ffffd700]EPG[/COLOR][/B]</label>
+			<label>$ADDON[script.etvguide 31002] - [COLOR B3dddddd]m-TVGuide [B][COLOR ffffd700]EPG[/COLOR][/B]</label>
 			<wrapmultiline>true</wrapmultiline>
 			<textcolor>B3dddddd</textcolor>
 		</control>

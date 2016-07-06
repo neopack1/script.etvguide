@@ -6,9 +6,9 @@
 	<coordinates>
 		<system>1</system><posx>0</posx><posy>0</posy>
 	</coordinates>
-		<animation effect="fade" end="100" time="200">WindowOpen</animation>
-		<animation effect="fade" time="200">VisibleChange</animation>
-		<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+		<animation effect="fade" end="100" time="150">WindowOpen</animation>
+		<animation effect="fade" time="150">VisibleChange</animation>
+		<animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
 		<controls>
 		<control type="button" id="1000">
 			<description>Close Window button</description>
@@ -39,15 +39,6 @@
 			<height>83</height>
 			<texture>dialogs/infobar.png</texture>
 			<animation effect="slide" end="0,-90" time="300" tween="sine" easing="inout" condition="Window.IsActive(DialogInfo.xml)">conditional</animation>
-			</control>
-		<control type="image">
-			<depth>DepthBars</depth>
-			<left>0</left>
-			<top>995</top>
-			<width>2000</width>
-			<height>85</height>
-			<texture flipy="true">dialogs/infobar.png</texture>
-			<animation effect="slide" end="0,90" time="300" tween="sine" easing="inout" condition="Window.IsActive(DialogInfo.xml)">conditional</animation>
 		</control>
 		
 		<!-- Menu -->		
@@ -81,14 +72,14 @@
 			<top>790</top>
 			<width>1900</width>
 			<height>270</height>
-			<texture border="40">dialogs/dialogbutton-nofo.png</texture>
+			<texture border="40">dialogs/dialog-bg-back.png</texture>
 		</control>
 		
 		<control type="label" id="4920">
 			<description>Program title</description>
 			<posx>86</posx>
 			<posy>42</posy>
-			<width>645</width>
+			<width>435</width>
 			<height>28</height>
 			<textcolor>FFF0F0F0</textcolor>
 			<shadowcolor>22000000</shadowcolor>
@@ -96,6 +87,21 @@
 			<aligny>center</aligny>
 			<scroll>false</scroll>
 			<visible>true</visible>
+		</control>
+		
+		<control type="label">
+			<description>Program title</description>
+			<posx>520</posx>
+			<posy>830</posy>
+			<width>555</width>
+			<height>28</height>
+			<textcolor>FFF0F0F0</textcolor>
+			<shadowcolor>22000000</shadowcolor>
+			<font>font13</font>
+			<aligny>center</aligny>
+			<scroll>false</scroll>
+			<visible>!Control.IsVisible(5000)</visible>
+			<label>$INFO[Control.GetLabel(4920)]</label>
 		</control>
 		
 		<control type="label" id="4921">
@@ -113,10 +119,10 @@
 		
 		<control type="image" id="4944">
 			<description>Live</description>
-			<posx>1595</posx>
-			<top>46</top>
+			<posx>1775</posx>
+			<top>933</top>
 			<width>80</width>
-			<height>22</height>
+			<height>26</height>
 		</control>
 		
 		<control type="label">
@@ -143,9 +149,9 @@
 		<control type="textbox" id="4922">
 			<description>Program description</description>
 			<posx>520</posx>
-			<posy>840</posy>
+			<posy>865</posy>
 			<width>725</width>
-			<height>96</height>
+			<height>65</height>
 			<textcolor>FFF0F0F0</textcolor>
 			<shadowcolor>22000000</shadowcolor>
 			<font>font12</font>
@@ -178,30 +184,30 @@
 		</control>
 		
 		<control type="button" id="108">
-			<posx>1476</posx>
+			<posx>1582</posx>
 			<top>834</top>
 			<width>74</width>
 			<height>74</height>
 			<texturefocus colordiffuse="FF12B2E7">buttons/remind.png</texturefocus>
-			<texturenofocus colordiffuse="FFF0F0F0">buttons/remind.png</texturenofocus>
+			<texturenofocus colordiffuse="FF12B2E7">buttons/remind.png</texturenofocus>
 			<animation effect="fade" end="100" time="100" delay="0">WindowOpen</animation>
 		</control>
 		<control type="button" id="107">
-			<posx>1476</posx>
+			<posx>1582</posx>
 			<top>834</top>
 			<width>74</width>
 			<height>74</height>
 			<texturefocus colordiffuse="FF12B2E7">buttons/guide.png</texturefocus>
-			<texturenofocus colordiffuse="FFF0F0F0">buttons/guide.png</texturenofocus>
+			<texturenofocus colordiffuse="FF12B2E7">buttons/guide.png</texturenofocus>
 			<animation effect="fade" end="100" time="100" delay="0">WindowOpen</animation>
 		</control>
 		<control type="button" id="105">
-			<posx>1476</posx>
+			<posx>1582</posx>
 			<top>834</top>
 			<width>74</width>
 			<height>74</height>
 			<texturefocus colordiffuse="FF12B2E7">buttons/play.png</texturefocus>
-			<texturenofocus>buttons/play.png</texturenofocus>
+			<texturenofocus colordiffuse="FF12B2E7">buttons/play.png</texturenofocus>
 			<animation effect="fade" end="100" time="100" delay="0">WindowOpen</animation>
 		</control>
 		<control type="button" id="101">

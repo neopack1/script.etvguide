@@ -256,7 +256,7 @@
 			<height>49</height>
 			<font>EPGTimeline</font>
 			<textcolor>B3dddddd</textcolor>
-			<label>$INFO[System.Date(DDD)]$COMMA $INFO[System.Date(d mmm yyyy)]</label>
+			<label>$INFO[System.Date(DDD)]$COMMA $INFO[System.Date(d MMM yyyy)]</label>
 			<animation effect="fade" start="100" end="90" condition="Window.IsActive(script-tvguide-menu.xml) | Window.IsActive(DialogInfo.xml) | Window.IsActive(script-tvguide-channels.xml) | Window.IsActive(script-tvguide-streamsetup.xml) ">Conditional</animation>
 			<visible>!Control.IsVisible(5000)</visible>
 		</control>

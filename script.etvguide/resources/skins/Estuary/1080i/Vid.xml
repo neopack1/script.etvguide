@@ -4,25 +4,61 @@
 	<controls>
 		<control type="image">
 			<description>serwis_bg</description>
-			<left>0</left>
-			<top>0</top>
-			<width>0</width>
-			<height>0</height>
-			<visible>false</visible>
+			<posx>615</posx>
+			<posy>920</posy>
+			<width>690</width>
+			<height>150</height>
+			<texture border="40">dialogs/dialog-bg-back.png</texture>
+			<animation effect="zoom" start="80" end="100" center="960,540" delay="160" tween="back" time="240" reversible="false">Visible</animation>
+			<animation effect="fade" delay="160" end="100" time="240" reversible="false">Visible</animation>
+			<animation effect="zoom" start="100" end="80" center="960,540" easing="in" tween="back" time="240" reversible="false">Hidden</animation>
+			<animation effect="fade" start="100" end="0" time="240" reversible="false">Hidden</animation>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
+		</control>
+		<control type="image">
+			<description>serwis_info</description>
+			<posx>650</posx>
+			<posy>955</posy>
+			<width>80</width>
+			<height>80</height>
+			<texture>dialogs/defaulticoninfo.png</texture>
+			<animation effect="zoom" start="80" end="100" center="960,540" delay="160" tween="back" time="240" reversible="false">Visible</animation>
+			<animation effect="fade" delay="160" end="100" time="240" reversible="false">Visible</animation>
+			<animation effect="zoom" start="100" end="80" center="960,540" easing="in" tween="back" time="240" reversible="false">Hidden</animation>
+			<animation effect="fade" start="100" end="0" time="240" reversible="false">Hidden</animation>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
 		</control>
 		<control type="label" id="4940">
 			<description>serwis</description>
-			<left>0%</left>
-			<top>6</top>
-			<width>1920</width>
+			<posx>746</posx>
+			<posy>950</posy>
+			<width>400</width>
 			<height>28</height>
-			<align>center</align>
-			<font>font13_title</font>
+			<align>left</align>
+			<font>font24_title</font>
 			<textcolor>FFF0F0F0</textcolor>
 			<shadowcolor>22000000</shadowcolor>
-			<animation effect="fade" end="100" time="200" delay="240">WindowOpen</animation>
-			<animation effect="fade" time="200" delay="240">VisibleChange</animation>
-			<animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+			<animation effect="zoom" start="80" end="100" center="960,540" delay="160" tween="back" time="240" reversible="false">Visible</animation>
+			<animation effect="fade" delay="160" end="100" time="240" reversible="false">Visible</animation>
+			<animation effect="zoom" start="100" end="80" center="960,540" easing="in" tween="back" time="240" reversible="false">Hidden</animation>
+			<animation effect="fade" start="100" end="0" time="240" reversible="false">Hidden</animation>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
+		</control>
+		<control type="label">
+			<description>label</description>
+			<posx>748</posx>
+			<posy>992</posy>
+			<width>400</width>
+			<height>28</height>
+			<align>left</align>
+			<font>font12</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<shadowcolor>22000000</shadowcolor>
+			<label>$ADDON[script.etvguide 30965]</label>
+			<animation effect="zoom" start="80" end="100" center="960,540" delay="160" tween="back" time="240" reversible="false">Visible</animation>
+			<animation effect="fade" delay="160" end="100" time="240" reversible="false">Visible</animation>
+			<animation effect="zoom" start="100" end="80" center="960,540" easing="in" tween="back" time="240" reversible="false">Hidden</animation>
+			<animation effect="fade" start="100" end="0" time="240" reversible="false">Hidden</animation>
 			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
 		</control>
 	</controls>
