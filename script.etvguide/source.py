@@ -1343,6 +1343,7 @@ class ETVGUIDESource(Source):
                 u = urllib2.urlopen(self.ETVGUIDEUrl1, timeout=2)
                 headers = u.info()
                 self.EPGSize = int(headers.getheader("Content-Length").strip())
+                u.close()
                 break
             except Exception, ex:
                 deb('getEpgSize exception %s failedCounter %s' % (str(ex), failedCounter))
@@ -1536,6 +1537,7 @@ class RssFeed(object):
                 content = u.read()
                 if u.headers.get("Content-Encoding", "") == "gzip":
                     content = zlib.decompressobj(16 + zlib.MAX_WBITS).decompress(content)
+                u.close()
                 break
             except Exception, ex:
                 failCounter+=1
