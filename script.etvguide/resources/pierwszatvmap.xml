@@ -42,7 +42,7 @@
 	<channel id="HBO2" 										title="(?=HBO\s*2(\s*HD)?$)" strm=""/>
 	<channel id="HBO3" 										title="(?=HBO\s*3(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox" 								    title="(?=Filmbox(\s*HD)?$)" strm=""/>
-	<channel id="Filmbox Extra HD" 							title="(?=Filmbox\s*Extra(\s*HD)?\s*$)" strm=""/>
+	<channel id="Filmbox Extra" 							title="(?=Filmbox\s*Extra(\s*HD)?\s*$)" strm=""/>
 	<channel id="Cinemax" 									title="(?=.*Cinemax)" strm=""/>
 	<channel id="Cinemax 2" 								title="(?=.*Cinemax)(?=.*2)" strm=""/>
 	<channel id="Polsat Film" 								title="(?=Polsat\s*Film(\s*HD)?$)" strm=""/>
@@ -51,7 +51,7 @@
 	<channel id="AXN White" 								title="(?=AXN\s*White(\s*HD)?$)" strm=""/>
 	<channel id="AXN Black" 								title="(?=AXN\s*Black(\s*HD)?$)" strm=""/>
 	<channel id="AXN Spin" 									title="(?=.*AXN)(?=.*Spin)" strm=""/>
-	<channel id="SciFi" 									title="(?=.*Scifi)(?=.*Universal)" strm=""/>
+	<channel id="SciFi" 									title="(?=*Sci-Fi*)" strm=""/>
 	<channel id="MGM" 										title="(?=.*MGM)" strm=""/>
 	<channel id="Comedy Central" 							title="(?=Comedy\s*(Central|CENTERAL)(\s*HD)?$)" strm=""/>
 	<channel id="Comedy Central Family" 					title="(?=Comedy\s*Central\s*Family(\s*HD)?$)" strm=""/>
@@ -61,10 +61,23 @@
 	<channel id="Ale Kino+" 								title="(?=.*ale)(?=.*kino)" strm=""/>
 	<channel id="Animal Planet" 							title="(?=Animal\s*Planet(\s*HD)?$)" strm=""/>
 	<channel id="National Geographic Channel" 				title="(?=National\s*Geographic(\s*CHANNEL)?(\s*HD)?$)" strm=""/>
+	<channel id="Nat Geo People HD"							title="(?=Nat\s*Geo\s*People(\s*HD)?$)" strm=""/>
+	<channel id="CBS Europa"								title="(?=CBS\s*Europa(\s*HD)?$)" strm=""/>
+	<channel id="CBS Action"								title="(?=CBS\s*Action(\s*HD)?$)" strm=""/>
 	<channel id="Nat Geo Wild" 								title="(?=Nat\s*Geo\s*Wild(\s*HD)?$)" strm=""/>
+	
+<!-- 
+Kanał Discovery tymczasowo ustawiony na jakość SD ponieważ na HD jest TVN style, oryg kopia zapisana:
+<channel id="Discovery Channel" 						title="(?=Discovery\s*Channel(\s*HD)?$)" strm=""/>
+-->
+	
 	<channel id="Discovery Channel" 						title="(?=Discovery\s*Channel\s*$)" strm=""/>
+	
+	
+	
 	<channel id="Canal+ Discovery" 							title="(?=.*Canal)(?=.*Discovery)" strm=""/>
 	<channel id="Discovery Science" 						title="(?=.*Discovery)(?=.*Science)" strm=""/>
+	<channel id="Discovery Turbo Xtra" 						title="(?=Discover\s*Turbo\s*Xtra(\s*HD)?$)" strm=""/>
 	<channel id="Discovery Historia" 						title="(?=.*Discovery)(?=.*Historia)" strm=""/>
 	<channel id="ID" 										title="(?=(INVESTIGATION\s*DISCOVERY|ID)(\s*HD)?$)" strm=""/>
 	<channel id="Crime &amp; Investigation Network Polsat" 	title="(?=.*Crime)(?=.*Investigation)(?=.*Polsat)" strm=""/>
@@ -86,7 +99,7 @@
 	<channel id="Eurosport" 								title="(?=Eurosport(\s*HD)?$)" strm=""/>
 	<channel id="Eurosport 2" 								title="(?=Eurosport\s*2(\s*HD)?$)" strm=""/>
 	<channel id="FightBox" 									title="(?=.*FightBox)" strm=""/>
-	<channel id="FIGHTKLUB" 								title="(?=\s*FIGHT\s*KLUB(\s*HD)?\s*$)" strm=""/>
+	<channel id="Fight Klub" 								title="(?=\s*FIGHT\s*KLUB(\s*HD)?\s*$)" strm=""/>
 	<channel id="Eleven" 									title="(?=Eleven(\s*HD)?$)" strm=""/>
 	<channel id="Eleven Sport" 				                title="(?=ELEVEN\s*SPORTS(\s*HD)?$)" strm=""/>
 	<channel id="Extreme" 									title="(?=.*Extreme)" strm=""/>
@@ -121,7 +134,7 @@
 	<channel id="ESKA ROCK"						    		title="(?=ESKA\s*ROCK(\s*HD)?\s*$)" strm=""/>
 	<channel id="MUSIC VOX TV 2"						    title="(?=MUSIC\s*VOX\s*TV\s*2(\s*HD)?\s*$)" strm=""/>
 	<channel id="POLO PARTY TV"						    	title="(?=POLO\s*PARTY\s*TV(\s*HD)?\s*$)" strm=""/>
-	<channel id="Sportklub"						    		title="(?=SPORT\s*KLUB(\s*HD)?\s*$)" strm=""/>
+	<channel id="Sport Klub"						    		title="(?=SPORT\s*KLUB(\s*HD)?\s*$)" strm=""/>
 	<channel id="TUBA TV"						    		title="(?=TUBA\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="TV KUJAWY"						    		title="(?=TV\s*KUJAWY(\s*HD)?\s*$)" strm=""/>
 	<channel id="TVN 24 BiS"						    	title="(?=TVN\s*24\s*BiS(\s*HD)?\s*$)" strm=""/>
@@ -150,16 +163,31 @@
 	<channel id="Amazing"						    		title="(?=Amazing(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="Trace Urban"						    	title="(?=Trace\s*Urban(\s*TV)?(\s*HD)?\s*$)" strm=""/>
 	<channel id="To!TV"						    			title="(?=TOTV(\s*TV)?(\s*HD)?\s*$)" strm=""/>
-	<channel id="H2" 										title="(?=\s*H2(\s*HD)?\s*$)" strm=""/>
-	<channel id="Water Planet" 								title="(?=\s*Water\s*Planet(\s*HD)?\s*$)" strm=""/>
-	<channel id="Scifi Universal" 							title="(?=Sci-Fi(\s*HD)?\s*$)" strm=""/>
-	<channel id="Discovery Turbo Xtra" 						title="(?=Discover(y)?\s*Turbo\s*Xtra(\s*HD)?$)" strm=""/>
-	<channel id="Nat Geo People" 							title="(?=Nat\s*Geo\s*People(\s*HD)?$)" strm=""/>
-	<channel id="CBS Action" 								title="(?=CBS\s*Action(\s*HD)?$)" strm=""/>
-	<channel id="CBS Europa" 								title="(?=CBS\s*Europa(\s*HD)?$)" strm=""/>
+	<channel id="H2"								title="(?=H2$)" strm=""/>
 </map>
 
 <!--
-	<channel id="" 									title="(?=HBO\s*3$)" strm=""/>
-	<channel id="" 									title="(?=HBO\s*3$)" strm=""/>
+	Uwaga:
+		1)	Jeżeli podamy w strm danego kanału ścieżkę to przypisujemy na sztywno tego streama - nie generujemy sami na podstawie pobranej z weeb.tv listy CIDów.
+			<channel id="TVP 2" title="" strm="service=weebtv&amp;cid=00000"/>
+			
+		2)	Jeżeli jakieś kanały nie mają ustawionego strm-a to te kanały przypasowujemy:
+			egex.match(title, "TITLE KANAŁU WEEB.TV")
+
+		3)	strm dla tych znalezionych kanałów powstaje tak (pole strm w atrybutach mapy) "service=weebtv&amp;cid=%s" % CID 
+			&amp; = & !!
+
+			Nie dopasowujemy nazwy kanału bo np. a może to użytkownik? np: worlddiscovery emituje program ESKA TV, więc kto wie czy za jakiś czas nie zmieni planów.
+			Na pewno wtedy title kanału się zmieni a jak widać name może zostać takie same.
+
+	Kilka słów o użytym często tutaj regexie
+
+		(?=.*slowo1)(?=.*slowo2)(?=.*slowo3)(?=.*slowo4) sprawdza czy wszystkie słowa znajdują się w danym stringu, obojętnie w jakiej kolejności
+		Uwaga (?=.*Canal)(?=.*Film) nie zwróci grup pasujących tylko powie, że wyrażenie pasuje - jest spełnione
+		np.: regex = (?=.*Canal)(?=.*Film)	string = Film Canal+ HD 2
+		No match groups were extracted.
+		This means that your pattern matches but there were no (capturing (groups)) in it that matched anything in the subject string.
+
+		(?=.*Canal)(?=.*Film)(?!.*HD)	- musi zawierać Canal, musi zawierać Film, nie może zawierać HD
+		^(?=.*Canal)(?=.*Film)(?!.*HD)	- j/w w razie jak by powyższe nie działało, to spróbować tego (niby jak HD będzie na poczatku to by tamto nie załapało), ale na moich testerach oba wyrażenia działają
 -->
