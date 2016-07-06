@@ -44,6 +44,7 @@ class ShowList:
 
     def getJsonFromAPI(self, url, post={}):
         result_json = None
+        raw_json = None
         try:
             data     = urllib.urlencode(post)
             reqUrl   = urllib2.Request(url, data)
@@ -62,6 +63,7 @@ class ShowList:
                         content_json = zlib.decompressobj(16 + zlib.MAX_WBITS).decompress(content_json)
 
                     result_json = json.loads(content_json)
+                    raw_json.close()
                     break
                 except (httplib.IncompleteRead, socket.timeout) as ex:
                     self.logCall('ShowList getJsonFromAPI exception: %s - retrying seconds = %s' % (str(ex), (datetime.datetime.now() - startTime).seconds))
@@ -78,6 +80,12 @@ class ShowList:
                     else:
                         raise
 
+                try:
+                    if raw_json:
+                        raw_json.close()
+                        raw_json = None
+                except:
+                    pass
                 if strings2.M_TVGUIDE_CLOSING:
                     self.logCall('ShowList getJsonFromAPI M_TVGUIDE_CLOSING - aborting!')
                     break
@@ -90,6 +98,7 @@ class ShowList:
 
     def getJsonFromExtendedAPI(self, url, post_data = None, save_cookie = False, load_cookie = False, cookieFile = None, jsonLoadsResult = False, jsonLoadResult = False, customHeaders = None):
         result_json = None
+        raw_json = None
         customOpeners = []
         cj = cookielib.LWPCookieJar()
 
@@ -129,6 +138,7 @@ class ShowList:
 
                     if jsonLoadsResult == True:
                         result_json = json.loads(result_json)
+                    raw_json.close()
                     break
                 except (httplib.IncompleteRead, socket.timeout) as ex:
                     self.logCall('ShowList getJsonFromExtendedAPI exception: %s - retrying seconds = %s' % (str(ex), (datetime.datetime.now() - startTime).seconds))
@@ -145,6 +155,12 @@ class ShowList:
                     else:
                         raise
 
+                try:
+                    if raw_json:
+                        raw_json.close()
+                        raw_json = None
+                except:
+                    pass
                 if strings2.M_TVGUIDE_CLOSING:
                     self.logCall('ShowList getJsonFromExtendedAPI M_TVGUIDE_CLOSING - aborting!')
                     break
@@ -175,6 +191,7 @@ class ShowList:
         try:
             urlFile = urllib2.urlopen(url, timeout=HTTP_ConnectionTimeout)
             fileContent = urlFile.read()
+            urlFile.close()
         except Exception, ex:
             self.logCall('File download error, exception: %s' % str(ex))
             fileContent = None
