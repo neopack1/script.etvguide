@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window type="dialog">
+	<defaultcontrol always="true">1000</defaultcontrol>
+	<coordinates>
+		<system>1</system><posx>0</posx><posy>0</posy>
+	</coordinates>
+	<animation effect="fade" end="0" start="100" time="200" tween="sine" easing="out">WindowClose</animation>
+	<controls>
+		<control type="group">
+			<control type="image">
+				<description>background image</description>
+				<width>1920</width>
+				<top>0</top>
+				<height>1080</height>
+				<aspectratio aligny="top">scale</aspectratio>
+				<texture colordiffuse="ff181818">../../Arctic Zephyr/media/tvguide-background-default.jpg</texture>
+				<animation effect="fade" start="0" end="100" time="250" delay="0" tween="cubic" easing="inout">WindowOpen</animation>
+				<animation effect="fade" end="0" start="100" time="200" tween="sine" easing="out">WindowClose</animation>
+			</control>
+			<control type="image">
+				<width>1920</width>
+				<height>1080</height>
+				<top>0</top>
+				<texture colordiffuse="BF181818">../../Arctic Zephyr/media/dialogs/floor.png</texture>
+				<animation effect="fade" start="0" end="100" time="250" delay="0" tween="cubic" easing="inout">WindowOpen</animation>
+				<animation effect="fade" end="0" start="100" time="200" tween="sine" easing="out">WindowClose</animation>
+			</control>
+			<control type="image">
+				<width>1920</width>
+				<height>16</height>
+				<top>0</top>
+				<texture flipy="false">../../Arctic Zephyr/media/dialogs/shadow.png</texture>
+				<animation effect="fade" start="0" end="100" time="250" delay="0" tween="cubic" easing="inout">WindowOpen</animation>
+				<animation effect="fade" end="0" start="100" time="200" tween="sine" easing="out">WindowClose</animation>
+			</control>
+			<control type="image">
+				<left>80</left>
+				<top>80</top>
+				<width>80</width>
+				<height>80</height>
+				<texture colordiffuse="FF333333" border="16">../../Arctic Zephyr/media/dialogs/pvrinfo.png</texture>
+			</control>
+			<control type="image">
+				<left>68</left>
+				<top>68</top>
+				<width>104</width>
+				<height>104</height>
+				<texture colordiffuse="FFdddddd">../../Arctic Zephyr/media/dialogs/logo.png</texture>
+			</control>
+			<control type="label">
+				<top>86</top>
+				<left>184</left>
+				<width>1920</width>
+				<height>38</height>
+				<font>MediumBold</font>
+				<textcolor>FFdddddd</textcolor>
+				<label>$LOCALIZE[4]</label>
+				<visible>!Control.IsVisible(5000)</visible>
+			</control>
+			<control type="label">
+				<top>130</top>
+				<left>185</left>
+				<width>1920</width>
+				<height>16</height>
+				<font>Flag</font>
+				<label>[COLOR ff0385b5]MODS-KODI[/COLOR] [COLOR B3dddddd][B]·[/B] EPG[/COLOR]</label>
+				<visible>!Control.IsVisible(5000)</visible>
+			</control>
+			
+			<control type="button" id="1000">
+				<description>Close Window button</description>
+				<posx>1245</posx>
+				<posy>15</posy>
+				<width>96</width>
+				<height>48</height>
+				<onclick>Dialog.Close(VideoOSD,true)</onclick>
+				<onclick>FullScreen</onclick>
+				<texturefocus>DialogCloseButton-focus.png</texturefocus>
+				<texturenofocus>DialogCloseButton.png</texturenofocus>
+				<animation effect="fade" time="200">VisibleChange</animation>
+				<visible>false</visible>
+			</control>
+			
+			<control type="label">
+				<top>908</top>
+				<height>84</height>
+				<centertop>24</centertop>
+				<right>130</right>
+				<align>right</align>
+				<width>50%</width>
+				<font>LargeBold</font>
+				<textcolor>FFdddddd</textcolor>
+				<label>$INFO[System.Time(hh:mm)]</label>
+				<animation effect="slide" start="0" end="50" time="0" condition="IsEmpty(System.Time(xx))">Conditional</animation>
+			</control>
+			<control type="label">
+				<top>914</top>
+				<height>84</height>
+				<centertop>30</centertop>
+				<right>80</right>
+				<font>SmallBold</font>
+				<textcolor>4Ddddddd</textcolor>
+				<align>right</align>
+				<width>120</width>
+				<label>$INFO[System.Time(xx)]</label>
+				<visible>!IsEmpty(System.Time(xx))</visible>
+			</control>
+			<control type="label">
+				<top>948</top>
+				<height>84</height>
+				<centertop>64</centertop>
+				<right>80</right>
+				<font>Flag</font>
+				<textcolor>B3dddddd</textcolor>
+				<align>right</align>
+				<width>50%</width>
+				<label>$INFO[System.Date(DDD)]$COMMA $INFO[System.Date(d MMM yyyy)]</label>
+			</control>
+			<control type="label">
+				<top>988</top>
+				<right>80</right>
+				<centertop>64</centertop>
+				<font>Flag</font>
+				<textcolor>4Ddddddd</textcolor>
+				<align>right</align>
+				<width>50%</width>
+				<label>[COLOR=$VAR[ColorHighlight]]$INFO[Weather.Temperature][/COLOR]  $INFO[Weather.Conditions]</label>
+			</control>
+			
+			<control type="label" id="4920">
+				<description>Program title</description>
+				<posx>780</posx>
+				<posy>229</posy>
+				<width>780</width>
+				<height>38</height>
+				<textcolor>FFdddddd</textcolor>
+				<font>Medium</font>
+                <animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="image" id="4924">
+				<description>Channel logo</description>
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>0</width>
+				<height>0</height>
+				<visible>false</visible>
+			</control>
+			<control type="image" id="4944">
+				<description>Live</description>
+				<posx>100</posx>
+				<posy>933</posy>
+				<width>120</width>
+				<height>37</height>
+			</control>
+			<control type="label" id="4921">
+				<description>Program time</description>
+				<posx>782</posx>
+				<posy>277</posy>
+				<width min="20" max="380">auto</width>
+				<height>26</height>
+				<textcolor>B3dddddd</textcolor>
+				<font>Tiny</font>
+				<align>left</align>
+				<aligny>center</aligny>	
+                <animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="textbox" id="4922">
+				<description>Program description</description>
+				<posx>782</posx>
+				<posy>331</posy>
+				<width>1030</width>
+				<height>338</height>
+				<textcolor>B3dddddd</textcolor>
+				<font>Tiny</font>
+				<align>left</align>
+				<wrapmultiline>true</wrapmultiline>
+				<autoscroll time="3500" delay="4500" repeat="10000">true</autoscroll>
+                <animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="image">
+				<description>Shadow</description>
+				<posx>55</posx>
+				<posy>200</posy>
+				<width>682</width>
+				<height>476</height>
+				<texture border="10">../../Arctic Zephyr/media/dialogs/focus-shadow.png</texture>
+                <animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+				<control type="image">
+				<description>Shadow spot</description>
+				<posx>55</posx>
+				<posy>645</posy>
+				<width>682</width>
+				<height>48</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>../../Arctic Zephyr/media/dialogs/shadowspot.png</texture>
+                <animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="image" id="4923">
+				<description>Program logo</description>
+				<posx>69</posx>
+				<posy>214</posy>
+				<width>654</width>
+				<height>447</height>
+				<texture>tvguide-logo-epg.png</texture>
+				<aspectratio>scale</aspectratio>
+                <animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="progress" id="4999">
+				<posx>0</posx>
+				<posy>0</posy>
+				<width>0</width>
+				<height>0</height>
+				<visible>false</visible>
+			</control>
+		</control>
+	</controls>
+</window>

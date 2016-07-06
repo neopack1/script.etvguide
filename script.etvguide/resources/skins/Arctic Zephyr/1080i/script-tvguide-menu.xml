@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window type="dialog">
+	<allowoverlay>no</allowoverlay>
+	<defaultcontrol always="false">4000</defaultcontrol>
+	<coordinates>
+		<system>1</system><posx>0</posx><posy>0</posy>
+	</coordinates>
+		<animation effect="fade" start="0" end="100" time="100">WindowOpen</animation>
+		<animation effect="fade" start="100" end="0" time="100">WindowClose</animation>
+	<controls>
+		<control type="image">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1920</width>
+			<height>1080</height>
+			<texture>dialogs/black-back.png</texture>
+		</control>
+		<control type="image">
+			<description>Background</description>
+			<posx>735</posx>
+			<posy>192</posy>
+			<width>450</width>
+			<height>436</height>
+			<texture border="10" colordiffuse="ffdddddd">dialogs/pvrinfo.png</texture>
+		</control>
+		
+		<control type="image" id="4100">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>0</width>
+			<height>0</height>
+			<visible>false</visible>
+		</control>
+		<control type="label" id="4101">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>0</width>
+			<height>0</height>
+			<visible>false</visible>
+		</control>
+		
+		<!-- Play -->
+		<control type="button" id="4000">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>0</width>
+			<height>0</height>
+			<visible>false</visible>
+		</control>
+		
+		<control type="label" id="4102">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>0</width>
+			<height>0</height>
+			<visible>false</visible>
+		</control>
+		
+		<control type="label" id="4103">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>0</width>
+			<height>0</height>
+			<visible>false</visible>
+		</control>
+		
+		<!-- Remaind me / not -->
+		<control type="button" id="4002"> 
+			<posx>735</posx>
+			<posy>270</posy>
+			<width>450</width>
+			<height>70</height>
+			<onup>4001</onup>
+			<ondown>4006</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>Tiny</font>
+			<textcolor>ff333333</textcolor>
+			<focusedcolor>FFFFFFFF</focusedcolor>
+			<texturefocus colordiffuse="ff0385b5" border="5">dialogs/white.png</texturefocus>
+			<texturenofocus colordiffuse="ffdddddd" border="5">dialogs/white.png</texturenofocus>
+		</control>
+
+		<!-- Button Add/Remove Strm -->
+		<control type="button" id="4001">
+			<posx>735</posx>
+			<posy>200</posy>
+			<width>450</width>
+			<height>70</height>
+			<onup>4004</onup>
+			<ondown>4002</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>Tiny</font>
+			<textcolor>ff333333</textcolor>
+			<focusedcolor>FFFFFFFF</focusedcolor>
+			<texturefocus colordiffuse="ff0385b5" border="5">dialogs/white.png</texturefocus>
+			<texturenofocus colordiffuse="ffdddddd" border="5">dialogs/white.png</texturenofocus>
+		</control>
+		
+		<!-- Channels -->
+		<control type="button" id="4003">
+			<posx>735</posx>
+			<posy>410</posy>
+			<width>450</width>
+			<height>70</height>
+			<onup>4006</onup>
+			<ondown>4005</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>Tiny</font>
+			<textcolor>ff333333</textcolor>
+			<focusedcolor>FFFFFFFF</focusedcolor>
+			<label>$ADDON[script.etvguide 30307]</label>
+			<texturefocus colordiffuse="ff0385b5" border="5">dialogs/white.png</texturefocus>
+			<texturenofocus colordiffuse="ffdddddd" border="5">dialogs/white.png</texturenofocus>
+		</control>
+
+		<!-- Exit -->
+		<control type="button" id="4004">
+			<posx>735</posx>
+			<posy>550</posy>
+			<width>450</width>
+			<height>70</height>
+			<onup>4005</onup>
+			<ondown>4001</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>Tiny</font>
+			<textcolor>ff333333</textcolor>
+			<focusedcolor>FFFFFFFF</focusedcolor>
+			<label>$ADDON[script.etvguide 30308]</label>
+			<texturefocus colordiffuse="ff0385b5" border="5">dialogs/white.png</texturefocus>
+			<texturenofocus colordiffuse="ffdddddd" border="5">dialogs/white.png</texturenofocus>
+		</control>
+		
+		<!-- Settings -->
+		<control type="button" id="4005">
+			<posx>735</posx>
+			<posy>480</posy>
+			<width>450</width>
+			<height>70</height>
+			<onup>4003</onup>
+			<ondown>4004</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>Tiny</font>
+			<textcolor>ff333333</textcolor>
+			<focusedcolor>FFFFFFFF</focusedcolor>
+			<label>$LOCALIZE[33063]</label>
+			<onclick>Addon.OpenSettings(script.etvguide)</onclick>
+			<texturefocus colordiffuse="ff0385b5" border="5">dialogs/white.png</texturefocus>
+			<texturenofocus colordiffuse="ffdddddd" border="5">dialogs/white.png</texturenofocus>
+		</control>
+		
+		<!-- Recordings -->
+		<control type="button" id="4006"> 
+			<posx>735</posx>
+			<posy>340</posy>
+			<width>450</width>
+			<height>70</height>
+			<onup>4002</onup>
+			<ondown>4003</ondown>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>Tiny</font>
+			<textcolor>ff333333</textcolor>
+			<focusedcolor>FFFFFFFF</focusedcolor>
+			<label>$LOCALIZE[19017]</label>
+			<onclick>ActivateWindow(Videos,sources://video/ ,return)</onclick>
+			<texturefocus colordiffuse="ff0385b5" border="5">dialogs/white.png</texturefocus>
+			<texturenofocus colordiffuse="ffdddddd" border="5">dialogs/white.png</texturenofocus>
+		</control>
+	</controls>
+</window>

@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window type="dialog">
+	<allowoverlay>no</allowoverlay>
+	<defaultcontrol always="false">101</defaultcontrol>
+	<zorder>3</zorder>
+	<coordinates>
+		<system>1</system><posx>0</posx><posy>0</posy>
+	</coordinates>
+	<controls>
+		<control type="label" id="100">
+			<description>tabs visibility marker</description>
+			<visible>false</visible>
+		</control>
+		
+		<control type="image">
+			<description>background image</description>
+			<width>1920</width>
+			<top>0</top>
+			<height>1080</height>
+			<aspectratio aligny="top">scale</aspectratio>
+			<texture colordiffuse="ff181818">../../Arctic Zephyr/media/tvguide-background-default.jpg</texture>
+			<animation effect="fade" start="100" end="100" time="250" delay="0" tween="cubic" easing="inout">WindowOpen</animation>
+			<animation effect="fade" end="0" start="100" time="200" tween="sine" easing="out">WindowClose</animation>
+		</control>
+		<control type="image">
+			<width>1920</width>
+			<height>1080</height>
+			<top>0</top>
+			<texture colordiffuse="BF181818">../../Arctic Zephyr/media/dialogs/floor.png</texture>
+			<animation effect="fade" start="100" end="100" time="250" delay="0" tween="cubic" easing="inout">WindowOpen</animation>
+			<animation effect="fade" end="0" start="100" time="200" tween="sine" easing="out">WindowClose</animation>
+			<visible>!Control.IsVisible(5000)</visible>
+		</control>
+		
+		<control type="image">
+            <width>1920</width>
+            <height>16</height>
+            <top>0</top>
+            <texture flipy="false">../../Arctic Zephyr/media/dialogs/shadow.png</texture>
+			<animation effect="fade" start="100" end="100" time="250" delay="0" tween="cubic" easing="inout">WindowOpen</animation>
+			<animation effect="fade" end="0" start="100" time="200" tween="sine" easing="out">WindowClose</animation>
+			<visible>!Control.IsVisible(5000)</visible>
+		</control>
+		
+		<control type="image">
+			<left>80</left>
+			<top>80</top>
+			<width>80</width>
+			<height>80</height>
+			<texture colordiffuse="FF333333" border="16">../../Arctic Zephyr/media/dialogs/pvrinfo.png</texture>
+			<visible>!Control.IsVisible(5000)</visible>
+		</control>
+		<control type="image">
+			<left>68</left>
+			<top>68</top>
+			<width>104</width>
+			<height>104</height>
+			<texture colordiffuse="FFdddddd">../../Arctic Zephyr/media/dialogs/logo.png</texture>
+		</control>
+		
+		<control type="label">
+			<top>86</top>
+			<left>184</left>
+			<width>1920</width>
+			<height>38</height>
+			<font>MediumBold</font>
+			<textcolor>FFdddddd</textcolor>
+			<label>$LOCALIZE[4]</label>
+			<animation effect="fade" start="0" end="100" time="250" delay="0" tween="cubic" easing="inout">WindowOpen</animation>
+		</control>
+		<control type="label">
+			<top>130</top>
+			<left>185</left>
+			<width>1920</width>
+			<height>16</height>
+			<font>Flag</font>
+			<textcolor>ff0385b5</textcolor>
+			<label>[COLOR ff0385b5]MODS-KODI[/COLOR] [COLOR B3dddddd][B]·[/B] EPG[/COLOR] [COLOR B3dddddd][B]·[/B] $ADDON[script.etvguide 30304][/COLOR]</label>
+			<animation effect="fade" start="0" end="100" time="250" delay="0" tween="cubic" easing="inout">WindowOpen</animation>
+		</control>
+		
+		<control type="label">
+			<top>908</top>
+			<height>84</height>
+			<centertop>24</centertop>
+			<right>130</right>
+			<align>right</align>
+			<width>50%</width>
+			<font>LargeBold</font>
+			<textcolor>FFdddddd</textcolor>
+			<label>$INFO[System.Time(hh:mm)]</label>
+			<animation effect="slide" start="0" end="50" time="0" condition="IsEmpty(System.Time(xx))">Conditional</animation>
+		</control>
+		<control type="label">
+			<top>914</top>
+			<height>84</height>
+			<centertop>30</centertop>
+			<right>80</right>
+			<font>SmallBold</font>
+			<textcolor>4Ddddddd</textcolor>
+			<align>right</align>
+			<width>120</width>
+			<label>$INFO[System.Time(xx)]</label>
+			<visible>!IsEmpty(System.Time(xx))</visible>
+		</control>
+		<control type="label">
+			<top>948</top>
+			<height>84</height>
+			<centertop>64</centertop>
+			<right>80</right>
+			<font>Flag</font>
+			<textcolor>B3dddddd</textcolor>
+			<align>right</align>
+			<width>50%</width>
+			<label>$INFO[System.Date(DDD)]$COMMA $INFO[System.Date(d MMM yyyy)]</label>
+		</control>
+		<control type="label">
+			<top>988</top>
+			<right>80</right>
+			<centertop>64</centertop>
+			<font>Flag</font>
+			<textcolor>4Ddddddd</textcolor>
+			<align>right</align>
+			<width>50%</width>
+			<label>[COLOR=$VAR[ColorHighlight]]$INFO[Weather.Temperature][/COLOR]  $INFO[Weather.Conditions]</label>
+		</control>
+		
+		<control type="button" id="1000">
+			<description>Close Window button</description>
+			<posx>1245</posx>
+			<posy>105</posy>
+			<width>96</width>
+			<height>48</height>
+			<onclick>Dialog.Close(all,true)</onclick>
+			<onclick>FullScreen</onclick>
+			<texturefocus>DialogCloseButton-focus.png</texturefocus>
+			<texturenofocus>DialogCloseButton.png</texturenofocus>
+			<animation effect="fade" time="200">VisibleChange</animation>
+			<visible>false</visible>
+		</control>
+		
+		<control type="button" id="101">
+			<posx>80</posx>
+			<posy>265</posy>
+			<width>260</width>
+			<height>68</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>Mini</font>
+			<textcolor>FFdddddd</textcolor>
+			<focusedcolor>FFFFFFFF</focusedcolor>
+			<label>[UPPERCASE]$ADDON[script.etvguide 30601][/UPPERCASE]</label>
+			<onleft>103</onleft>
+			<onright>102</onright>
+			<ondown>1001</ondown>
+			<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+			<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+			<animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+            <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+		</control>
+		<control type="button" id="102">
+			<posx>356</posx>
+			<posy>265</posy>
+			<width>260</width>
+			<height>68</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>Mini</font>
+			<textcolor>FFdddddd</textcolor>
+			<focusedcolor>FFFFFFFF</focusedcolor>
+			<label>[UPPERCASE]$ADDON[script.etvguide 30602][/UPPERCASE]</label>
+			<onleft>101</onleft>
+			<onright>103</onright>
+			<ondown>2001</ondown>
+			<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+			<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+			<animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+            <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+		</control>
+		<control type="button" id="103">
+			<posx>632</posx>
+			<posy>265</posy>
+			<width>260</width>
+			<height>68</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>Mini</font>
+			<textcolor>FFdddddd</textcolor>
+			<focusedcolor>FFFFFFFF</focusedcolor>
+			<label>[UPPERCASE]$ADDON[script.etvguide 30603][/UPPERCASE]</label>
+			<onleft>102</onleft>
+			<onright>101</onright>
+			<ondown>3001</ondown>
+			<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+			<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+			<animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+            <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+		</control>
+
+		<control type="group" id="1000">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1920</width>
+			<height>1080</height>
+			<visible>StringCompare(Control.GetLabel(100),strm)</visible>
+
+			<control type="textbox">
+				<posx>85</posx>
+				<posy>360</posy>
+				<width>840</width>
+				<height>400</height>
+				<label>$ADDON[script.etvguide 30611]</label>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<wrapmultiline>true</wrapmultiline>
+				<animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+				<animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+
+			<control type="button" id="1001">
+				<posx>752</posx>
+				<posy>788</posy>
+				<width>260</width>
+				<height>68</height>
+				<label>[UPPERCASE]$ADDON[script.etvguide 30610][/UPPERCASE]</label>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<onup>101</onup>
+				<onright>1002</onright>
+				<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+				<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+
+			<control type="textbox" id="1005">
+				<posx>85</posx>
+				<posy>360</posy>
+				<width>840</width>
+				<height>400</height>
+				<wrapmultiline>true</wrapmultiline>
+                <animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+
+			<control type="button" id="1002">
+				<posx>1028</posx>
+				<posy>788</posy>
+				<width>260</width>
+				<height>68</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<label>[UPPERCASE]$ADDON[script.etvguide 30604][/UPPERCASE]</label>
+				<onup>101</onup>
+				<onleft>1001</onleft>
+				<onright>1004</onright>
+				<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+				<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="button" id="1003">
+				<posx>1580</posx>
+				<posy>788</posy>
+				<width>260</width>
+				<height>68</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<label>[UPPERCASE]$ADDON[script.etvguide 30605][/UPPERCASE]</label>
+				<onup>101</onup>
+				<onleft>1004</onleft>
+				<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+				<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="button" id="1004">
+				<posx>1304</posx>
+				<posy>788</posy>
+				<width>260</width>
+				<height>68</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<label>[UPPERCASE]$ADDON[script.etvguide 30606][/UPPERCASE]</label>
+				<onup>101</onup>
+				<onleft>1002</onleft>
+				<onright>1003</onright>
+				<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+				<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+		</control>
+
+		<control type="group" id="2000">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1920</width>
+			<height>1080</height>
+			<visible>StringCompare(Control.GetLabel(100),favourites)</visible>
+
+			<control type="textbox">
+				<posx>85</posx>
+				<posy>360</posy>
+				<width>840</width>
+				<height>400</height>
+				<label>$ADDON[script.etvguide 30620]</label>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<wrapmultiline>true</wrapmultiline>
+                <animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+
+			<control type="list" id="2001">
+				<posx>90</posx>
+				<posy>490</posy>
+				<width>790</width>
+				<height>440</height>
+				<viewtype label="list">list</viewtype>
+				<orientation>vertical</orientation>
+				<focusposition>7</focusposition>
+				<onup>102</onup>
+				<onright>2002</onright>
+				<animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+
+				<itemlayout width="560" height="40">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>790</width>
+						<height>38</height>
+						<texture colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texture>
+					</control>
+					<control type="label">
+						<posx>16</posx>
+						<posy>0</posy>
+						<width>790</width>
+						<height>38</height>
+						<aligny>center</aligny>
+						<font>Mini</font>
+						<textcolor>FFdddddd</textcolor>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout width="560" height="40">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>790</width>
+						<height>38</height>
+						<texture colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texture>
+						<visible>!Control.HasFocus(3002)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>790</width>
+						<height>38</height>
+						<texture colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texture>
+						<visible>Control.HasFocus(3002)</visible>
+					</control>
+					<control type="label">
+						<posx>16</posx>
+						<posy>0</posy>
+						<width>790</width>
+						<height>38</height>
+						<aligny>center</aligny>
+						<font>Mini</font>
+						<textcolor>FFFFFFFF</textcolor>
+						<info>ListItem.Label</info>
+					</control>
+					<control type="image">
+						<posx>760</posx>
+						<posy>9</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>../../Arctic Zephyr/media/tvguide-bullet.png</texture>
+					</control>
+				</focusedlayout>
+			</control>
+
+			<control type="button" id="2002">
+				<posx>1028</posx>
+				<posy>788</posy>
+				<width>260</width>
+				<height>68</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<label>[UPPERCASE]$ADDON[script.etvguide 30604][/UPPERCASE]</label>
+				<onup>102</onup>
+				<onleft>2001</onleft>
+				<onright>2004</onright>
+				<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+				<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="button" id="2003">
+				<posx>1580</posx>
+				<posy>788</posy>
+				<width>260</width>
+				<height>68</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<label>[UPPERCASE]$ADDON[script.etvguide 30605][/UPPERCASE]</label>
+				<onup>102</onup>
+				<onleft>2004</onleft>
+				<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+				<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="button" id="2004">
+				<posx>1304</posx>
+				<posy>788</posy>
+				<width>260</width>
+				<height>68</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<label>[UPPERCASE]$ADDON[script.etvguide 30606][/UPPERCASE]</label>
+				<onup>102</onup>
+				<onleft>2002</onleft>
+				<onright>2003</onright>
+				<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+				<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			
+			<control type="image">
+				<description>logo shadow</description>
+				<posx>1086</posx>
+				<posy>305</posy>
+				<width>680</width>
+				<height>390</height>
+				<texture border="10">../../Arctic Zephyr/media/dialogs/focus-shadow.png</texture>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+				<animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="image">
+				<description>shadowspot</description>
+				<posx>1086</posx>
+				<posy>660</posy>
+				<width>680</width>
+				<height>48</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>../../Arctic Zephyr/media/dialogs/shadowspot.png</texture>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+				<animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="image">
+				<description>logo bg</description>
+				<posx>1100</posx>
+				<posy>315</posy>
+				<width>655</width>
+				<height>368</height>
+				<texture>tvguide-logo-epg.png</texture>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+				<animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+
+			<control type="videowindow">
+				<posx>1100</posx>
+				<posy>276</posy>
+				<width>654</width>
+				<height>447</height>
+			</control>
+		</control>
+
+		<control type="group" id="3000">
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1920</width>
+			<height>1080</height>
+			<visible>StringCompare(Control.GetLabel(100),addons)</visible>
+
+			<control type="image">
+				<posx>80</posx>
+				<posy>580</posy>
+				<width>12</width>
+				<height>40</height>
+				<texture colordiffuse="FFdddddd">../../Arctic Zephyr/media/tvguide-channel-leftarrow.png</texture>
+				<animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+
+			<control type="wraplist" id="3001">
+				<posx>105</posx>
+				<posy>490</posy>
+				<width>212</width>
+				<height>212</height>
+				<viewtype label="list">list</viewtype>
+				<orientation>horizontal</orientation>
+				<focusposition>0</focusposition>
+				<onup>103</onup>
+				<ondown>3002</ondown>
+				<animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+
+				<itemlayout width="212" height="212">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>212</width>
+						<height>212</height>
+						<texture colordiffuse="0F000000" border="5">../../Arctic Zephyr/media/dialogs/box.png</texture>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>192</width>
+						<height>192</height>
+						<info>ListItem.Icon</info>
+					</control>
+				</itemlayout>
+				<focusedlayout width="212" height="212">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>212</width>
+						<height>212</height>
+						<texture colordiffuse="0F000000" border="5">../../Arctic Zephyr/media/dialogs/box.png</texture>
+						<visible>!Control.HasFocus(3001)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>212</width>
+						<height>212</height>
+						<texture colordiffuse="ff0385b5">../../Arctic Zephyr/media/addon-focus.png</texture>
+						<visible>Control.HasFocus(3001)</visible>
+					</control>
+					<control type="image">
+						<posx>10</posx>
+						<posy>10</posy>
+						<width>192</width>
+						<height>192</height>
+						<info>ListItem.Icon</info>
+					</control>
+				</focusedlayout>
+			</control>
+
+			<control type="label" id="3003">
+				<top>455</top>
+				<left>135</left>
+				<width min="20" max="280">auto</width>
+				<height>18</height>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<label>plugin.video.xxx</label>
+				<animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="textbox" id="3004">
+				<posx>85</posx>
+				<posy>360</posy>
+				<width>840</width>
+				<height>400</height>
+				<label>description...</label>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<wrapmultiline>true</wrapmultiline>
+				<autoscroll time="3600" delay="6000" repeat="6000">true</autoscroll>
+				<animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+
+			<control type="list" id="3002">
+				<posx>390</posx>
+				<posy>490</posy>
+				<width>860</width>
+				<height>440</height>
+				<viewtype label="list">list</viewtype>
+				<orientation>vertical</orientation>
+				<focusposition>7</focusposition>
+				<onleft>3001</onleft>
+				<onright>3005</onright>
+				<animation effect="slide" start="-1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="-1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+
+				<itemlayout width="560" height="40">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>460</width>
+						<height>38</height>
+						<texture colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texture>
+					</control>
+					<control type="label">
+						<posx>16</posx>
+						<posy>0</posy>
+						<width>460</width>
+						<height>38</height>
+						<aligny>center</aligny>
+						<font>Mini</font>
+						<textcolor>FFdddddd</textcolor>
+						<info>ListItem.Label</info>
+					</control>
+				</itemlayout>
+				<focusedlayout width="560" height="40">
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>460</width>
+						<height>38</height>
+						<texture colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texture>
+						<visible>!Control.HasFocus(3002)</visible>
+					</control>
+					<control type="image">
+						<posx>0</posx>
+						<posy>0</posy>
+						<width>460</width>
+						<height>38</height>
+						<texture colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texture>
+						<visible>Control.HasFocus(3002)</visible>
+					</control>
+					<control type="label">
+						<posx>16</posx>
+						<posy>0</posy>
+						<width>460</width>
+						<height>38</height>
+						<aligny>center</aligny>
+						<font>Mini</font>
+						<textcolor>FFFFFFFF</textcolor>
+						<info>ListItem.Label</info>
+					</control>
+					<control type="image">
+						<posx>430</posx>
+						<posy>9</posy>
+						<width>20</width>
+						<height>20</height>
+						<texture>../../Arctic Zephyr/media/tvguide-bullet.png</texture>
+					</control>
+				</focusedlayout>
+			</control>
+
+			<control type="button" id="3005">
+				<posx>1028</posx>
+				<posy>788</posy>
+				<width>260</width>
+				<height>68</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<label>[UPPERCASE]$ADDON[script.etvguide 30604][/UPPERCASE]</label>
+				<onup>103</onup>
+				<onleft>3002</onleft>
+				<onright>3007</onright>
+				<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+				<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="button" id="3006">
+				<posx>1580</posx>
+				<posy>788</posy>
+				<width>260</width>
+				<height>68</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<label>[UPPERCASE]$ADDON[script.etvguide 30605][/UPPERCASE]</label>
+				<onup>103</onup>
+				<onleft>3007</onleft>
+				<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+				<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="button" id="3007">
+				<posx>1304</posx>
+				<posy>788</posy>
+				<width>260</width>
+				<height>68</height>
+				<align>center</align>
+				<aligny>center</aligny>
+				<font>Mini</font>
+				<textcolor>FFdddddd</textcolor>
+				<focusedcolor>FFFFFFFF</focusedcolor>
+				<label>[UPPERCASE]$ADDON[script.etvguide 30606][/UPPERCASE]</label>
+				<onup>103</onup>
+				<onleft>3005</onleft>
+				<onright>3006</onright>
+				<texturefocus colordiffuse="ff0385b5" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturefocus>
+				<texturenofocus colordiffuse="b3333333" border="5">../../Arctic Zephyr/media/dialogs/box.png</texturenofocus>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+                <animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="image">
+				<description>logo shadow</description>
+				<posx>1086</posx>
+				<posy>305</posy>
+				<width>680</width>
+				<height>390</height>
+				<texture border="10">../../Arctic Zephyr/media/dialogs/focus-shadow.png</texture>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+				<animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="image">
+				<description>shadowspot</description>
+				<posx>1086</posx>
+				<posy>660</posy>
+				<width>680</width>
+				<height>48</height>
+				<aspectratio>stretch</aspectratio>
+				<texture>../../Arctic Zephyr/media/dialogs/shadowspot.png</texture>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+				<animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+			<control type="image">
+				<description>logo bg</description>
+				<posx>1100</posx>
+				<posy>315</posy>
+				<width>655</width>
+				<height>368</height>
+				<texture>tvguide-logo-epg.png</texture>
+				<animation effect="slide" start="1920" end="0" delay="0" time="300" tween="quadratic" easing="out">WindowOpen</animation>
+				<animation effect="slide" start="0" end="1920" time="300" tween="quadratic" easing="in">WindowClose</animation>
+			</control>
+
+			<control type="videowindow">
+				<posx>1100</posx>
+				<posy>276</posy>
+				<width>654</width>
+				<height>447</height>
+			</control>
+		</control>
+	</controls>
+</window>
