@@ -1,0 +1,285 @@
+<window>
+	<zorder>1</zorder>
+	<include>dialogeffect</include>
+	<coordinates>
+		<system>1</system><posx>0</posx><posy>0</posy>
+	</coordinates>
+		<animation effect="fade" start="0" end="100" time="150">WindowOpen</animation>
+		<animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
+	<controls>
+
+		<!-- !LiveTV -->
+		<control type="group" id="100">
+			<posx>0</posx>
+			<posy>75</posy>
+			<visible>true</visible>
+
+			<control type="image">
+				<description>background image</description>
+				<posx>0</posx>
+				<posy>705</posy>
+				<width>1920</width>
+				<height>300</height>
+				<texture border="16" colordiffuse="B3333333">../../Arctic Zephyr/media/dialogs/white.png</texture>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+			<control type="label">
+				<description>Program channel</description>
+				<posx>372</posx>
+				<posy>736</posy>
+				<width>260</width>
+				<height>20</height>
+				<textcolor>ffcccccc</textcolor>
+				<font>TinyBold</font>
+				<label>[UPPERCASE]$INFO[Player.Title][/UPPERCASE]</label>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+			<control type="image">
+				<posx>1300</posx>
+				<posy>-5</posy>
+				<width>554</width>
+				<height>100</height>
+				<texture border="16" colordiffuse="FF333333">../../Arctic Zephyr/media/dialogs/rounded-shadow.png</texture>
+				<animation effect="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="450" delay="150">WindowOpen</animation>
+				<animation effect="fade" end="0" start="100" time="150">WindowClose</animation>
+			</control>
+			<control type="image">
+                <posx>1330</posx>
+                <posy>21</posy>
+                <width>48</width>
+                <height>48</height>
+                <aspectratio aligny="center">keep</aspectratio>
+				<texture colordiffuse="ffcccccc">../../Arctic Zephyr/media/osd/clock.png</texture>
+				<animation effect="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="450" delay="150">WindowOpen</animation>
+				<animation effect="fade" end="0" start="100" time="150">WindowClose</animation>
+			</control>
+			<control type="image">
+                <posx>1772</posx>
+                <posy>21</posy>
+                <width>48</width>
+                <height>48</height>
+                <aspectratio aligny="center">keep</aspectratio>
+				<texture colordiffuse="ffcccccc">../../Arctic Zephyr/media/osd/finishtime.png</texture>
+				<animation effect="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="450" delay="150">WindowOpen</animation>
+				<animation effect="fade" end="0" start="100" time="150">WindowClose</animation>
+			</control>
+			<control type="image">
+                <posx>1550</posx>
+                <posy>21</posy>
+                <width>48</width>
+                <height>48</height>
+                <aspectratio aligny="center">keep</aspectratio>
+				<texture colordiffuse="ffcccccc">../../Arctic Zephyr/media/osd/arrow.png</texture>
+				<animation effect="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="450" delay="150">WindowOpen</animation>
+				<animation effect="fade" end="0" start="100" time="150">WindowClose</animation>
+			</control>
+			<control type="label" id="4920">
+				<description>Program title</description>
+                <posx>370</posx>
+                <posy>777</posy>
+				<width>870</width>
+				<height>40</height>
+				<font>Medium</font>
+				<textcolor>ffcccccc</textcolor>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+			<control type="image" id="4924">
+				<description>Channel logo</description>
+				<posx>25</posx>
+				<top>800</top>
+				<width>320</width>
+				<height>90</height>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+			<control type="progress" id="4999">
+				<posx>370</posx>
+				<posy>968</posy>
+				<width>1470</width>
+				<height>10</height>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+			<control type="label">
+				<description>Now playing</description>
+                <posx>370</posx>
+                <posy>924</posy>
+				<width>220</width>
+				<height>26</height>
+				<font>Tiny</font>
+				<textcolor>ffcccccc</textcolor>
+				<label>[B]$LOCALIZE[31114][/B]</label>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+			<control type="label" id="4921">
+				<description>Program time</description>
+				<posx>1840</posx>
+				<posy>924</posy>
+				<width>250</width>
+				<height>26</height>
+				<textcolor>ffcccccc</textcolor>
+				<font>Tiny</font>
+				<aligny>center</aligny>
+				<align>right</align>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+			<control type="textbox" id="4922">
+				<description>Program description</description>
+				<posx>370</posx>
+				<posy>831</posy>
+				<width>1470</width>
+				<height>58</height>
+				<textcolor>ffcccccc</textcolor>
+				<font>Mini</font>
+				<align>left</align>
+				<wrapmultiline>true</wrapmultiline>
+				<autoscroll time="3500" delay="4500" repeat="10000">false</autoscroll>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+			<control type="image" id="4923">
+				<description>Program logo / Source logo</description>
+				<posx>1410</posx>
+				<posy>780</posy>
+				<width>480</width>
+				<height>270</height>
+				<aspectratio>keep</aspectratio>
+				<fadetime>500</fadetime>
+				<texture>tvguide-logo-epg.png</texture>
+				<visible>!Player.Playing</visible>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+
+			<control type="label" id="6666">
+				<description>Program time</description>
+				<posx>1416</posx>
+				<posy>7</posy>
+				<width>350</width>
+				<height>75</height>
+				<textcolor>ffcccccc</textcolor>
+				<font>Small</font>
+				<align>left</align>
+				<aligny>center</aligny>
+				<label>$INFO[System.Time(hh:mm)]</label>
+				<animation effect="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="450" delay="150">WindowOpen</animation>
+				<animation effect="fade" end="0" start="100" time="150">WindowClose</animation>
+			</control>
+
+			<control type="button" id="108">
+				<posx>936</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">../../Arctic Zephyr/media/buttons/schedule-bd.png</texturefocus>
+				<texturenofocus colordiffuse="ff0385b5">../../Arctic Zephyr/media/buttons/schedule-bd.png</texturenofocus>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+			<control type="button" id="107">
+				<posx>936</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ffcccccc">../../Arctic Zephyr/media/buttons/schedule-bd.png</texturefocus>
+				<texturenofocus colordiffuse="ffcccccc">../../Arctic Zephyr/media/buttons/schedule-bd.png</texturenofocus>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+			<control type="button" id="105">
+				<posx>936</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">../../Arctic Zephyr/media/buttons/playbd.png</texturefocus>
+				<texturenofocus colordiffuse="ffcccccc">../../Arctic Zephyr/media/buttons/playbd.png</texturenofocus>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+			</control>
+			<control type="button" id="101">
+				<posx>936</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">../../Arctic Zephyr/media/buttons/stopbd.png</texturefocus>
+				<texturenofocus colordiffuse="ffcccccc">../../Arctic Zephyr/media/buttons/stopbd.png</texturenofocus>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+				<onleft>106</onleft>
+				<onright>103</onright>
+			</control>
+			<control type="button" id="102">
+				<posx>808</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">../../Arctic Zephyr/media/buttons/infobd.png</texturefocus>
+				<texturenofocus colordiffuse="ffcccccc">../../Arctic Zephyr/media/buttons/infobd.png</texturenofocus>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+				<onleft>104</onleft>
+				<onright>106</onright>
+			</control>
+			<control type="button" id="106">
+				<posx>872</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">../../Arctic Zephyr/media/buttons/setupbd.png</texturefocus>
+				<texturenofocus colordiffuse="ffcccccc">../../Arctic Zephyr/media/buttons/setupbd.png</texturenofocus>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+				<onleft>102</onleft>
+				<onright>101</onright>
+			</control>
+			<control type="button" id="103">
+				<posx>1000</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">../../Arctic Zephyr/media/buttons/minusbd.png</texturefocus>
+				<texturenofocus colordiffuse="ffcccccc">../../Arctic Zephyr/media/buttons/minusbd.png</texturenofocus>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+				<onleft>101</onleft>
+				<onright>104</onright>
+			</control>
+			<control type="button" id="104">
+				<posx>1064</posx>
+				<posy>910</posy>
+				<width>48</width>
+				<height>48</height>
+				<texturefocus colordiffuse="ff0385b5">../../Arctic Zephyr/media/buttons/plusbd.png</texturefocus>
+				<texturenofocus colordiffuse="ffcccccc">../../Arctic Zephyr/media/buttons/plusbd.png</texturenofocus>
+				<animation effect="slide" start="0,110" end="0" time="150" tween="quadratic">WindowOpen</animation>
+				<animation effect="slide" end="0,110" start="0" time="150" tween="quadratic">WindowClose</animation>
+				<onleft>103</onleft>
+				<onright>102</onright>
+			</control>
+			<control type="button" id="1000">
+				<description>Close Window button</description>
+				<posx>126r</posx>
+				<posy>0</posy>
+				<width>96</width>
+				<height>48</height>
+				<label>-</label>
+				<font>-</font>
+				<onclick>Dialog.Close(VideoOSD,true)</onclick>
+				<onclick>FullScreen</onclick>
+				<texturefocus>-</texturefocus>
+				<texturenofocus>-</texturenofocus>
+				<onleft>1000</onleft>
+				<onright>1000</onright>
+				<onup>101</onup>
+				<ondown>101</ondown>
+				<animation effect="fade" time="200">VisibleChange</animation>
+				<visible>false</visible>
+			</control>
+		</control>
+	</controls>
+</window>

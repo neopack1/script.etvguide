@@ -52,7 +52,7 @@ class StreamsService(object):
                     elif value[0:22] == 'ActivateWindow(10025,"':
                         value = value[22:-9]
                     elif value[0:22] == 'ActivateWindow(10025,':
-                        value = value[22:-9]							
+                        value = value[22:-9]
                     else:
                         continue
 
@@ -69,33 +69,39 @@ class StreamsService(object):
         return self.addonsParser.items(id)
 
     def detectStream(self, channel):
-        """
-        @param channel:
-        @type channel: source.Channel
-        """
-        favourites = self.loadFavourites()
+        try:
+            """
+            @param channel:
+            @type channel: source.Channel
+            """
+            favourites = self.loadFavourites()
 
-	# First check favourites, if we get exact match we use it
-        for label, stream in favourites:
-            if label == channel.title:
-                return stream
+            # First check favourites, if we get exact match we use it
+            for label, stream in favourites:
+                if label == channel.title:
+                    return stream
 
-	# Second check all addons and return all matches
-        matches = list()
-        for id in self.getAddons():
-            try:
-                xbmcaddon.Addon(id)
-            except Exception:
-                continue # ignore addons that are not installed
+            # Second check all addons and return all matches
+            matches = list()
+            for id in self.getAddons():
+                try:
+                    xbmcaddon.Addon(id)
+                except Exception:
+                    continue # ignore addons that are not installed
 
-            for (label, stream) in self.getAddonStreams(id):
-                if label == channel.title or label.startswith(channel.title+' @'):
-                    matches.append((id, label, stream))
+                for (label, stream) in self.getAddonStreams(id):
+                    try:
+                        if label == channel.title or label.startswith(channel.title+' @'):
+                            matches.append((id, label, stream))
+                    except:
+                        continue
 
-        if len(matches) == 1:
-            return matches[0][2]
-        else:
-            return matches
+            if len(matches) == 1:
+                return matches[0][2]
+            else:
+                return matches
+        except:
+            return None
 
 class OrderedDict(dict):
     # From: http://code.activestate.com/recipes/576693/

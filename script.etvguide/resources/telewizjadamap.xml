@@ -15,6 +15,7 @@
 	<channel id="TVP Historia" 								title="(?=\s*TVP\s*Historia(\s*HD)?\s*$)" strm=""/>
 	<channel id="TV Puls" 									title="(?=\s*TV\s*Puls(\s*HD)?\s*$)" strm=""/>
 	<channel id="Puls 2" 									title="(?=\s*TV\s*Puls\s*2(\s*HD)?\s*$)" strm=""/>
+	<channel id="ATM Rozrywka"                              title="(?=\s*ATM\s*Rozrywka(\s*HD)?\s*$)" strm=""/>
 	<channel id="TTV" 										title="(?=\s*TTV(\s*HD)?\s*$)" strm=""/>
 	<channel id="TV 4" 										title="(?=\s*TV\s*4(\s*HD)?\s*$)" strm=""/>
 	<channel id="TV 6" 										title="(?=\s*TV\s*6(\s*HD)?\s*$)" strm=""/>
@@ -32,7 +33,7 @@
 	<channel id="BBC Earth" 							    title="(?=BBC\s*Earth(\s*HD)?$)" strm=""/>
 	<channel id="FOX" 										title="(?=FOX(\s*HD)?$)" strm=""/>
 	<channel id="FOX Life" 									title="(?=\s*FOX\s*Life(\s*HD)?\s*$)" strm=""/>
-	<channel id="TLC" 										title="(?=\s*TLC\s*Polska(\s*HD)?$)" strm=""/>
+	<channel id="TLC" 										title="(?=TLC\s*Polska(\s*HD)?$)" strm=""/>
 	<channel id="13 Ulica" 									title="(?=\s*13\s*Ulica(\s*HD)?\s*$)" strm=""/>
 	<channel id="Canal+" 									title="(?=Canal\+(\s*HD)?$)" strm=""/>
 	<channel id="Canal+ Film" 								title="(?=Canal\+\s*Film(\s*HD)?$)" strm=""/>
@@ -102,23 +103,20 @@
 	<channel id="Nick Jr." 									title="(?=Nick\s*Jr\s*Polska(\s*HD)?$)" strm=""/>
 	<channel id="Minimini+" 								title="(?=MiniMini\+(\s*HD)?$)" strm=""/>
 	<channel id="Boomerang" 								title="(?=\s*Boomerang(\s*Central)?(\s*HD)?\s*$)" strm=""/>
-	<channel id="BBC CBeebies" 								title="(?=\s*CBeebies(\s*HD)?\s*$)" strm=""/>
+	<channel id="BBC CBeebies" 								title="(?=\s*BBC\s*CBeebies(\s*HD)?\s*$)" strm=""/>
 	<channel id="Da Vinci Learning" 						title="(?=DA\s*VINCI\s*LEARNING(\s*HD)?$)" strm=""/>
 	<channel id="MTV Polska" 								title="(?=\s*MTV(\s*HD)?\s*$)" strm=""/>
 	<channel id="MTV Live HD" 								title="(?=\s*MTV\s*Live(\s*HD)?\s*$)" strm=""/>
 	<channel id="Kino Polska Muzyka" 						title="(?=\s*Kino\s*Polska\s*Muzyka(\s*HD)?\s*$)" strm=""/>
-	<channel id="Eska TV" 									title="(?=Eska\s*TV(\s*HD)?$)" strm=""/>
 	<channel id="VIVA Polska" 								title="(?=\s*VIVA\s*Polska(\s*HD)?\s*$)" strm=""/>
 	<channel id="4fun TV" 									title="(?=4FUN\s*TV(\s*HD)?$)" strm=""/>
-	<channel id="Polo TV" 									title="(?=POLO\s*TV(\s*HD)?$)" strm=""/>
 	<channel id="BBC World News"						    title="(?=\s*BBC\s*World\s*News(\s*HD)?\s*$)" strm=""/>
 	<channel id="Stopklatka TV"						    	title="(?=STOPKLATKA(\s*HD)?$)" strm=""/>
 	<channel id="Filmbox Family"						    title="(?=FILMBOX\s*FAMILY(\s*HD)?$)" strm=""/>
+	<channel id="Filmbox Premium"							title="(?=FILMBOX\s*Premium(\s*HD)?$)" strm=""/>
 	<channel id="Fokus TV"						    		title="(?=Fokus\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="Travel Channel"						    title="(?=TRAVEL\s*CHANNEL(\s*HD)?\s*$)" strm=""/>
 	
-	<channel id="ESKA BEST MUSIC"						    title="(?=ESKA\s*BEST\s*MUSIC(\s*HD)?\s*$)" strm=""/>
-	<channel id="ESKA GO"						    		title="(?=ESKA\s*GO(\s*HD)?\s*$)" strm=""/>
 	<channel id="ESKA ROCK"						    		title="(?=ESKA\s*ROCK(\s*HD)?\s*$)" strm=""/>
 	<channel id="MUSIC VOX TV 2"						    title="(?=MUSIC\s*VOX\s*TV\s*2(\s*HD)?\s*$)" strm=""/>
 	<channel id="POLO PARTY TV"						    	title="(?=POLO\s*PARTY\s*TV(\s*HD)?\s*$)" strm=""/>
@@ -130,21 +128,34 @@
 	<channel id="WAWA TV"						    		title="(?=WAWA\s*TV(\s*HD)?\s*$)" strm=""/>
 	<channel id="CZWORKA POLSKIE RADIO"						title="(?=CZW.*RKA\s*POLSKIE\s*RADIO(\s*HD)?\s*$)" strm=""/>
 	
-	<channel id="Republika TV"						    	title="(?=TV\s*Republika(\s*HD)?\s*$)" strm=""/>
+	<channel id="TV Republika"						    	title="(?=TV\s*Republika(\s*HD)?\s*$)" strm=""/>
 	<channel id="FilmBox Action"						    title="(?=FilmBox\s*Action(\s*HD)?\s*$)" strm=""/>
 	<channel id="TNT"						    			title="(?=TNT\s*$)" strm=""/>
 	<channel id="TVP ABC"						    		title="(?=TVP\s*ABC(\s*HD)?\s*$)" strm=""/>
 	<channel id="Polsat Cafe"						    	title="(?=Polsat\s*Cafe(\s*HD)?\s*$)" strm=""/>
-	<channel id="Red Light"						    		title="(?=Red\s*Light(\s*HD)?\s*$)" strm=""/>
-	<channel id="Private TV"						    	title="(?=Private\s*TV(\s*HD)?\s*$)" strm=""/>
-	<channel id="Hustler"						    		title="(?=Hustler(\s*HD)?\s*$)" strm=""/>
-	<channel id="TVN 24 BiS"								title="(?=TVN24\s*Biznes\s*i\s.*wiat(\s*HD)?\s*$)" strm=""/>
-	<channel id="FilmBox Premium"						    title="(?=FilmBox\s*Premium(\s*HD)?\s*$)" strm=""/>
-	<channel id="Motowizja" 								title="(?=\s*Motowizja(\s*TV)?(\s*HD)?\s*$)" strm=""/>
-	<channel id="Sportklub"						    	title="(?=\s*SPORT\s*KLUB(\s*TV)?(\s*HD)?\s*$)" strm=""/>
-	<channel id="ATM Rozrywka"						    title="(?=ATM\s*Rozrywka(\s*HD)?\s*$)" strm=""/>
 
+	<channel id="Redlight"						    		title="(?=Red\s*Light(\s*HD)?\s*$)" strm=""/>
+	<channel id="Private TV"						    	title="(?=Private\s*TV(\s*HD)?\s*$)" strm=""/>
+	<channel id="Hustler TV"						    		title="(?=Hustler(\s*HD)?\s*$)" strm=""/>
+
+	<channel id="TVN 24 BiS"								title="(?=TVN24\s*Biznes\s*i\s.*wiat(\s*HD)?\s*$)" strm=""/>
 	
+	<channel id="ESKA BEST MUSIC"						    title="" strm="http://stream.smcloud.net/tv/best/best_480p/playlist.m3u8"/>
+	<channel id="ESKA BEST MUSIC"						    title="" strm="http://stream.smcloud.net/tv/best/best_360p/playlist.m3u8"/>
+	<channel id="ESKA GO"						    		title="" strm="http://stream.smcloud.net/live2/eska_party/eska_party_360p/playlist.m3u8"/>
+	<channel id="VOX MUSIC TV"						    	title="" strm="rtmp://stream.smcloud.net/live/vox2/stream1"/>
+	<channel id="WAWA TV"						    		title="" strm="http://stream.smcloud.net/tv/wawa/wawa_480p/playlist.m3u8"/>
+	<channel id="WAWA TV"						    		title="" strm="http://stream.smcloud.net/tv/wawa/wawa_360p/playlist.m3u8"/>
+	<channel id="CZWORKA POLSKIE RADIO"						title="" strm="rtmp://stream85.polskieradio.pl/video/czworka.sdp"/>
+	<channel id="STARS TV"								title="" strm="http://starstv.live.e55-po.insyscd.net/starstvhd.smil/chunklist_b1100000.m3u8?=key live=true"/>
+	<channel id="Eska TV" 									title="" strm="http://stream.smcloud.net/tv/eskatv/eskatv_480p/playlist.m3u8"/>
+	<channel id="Eska TV" 									title="" strm="http://stream.smcloud.net/tv/eskatv/eskatv_360p/playlist.m3u8"/>
+	<channel id="TV Trwam"                                  title="" strm="mms://195.94.205.211/Trwam"/>
+	<channel id="Motowizja"									title="(?=Motowizja\s*TV$)" strm=""/>
+	<channel id="BBC CBeebies"								title="(?=CBeebies$)" strm=""/>
+
+
+
 </map>
 
 <!--

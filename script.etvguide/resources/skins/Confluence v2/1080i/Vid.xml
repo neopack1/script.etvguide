@@ -4,26 +4,55 @@
 	<controls>
 		<control type="image">
 			<description>serwis_bg</description>
-			<left>105</left>
-			<top>45</top>
-			<width>300</width>
+			<posx>1292</posx>
+			<posy>962</posy>
+			<width>595</width>
+			<height>100</height>
+			<texture border="40">dialogs/overlaydialogbackground.png</texture>
+			<animation effect="fade" start="0" end="100" time="150">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="150">Hidden</animation>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
+		</control>
+		<control type="image">
+			<description>serwis_info</description>
+			<posx>1320</posx>
+			<posy>975</posy>
+			<width>75</width>
 			<height>75</height>
-			<colordiffuse>EEFFFFFF</colordiffuse>
-			<texture flipy="true" border="12">dialogs/infomessagepanel.png</texture>
-			<visible>Control.IsVisible(4940)</visible>
+			<texture>dialogs/defaulticoninfo.png</texture>
+			<animation effect="fade" start="0" end="100" time="150">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="150">Hidden</animation>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
 		</control>
 		<control type="label" id="4940">
 			<description>serwis</description>
-			<left>140</left>
-			<top>70</top>
-			<width>240</width>
-			<height>20</height>
-			<align>center</align>
-			<aligny>center</aligny>
-			<font>font13_title</font>
-			<textcolor>FFF0F0F0</textcolor>
-			<shadowcolor>22000000</shadowcolor>
+			<posx>1402</posx>
+			<posy>979</posy>
+			<width>325</width>
+			<height>24</height>
+			<align>left</align>
+			<font>font12_title</font>
+			<textcolor>white</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<animation effect="fade" start="0" end="100" time="150">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="150">Hidden</animation>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
+		</control>
+		<control type="label">
+			<description>label</description>
+			<posx>1402</posx>
+			<posy>1010</posy>
+			<width>325</width>
+			<height>24</height>
+			<align>left</align>
+			<font>font12_title</font>
+			<textcolor>FFb4b4b4</textcolor>
+			<shadowcolor>black</shadowcolor>
+			<label>$ADDON[script.etvguide 30965]</label>
+			<animation effect="fade" start="0" end="100" time="150">Visible</animation>
+			<animation effect="fade" start="100" end="0" time="150">Hidden</animation>
 			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
 		</control>
 	</controls>
 </window>
+		

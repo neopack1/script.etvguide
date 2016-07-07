@@ -1,0 +1,56 @@
+<window>
+	<defaultcontrol>-</defaultcontrol>
+	<zorder>2</zorder>
+	<controls>
+		<control type="image">
+			<description>serwis_bg</description>
+			<posx>78</posx>
+			<posy>70</posy>
+			<width>660</width>
+			<height>100</height>
+			<texture border="16" colordiffuse="FF333333">../../Arctic Zephyr/media/dialogs/rounded-shadow.png</texture>
+			<animation effect="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="450" delay="150">Visible</animation>
+			<animation effect="fade" end="0" start="100" time="150">Hidden</animation>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
+		</control>
+		<control type="image">
+			<description>serwis_info</description>
+			<posx>86</posx>
+			<posy>76</posy>
+			<width>88</width>
+			<height>88</height>
+			<texture border="16" colordiffuse="">../../Arctic Zephyr/media/dialogs/DefaultIconInfo.png</texture>
+			<animation effect="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="450" delay="150">Visible</animation>
+			<animation effect="fade" end="0" start="100" time="150">Hidden</animation>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
+		</control>
+		<control type="label" id="4940">
+			<description>serwis</description>
+			<posx>182</posx>
+			<posy>93</posy>
+			<width min="20" max="300">auto</width>
+			<height>20</height>
+			<align>left</align>
+			<font>TinyBold</font>
+			<textcolor>ffcccccc</textcolor>
+			<animation effect="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="450" delay="150">Visible</animation>
+			<animation effect="fade" end="0" start="100" time="150">Hidden</animation>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
+		</control>
+		<control type="label">
+			<description>label</description>
+			<posx>182</posx>
+			<posy>123</posy>
+			<width>400</width>
+			<height>28</height>
+			<align>left</align>
+			<font>Tiny</font>
+			<textcolor>ffcccccc</textcolor>
+			<label>$ADDON[script.etvguide 30965]</label>
+			<animation effect="slide" start="0,-48" end="0" center="auto" tween="back" easing="out" time="450" delay="150">Visible</animation>
+			<animation effect="fade" end="0" start="100" time="150">Hidden</animation>
+			<visible>!IsEmpty(Control.GetLabel(4940))</visible>
+		</control>
+	</controls>
+</window>
+

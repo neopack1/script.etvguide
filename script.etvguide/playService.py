@@ -111,6 +111,7 @@ class PlayService(xbmc.Player, BasePlayService):
         self.streamQuality = ''
         self.userStoppedPlayback = True
         self.nrOfResumeAttempts = 0
+        self.threadData = { 'terminate' : False }
         self.maxNrOfResumeAttempts = int(ADDON.getSetting('max_reconnect_attempts'))
         self.reconnectFailedStreams = ADDON.getSetting('reconnect_stream')
         self.reconnectDelay = int(ADDON.getSetting('reconnect_delay'))
@@ -120,10 +121,19 @@ class PlayService(xbmc.Player, BasePlayService):
             deb('playUrlList got empty list to play - aborting!')
             return
         self.starting = True
+        self.threadData['terminate'] = True
+        currentThreadData = self.threadData = { 'terminate' : False }
+
         if self.thread is not None and self.thread.is_alive():
             deb('PlayService playUrlList waiting for thread to terminate')
             self.terminating = True
-            self.thread.join()
+            while self.thread is not None and self.thread.is_alive() and currentThreadData['terminate'] == False:
+                xbmc.sleep(100)
+            #self.thread.join()
+
+        if currentThreadData['terminate'] == True:
+            deb('playUrlList decided to terminate thread starting playback')
+            return
 
         self.thread = threading.Thread(name='playUrlList Loop', target = self._playUrlList, args=[urlList])
         self.thread.start()

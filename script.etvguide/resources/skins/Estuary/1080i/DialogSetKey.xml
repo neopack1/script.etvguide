@@ -1,26 +1,42 @@
 <window>
 	<defaultcontrol always="false">9001</defaultcontrol>
-	<zorder>50</zorder>
+	<zorder>0</zorder>
 	<coordinates>
 		<system>1</system><posx>640</posx><posy>225</posy>
 	</coordinates>
-	<include>dialogeffect</include>
+		<animation effect="fade" start="100" end="100" time="250">WindowOpen</animation>
+		<animation effect="fade" end="100" start="100" time="200">WindowClose</animation>
 	<controls>
 	<ondown>9002</ondown>
 		<control type="image">
 			<posx>-540</posx>
 			<posy>-15</posy>
 			<width>1720</width>
-			<height>730</height>
-			<texture>dialogs/dialog-bg-solid.png</texture>
+			<height>720</height>
+			<texture border="40">dialogs/dialog-bg-solid.png</texture>
 		</control>
 		<control type="image">
-			<posx>-190</posx>
-			<posy>-5</posy>
-			<width>1060</width>
-			<height>680</height>
-			<texture>dialogs/dialog-bg.png</texture>
-		</control>´
+			<posx>-212</posx>
+			<posy>-20</posy>
+			<width>1104</width>
+			<height>732</height>
+			<texture>dialogs/dialog-bg-back.png</texture>
+		</control>
+		<control type="button">
+			<posx>-519</posx>
+			<posy>-14</posy>
+			<width>320</width>
+			<height>120</height>
+			<label>$ADDON[script.etvguide 31002]</label>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12_title</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<shadowcolor>22000000</shadowcolor>
+			<focusedcolor>FFF0F0F0</focusedcolor>
+			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
+			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
+		</control>
 		<control type="image">
 			<posx>-540</posx>
 			<posy>-85</posy>
@@ -35,7 +51,7 @@
 			<width>555</width>
 			<height>30</height>
 			<font>font20_title</font>
-			<label>$ADDON[script.etvguide 31002] - e-TVGuide [COLOR gold][B]EPG[/B][/COLOR]</label>
+			<label>$ADDON[script.etvguide 31002] - m-TVGuide [COLOR gold][B]EPG[/B][/COLOR]</label>
 			<align>left</align>
 			<aligny>center</aligny>
 			<textcolor>FFF0F0F0</textcolor>
@@ -48,11 +64,11 @@
 			<height>80</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10</font>
+			<font>font12_title</font>
 			<textcolor>FFF0F0F0</textcolor>
-			<label>$ADDON[script.etvguide 31003]</label>
-			<onup>9099</onup>
+			<label>[CAPITALIZE][LOWERCASE]$ADDON[script.etvguide 31003][/LOWERCASE][/CAPITALIZE]</label>
 			<ondown>9002</ondown>
+			<onright>9099</onright>
 			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
 			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 		</control>
@@ -63,7 +79,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>$ADDON[script.etvguide 31009]</label>
-			<font>font10</font>
+			<font>font12</font>
 		</control>
 		<control type="label" id="7001">
 			<posx>280</posx>
@@ -72,7 +88,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font10_title</font>
+			<font>font12</font>
 			<textcolor>FF11E7B1</textcolor>
 		</control>
 		<control type="button" id="9002">
@@ -82,11 +98,12 @@
 			<height>80</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10</font>
+			<font>font12_title</font>
 			<textcolor>FFF0F0F0</textcolor>
-			<label>$ADDON[script.etvguide 31003]</label>
+			<label>[CAPITALIZE][LOWERCASE]$ADDON[script.etvguide 31003][/LOWERCASE][/CAPITALIZE]</label>
 			<onup>9001</onup>
 			<ondown>9003</ondown>
+			<onright>9099</onright>
 			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
 			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 		</control>
@@ -97,7 +114,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>$ADDON[script.etvguide 31008]</label>
-			<font>font10</font>
+			<font>font12</font>
 		</control>
 		<control type="label" id="7002">
 			<posx>280</posx>
@@ -106,7 +123,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font10_title</font>
+			<font>font12</font>
 			<textcolor>FF11E7B1</textcolor>
 		</control>
 		<control type="button" id="9003">
@@ -116,11 +133,12 @@
 			<height>80</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10</font>
+			<font>font12_title</font>
 			<textcolor>FFF0F0F0</textcolor>
-			<label>$ADDON[script.etvguide 31003]</label>
+			<label>[CAPITALIZE][LOWERCASE]$ADDON[script.etvguide 31003][/LOWERCASE][/CAPITALIZE]</label>
 			<onup>9002</onup>
 			<ondown>9004</ondown>
+			<onright>9099</onright>
 			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
 			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 		</control>
@@ -131,7 +149,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>$ADDON[script.etvguide 31007]</label>
-			<font>font10</font>
+			<font>font12</font>
 		</control>
 		<control type="label" id="7003">
 			<posx>280</posx>
@@ -140,7 +158,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font10_title</font>
+			<font>font12</font>
 			<textcolor>FF11E7B1</textcolor>
 		</control>
 		<control type="button" id="9004">
@@ -150,11 +168,12 @@
 			<height>80</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10</font>
+			<font>font12_title</font>
 			<textcolor>FFF0F0F0</textcolor>
-			<label>$ADDON[script.etvguide 31003]</label>
+			<label>[CAPITALIZE][LOWERCASE]$ADDON[script.etvguide 31003][/LOWERCASE][/CAPITALIZE]</label>
 			<onup>9003</onup>
 			<ondown>9009</ondown>
+			<onright>9099</onright>
 			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
 			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 		</control>
@@ -165,7 +184,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>$ADDON[script.etvguide 31006]</label>
-			<font>font10</font>
+			<font>font12</font>
 		</control>
 		<control type="label" id="7004">
 			<posx>280</posx>
@@ -174,7 +193,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font10_title</font>
+			<font>font12</font>
 			<textcolor>FF11E7B1</textcolor>
 		</control>		
 		<control type="button" id="9009">
@@ -184,11 +203,12 @@
 			<height>80</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10</font>
+			<font>font12_title</font>
 			<textcolor>FFF0F0F0</textcolor>
-			<label>$ADDON[script.etvguide 31003]</label>
+			<label>[CAPITALIZE][LOWERCASE]$ADDON[script.etvguide 31003][/LOWERCASE][/CAPITALIZE]</label>
 			<onup>9004</onup>
 			<ondown>9010</ondown>
+			<onright>9099</onright>
 			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
 			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 		</control>
@@ -199,7 +219,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>$ADDON[script.etvguide 31015]</label>
-			<font>font10</font>
+			<font>font12</font>
 		</control>
 		<control type="label" id="7009">
 			<posx>280</posx>
@@ -208,7 +228,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font10_title</font>
+			<font>font12</font>
 			<textcolor>FF11E7B1</textcolor>
 		</control>
 		<control type="button" id="9010">
@@ -218,11 +238,12 @@
 			<height>80</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10</font>
+			<font>font12_title</font>
 			<textcolor>FFF0F0F0</textcolor>
-			<label>$ADDON[script.etvguide 31003]</label>
+			<label>[CAPITALIZE][LOWERCASE]$ADDON[script.etvguide 31003][/LOWERCASE][/CAPITALIZE]</label>
 			<onup>9009</onup>
 			<ondown>9005</ondown>
+			<onright>9099</onright>
 			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
 			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 		</control>
@@ -233,7 +254,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>$ADDON[script.etvguide 31016]</label>
-			<font>font10</font>
+			<font>font12</font>
 		</control>
 		<control type="label" id="7010">
 			<posx>280</posx>
@@ -242,7 +263,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font10_title</font>
+			<font>font12</font>
 			<textcolor>FF11E7B1</textcolor>
 		</control>
 		<control type="button" id="9005">
@@ -252,11 +273,12 @@
 			<height>80</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10</font>
+			<font>font12_title</font>
 			<textcolor>FFF0F0F0</textcolor>
-			<label>$ADDON[script.etvguide 31003]</label>
+			<label>[CAPITALIZE][LOWERCASE]$ADDON[script.etvguide 31003][/LOWERCASE][/CAPITALIZE]</label>
 			<onup>9010</onup>
 			<ondown>9006</ondown>
+			<onright>9099</onright>
 			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
 			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 		</control>
@@ -267,7 +289,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>$ADDON[script.etvguide 31005]</label>
-			<font>font10</font>
+			<font>font12</font>
 		</control>
 		<control type="label" id="7005">
 			<posx>280</posx>
@@ -276,7 +298,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font10_title</font>
+			<font>font12</font>
 			<textcolor>FF11E7B1</textcolor>
 		</control>
 		<control type="button" id="9006">
@@ -286,11 +308,12 @@
 			<height>80</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10</font>
+			<font>font12_title</font>
 			<textcolor>FFF0F0F0</textcolor>
-			<label>$ADDON[script.etvguide 31003]</label>
+			<label>[CAPITALIZE][LOWERCASE]$ADDON[script.etvguide 31003][/LOWERCASE][/CAPITALIZE]</label>
 			<onup>9005</onup>
 			<ondown>9007</ondown>
+			<onright>9099</onright>
 			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
 			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 		</control>
@@ -301,7 +324,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>$ADDON[script.etvguide 31010]</label>
-			<font>font10</font>
+			<font>font12</font>
 		</control>
 		<control type="label" id="8016">
 			<posx>45</posx>
@@ -310,7 +333,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>$ADDON[script.etvguide 31014]</label>
-			<font>font10</font>
+			<font>font12</font>
 			<textcolor>40FFFFFF</textcolor>
 		</control>
 		<control type="label" id="7006">
@@ -320,7 +343,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font10_title</font>
+			<font>font12</font>
 			<textcolor>FF11E7B1</textcolor>
 		</control>
 		<control type="button" id="9007">
@@ -330,11 +353,11 @@
 			<height>80</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10</font>
+			<font>font12_title</font>
 			<textcolor>FFF0F0F0</textcolor>
-			<label>$ADDON[script.etvguide 31003]</label>
+			<label>[CAPITALIZE][LOWERCASE]$ADDON[script.etvguide 31003][/LOWERCASE][/CAPITALIZE]</label>
 			<onup>9006</onup>
-			<ondown>9008</ondown>
+			<onright>9099</onright>
 			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
 			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 		</control>
@@ -345,7 +368,7 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>$ADDON[script.etvguide 31011]</label>
-			<font>font10</font>
+			<font>font12</font>
 		</control>
 		<control type="label" id="7007">
 			<posx>280</posx>
@@ -354,54 +377,51 @@
 			<height>80</height>
 			<aligny>center</aligny>
 			<label>0</label>
-			<font>font10_title</font>
+			<font>font12</font>
 			<textcolor>FF11E7B1</textcolor>
 		</control>
 		<control type="button" id="9008">
-			<posx>400</posx>
-			<posy>500</posy>
-			<width>260</width>
-			<height>80</height>
+			<description>Reset</description>
+			<posx>871</posx>
+			<posy>61</posy>
+			<width>300</width>
+			<height>90</height>
 			<align>center</align>
 			<aligny>center</aligny>
-			<font>font10</font>
+			<font>font12_title</font>
 			<textcolor>FFF0F0F0</textcolor>
-			<label>$ADDON[script.etvguide 31013]</label>
-			<onup>9007</onup>
-			<ondown>9099</ondown>
-			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
-			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
-		</control>
-		<control type="label" id="8008">
-			<posx>45</posx>
-			<posy>500</posy>
-			<width>260</width>
-			<height>80</height>
-			<aligny>center</aligny>
-			<label>$ADDON[script.etvguide 31012]</label>
-			<font>font10</font>
-			<textcolor>FFF0F0F0</textcolor>
-		</control>
-		<control type="button" id="9099">
-			<posx>150</posx>
-			<posy>575</posy>
-			<width>340</width>
-			<height>85</height>
-			<align>center</align>
-			<aligny>center</aligny>
-			<font>font10</font>
-			<textcolor>FFF0F0F0</textcolor>
-			<label>$ADDON[script.etvguide 31004]</label>
-			<onup>9008</onup>
-			<ondown>9001</ondown>
+			<shadowcolor>22000000</shadowcolor>
+			<focusedcolor>FFF0F0F0</focusedcolor>
+			<label>[CAPITALIZE][LOWERCASE]$ADDON[script.etvguide 31013][/LOWERCASE][/CAPITALIZE]</label>
+			<onup>9099</onup>
+			<onleft>9001</onleft>
 			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
 			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 		</control>
 		<control type="button" id="9099">
+			<description>Save</description>
+			<posx>871</posx>
+			<posy>-14</posy>
+			<width>300</width>
+			<height>90</height>
+			<align>center</align>
+			<aligny>center</aligny>
+			<font>font12_title</font>
+			<textcolor>FFF0F0F0</textcolor>
+			<shadowcolor>22000000</shadowcolor>
+			<focusedcolor>FFF0F0F0</focusedcolor>
+			<label>[CAPITALIZE]$ADDON[script.etvguide 31004][/CAPITALIZE]</label>
+			<ondown>9008</ondown>
+			<onleft>9001</onleft>
+			<texturefocus border="40" colordiffuse="FF12B2E7">dialogs/dialogbutton-fo.png</texturefocus>
+			<texturenofocus border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
+		</control>
+		<control type="button" id="1000">
+			<description>Close Window button</description>
 			<posx>1102</posx>
-			<posy>-74</posy>
+			<posy>-73</posy>
 			<width>48</width>
-			<height>48</height>
+			<height>47</height>
 			<texturefocus>dialogs/close.png</texturefocus>
 			<texturenofocus>dialogs/logo.png</texturenofocus>
 			<onup>9008</onup>
