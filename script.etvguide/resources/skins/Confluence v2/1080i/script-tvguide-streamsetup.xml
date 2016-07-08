@@ -82,7 +82,6 @@
 			<textcolor>white</textcolor>
 			<shadowcolor>black</shadowcolor>
 			<label>[CAPITALIZE]$ADDON[script.etvguide 30601][/CAPITALIZE]</label>
-			<onleft>103</onleft>
 			<ondown>1001</ondown>
 			<onright>102</onright>
 			<texturefocus colordiffuse="" border="40">dialogs/dialogbutton-fo.png</texturefocus>
@@ -118,7 +117,6 @@
 			<label>[CAPITALIZE]$ADDON[script.etvguide 30603][/CAPITALIZE]</label>
 			<onleft>102</onleft>
 			<ondown>3002</ondown>
-			<onright>101</onright>
 			<texturefocus colordiffuse="" border="40">dialogs/dialogbutton-fo.png</texturefocus>
 			<texturenofocus colordiffuse="" border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 		</control>
@@ -254,7 +252,8 @@
 				<focusposition>7</focusposition>
 				<onup>102</onup>
 				<ondown>2003</ondown>
-				<onright>3001</onright>
+				<onright>2003</onright>
+				<onleft>102</onleft>
 
 				<itemlayout width="560" height="40">
 					<control type="image">
@@ -345,6 +344,7 @@
 				<label>[CAPITALIZE]$ADDON[script.etvguide 30605][/CAPITALIZE]</label>
 				<onup>2001</onup>
 				<onright>2004</onright>
+				<onleft>2001</onleft>
 				<texturefocus colordiffuse="" border="40">dialogs/dialogbutton-fo.png</texturefocus>
 				<texturenofocus colordiffuse="" border="40">dialogs/dialogbutton-nofo.png</texturenofocus>
 			</control>
@@ -484,6 +484,7 @@
 				<onup>103</onup>
 				<ondown>3006</ondown>
 				<onright>3001</onright>
+				<onleft>103</onleft>
 
 				<itemlayout width="560" height="40">
 					<control type="image">

@@ -72,9 +72,8 @@
             <height>1080</height>
 			<texture colordiffuse="ffdddddd">tvguide-background-default.jpg</texture>
 			<!--<colordiffuse>FF000000</colordiffuse>-->
-			<animation type="Conditional" condition="Control.IsVisible(5000)">
-			<effect type="fade" start="100" end="75" time="0"/>
-			</animation>
+			<animation effect="fade" start="100" end="100">WindowOpen</animation>
+			<animation effect="fade" start="100" end="0" time="250">WindowClose</animation>
 			<visible>!Control.IsVisible(5000)</visible>
 		</control>
 		

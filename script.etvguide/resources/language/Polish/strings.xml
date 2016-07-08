@@ -7,7 +7,7 @@
 	<string id="30004">Ładowanie danych już jest w toku...</string>
 	<string id="30005">Kontrola myszą</string>
 	<string id="30006">Teraz</string>
-	<string id="30007">[B]Porada:[/B] Możesz także użyć kółka</string>
+	<string id="30007">[B]Porada![/B] Możesz także użyć kółka</string>
 	<string id="30008">Anuluj</string>
 	<string id="30100">Ogólne</string>
 	<string id="30101">EPG</string>
@@ -19,7 +19,7 @@
 	<string id="30108">Wyczyść wszystkie przypomnienia...</string>
 	<string id="30109">Wyczyść wszystkie zaplanowane nagrywania...</string>
 	<string id="30110">Aktualizuj informacje o programie podczas startu KODI</string>
-	<string id="30111">[COLOR grey][LIGHT]Wpisz swoje adresy premium z [/LIGHT][/COLOR] [COLOR FFFF0000]http://mods-kodi.pl[/COLOR] [COLOR grey][LIGHT]dla EPG[/LIGHT][/COLOR]</string>
+	<string id="30111">[COLOR FFFF0000]Wpisz swoje adresy premium z[/COLOR] [COLOR FFFFD700]http://mods-kodi.pl/[/COLOR] [COLOR FFFF0000]dla EPG[/COLOR]</string>
 	<string id="30116">Wyszukaj obrazki kanałów w</string>
 	<string id="30117">Wybierz EPG:</string>
 	<string id="30118">Serwer:</string>
@@ -78,9 +78,9 @@
 	<string id="30605">Zapisz</string>
 	<string id="30606">Anuluj</string>
 	<string id="30607">Wył. podgląd</string>
-	<string id="30610">Przeglądaj...</string>
-	<string id="30611">Wybierz [COLOR gray]Przeglądaj...[/COLOR] i znajdz twój plik .strm. Gdy już znajdziesz plik, możesz przetestować poprawność działania używając funkcji [COLOR gray]Podgląd[/COLOR].</string>
-	<string id="30620">Wybierz [COLOR gray]Ulubione[/COLOR]. Wspierane są tylko Ulubione [I]PlayMedia[/I].</string>
+	<string id="30610">Przeglądaj</string>
+	<string id="30611">Wybierz [B]Przeglądaj[/B] i znajdz twój plik .strm. Gdy już znajdziesz plik, możesz przetestować poprawność działania używając funkcji [B]Podgląd[/B].</string>
+	<string id="30620">Wybierz [B]Ulubione[/B]. Wspierane są tylko ulubione [B]PlayMedia[/B].</string>
 	<string id="30700">Ten kanał jest udostępniany przez wiele wtyczek.[CR]Wybierz jedną, aby oglądać.</string>
 	<string id="30701">Żródło: </string>
 	<string id="30702">Skórka</string>
@@ -88,7 +88,7 @@
 	<string id="30704">Użyj skompresowanego EPG</string>
 	<string id="30705">Wyświetlaj tylko programy nadające</string>
 	<string id="30706">Automatycznie wykrywaj aktualizacje EPG</string>
-	<string id="30707">Pokazuj komunikaty z serwisu http://epg.feenk.net</string>
+	<string id="30707">Pokazuj komunikat informacyjny</string>
 
 <!-- settings -->
 	<string id="30802">TV Guide jest skonfigurowany, aby używać dodatku</string>
@@ -109,7 +109,7 @@
 	<string id="59909">Multisesja</string>
 	<string id="30913">Ustawienia</string>
 	<string id="30914">Skórka</string>
-	<string id="30915">Uruchom TVGuide po starcie systemu</string>
+	<string id="30915">Uruchom e-TVGuide po starcie systemu</string>
 	<string id="30916">Baza</string>
 	<string id="30917">Animacja maksymalizacji okna odtwarzania</string>
 	<string id="30918">Przewodnik po programach zamiast wyświetlania informacji</string>
@@ -143,7 +143,7 @@
 	<string id="30962">Opóźnienie próby połączenia (ms)</string>
 	<string id="30963">Zamykanie</string>
 	<string id="30964">Wciśnij ponownie klawisz aby wyjść</string>
-	<string id="30965"></string>
+	<string id="30965">Aktualnie nadawany serwis</string>
 	<string id="30966"></string>
 
 	<string id="58000">Informacje o programie</string>
@@ -162,19 +162,19 @@
 	<string id="31001">Aktywuj OSD</string>
 	<string id="31002">Ustaw klawisze</string>
 	<string id="31003">USTAW</string>
-	<string id="31004">[B]OK[/B]</string>
-	<string id="31005">[B]HOME[/B]</string>
-	<string id="31006">[B]PROG -[/B]</string>
-	<string id="31007">[B]PROG +[/B]</string>
-	<string id="31008">[B]STOP[/B]</string>
-	<string id="31009">[B]INFO[/B]</string>
-	<string id="31010">[B]CONTEXT[/B]</string>
-	<string id="31011">[B]REC[/B]</string>
-	<string id="31012">[B]RESETUJ[/B]</string>
+	<string id="31004">OK</string>
+	<string id="31005">HOME</string>
+	<string id="31006">PROG -</string>
+	<string id="31007">PROG +</string>
+	<string id="31008">STOP</string>
+	<string id="31009">INFO</string>
+	<string id="31010">CONTEXT</string>
+	<string id="31011">REC</string>
+	<string id="31012">RESETUJ</string>
 	<string id="31013">RESET</string>
-	<string id="31014">[COLOR][B]ZMIANA STRM[/B][/COLOR]</string>
-	<string id="31015">[B]VOL +[/B]</string>
-	<string id="31016">[B]VOL -[/B]</string>
+	<string id="31014">ZMIANA STRM</string>
+	<string id="31015">VOL +</string>
+	<string id="31016">VOL -</string>
 
 	<string id="310010"></string>
 	<string id="310011">Zatrzymaj odtwarzanie przyciskiem wstecz</string>
@@ -189,11 +189,11 @@
 	<string id="55006">WeebTV</string>
 	<string id="55007">Serwisy</string>
 	<string id="55008">Przypisz również streamy low-quality/zapasowe</string>
-	<string id="55010">b.niski</string>
-	<string id="55011">niski</string>
-	<string id="55012">średni</string>
-	<string id="55013">wysoki</string>
-	<string id="55014">b.wysoki</string>
+	<string id="55010">B.Niski</string>
+	<string id="55011">Niski</string>
+	<string id="55012">Średni</string>
+	<string id="55013">Wysoki</string>
+	<string id="55014">B.Wysoki</string>
 	<string id="55015"></string>
 	<string id="55016"></string>
 
@@ -254,10 +254,10 @@
 	<string id="69011">Przerwać nagrywanie programow?</string>
 	<string id="69012">Importowanie aplikacji do nagrywania</string>
 	<string id="69013">pomyślnie zaimportowany</string>
-	<string id="69014">Format nagrywania FFMPEG</string>
+	<string id="69014">[COLOR FFFF0000]Format nagrywania FFMPEG[/COLOR]</string>
 	<string id="69015">Wyjść pomimo zaplanowanego nagrywania?</string>
 	<string id="69016">Korzystaj z FFMPEG do nagrywania RTMP zamiast RTMPDUMP</string>
-	<string id="69017">[COLOR FFFF0000]Pobierz aplikacje do nagrywania z mods-kodi[/COLOR]</string>
+	<string id="69017">[COLOR FFFF0000]Pobierz aplikacje do nagrywania[/COLOR]</string>
 	<string id="69018">m-TVGuide pobierze teraz pliki z serwera - proszę nacisnąć OK i zaczekać</string>
 	<string id="69019">Pobieranie aplikacji nie powiodło się - spróbuj ponownie lub zainstaluj ręcznie</string>
 	<string id="69020">Debug log</string>
@@ -271,7 +271,7 @@
 	<string id="69028">Nic nie rób</string>
 	<string id="69029">Zapytaj</string>
 	<string id="69030">Automatycznie usuwaj</string>
-	<string id="69031">[COLOR grey][LIGHT]Użyj jedynie opcji[/LIGHT][/COLOR] [COLOR FFFF0000]"asf"[/COLOR] [COLOR grey][LIGHT]dla systemów OpenELEC[/LIGHT][/COLOR]</string>
+	<string id="69031">[COLOR FFFF0000]Użyj jedynie opcji asf dla systemów [COLOR FFFFD700]OpenELEC[/COLOR]</string>
 	<string id="69032"></string>
 	<string id="69033"></string>
 	<string id="69034"></string>
@@ -288,7 +288,7 @@
 	<string id="69044">Czas wyświetlania automatycznego OSD</string>
 	<string id="69045">Czas wyświetlania OSD</string>
 
-	<string id="80000">Pierwsza.tv</string>
+	<string id="80000">[COLOR]PierwszaTV[/COLOR]</string>
 	<string id="80001"></string>
 	<string id="80002"></string>
 	<string id="80003"></string>

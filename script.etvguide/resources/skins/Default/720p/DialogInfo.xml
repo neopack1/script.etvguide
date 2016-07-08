@@ -71,8 +71,8 @@
 			</control>
 			<control type="image" id="4944">
 				<description>Live</description>
-				<posx>778</posx>
-				<posy>94</posy>
+				<posx>662</posx>
+				<posy>102</posy>
 				<width>80</width>
 				<height>18</height>
 				<aspectratio>keep</aspectratio>
