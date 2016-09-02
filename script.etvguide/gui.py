@@ -531,7 +531,8 @@ class eTVGuide(xbmcgui.WindowXML):
 #                self.lastCloseKeystroke = datetime.datetime.now()
 #                xbmc.executebuiltin('Notification(%s,%s,3000)' % (strings(30963).encode('utf-8'), strings(30964).encode('utf-8')))
 #            return
-        self.close()
+            self.close()
+            return
 
         elif action.getId() == ACTION_MOUSE_MOVE:
             if ADDON.getSetting('pokazpanel') == 'true':
