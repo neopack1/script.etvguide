@@ -35,7 +35,7 @@
 	</extension>
 </addon>
 
-<addon id="script.etvguide" name="e-TVGuide" version="3.0.11" provider-name="thebedi">
+<addon id="script.etvguide" name="e-TVGuide" version="3.1.0" provider-name="thebedi">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.simplejson" version="2.0.10"/>
