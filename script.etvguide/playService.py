@@ -4,6 +4,7 @@ import re, sys, os, cgi
 import xbmcplugin, xbmcgui, xbmcaddon, xbmc
 from strings import *
 import strings as strings2
+import datetime
 import serviceLib
 import weebtvcids
 import telewizjadacids
@@ -11,6 +12,8 @@ import goldvodcids
 import playlistcids
 import mojefilmycids
 import pierwszatvcids
+import wizjatvcids
+import yoytvcids
 import threading
 import time
 
@@ -20,7 +23,9 @@ SERVICES = {
     telewizjadacids.serviceName : telewizjadacids.TelewizjaDaUpdater(),
     playlistcids.serviceName    : playlistcids.PlaylistUpdater(),
     mojefilmycids.serviceName   : mojefilmycids.MojeFilmyUpdater(),
-    pierwszatvcids.serviceName  : pierwszatvcids.PierwszaTvUpdater()
+    pierwszatvcids.serviceName  : pierwszatvcids.PierwszaTvUpdater(),
+    wizjatvcids.serviceName     : wizjatvcids.WizjaTVUpdater(),
+    yoytvcids.serviceName       : yoytvcids.YoyTVUpdater()
 }
 
 class BasePlayService:
@@ -53,10 +58,10 @@ class BasePlayService:
             return self.thread.is_alive() or self.starting
         return False
 
-    def getChannel(self, cid, service, currentlyPlayedService = None):
+    def getChannel(self, cid, service, currentlyPlayedService = { 'service' : None }):
         BasePlayService.lock.acquire() # make this function thread safe
         channelInfo = None
-        if self.isServiceLocked(service) == True and service != currentlyPlayedService: #if issued by playservice and th's the same as played then allow using the same service - it will be release anyway
+        if self.isServiceLocked(service) == True and service != currentlyPlayedService['service']: #if issued by PlayService and it's the same as played then allow using the same service - it will be release anyway
             debug(self.__class__.__name__ + ' getChannel service %s is locked - aborting' % service)
             BasePlayService.lock.release()
             return None
@@ -68,7 +73,7 @@ class BasePlayService:
         if serviceHandler is not None:
             channelInfo = serviceHandler.getChannel(cid)
 
-        if channelInfo is not None and service != currentlyPlayedService:
+        if channelInfo is not None and service != currentlyPlayedService['service']:
             self.lockService(service)
         BasePlayService.lock.release()
         return channelInfo
@@ -105,8 +110,9 @@ class PlayService(xbmc.Player, BasePlayService):
         BasePlayService.__init__(self)
         self.playbackStopped = False
         self.playbackStarted = False
-        self.currentlyPlayedService = None
+        self.currentlyPlayedService = { 'service' : None }
         self.urlList = None
+        self.playbackStartTime = None
         self.sleepSupervisor = serviceLib.SleepSupervisor(self.stopPlayback)
         self.streamQuality = ''
         self.userStoppedPlayback = True
@@ -147,18 +153,19 @@ class PlayService(xbmc.Player, BasePlayService):
         for url in self.urlList[:]:
             playStarted = self.playUrl(url)
 
-            for i in range(100):
+            for i in range(80):
 
                 if self.terminating == True or strings2.M_TVGUIDE_CLOSING == True:
                     if strings2.M_TVGUIDE_CLOSING == True:
                         xbmc.Player().stop()
-                    self.unlockService(self.currentlyPlayedService)
-                    self.currentlyPlayedService = None
+                    self.unlockService(self.currentlyPlayedService['service'])
+                    self.currentlyPlayedService['service'] = None
                     deb('PlayService _playUrlList abort requested - terminating')
                     return
 
                 if self.playbackStarted == True:
                     deb('PlayService _playUrlList detected stream start!')
+                    self.playbackStartTime = datetime.datetime.now()
                     return
 
                 if self.playbackStopped == True or playStarted == False:
@@ -166,10 +173,10 @@ class PlayService(xbmc.Player, BasePlayService):
 
                 xbmc.sleep(100)
 
-            deb('PlayService _playUrlList detected faulty stream!')
+            deb('PlayService _playUrlList detected faulty stream! playbackStopped: %s, playStarted: %s' % (self.playbackStopped, playStarted) )
             xbmc.Player().stop()
-            self.unlockService(self.currentlyPlayedService)
-            self.currentlyPlayedService = None
+            self.unlockService(self.currentlyPlayedService['service'])
+            self.currentlyPlayedService['service'] = None
             try:
                 #move stream to the end of list
                 self.urlList.remove(url)
@@ -228,31 +235,35 @@ class PlayService(xbmc.Player, BasePlayService):
         channelInfo = self.getChannel(channel, service, self.currentlyPlayedService)
 
         if channelInfo is not None:
-            if self.currentlyPlayedService != service:
-                self.unlockService(self.currentlyPlayedService)
-            self.currentlyPlayedService = service
+            if self.currentlyPlayedService['service'] != service:
+                self.unlockService(self.currentlyPlayedService['service'])
+            self.currentlyPlayedService['service'] = service
             liz = xbmcgui.ListItem(channelInfo.title, iconImage = channelInfo.img, thumbnailImage = channelInfo.img)
             liz.setInfo( type="Video", infoLabels={ "Title": channelInfo.title, } )
             try:
+                self.playbackStopped = False
                 xbmc.Player().play(channelInfo.strm, liz, windowed=startWindowed)
                 res = True
             except Exception, ex:
-                self.unlockService(self.currentlyPlayedService)
-                self.currentlyPlayedService = None
+                deb('Exception while trying to play video: %s' % str(ex))
+                self.unlockService(self.currentlyPlayedService['service'])
+                self.currentlyPlayedService['service'] = None
                 xbmcgui.Dialog().ok(strings(57018).encode('utf-8'), strings(57021).encode('utf-8') + '\n' + strings(57028).encode('utf-8') + '\n' + str(ex))
+        else:
+            deb('LoadVideoLink ERROR channelInfo is None! service: %s' % service)
         return res
 
     def onPlayBackStopped(self):
         self.playbackStopped = True
-        self.unlockService(self.currentlyPlayedService)
-        self.currentlyPlayedService = None
+        self.unlockService(self.currentlyPlayedService['service'])
+        self.currentlyPlayedService['service'] = None
         self.sleepSupervisor.Stop()
         self.tryResummingPlayback()
 
     def onPlayBackEnded(self):
         self.playbackStopped = True
-        self.unlockService(self.currentlyPlayedService)
-        self.currentlyPlayedService = None
+        self.unlockService(self.currentlyPlayedService['service'])
+        self.currentlyPlayedService['service'] = None
         self.sleepSupervisor.Stop()
         self.tryResummingPlayback()
 
@@ -278,12 +289,20 @@ class PlayService(xbmc.Player, BasePlayService):
             pass
 
     def tryResummingPlayback(self):
-        deb('PlayService tryResummingPlayback self.userStoppedPlayback %s, self.isWorking() %s, self.nrOfResumeAttempts %s, self.maxNrOfResumeAttempts %s' % (self.userStoppedPlayback, self.isWorking(), self.nrOfResumeAttempts, self.maxNrOfResumeAttempts))
+        deb('PlayService tryResummingPlayback self.userStoppedPlayback: %s, self.isWorking(): %s, self.nrOfResumeAttempts: %s, self.maxNrOfResumeAttempts: %s' % (self.userStoppedPlayback, self.isWorking(), self.nrOfResumeAttempts, self.maxNrOfResumeAttempts))
         if self.reconnectFailedStreams == 'true' and not self.userStoppedPlayback and not self.isWorking() and self.urlList:
             if self.nrOfResumeAttempts < self.maxNrOfResumeAttempts:
                 self.nrOfResumeAttempts += 1
                 self.starting = True
                 deb('PlayService reconnecting, nr of reattempts: %s' % self.nrOfResumeAttempts)
+                if self.playbackStartTime is not None and (datetime.datetime.now() - self.playbackStartTime).seconds < 10:
+                    try:
+                        #Playback didn't last for 10s - move stream to the end of list
+                        deb('Playback last for only %s seconds - moving to next one' % (datetime.datetime.now() - self.playbackStartTime).seconds)
+                        tmpUrl = self.urlList.pop(0)
+                        self.urlList.append(tmpUrl)
+                    except Exception, ex:
+                        deb('tryResummingPlayback exception: %s' % str(ex))
                 if self.reconnectDelay > 0:
                     xbmc.sleep(self.reconnectDelay)
                 self.playUrlList(self.urlList)
