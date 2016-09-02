@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<map id="wizjatv" version="1.0" strm="service=wizjatv&amp;cid=%s">
+	<channel id="TVP 1" 									title="(?=TVP\s*1(\s*HD)?$)" strm=""/>
+	<channel id="TVP 2"										title="(?=TVP\s*2(\s*HD)?$)" strm=""/>
+	<channel id="TVP Seriale" 								title="(?=TVPSERIALE(\s*HD)?$)" strm=""/>
+	<channel id="TVN" 										title="(?=TVN(\s*HD)?$)" strm=""/>
+	<channel id="Polsat" 									title="(?=Polsat(\s*HD)?$)" strm=""/>
+	<channel id="TVN 7" 									title="(?=TVN\s*7(\s*HD)?$)" strm=""/>
+	<channel id="TV Puls" 									title="(?=.*Puls)(?!.*2)" strm=""/>
+	<channel id="TVN 24" 									title="(?=TVN\s*24(\s*HD)?$)" strm=""/>
+	<channel id="Polsat News" 								title="(?=Polsat\s*News(\s*HD)?$)" strm=""/>
+	<channel id="TLC" 										title="(?=TLC(\s*HD)?$)" strm=""/>
+	<channel id="HBO" 										title="(?=HBO(\s*HD)?(\s*720p)?(\s*1080p)?$)" strm=""/>
+	<channel id="HBO2" 										title="(?=HBO\s*2(\s*HD)?$)" strm=""/>
+	<channel id="HBO3" 					  					title="(?=HBO\s*(3|COMEDY)(\s*TV)?(\s*HD)?\s*$)" strm=""/>
+	<channel id="Filmbox" 								    title="(?=Filmbox(\s*HD)?$)" strm=""/>
+	<channel id="Kino Polska" 								title="(?=Kino\s*Polska(\s*HD)?$)" strm=""/>
+	<channel id="Discovery Historia" 						title="(?=.*Discovery)(?=.*Historia)" strm=""/>
+	<channel id="TVN Turbo" 								title="(?=TVN\s*Turbo(\s*HD)?$)" strm=""/>
+	<channel id="Polsat Sport" 								title="(?=Polsat\s*Sport(\s*HD)?$)" strm=""/>
+	<channel id="Polsat Sport News" 					    title="(?=Polsat\s*Sport\s*News(\s*HD)?$)" strm=""/>
+	<channel id="Polsat Sport Extra" 						title="(?=.*POLSAT)(?=.*Sport)(?=.*Extra)" strm=""/>
+	<channel id="nSport" 									title="(?=nSport(\s*HD)?$)" strm=""/>
+	<channel id="TVP Sport" 								title="(?=TVP\s*Sport(\s*HD)?$)" strm=""/>
+	<channel id="Eurosport" 								title="(?=Eurosport(\s*1)?(\s*HD)?$)" strm=""/>
+	<channel id="Eurosport 2" 								title="(?=Eurosport\s*2(\s*HD)?$)" strm=""/>
+	<channel id="Eleven" 									title="(?=Eleven(\s*HD)?$)" strm=""/>
+	<channel id="Eleven Sport" 				                title="(?=ELEVEN\s*SPORTS(\s*HD)?$)" strm=""/>
+	<channel id="Disney Junior" 							title="(?=.*Disney)(?=.*Junior)" strm=""/>
+	<channel id="MTV Polska" 								title="(^MTV$)" strm=""/>
+	<channel id="VIVA Polska" 								title="(?=VIVA(\s*HD)?$)" strm=""/>
+	<channel id="Canal+" 									title="(?=CANAL(\s*HD)?$)" strm=""/>
+	<channel id="Canal+ Sport" 								title="(?=CANAL(\+)?\s*SPORT(\s*HD)?$)" strm=""/>
+	<channel id="Canal+ Sport 2" 							title="(?=CANAL(\+)?\s*SPORT\s*2(\s*HD)?$)" strm=""/>
+	<channel id="Domo+" 									title="(?=DOMO(\s*HD)?\s*$)" strm=""/>
+	<channel id="Discovery Channel" 						title="(?=Discovery\s*$)" strm=""/>
+	<channel id="National Geographic Channel" 				title="(?=NATGEO(\s*HD)?$)" strm=""/>
+	<channel id="Animal Planet" 							title="(?=Animal(\s*Planet)?(\s*HD)?$)" strm=""/>
+	<channel id="Comedy Central" 							title="(?=Comedy(\s*(Central|CENTERAL))?(\s*HD)?$)" strm=""/>
+	<channel id="Cartoon Network" 							title="(?=CARTOON(\s*HD)?$)" strm=""/>
+	<channel id="Travel Channel"						    title="(?=TRAVEL(\s*CHANNEL)?(\s*HD)?\s*$)" strm=""/>
+</map>
+
+<!--
+	Uwaga:
+		1)	Jeżeli podamy w strm danego kanału ścieżkę to przypisujemy na sztywno tego streama - nie generujemy sami na podstawie pobranej z weeb.tv listy CIDów.
+			<channel id="TVP 2" title="" strm="service=weebtv&amp;cid=00000"/>
+			
+		2)	Jeżeli jakieś kanały nie mają ustawionego strm-a to te kanały przypasowujemy:
+			egex.match(title, "TITLE KANAŁU WEEB.TV")
+
+		3)	strm dla tych znalezionych kanałów powstaje tak (pole strm w atrybutach mapy) "service=weebtv&amp;cid=%s" % CID 
+			&amp; = & !!
+
+			Nie dopasowujemy nazwy kanału bo np. a może to użytkownik? np: worlddiscovery emituje program ESKA TV, więc kto wie czy za jakiś czas nie zmieni planów.
+			Na pewno wtedy title kanału się zmieni a jak widać name może zostać takie same.
+
+	Kilka słów o użytym często tutaj regexie
+
+		(?=.*slowo1)(?=.*slowo2)(?=.*slowo3)(?=.*slowo4) sprawdza czy wszystkie słowa znajdują się w danym stringu, obojętnie w jakiej kolejności
+		Uwaga (?=.*Canal)(?=.*Film) nie zwróci grup pasujących tylko powie, że wyrażenie pasuje - jest spełnione
+		np.: regex = (?=.*Canal)(?=.*Film)	string = Film Canal+ HD 2
+		No match groups were extracted.
+		This means that your pattern matches but there were no (capturing (groups)) in it that matched anything in the subject string.
+
+		(?=.*Canal)(?=.*Film)(?!.*HD)	- musi zawierać Canal, musi zawierać Film, nie może zawierać HD
+		^(?=.*Canal)(?=.*Film)(?!.*HD)	- j/w w razie jak by powyższe nie działało, to spróbować tego (niby jak HD będzie na poczatku to by tamto nie załapało), ale na moich testerach oba wyrażenia działają
+-->
