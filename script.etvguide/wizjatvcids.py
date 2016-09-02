@@ -20,7 +20,7 @@ class WizjaTVUpdater(baseServiceUpdater):
         self.login              = ADDON.getSetting('wizjatv_username').strip()
         self.password           = ADDON.getSetting('wizjatv_password').strip()
         self.servicePriority    = int(ADDON.getSetting('priority_wizjatv'))
-        self.onlineMapFile      = 'http://mods-kodi.pl/m-tvguide/maps/wizjatvmap.xml'
+        self.onlineMapFile      = 'http://epg.feenk.net/maps/wizjatvmap.xml'
         self.localMapFile       = 'wizjatvmap.xml'
         self.serviceRegex       = "service=" + self.serviceName + "&cid=%"
         self.rstrm              = self.serviceRegex + 's'
