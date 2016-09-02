@@ -19,7 +19,7 @@
 	<string id="30108">Clear all reminders...</string>
 	<string id="30109">Clear all planed recordings...</string>
 	<string id="30110">Update program information on KODI startup</string>
-	<string id="30111">[COLOR FFFF0000]Select premium EPG from[/COLOR] [COLOR FFFFD700]http://mods-kodi.pl/[/COLOR]</string>
+	<string id="30111">[COLOR]Select premium EPG from http://mods-kodi.pl/[/COLOR]</string>
 	<string id="30116">Search for channel logos in</string>
 	<string id="30117">Select EPG</string>
 	<string id="30118">Server:</string>
@@ -32,12 +32,13 @@
 	<string id="30125">Main:</string>
 	<string id="30130">Server #1</string>
 	<string id="30131">Server #2</string>
+	<string id="30149">does not exist. Default will be set!</string>
 	<string id="30150">Sorry, an error has occurred</string>
 	<string id="30151">Service temporarily unavailable, please try again later.</string>
 	<string id="30152">check settings or try again later...</string>
 	<string id="30153">because the settings are invalid!</string>
-	<string id="30154">It looks like your current skin has a special</string>
-	<string id="30155">version of the TV Guide skin that is not up-to-date.</string>
+	<string id="30154">It looks like your current skin</string>
+	<string id="30155">is not supported by current version of e-TVGuide</string>
 	<string id="30156">Please try with a different skin...</string>
 	<string id="30157">It looks like the TV Guide database is broken.</string>
 	<string id="30158">Please remove database file using option in plugin settings "Database settings"</string>
@@ -60,6 +61,13 @@
 	<string id="30502">Save</string>
 	<string id="30503">Cancel</string>
 	<string id="30504">Notification</string>
+	<string id="30505">Genre</string>
+	<string id="30506">Episode</string>
+	<string id="30507">Actors</string>
+	<string id="30508">Year</string>
+	<string id="30509">Director</string>
+	<string id="30510">Plot</string>
+	<string id="30511">Duration</string>
 
 	<string id="30400">CHANNELS LIST</string>
 	<string id="30401">EXIT</string>
@@ -108,10 +116,16 @@
 	<string id="59907">Source</string>
 	<string id="59908">File</string>
 	<string id="59909">Multisession</string>
+	<string id="59910">Use free account</string>
+	<string id="59911"></string>
+	<string id="59912"></string>
+	<string id="59913"></string>
+	<string id="59914"></string>
+	<string id="59915"></string>
 	<string id="30913">Settings</string>
 	<string id="30914">Skin</string>
 	<string id="30915">Enable TVGuide autostart</string>
-	<string id="30916">Database Settings</string>
+	<string id="30916">Database</string>
 	<string id="30917">Enable stream window resize animation</string>
 	<string id="30918">Guide about the programs instead of displaying information</string>
 	<string id="30930">Colours</string>
@@ -145,7 +159,13 @@
 	<string id="30963">Exit</string>
 	<string id="30964">Press one more time to exit</string>
 	<string id="30965">Currently broadcast service</string>
-	<string id="30966"></string>
+	<string id="30966">Movies (Interia)</string>
+	<string id="30967">TV series (Interia)</string>
+	<string id="30968">Magazine</string>
+	<string id="30969">Database file has been deleted</string>
+	<string id="30970">Assigned streams has been deleted</string>
+	<string id="30971">Reminders has been cleared</string>
+	<string id="30972">Scheduled recording has been cleared</string>
 
 	<string id="58000">Program info</string>
 
@@ -195,8 +215,8 @@
 	<string id="55012">Mid</string>
 	<string id="55013">High</string>
 	<string id="55014">Very High</string>
-	<string id="55015"></string>
-	<string id="55016"></string>
+	<string id="55015">Working</string>
+	<string id="55016">Now Playing</string>
 
 	<string id="89001">Enable sleep timer</string>
 	<string id="89002">Timeout action</string>
@@ -255,10 +275,10 @@
 	<string id="69011">Cancel ongoing recording?</string>
 	<string id="69012">Import record app</string>
 	<string id="69013">successfully imported</string>
-	<string id="69014">[COLOR FFFF0000]FFMPEG record format[/COLOR]</string>
+	<string id="69014">FFMPEG record format</string>
 	<string id="69015">Exit despite of scheduled recording?</string>
 	<string id="69016">Use FFMPEG to record RTMP instead of RTMPDUMP</string>
-	<string id="69017">[COLOR FFFF0000]Download record apps[/COLOR]</string>
+	<string id="69017">Download record apps</string>
 	<string id="69018">m-TVGuide is downloading files - please press OK and wait</string>
 	<string id="69019">An error has occurred - try again or install manualy</string>
 	<string id="69020">Debug log</string>
@@ -272,8 +292,8 @@
 	<string id="69028">Do nothing</string>
 	<string id="69029">Ask</string>
 	<string id="69030">Auto delete</string>
-	<string id="69031">[COLOR FFFF0000]Use only option asf for[/COLOR] [COLOR FFFFD700]OpenELEC[/COLOR] [COLOR FFFF0000]systems[/COLOR]</string>
-	<string id="69032"></string>
+	<string id="69031">[COLOR]Use only option asf for OpenELEC systems[/COLOR]</string>
+	<string id="69032">[COLOR]Record application for common systems[/COLOR]</string>
 	<string id="69033"></string>
 	<string id="69034"></string>
 	<string id="69035"></string>
@@ -290,8 +310,8 @@
 	<string id="69045">OSD display time</string>
 
 	<string id="80000">[COLOR]PierwszaTV[/COLOR]</string>
-	<string id="80001"></string>
-	<string id="80002"></string>
+	<string id="80001">[COLOR]WizjaTV[/COLOR]</string>
+	<string id="80002">[COLOR]YoyTV[/COLOR]</string>
 	<string id="80003"></string>
 	<string id="80004"></string>
 	<string id="80005"></string>

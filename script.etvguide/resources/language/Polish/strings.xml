@@ -19,7 +19,7 @@
 	<string id="30108">Wyczyść wszystkie przypomnienia...</string>
 	<string id="30109">Wyczyść wszystkie zaplanowane nagrywania...</string>
 	<string id="30110">Aktualizuj informacje o programie podczas startu KODI</string>
-	<string id="30111">[COLOR FFFF0000]Wpisz swoje adresy premium z[/COLOR] [COLOR FFFFD700]http://mods-kodi.pl/[/COLOR] [COLOR FFFF0000]dla EPG[/COLOR]</string>
+	<string id="30111">[COLOR]Wpisz swoje adresy premium z http://mods-kodi.pl/ dla EPG[/COLOR]</string>
 	<string id="30116">Wyszukaj obrazki kanałów w</string>
 	<string id="30117">Wybierz EPG:</string>
 	<string id="30118">Serwer:</string>
@@ -31,6 +31,7 @@
 	<string id="30125">Głowne:</string>
 	<string id="30130">Serwer #1</string>
 	<string id="30131">Serwer #2</string>
+	<string id="30149">nie istnieje. Domyślna zostanie ustawiona!</string>
 	<string id="30150">Przepraszamy, wystąpił błąd!</string>
 	<string id="30151">Twoje ustawienia lub podany adres są błędne![CR]</string>
 	<string id="30152">Sprawdź ustawienia albo sproboj ponownie pozniej</string>
@@ -59,6 +60,13 @@
 	<string id="30502">Zapisz</string>
 	<string id="30503">Anuluj</string>
 	<string id="30504">Informacja</string>
+	<string id="30505">Gatunek</string>
+	<string id="30506">Odcinek</string>
+	<string id="30507">Aktorzy</string>
+	<string id="30508">Rok</string>
+	<string id="30509">Reżyser</string>
+	<string id="30510">Fabuła</string>
+	<string id="30511">Czas trwania</string>
 
 	<string id="30400">LISTA KANAŁÓW</string>
 	<string id="30401">WYJDŹ</string>
@@ -107,6 +115,12 @@
 	<string id="59907">Źródło</string>
 	<string id="59908">Plik</string>
 	<string id="59909">Multisesja</string>
+	<string id="59910">Użyj darmowego konta</string>
+	<string id="59911"></string>
+	<string id="59912"></string>
+	<string id="59913"></string>
+	<string id="59914"></string>
+	<string id="59915"></string>
 	<string id="30913">Ustawienia</string>
 	<string id="30914">Skórka</string>
 	<string id="30915">Uruchom e-TVGuide po starcie systemu</string>
@@ -144,7 +158,13 @@
 	<string id="30963">Zamykanie</string>
 	<string id="30964">Wciśnij ponownie klawisz aby wyjść</string>
 	<string id="30965">Aktualnie nadawany serwis</string>
-	<string id="30966"></string>
+	<string id="30966">Filmy (Interia)</string>
+	<string id="30967">Seriale (Interia)</string>
+	<string id="30968">Magazyn</string>
+	<string id="30969">Plik bazy został usunięty</string>
+	<string id="30970">Przypisane streamy zostały usunięte</string>
+	<string id="30971">Przypomnienia zostały wyczyszczone</string>
+	<string id="30972">Zaplanowane nagrywania zostały wyczyszczone</string>
 
 	<string id="58000">Informacje o programie</string>
 
@@ -194,8 +214,8 @@
 	<string id="55012">Średni</string>
 	<string id="55013">Wysoki</string>
 	<string id="55014">B.Wysoki</string>
-	<string id="55015"></string>
-	<string id="55016"></string>
+	<string id="55015">Uruchamianie</string>
+	<string id="55016">Teraz odtwarzane</string>
 
 	<string id="89001">Aktywuj sleep timer</string>
 	<string id="89002">Akcja wykonana po upływie czasu nieaktywności</string>
@@ -254,10 +274,10 @@
 	<string id="69011">Przerwać nagrywanie programow?</string>
 	<string id="69012">Importowanie aplikacji do nagrywania</string>
 	<string id="69013">pomyślnie zaimportowany</string>
-	<string id="69014">[COLOR FFFF0000]Format nagrywania FFMPEG[/COLOR]</string>
+	<string id="69014">Format nagrywania FFMPEG</string>
 	<string id="69015">Wyjść pomimo zaplanowanego nagrywania?</string>
 	<string id="69016">Korzystaj z FFMPEG do nagrywania RTMP zamiast RTMPDUMP</string>
-	<string id="69017">[COLOR FFFF0000]Pobierz aplikacje do nagrywania[/COLOR]</string>
+	<string id="69017">Pobierz aplikacje do nagrywania</string>
 	<string id="69018">m-TVGuide pobierze teraz pliki z serwera - proszę nacisnąć OK i zaczekać</string>
 	<string id="69019">Pobieranie aplikacji nie powiodło się - spróbuj ponownie lub zainstaluj ręcznie</string>
 	<string id="69020">Debug log</string>
@@ -271,8 +291,8 @@
 	<string id="69028">Nic nie rób</string>
 	<string id="69029">Zapytaj</string>
 	<string id="69030">Automatycznie usuwaj</string>
-	<string id="69031">[COLOR FFFF0000]Użyj jedynie opcji asf dla systemów [COLOR FFFFD700]OpenELEC[/COLOR]</string>
-	<string id="69032"></string>
+	<string id="69031">[COLOR]Użyj jedynie opcji asf dla systemów OpenELEC[/COLOR]</string>
+	<string id="69032">[COLOR]Aplikacja nagrywania dla zwykłych systemów[/COLOR]</string>
 	<string id="69033"></string>
 	<string id="69034"></string>
 	<string id="69035"></string>
@@ -289,8 +309,8 @@
 	<string id="69045">Czas wyświetlania OSD</string>
 
 	<string id="80000">[COLOR]PierwszaTV[/COLOR]</string>
-	<string id="80001"></string>
-	<string id="80002"></string>
+	<string id="80001">[COLOR]WizjaTV[/COLOR]</string>
+	<string id="80002">[COLOR]YoyTV[/COLOR]</string>
 	<string id="80003"></string>
 	<string id="80004"></string>
 	<string id="80005"></string>
