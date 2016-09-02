@@ -106,7 +106,7 @@ class PierwszaTvUpdater(baseServiceUpdater):
                 tokenExpireIn = int(channelData['tokenExpireIn'])
 
                 startTime = datetime.datetime.now()
-                while (datetime.datetime.now() - startTime).seconds < 25 and strings2.M_TVGUIDE_CLOSING == False:
+                while (datetime.datetime.now() - startTime).seconds < 30 and strings2.M_TVGUIDE_CLOSING == False:
                     serverStatus = self.sl.getJsonFromExtendedAPI(self.url + 'api/stream/status?api_id=%s&checksum=%s&serverId=%s&streamId=%s' % (self.apiId, self.apiChecksum, serverId, streamId), jsonLoadsResult=True)
                     self.log('getChannel stream/status URL returned: %s' % str(serverStatus))
 

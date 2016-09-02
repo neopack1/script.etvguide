@@ -34,7 +34,7 @@ class clearDB:
         if self.command == 'deleteDbFile':
             self.database.deleteDbFile()
             self.database.close()
-            xbmcgui.Dialog().ok(strings(DB_DELETED), 'OK')
+            xbmcgui.Dialog().ok(strings(DB_DELETED), strings(30969))
         else:
             self.database.initialize(self.onInitialized)
 

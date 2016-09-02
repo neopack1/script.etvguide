@@ -6,6 +6,15 @@
 		<setting id="max_reconnect_attempts" label="30961" type="slider" default="5" range="1,50" option="int" visible="eq(-1,true)"/>
 		<setting id="reconnect_delay" label="30962" type="slider" default="500" range="0,3000" option="int" visible="eq(-2,true)"/>
 
+		<setting type="sep"/>
+		<setting label="80002" type="lsep"/>
+		<setting id="yoytv_enabled" type="bool" label="59904" default="true"/>
+		<setting id="yoytv_use_free_account" type="bool" label="59910" default="true" visible="eq(-1,true)"/>
+		<setting id="yoytv_username" type="text" label="55002" default="" visible="eq(-2,true) + eq(-1,false)"/>
+		<setting id="yoytv_password" type="text" option="hidden" label="55003" default="" visible="eq(-3,true) + eq(-2,false)"/>
+		<setting id="priority_yoytv" label="55009" type="enum" default="0" lvalues="55010|55011|55012|55013|55014" visible="eq(-4,true)"/>
+
+		<setting type="sep"/>
 		<setting label="30912" type="lsep"/>
 		<setting id="WeebTV_enabled" type="bool" label="59904" default="false"/>
 		<setting id="username" type="text" label="55002" default="" visible="eq(-1,true)"/>
@@ -15,6 +24,7 @@
 		<setting id="miltisession_enabled" type="bool" label="59909" default="false" visible="eq(-5,true)"/>
 		<setting id="priority_weebtv" label="55009" type="enum" default="0" lvalues="55010|55011|55012|55013|55014" visible="eq(-6,true)"/>
 
+		<setting type="sep"/>
 		<setting label="59902" type="lsep"/>
 		<setting id="GoldVOD_enabled" type="bool" label="59904" default="false"/>
 		<setting id="usernameGoldVOD" type="text" label="55002" default="" visible="eq(-1,true)"/>
@@ -23,21 +33,32 @@
 		<setting id="assign_all_streams_goldvod" type="bool" label="55008" default="true" visible="eq(-1,true) + eq(-4,true)"/>
 		<setting id="priority_goldvod" label="55009" type="enum" default="1" lvalues="55010|55011|55012|55013|55014" visible="eq(-5,true)"/>
 
+		<setting type="sep" visible="false"/>
 		<setting label="59903" type="lsep" visible="false"/>
 		<setting id="telewizjada_enabled" type="bool" label="59904" default="true" visible="false"/>
 		<setting id="priority_telewizjada" label="55009" type="enum" default="2" lvalues="55010|55011|55012|55013|55014" visible="false"/>
 
+		<setting type="sep"/>
 		<setting label="80000" type="lsep"/>
  		<setting id="pierwszatv_enabled" type="bool" label="59904" default="false"/>
 		<setting id="pierwszatv_username" type="text" label="55002" default="" visible="eq(-1,true)"/>
 		<setting id="pierwszatv_password" type="text" option="hidden" label="55003" default="" visible="eq(-2,true)"/>
  		<setting id="priority_pierwszatv" label="55009" type="enum" default="2" lvalues="55010|55011|55012|55013|55014" visible="eq(-3,true)"/>
 
+		<setting type="sep"/>
+		<setting label="80001" type="lsep"/>
+ 		<setting id="wizjatv_enabled" type="bool" label="59904" default="false"/>
+		<setting id="wizjatv_username" type="text" label="55002" default="" visible="eq(-1,true)"/>
+		<setting id="wizjatv_password" type="text" option="hidden" label="55003" default="" visible="eq(-2,true)"/>
+ 		<setting id="priority_wizjatv" label="55009" type="enum" default="2" lvalues="55010|55011|55012|55013|55014" visible="eq(-3,true)"/>
+
+		<setting type="sep"/>
 		<setting label="30956" type="lsep"/>
  		<setting id="MojeFilmy_enabled" type="bool" label="59904" default="false"/>
 		<setting id="mojefilmy_playlist" type="text" label="30959" default="" visible="eq(-1,true)"/>
  		<setting id="priority_mojefilmy" label="55009" type="enum" default="1" lvalues="55010|55011|55012|55013|55014" visible="eq(-2,true)"/>
 
+		<setting type="sep"/>
 		<setting label="59905" type="lsep"/>
 		<setting id="playlist_enabled" type="bool" label="59904" default="false"/>
 		<setting id="playlist_source" label="59907" type="labelenum" default="Url" values="Url|File" visible="eq(-1,true)"/>
@@ -101,15 +122,17 @@
 		<setting label="30955" type="action" action="RunScript($CWD/cleardb.py, deleteDbFile)"/>
 	</category>
 	<category label="69000">
-		<setting type="sep"/>
+		<setting label="69032" type="lsep"/>
 		<setting id="download_record_app" label="69017" type="action" option="close" value="" action="RunScript($CWD/settingsImportExport.py, DownloadRecordAppFromModsKodi)"/>
 		<setting type="sep"/>
 		<setting id="record.folder" label="69003" type="folder" value="" option="writeable"/>
 		<setting id="use_only_ffmpeg" label="69016" type="bool" default="false"/>
 		<setting id="rtmpdumpExe" label="69001" type="action" option="close" value="" action="RunScript($CWD/settingsImportExport.py, ImportRecordApp)" visible="eq(-1,false)"/>
 		<setting id="ffmpegExe" label="69002" type="action" option="close" value="" action="RunScript($CWD/settingsImportExport.py, ImportRecordApp)"/>
+		<setting type="sep"/>
 		<setting label="69031" type="lsep"/>
 		<setting id="ffmpeg_format" label="69014" type="labelenum" default="flv" values="flv|asf"/>
+		<setting type="sep"/>
 		<setting id="max_reattempts" label="69024" type="number" default="20"/>
 		<setting id="ask_to_delete_watched" label="69025" type="enum" default="1" lvalues="69028|69029|69030"/>
 	</category>
@@ -122,10 +145,11 @@
 		<setting id="kolor.Seriale" label="30933" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
 		<setting id="kolor.Informacja" label="30934" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
 		<setting id="kolor.Rozrywka" label="30935" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
-		<setting id="kolor.Dokument" label="Dokument" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
+		<setting id="kolor.Dokument" label="30936" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
 		<setting id="kolor.Dladzieci" label="30937" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
 		<setting id="kolor.Sport" label="30938" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
 		<setting id="kolor.InteraktywnyProgramRozrywkowy" label="30939" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
+		<setting type="sep"/>
 		<setting label="30940" type="lsep"/>
 		<setting id="kolor.default" label="30941" default="default" type="labelenum" values="default|czerwony|zielony|zolty|purpurowy|purpurowy|niebieski|pomaranczowy|fioletowy|seledynowy|czarny|"/>
 		<setting id="kolor.defaultfocus" label="30942" type="labelenum" default="default-focus" values="default-focus|kolorowy|kolorowyciemny|srebrnoszary|dark|"/>

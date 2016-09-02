@@ -112,38 +112,42 @@ class ProgramDescriptionParser(object):
         self.description = description
     def extractCategory(self):
         try:
-            category = re.search(".*(\[COLOR\s*\w*\]\s*Kategoria.*?\[/COLOR\]).*", self.description).group(1)
+            category = re.search(".*(Kategoria.*?\[/B\]).*", self.description).group(1)
             category = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]|\[I\]|\[/I\]", "", category)
-            self.description = re.sub("\[COLOR\s*\w*\]\s*Kategoria.*?\[/COLOR\]", "", self.description).strip()
+            category = re.sub("Kategoria:", "", category).strip()
+            self.description = re.sub("Kategoria.*?\[/B\]", "", self.description).strip()
         except:
             category = ''
         return category
 
     def extractProductionDate(self):
         try:
-            productionDate = re.search(".*(\[COLOR\s*\w*\]\s*Rok produkcji.*?\[/COLOR\]).*", self.description).group(1)
+            productionDate = re.search(".*(Rok produkcji.*?\[/B\]).*", self.description).group(1)
             productionDate = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]|\[I\]|\[/I\]", "", productionDate)
-            self.description = re.sub("\[COLOR\s*\w*\]\s*Rok produkcji.*?\[/COLOR\]", "", self.description).strip()
+            productionDate = re.sub("Rok produkcji:", "", productionDate).strip()
+            self.description = re.sub("Rok produkcji.*?\[/B\]", "", self.description).strip()
         except:
             productionDate = ''
         return productionDate
 
     def extractDirector(self):
         try:
-            director = re.search(".*(\[COLOR\s*\w*\]\s*Re.?yser.*?\[/COLOR\]).*", self.description).group(1)
+            director = re.search(".*(Re.?yser.*?\[/B\]).*", self.description).group(1)
             director = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]|\[I\]|\[/I\]", "", director)
-            self.description = re.sub("\[COLOR\s*\w*\]\s*Re.?yser.*?\[/COLOR\]", "", self.description).strip()
+            director = re.sub("Re.?yser:", "", director).strip()
+            self.description = re.sub("Re.?yser.*?\[/B\]", "", self.description).strip()
         except:
             director = ''
         return director
 
     def extractEpisode(self):
         try:
-            episode = re.search(".*(\[COLOR\s*\w*\]\s*Odcinek.*?\[/COLOR\]).*", self.description).group(1)
+            episode = re.search(".*(Odcinek.*?\[/B\]).*", self.description).group(1)
             episode = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]|\[I\]|\[/I\]", "", episode)
+            episode = re.sub("Odcinek:", "", episode).strip()
             if (re.match('Odcinek:\s*0', episode)):
                 episode = ''
-            self.description = re.sub("\[COLOR\s*\w*\]\s*Odcinek.*?\[/COLOR\]", "", self.description).strip()
+            self.description = re.sub("Odcinek.*?\[/B\]", "", self.description).strip()
         except:
             episode = ''
         return episode
@@ -151,26 +155,28 @@ class ProgramDescriptionParser(object):
     def extractAllowedAge(self):
         try:
             icon = 'icon.png'
-            age = re.search(".*(\[COLOR\s*\w*\]\s*Od lat.*?\[/COLOR\]).*", self.description).group(1)
+            age = re.search(".*(Od lat.*?\[/B\]).*", self.description).group(1)
             age = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]", "", age)
             age = re.sub("\+\+O\?\.", "18", age)
             age = re.sub("\+", "", age)
             age = re.sub("\.", "", age)
             age_number = re.search("Od lat:\s*(.*)", age).group(1)
             icon = 'icon_%s.png' % age_number
-            self.description = re.sub("\[COLOR\s*\w*\]\s*Od lat.*?\[/COLOR\]", "", self.description).strip()
+            self.description = re.sub("Od lat.*?\[/B\]", "", self.description).strip()
         except:
             icon = ''
         return icon
 
     def extractActors(self):
         try:
-            regex = re.compile(".*(\[COLOR\s*\w*\]\[B\]Aktorzy:\[/B\]\[/COLOR\].*?\[COLOR\s*\w*\].*?\[/COLOR\]).*", re.DOTALL)
+            regex = re.compile(".*(\[B\]Aktorzy:\[/B\].*).*", re.DOTALL)
             match = regex.findall(self.description)
             if len(match) > 0:
                 actors = match[0]
                 self.description = self.description.replace(actors, '').strip()
                 actors = re.sub("\[COLOR\s*\w*\]|\[/COLOR\]|\[B\]|\[/B\]|\[I\]|\[/I\]", "", actors)
+                actors = re.sub("Aktorzy:", "", actors).strip()
+                self.description = re.sub("\[B\]Aktorzy:\[/B\].*", "", self.description).strip()
             else:
                 actors = ''
         except:

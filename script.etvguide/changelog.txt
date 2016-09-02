@@ -1,3 +1,13 @@
+[B]wersja 3.10.[B] - 2016-09-02
+- dodany serwis WizjaTV
+- dodany serwis YoyTV
+- dodane C_MAIN_CHANNAME do vosd.py
+- dodane C_MAIN_CHANNAME (id="4919")
+- dodane aktorzy w InfoDialog.xml
+- zmiana DATA PRODUKCJI/PRODUCTION DATE na ROK/YEAR
+- usunięcie znanych błędów
+- wykrywanie braku/uszkodzonej skórki
+
 [B]wersja 3.0.7[/B] - 2016-06-17
 - dodana obsługa powiadomień
 - poprawione sortowanie wg jakości streamów w serwisie moje-filmy

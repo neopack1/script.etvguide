@@ -70,7 +70,7 @@ KEY_HOME = 159
 KEY_CODEC_INFO = 0
 
 config = ConfigParser.RawConfigParser()
-config.read(os.path.join(ADDON.getAddonInfo('path'), 'resources', 'skins',ADDON.getSetting('Skin'), 'settings.ini'))
+config.read(os.path.join(ADDON.getAddonInfo('path'), 'resources', 'skins', ADDON.getSetting('Skin'), 'settings.ini'))
 ini_chan = config.getint("Skin", "CHANNELS_PER_PAGE")
 ini_info = config.getboolean("Skin", "USE_INFO_DIALOG")
 
@@ -107,6 +107,18 @@ try:
     skin_resolution = config.getboolean("Skin", "resolution")
 except:
     skin_resolution = '720p'
+try:
+    skin_font = config.get("Skin", "font")
+except:
+    skin_font = 'NoFont'
+try:
+    skin_font_colour = config.get("Skin", "font_colour")
+except:
+    skin_font_colour = ''
+try:
+    skin_font_focused_colour = config.get("Skin", "font_focused_colour")
+except:
+    skin_font_focused_colour = ''
 
 try:
      KEY_INFO = int(ADDON.getSetting('info_key'))
@@ -354,6 +366,8 @@ class eTVGuide(xbmcgui.WindowXML):
         # monitorowanie zmiany stanu odtwarzacza
         threading.Timer(0.3, self.playerstate).start()
 
+        self.ignoreMissingControlIds.append(C_MAIN_CHAN_NAME)
+
     def playerstate(self):
         vp = VideoPlayerStateChange()
         vp.setPlaylistPositionFile(self.recordedFilesPlaylistPositions)
@@ -513,8 +527,10 @@ class eTVGuide(xbmcgui.WindowXML):
 #            else:
 #                if xbmc.Player().isPlaying():
 #                    self.playService.stopPlayback()
+#                    return
 #                self.lastCloseKeystroke = datetime.datetime.now()
 #                xbmc.executebuiltin('Notification(%s,%s,3000)' % (strings(30963).encode('utf-8'), strings(30964).encode('utf-8')))
+#            return
             self.close()
             return
 
@@ -804,8 +820,9 @@ class eTVGuide(xbmcgui.WindowXML):
         if program is None:
             return
 
-        self.setControlLabel(C_MAIN_TITLE, '[B]%s[/B]' % (program.title))
-        self.setControlLabel(C_MAIN_TIME, '[B]%s - %s[/B]' % (self.formatTime(program.startDate), self.formatTime(program.endDate)))
+        self.setControlLabel(C_MAIN_CHAN_NAME, '%s' % (program.channel.title))
+        self.setControlLabel(C_MAIN_TITLE, '%s' % (program.title))
+        self.setControlLabel(C_MAIN_TIME, '%s - %s' % (self.formatTime(program.startDate), self.formatTime(program.endDate)))
 
         if program.description:
             description = program.description
@@ -1130,12 +1147,12 @@ class eTVGuide(xbmcgui.WindowXML):
                 cellWidth = self.epgView.right - cellStart
             if cellWidth > 1:
 
-                if program.categoryA == "Filmy":
+                if program.categoryA == "Filmy" or program.categoryA == "Film":
                     if ADDON.getSetting('kolor.Filmy') == '':
 						noFocusTexture = "default.png"
                     else:
 						noFocusTexture = ADDON.getSetting('kolor.Filmy')+'.png'
-                elif program.categoryA == "Seriale":
+                elif program.categoryA == "Seriale" or program.categoryA == "Serial":
                     if ADDON.getSetting('kolor.Seriale') == '':
 						noFocusTexture = 'default.png'
                     else:
@@ -1155,7 +1172,7 @@ class eTVGuide(xbmcgui.WindowXML):
 						noFocusTexture = 'default.png'
                     else:
 						noFocusTexture = ADDON.getSetting('kolor.Dokument')+'.png'
-                elif program.categoryA == "Dla dzieci":
+                elif program.categoryA == "Dla dzieci" or program.categoryA == "Magazyn":
                     if ADDON.getSetting('kolor.Dladzieci') == '':
 						noFocusTexture = 'default.png'
                     else:
@@ -1196,7 +1213,10 @@ class eTVGuide(xbmcgui.WindowXML):
                     self.epgView.cellHeight - 2,
                     title,
                     noFocusTexture = noFocusTexture,
-                    focusTexture = focusTexture
+                    focusTexture = focusTexture,
+                    font = skin_font,
+                    textColor = skin_font_colour,
+                    focusedColor = skin_font_focused_colour
                 )
 
                 self.controlAndProgramList.append(ControlAndProgram(control, program))
@@ -1491,7 +1511,6 @@ class eTVGuide(xbmcgui.WindowXML):
         if control:
             control.setText(text)
 
-
     def updateTimebar(self, scheduleTimer = True):
         #debug('updateTimebar')
         if xbmc.Player().isPlaying():
@@ -1605,7 +1624,7 @@ class PopupMenu(xbmcgui.WindowXMLDialog):
             remindControl.setLabel(strings(LABEL_DONT_REMIND))
 
         if programTimeRangeControl is not None:
-            programTimeRangeControl.setLabel('[B]%s - %s[/B]' % (self.formatTime(self.program.startDate), self.formatTime(self.program.endDate)))
+            programTimeRangeControl.setLabel('%s - %s' % (self.formatTime(self.program.startDate), self.formatTime(self.program.endDate)))
 
     def onAction(self, action):
         if action.getId() in [ACTION_PARENT_DIR, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, KEY_CONTEXT_MENU] or action.getButtonCode() in [KEY_CONTEXT]:
@@ -1677,7 +1696,7 @@ class ChannelsMenu(xbmcgui.WindowXMLDialog):
             listControl = self.getControl(self.C_CHANNELS_LIST)
             idx = listControl.getSelectedPosition()
             buttonControl = self.getControl(self.C_CHANNELS_SELECTION)
-            buttonControl.setLabel('[B]%s[/B]' % self.channelList[idx].title)
+            buttonControl.setLabel('%s' % self.channelList[idx].title)
 
             self.getControl(self.C_CHANNELS_SELECTION_VISIBLE).setVisible(False)
             self.setFocusId(self.C_CHANNELS_SELECTION)
@@ -2021,8 +2040,8 @@ class InfoDialog(xbmcgui.WindowXMLDialog):
         if self.program is None:
             return
 
-        self.setControlLabel(C_MAIN_TITLE, '[B]%s[/B]' % self.program.title)
-        self.setControlLabel(C_MAIN_TIME, '[B]%s - %s[/B]' % (self.formatTime(self.program.startDate), self.formatTime(self.program.endDate)))
+        self.setControlLabel(C_MAIN_TITLE, '%s' % self.program.title)
+        self.setControlLabel(C_MAIN_TIME, '%s - %s' % (self.formatTime(self.program.startDate), self.formatTime(self.program.endDate)))
         if self.program.description:
             description = self.program.description
         else:
@@ -2108,7 +2127,7 @@ class InfoDialog(xbmcgui.WindowXMLDialog):
         return self.channel
 
     def onAction(self, action):
-        if action.getId() in [ACTION_SHOW_INFO, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, ACTION_PARENT_DIR] or (action.getButtonCode() == KEY_INFO and KEY_INFO != 0) or action.getButtonCode() == KEY_STOP:
+        if action.getId() in [ACTION_SHOW_INFO, ACTION_PREVIOUS_MENU, KEY_NAV_BACK, ACTION_PARENT_DIR] or (action.getButtonCode() == KEY_INFO and KEY_INFO != 0) or (action.getButtonCode() == KEY_STOP and KEY_STOP != 0):
             self.close()
 
     def onClick(self, controlId):
@@ -2380,7 +2399,7 @@ class Pla(xbmcgui.WindowXMLDialog):
         #debug('displayServiceOnOSD')
         self.displayService = False
         if self.ctrlService:
-            displayedService = self.epg.playService.currentlyPlayedService
+            displayedService = self.epg.playService.currentlyPlayedService['service']
             if self.epg.playService.streamQuality != '':
                 displayedService = displayedService + ' ' + self.epg.playService.streamQuality.upper()
             self.ctrlService.setLabel(displayedService)

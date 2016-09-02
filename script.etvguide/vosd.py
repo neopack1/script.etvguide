@@ -54,6 +54,7 @@ ACTION_PREV_ITEM = 15
 ACTION_SHOW_UP = 16
 ACTION_SHOW_DOWN = 17
 
+C_MAIN_CHAN_NAME = 4919
 C_MAIN_TITLE = 4920
 C_MAIN_TIME = 4921
 C_MAIN_DESCRIPTION = 4922
@@ -67,6 +68,7 @@ C_SETUP = 106
 C_SCHEDULE = 107
 C_UNSCHEDULE = 108
 C_CLOSE_WINDOW = 1000
+C_VIDEO_OSD_WINDOW = 100
 
 ACTION_MOUSE_WHEEL_UP = 104
 ACTION_MOUSE_WHEEL_DOWN = 105
@@ -85,6 +87,11 @@ try:
      KEY_CONTEXT = int(ADDON.getSetting('context_key'))
 except:
      KEY_CONTEXT = -1
+try:
+     KEY_INFO = int(ADDON.getSetting('info_key'))
+except:
+     KEY_INFO = -1
+
 
 class VideoOSD(xbmcgui.WindowXMLDialog):
     def __new__(cls, gu, controlledByMouse = True, action = None):
@@ -101,6 +108,7 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
         self.showConfigButtons = False
         self.initialized = False
         self.osdDisplayTime = int(ADDON.getSetting('osd_time'))
+        self.blockOsd = False
         if ADDON.getSetting('show_osd_buttons') == 'true':
             self.showConfigButtons = True
         if not self.showConfigButtons and ADDON.getSetting('key_right_left_show_next') == 'true':
@@ -138,6 +146,7 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
         self.setupControl = self.getControl(C_SETUP)
         self.scheduleControl = self.getControl(C_SCHEDULE)
         self.unscheduleControl = self.getControl(C_UNSCHEDULE)
+        self.videoOsdWindowControl = self.getControl(C_VIDEO_OSD_WINDOW)
 
         if self.controlledByMouse or self.showConfigButtons:
             self.infoControl.controlRight(self.setupControl)
@@ -173,7 +182,8 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
         self.unscheduleControl.setVisible(False)
         self.unscheduleControl.setEnabled(False)
 
-
+		
+        self.ctrlChanName = self.getControl(C_MAIN_CHAN_NAME)
         self.ctrlMainTitle = self.getControl(C_MAIN_TITLE)
         self.ctrlProgramTitle = self.getControl(C_MAIN_TITLE)
         self.ctrlProgramTime = self.getControl(C_MAIN_TIME)
@@ -286,6 +296,17 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
             if not self.showConfigButtons and currentlyPlayedProgram.channel.id == self.program.channel.id and currentlyPlayedProgram.startDate == self.program.startDate:
                 self.isClosing = True
 
+        elif action.getId() == ACTION_SHOW_INFO or action.getButtonCode() == KEY_INFO or action.getId() == KEY_INFO:
+            try:
+                self.blockOsd = True
+                self.videoOsdWindowControl.setVisible(False)
+                self.gu.epg.Info(self.program)
+            except:
+                pass
+            self.keyboardTime = time.mktime(datetime.datetime.now().timetuple())
+            self.videoOsdWindowControl.setVisible(True)
+            self.blockOsd = False
+
     def showNextProgram(self):
         program = self.gu.getProgramRight(self.program)
         if program is not None:
@@ -352,10 +373,12 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
     def refreshControls(self):
         if not self.initialized:
             return
+        if self.ctrlChanName is not None:
+            self.ctrlChanName.setLabel('%s' % (self.program.channel.title))
         if self.ctrlMainTitle is not None:
-            self.ctrlMainTitle.setLabel('[B]%s[/B]' % (self.program.title))
+            self.ctrlMainTitle.setLabel('%s' % (self.program.title))
         if self.ctrlProgramTime is not None:
-            self.ctrlProgramTime.setLabel('[B]%s - %s[/B]' % (self.formatTime(self.program.startDate), self.formatTime(self.program.endDate)))
+            self.ctrlProgramTime.setLabel('%s - %s' % (self.formatTime(self.program.startDate), self.formatTime(self.program.endDate)))
         if self.ctrlProgramDesc is not None:
             if self.program.description and self.ctrlProgramDesc:
                 self.ctrlProgramDesc.setText(self.program.description)
@@ -414,7 +437,7 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
         self.isClosing = True
 
     def waitForKeyboard(self):
-        while time.mktime(datetime.datetime.now().timetuple()) < self.keyboardTime + self.osdDisplayTime and not self.isClosing:
+        while (time.mktime(datetime.datetime.now().timetuple()) < self.keyboardTime + self.osdDisplayTime or self.blockOsd) and not self.isClosing:
             time.sleep(0.1)
         self.isClosing = True
 
