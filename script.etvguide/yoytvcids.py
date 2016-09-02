@@ -22,7 +22,7 @@ class YoyTVUpdater(baseServiceUpdater):
         self.password           = ADDON.getSetting('yoytv_password').strip()
         self.useFreeAccount     = ADDON.getSetting('yoytv_use_free_account')
         self.servicePriority    = int(ADDON.getSetting('priority_yoytv'))
-        self.onlineMapFile      = 'http://mods-kodi.pl/m-tvguide/maps/yoytvmap.xml'
+        self.onlineMapFile      = 'http://epg.feenk.net/maps/yoytvmap.xml'
         self.localMapFile       = 'yoytvmap.xml'
         self.serviceRegex       = "service=" + self.serviceName + "&cid=%"
         self.rstrm              = self.serviceRegex + 's'
