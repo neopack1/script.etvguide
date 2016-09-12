@@ -106,7 +106,7 @@ class GoldVodUpdater(baseServiceUpdater):
                 self.log('getChannelList exception while looping channelsArray, error: %s' % str(keyerr))
         else:
             self.log('getChannelList returned empty channel array!!!!!!!!!!!!!!!!')
-            xbmcgui.Dialog().ok(strings(SERVICE_ERROR),"\n" + strings(SERVICE_NO_PREMIUM) + ' ' + self.serviceName)
+            xbmcgui.Dialog().notification(strings(SERVICE_ERROR), strings(SERVICE_NO_PREMIUM) + ' ' + self.serviceName, time=10000, sound=False)
         return result
 
     def getChannel(self, cid):

@@ -122,13 +122,15 @@ class PlayService(xbmc.Player, BasePlayService):
         self.reconnectFailedStreams = ADDON.getSetting('reconnect_stream')
         self.reconnectDelay = int(ADDON.getSetting('reconnect_delay'))
 
-    def playUrlList(self, urlList):
+    def playUrlList(self, urlList, resetReconnectCounter=False):
         if urlList is None or len(urlList) == 0:
             deb('playUrlList got empty list to play - aborting!')
             return
         self.starting = True
         self.threadData['terminate'] = True
         currentThreadData = self.threadData = { 'terminate' : False }
+        if resetReconnectCounter:
+            self.nrOfResumeAttempts = 0
 
         if self.thread is not None and self.thread.is_alive():
             deb('PlayService playUrlList waiting for thread to terminate')
@@ -218,12 +220,6 @@ class PlayService(xbmc.Player, BasePlayService):
             debug('PlayService playNextStream skipping: %s, next: %s' % (tmpUrl, self.urlList[0]))
             self.playUrlList(self.urlList)
 
-    def close(self):
-        self.terminating = True
-        self.stopPlayback()
-        if self.thread is not None and self.thread.is_alive():
-            self.thread.join(10)
-
     def LoadVideoLink(self, channel, service):
         #deb('LoadVideoLink %s service' % service)
         res = False
@@ -297,15 +293,29 @@ class PlayService(xbmc.Player, BasePlayService):
                 deb('PlayService reconnecting, nr of reattempts: %s' % self.nrOfResumeAttempts)
                 if self.playbackStartTime is not None and (datetime.datetime.now() - self.playbackStartTime).seconds < 10:
                     try:
-                        #Playback didn't last for 10s - move stream to the end of list
+                        #Playback didn't last for 10s - remove stream from list
                         deb('Playback last for only %s seconds - moving to next one' % (datetime.datetime.now() - self.playbackStartTime).seconds)
-                        tmpUrl = self.urlList.pop(0)
-                        self.urlList.append(tmpUrl)
+                        self.urlList.pop(0)
                     except Exception, ex:
                         deb('tryResummingPlayback exception: %s' % str(ex))
-                if self.reconnectDelay > 0:
+                if self.reconnectDelay > 0 and len(self.urlList) > 0:
                     xbmc.sleep(self.reconnectDelay)
                 self.playUrlList(self.urlList)
             else:
                 deb('PlayService reached reconnection limit - aborting!')
                 self.stopPlayback()
+
+
+    def getCurrentServiceString(self):
+        service = ''
+        if self.currentlyPlayedService['service'] is not None:
+            service = self.currentlyPlayedService['service']
+            if self.streamQuality != '':
+                service = service + ' ' + self.streamQuality.upper()
+        return service
+
+    def close(self):
+        self.terminating = True
+        self.stopPlayback()
+        if self.thread is not None and self.thread.is_alive():
+            self.thread.join(10)

@@ -45,7 +45,7 @@ class WizjaTVUpdater(baseServiceUpdater):
             post['user_password'] = self.password
             data = self.sl.getJsonFromExtendedAPI(self.url + 'users/index.php', post_data = post, cookieFile = COOKIE_FILE, save_cookie = True)
             if 'Zarejestruj nowe konto' in data or 'Brak premium' in data:
-                xbmcgui.Dialog().ok(strings(SERVICE_ERROR),"\n" + strings(SERVICE_NO_PREMIUM) + ' ' + self.serviceName)
+                xbmcgui.Dialog().notification(strings(SERVICE_ERROR), strings(SERVICE_NO_PREMIUM) + ' ' + self.serviceName, time=10000, sound=False)
                 return result
             data = self.sl.getJsonFromExtendedAPI(self.url, cookieFile = COOKIE_FILE, load_cookie = True) #, cookieFile = COOKIE_FILE, load_cookie = True
             data = self.sl.parseDOM(data, 'td')

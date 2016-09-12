@@ -90,6 +90,7 @@ DATABASE_SCHEMA_ERROR_2 = 30158
 DATABASE_SCHEMA_ERROR_3 = 30159
 
 #Controls ID
+C_MAIN_SERVICE_NAME = 4918
 C_MAIN_CHAN_NAME = 4919
 C_MAIN_TITLE = 4920         #nazwa programu telewizyjnego
 C_MAIN_TIME = 4921          #godziny trwania progrmay
