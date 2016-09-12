@@ -28,6 +28,13 @@ class YoyTVUpdater(baseServiceUpdater):
         self.rstrm              = self.serviceRegex + 's'
         self.url                = yoyUrl
         self.maxAllowedStreams  = 1
+        self.nrOfPagesToParse   = 10
+
+
+    def downloadThread(self, url, threadData):
+        data = self.sl.getJsonFromExtendedAPI(url, cookieFile = COOKIE_FILE, load_cookie = True)
+        if data is not None:
+            threadData.append(data)
 
     def getChannelList(self):
         global yoytvChannelList
@@ -54,25 +61,49 @@ class YoyTVUpdater(baseServiceUpdater):
                     #xbmcgui.Dialog().ok(strings(SERVICE_ERROR), "\n" + strings(SERVICE_NO_PREMIUM) + ' ' + self.serviceName)
                     #return result
 
-            for page in range(1, 10):
-                data = self.sl.getJsonFromExtendedAPI(self.url + 'channels?live=1&country=140&page=%s' % page, cookieFile = COOKIE_FILE, load_cookie = True)
-                data = self.sl.parseDOM(data, 'a', attrs={'class' : 'thumb-info team'})
-                data = [(self.sl.parseDOM(i, 'img', ret='src')[0], self.sl.parseDOM(i, 'img', ret='alt')[0]) for i in data]
-                for item in data:
-                    cid = item[0].replace('http://yoy.tv/channel/covers/','').replace('.jpg?cache=32','').encode('utf-8')
-                    name = item[1].upper().encode('utf-8')
-                    img = item[0].replace('?cache=32', '').encode('utf-8')
-                    self.log('[UPD] %-10s %-35s %-35s' % (cid, name, img))
-                    program = TvCid(cid, name, name, img=img)
-                    result.append(program)
+            threadList = list()
+            threadData = list()
+            for page in range(1, self.nrOfPagesToParse):
+                thread = threading.Thread(name='downloadThread', target = self.downloadThread, args=[self.url + 'channels?live=1&country=140&page=%s' % page, threadData])
+                threadList.append(thread)
+                thread.start()
 
+            for thread in threadList:
+                while thread.is_alive():
+                    xbmc.sleep(300)
+
+            del threadList[:]
+
+            for data in threadData:
+                if data is not None:
+                    data = self.sl.parseDOM(data, 'a', attrs={'class' : 'thumb-info team'})
+                    parsedData = list()
+                    for i in data:
+                        try:
+                            row = i.replace('>>', '')
+                            img  = self.sl.parseDOM(row, 'img', ret='src')[0]
+                            name = self.sl.parseDOM(row, 'img', ret='alt')[0]
+                            parsedData.append([img, name])
+                        except Exception, e:
+                            self.log('getChannelList exception: %s, while parsing data: %s' % (str(e), row) )
+
+                    for item in parsedData:
+                        cid = item[0].replace('http://yoy.tv/channel/covers/','').replace('.jpg?cache=32','').encode('utf-8')
+                        name = item[1].upper().encode('utf-8')
+                        img = item[0].replace('?cache=32', '').encode('utf-8')
+                        self.log('[UPD] %-10s %-35s %-35s' % (cid, name, img))
+                        program = TvCid(cid, name, name, img=img)
+                        result.append(program)
+
+                    del parsedData[:]
+
+            del threadData[:]
             if len(result) > 0:
                 yoytvChannelList = copy.deepcopy(result)
 
         except Exception, e:
             self.log('getChannelList exception: %s' % str(e))
         return result
-
 
     def getChannel(self, cid):
         try:
@@ -82,14 +113,26 @@ class YoyTVUpdater(baseServiceUpdater):
                     url = self.url + 'channels/%s' % cid
                     data = self.sl.getJsonFromExtendedAPI(url, cookieFile = COOKIE_FILE, load_cookie = True)
                     if '<title>Kup konto premium w portalu yoy.tv</title>' in data:
-                        xbmcgui.Dialog().ok(strings(SERVICE_ERROR),"\n" + strings(SERVICE_NO_PREMIUM) + ' ' + self.serviceName)
-                        return
+                        xbmcgui.Dialog().notification(strings(SERVICE_ERROR), strings(SERVICE_NO_PREMIUM) + ' ' + self.serviceName, time=10000, sound=False)
+                        return None
                     data = self.sl.parseDOM(data, 'param', ret='value', attrs={'name' : 'FlashVars'})[0].encode('utf-8')
+
+                    # Decoded by MrKnow - thanks!
+                    lpi = data.index("s=") + data.index("=") * 3
+                    rpi = data.index("&", lpi) - data.index("d") * 2
+                    dp=[]
+                    cp=data[lpi:rpi].split('.')
+                    for i, item in enumerate(cp):
+                        j = 2 ^ i ^ ((i ^ 3) >> 1)
+                        k = 255 - int(cp[j])
+                        dp.append(k)
+                    myip = '.'.join(map(str, dp))
                     data = dict(urlparse.parse_qsl(data))
+
                     playpath = '%s?email=%s&secret=%s&hash=%s' % (data['cid'], data['email'], data['secret'], data['hash'])
-                    rtmp = data['fms'].replace('/yoy','') + ' app=yoy/_definst_ playpath=' + playpath + ' swfUrl=http://yoy.tv/playerv3a.swf' + ' swfVfy=true tcUrl=' + data['fms'] + '/_definst_ live=true pageUrl=' + url
+                    rtmp = 'rtmp://' + myip + ' app=yoy/_definst_ playpath=' + playpath + ' swfUrl=http://yoy.tv/playerv3a.swf' + ' swfVfy=true tcUrl=' + 'rtmp://' + myip + '/yoy/_definst_ live=true pageUrl=' + url
                     chann.strm = rtmp
-                    self.log('getChannel found matching channel: cid: %s, name: %s, rtmp: %s' % (chann.cid, chann.name, chann.strm))
+                    self.log('getChannel found matching channel: cid: %s, name: %s, rtmp: %s' % (str(chann.cid), str(chann.name), str(chann.strm)) )
                     return chann
 
         except Exception, e:

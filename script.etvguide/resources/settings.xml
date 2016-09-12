@@ -109,6 +109,7 @@
 		<setting id="key_right_left_show_next" label="69041" type="bool" default="true" visible="eq(-6,true) + eq(-1,false)"/>
 		<setting id="show_osd_on_play" label="69043" type="bool" default="false" visible="eq(-7,true)"/>
 		<setting id="osd_on_play_time" label="69044" type="slider" default="3" range="1,30" option="int" visible="eq(-8,true) + eq(-1,true)"/>
+		<setting id="osd_on_stream_change" label="69046" type="bool" default="false" visible="eq(-9,true) + eq(-2,true)"/>
 	</category>
 	<category label="30916">
 		<setting label="30108" type="action" action="RunScript($CWD/notification.py)"/>

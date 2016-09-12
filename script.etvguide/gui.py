@@ -522,17 +522,15 @@ class eTVGuide(xbmcgui.WindowXML):
     def onActionEPGMode(self, action):
         debug('onActionEPGMode keyId %d, buttonCode %d' % (action.getId(), action.getButtonCode()))
         if action.getId() in [ACTION_PARENT_DIR, KEY_NAV_BACK, ACTION_PREVIOUS_MENU]:
-#            if (datetime.datetime.now() - self.lastCloseKeystroke).seconds < 3:
+#            if xbmc.Player().isPlaying():
+#                self.playService.stopPlayback()
+#            elif (datetime.datetime.now() - self.lastCloseKeystroke).seconds < 3:
 #                self.close()
 #            else:
-#                if xbmc.Player().isPlaying():
-#                    self.playService.stopPlayback()
-#                    return
 #                self.lastCloseKeystroke = datetime.datetime.now()
-#                xbmc.executebuiltin('Notification(%s,%s,3000)' % (strings(30963).encode('utf-8'), strings(30964).encode('utf-8')))
+#                xbmcgui.Dialog().notification(strings(30963).encode('utf-8'), strings(30964).encode('utf-8'), time=3000, sound=False)
 #            return
             self.close()
-            return
 
         elif action.getId() == ACTION_MOUSE_MOVE:
             if ADDON.getSetting('pokazpanel') == 'true':
@@ -1023,7 +1021,7 @@ class eTVGuide(xbmcgui.WindowXML):
             if self.playRecordedProgram(program):
                 return True
         urlList = self.database.getStreamUrlList(channel)
-        self.playService.playUrlList(urlList)
+        self.playService.playUrlList(urlList, resetReconnectCounter=True)
         return len(urlList) > 0
 
     def recordProgram(self, program):
@@ -1307,8 +1305,7 @@ class eTVGuide(xbmcgui.WindowXML):
             if ADDON.getSetting('notifications.enabled') == 'true':
                 self.notification.scheduleNotifications()
             self.recordService.scheduleAllRecordings()
-            if ADDON.getSetting('ShowRssMessages') == 'true':
-                self.rssFeed = src.RssFeed(url=RSS_FILE, last_message=self.database.getLastRssDate(), update_date_call=self.database.updateRssDate)
+            self.rssFeed = src.RssFeed(url=RSS_FILE, last_message=self.database.getLastRssDate(), update_date_call=self.database.updateRssDate)
             if strings2.M_TVGUIDE_CLOSING == False:
                 self.onRedrawEPG(0, self.viewStartDate)
                 if ADDON.getSetting('pokazpanel') == 'true':
@@ -2174,7 +2171,7 @@ class Pla(xbmcgui.WindowXMLDialog):
             self.ctrlService = self.getControl(C_VOSD_SERVICE)
 
     def play(self, urlList):
-        self.epg.playService.playUrlList(urlList)
+        self.epg.playService.playUrlList(urlList, resetReconnectCounter=True)
 
     def onAction(self, action):
         debug('Pla onAction keyId %d, buttonCode %d' % (action.getId(), action.getButtonCode()))
@@ -2351,7 +2348,7 @@ class Pla(xbmcgui.WindowXMLDialog):
             self.epg.program = self.program
             urlList = self.database.getStreamUrlList(channel)
             if len(urlList) > 0:
-                self.epg.playService.playUrlList(urlList)
+                self.epg.playService.playUrlList(urlList, resetReconnectCounter=True)
                 if self.showOsdOnPlay:
                     self.displayAutoOsd = True
 
@@ -2359,6 +2356,8 @@ class Pla(xbmcgui.WindowXMLDialog):
         deb('Changing stream for channel %s' % self.currentChannel.id)
         self.epg.playService.playNextStream()
         self.displayService = True
+        if ADDON.getSetting('osd_on_stream_change') == 'true':
+            self.displayAutoOsd = True
 
     def getProgramUp(self, program):
         channel = self.database.getPreviousChannel(program.channel)
@@ -2399,9 +2398,7 @@ class Pla(xbmcgui.WindowXMLDialog):
         #debug('displayServiceOnOSD')
         self.displayService = False
         if self.ctrlService:
-            displayedService = self.epg.playService.currentlyPlayedService['service']
-            if self.epg.playService.streamQuality != '':
-                displayedService = displayedService + ' ' + self.epg.playService.streamQuality.upper()
+            displayedService = self.epg.playService.getCurrentServiceString()
             self.ctrlService.setLabel(displayedService)
             if self.displayServiceTimer:
                 self.displayServiceTimer.cancel()

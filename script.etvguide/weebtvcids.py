@@ -213,6 +213,6 @@ class WebbTvStrmUpdater(baseServiceUpdater):
 
         self.log('updateChannelRTMP generated RTMP is %s' % channel.strm)
         if not self.shownNoPremiumNotification and premium == 0:
-            xbmcgui.Dialog().ok(strings(57034).encode('utf-8'), strings(57039).encode('utf-8') + ' weeb.tv')
+            xbmcgui.Dialog().notification(strings(57034).encode('utf-8'), strings(57039).encode('utf-8') + ' weeb.tv', time=7000, sound=False)
             self.shownNoPremiumNotification = True
         return channel

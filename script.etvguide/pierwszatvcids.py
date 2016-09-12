@@ -83,7 +83,7 @@ class PierwszaTvUpdater(baseServiceUpdater):
                 self.log('getChannelList exception while looping channelsArray, error: %s' % str(keyerr))
         else:
             self.log('getChannelList returned empty channel array!!!!!!!!!!!!!!!!')
-            xbmcgui.Dialog().ok(strings(SERVICE_ERROR),"\n" + strings(SERVICE_NO_PREMIUM) + ' ' + self.serviceName)
+            xbmcgui.Dialog().notification(strings(SERVICE_ERROR), strings(SERVICE_NO_PREMIUM) + ' ' + self.serviceName, time=10000, sound=False)
         return result
 
     def getChannel(self, cid):
@@ -97,7 +97,7 @@ class PierwszaTvUpdater(baseServiceUpdater):
                 if not channelData or channelData['status'] != 'ok':
                     self.log('Error while trying to get channel data: %s' % str(channelData))
                     if channelData and channelData['message']:
-                        xbmcgui.Dialog().ok(strings(SERVICE_ERROR),"\n" + channelData['message'] + ' ' + self.serviceName)
+                        xbmcgui.Dialog().notification(strings(SERVICE_ERROR), channelData['message'] + ' ' + self.serviceName, time=10000, sound=False)
                     return None
 
                 serverId = channelData['serverId']

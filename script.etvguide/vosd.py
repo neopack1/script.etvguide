@@ -182,15 +182,16 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
         self.unscheduleControl.setVisible(False)
         self.unscheduleControl.setEnabled(False)
 
-		
-        self.ctrlChanName = self.getControl(C_MAIN_CHAN_NAME)
-        self.ctrlMainTitle = self.getControl(C_MAIN_TITLE)
-        self.ctrlProgramTitle = self.getControl(C_MAIN_TITLE)
-        self.ctrlProgramTime = self.getControl(C_MAIN_TIME)
-        self.ctrlProgramDesc = self.getControl(C_MAIN_DESCRIPTION)
-        self.ctrlProgramLogo = self.getControl(C_MAIN_LOGO)
-        self.ctrlProgramImg = self.getControl(C_MAIN_IMAGE)
-        self.ctrlMainLive = self.getControl(C_MAIN_LIVE)
+
+        self.ctrlServiceName    = self.getControl(C_MAIN_SERVICE_NAME)
+        self.ctrlChanName       = self.getControl(C_MAIN_CHAN_NAME)
+        self.ctrlMainTitle      = self.getControl(C_MAIN_TITLE)
+        self.ctrlProgramTitle   = self.getControl(C_MAIN_TITLE)
+        self.ctrlProgramTime    = self.getControl(C_MAIN_TIME)
+        self.ctrlProgramDesc    = self.getControl(C_MAIN_DESCRIPTION)
+        self.ctrlProgramLogo    = self.getControl(C_MAIN_LOGO)
+        self.ctrlProgramImg     = self.getControl(C_MAIN_IMAGE)
+        self.ctrlMainLive       = self.getControl(C_MAIN_LIVE)
         self.ctrlProgramProgress = self.getControl(C_PROGRAM_PROGRESS)
 
         self.mousetime = time.mktime(datetime.datetime.now().timetuple())
@@ -373,6 +374,8 @@ class VideoOSD(xbmcgui.WindowXMLDialog):
     def refreshControls(self):
         if not self.initialized:
             return
+        if self.ctrlServiceName is not None:
+            self.ctrlServiceName.setLabel('%s' % self.playService.getCurrentServiceString())
         if self.ctrlChanName is not None:
             self.ctrlChanName.setLabel('%s' % (self.program.channel.title))
         if self.ctrlMainTitle is not None:
