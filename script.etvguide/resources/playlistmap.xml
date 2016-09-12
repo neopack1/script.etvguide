@@ -33,6 +33,11 @@
 	<channel id="ESKA PARTY TV" 						title="(?=ESKA\s*PARTY(\s*TV)?$)" strm=""/>
 	<channel id="Eska Best Music" 						title="(?=Eska\s*Best\s*Music(\s*TV)?$)" strm=""/>
 	<channel id="Amazing" 								title="(?=Amazing(\s*TV)?$)" strm=""/>
+	<channel id="4fun TV" 								title="(?=\s*4FUN(\s*TV)?(\s*HD)?\s*$)" strm=""/>
+	<channel id="CBS REALITY DRAMA" 					title="(?=CBS\s*DRAMA(\s*HD)?$)" strm=""/>
+	<channel id="Polsat Crime" 							title="(?=CI\s*POLSAT(\s*HD)?$)" strm=""/>
+	<channel id="MUZO TV"								title="(?=\s*Muzo\.(\s*TV)?(\s*HD)?\s*$)" strm=""/>
+	<channel id="TVN 24 BiS"						    title="(?=TVN\s*24\s*(BiS|Biznes\s*i\s*Swiat)(\s*HD)?\s*$)" strm=""/>
 </map>
 
 <!--

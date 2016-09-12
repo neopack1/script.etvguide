@@ -308,6 +308,8 @@
 	<string id="69043">Display auto OSD on play</string>
 	<string id="69044">Auto OSD display time</string>
 	<string id="69045">OSD display time</string>
+	<string id="69046">Show OSD on stream change</string>
+	<string id="69047"></string>
 
 	<string id="80000">[COLOR]PierwszaTV[/COLOR]</string>
 	<string id="80001">[COLOR]WizjaTV[/COLOR]</string>
